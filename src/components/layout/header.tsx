@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -38,8 +39,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+        <Link href="/" className="flex items-center gap-3">
+          <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={40} height={40} className="rounded-md bg-white p-1" />
           <span className="text-2xl font-bold font-headline">Eglife Hub</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
@@ -64,8 +65,8 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2 mb-4">
-                  <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+                <Link href="/" className="flex items-center gap-3 mb-4">
+                  <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={40} height={40} className="rounded-md bg-white p-1" />
                   <span className="text-2xl font-bold font-headline">Eglife Hub</span>
                 </Link>
                 {navLinks.map(link => (

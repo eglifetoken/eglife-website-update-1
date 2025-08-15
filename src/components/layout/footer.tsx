@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Twitter, Send } from "lucide-react";
@@ -17,8 +18,8 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={40} height={40} className="rounded-md bg-white p-1" />
               <span className="text-2xl font-bold font-headline">Eglife Hub</span>
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
