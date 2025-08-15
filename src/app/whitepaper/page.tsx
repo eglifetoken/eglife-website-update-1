@@ -1,3 +1,4 @@
+
 export default function WhitepaperPage() {
     return (
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -20,16 +21,24 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>2. Problem Statement</strong></h2>
             <p>
-              The majority of token projects suffer from poor utility and low community incentives. Common problems include:
+              The digital currency landscape is saturated with projects that, while innovative, often fail to deliver tangible value or long-term sustainability. The majority of token projects suffer from a combination of poor utility, weak tokenomics, and a lack of genuine community incentives. Common problems include:
             </p>
             <ul>
-                <li>Absence of reward mechanisms for token holders.</li>
-                <li>High token inflation without supply control.</li>
-                <li>No integration with daily life utilities or commerce.</li>
-                <li>Unfair token allocations that benefit insiders over early adopters.</li>
+                <li>
+                    <strong>Absence of Reward Mechanisms:</strong> Many tokens do not offer compelling reasons for holders to maintain their positions long-term. Without staking rewards, profit-sharing, or other incentives, tokens are often dumped at the first sign of market volatility, leading to price instability.
+                </li>
+                <li>
+                    <strong>High Token Inflation Without Supply Control:</strong> Projects often mint excessive tokens for rewards or operational costs without a counteracting deflationary mechanism. This leads to high inflation, which devalues the token over time and erodes holder confidence and purchasing power.
+                </li>
+                <li>
+                    <strong>Lack of Real-World Utility:</strong> A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce, which limits their adoption to a niche audience of traders and investors, rather than the general public.
+                </li>
+                <li>
+                    <strong>Unfair Token Allocations:</strong> Many projects allocate a disproportionately large share of tokens to the team and private investors, with short vesting periods. This often leads to "pump and dump" schemes where insiders exit at the expense of the community and early public adopters, damaging trust and long-term viability.
+                </li>
             </ul>
             <p>
-              EGLIFE solves these through reward-based staking, referral airdrops, controlled supply, and token-based utility transactions.
+              EGLIFE solves these critical issues through a carefully designed ecosystem featuring reward-based staking, referral airdrops to incentivize community growth, a controlled supply with burn mechanisms, and tangible, real-world utility through token-based transactions.
             </p>
           </section>
   
