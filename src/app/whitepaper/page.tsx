@@ -137,7 +137,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>8. Staking & Referral Plans</strong></h2>
+            <h2><strong>8. Staking Plan</strong></h2>
             <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY)</strong></h3>
             <h4>Rules</h4>
             <ul>
@@ -203,7 +203,10 @@ export default function WhitepaperPage() {
               <li>7,000 EGLIFE @ 24% → 4.6027 EGLIFE/day</li>
               <li>15,000 EGLIFE @ 26% → 10.6849 EGLIFE/day</li>
             </ul>
+          </section>
 
+          <section>
+            <h2><strong>9. Referral Plan</strong></h2>
             <h3><strong>EGLIFE Token – Multi-Level Referral Plan</strong></h3>
             <h4>Referral Rules</h4>
             <ul>
@@ -240,7 +243,7 @@ export default function WhitepaperPage() {
           </section>
           
           <section>
-            <h2><strong>9. Tokenomics</strong></h2>
+            <h2><strong>10. Tokenomics</strong></h2>
             <h3><strong>Token Distribution:</strong></h3>
             <ul>
               <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
@@ -254,7 +257,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>10. Roadmap</strong></h2>
+            <h2><strong>11. Roadmap</strong></h2>
             <ul>
                 <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
                 <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
@@ -266,7 +269,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>11. Legal & Regulatory Compliance</strong></h2>
+            <h2><strong>12. Legal & Regulatory Compliance</strong></h2>
             <ul>
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
                 <li>It is a <strong>utility token</strong> built for use within the EGLIFE ecosystem.</li>
@@ -276,7 +279,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>12. Team</strong></h2>
+            <h2><strong>13. Team</strong></h2>
             <ul>
                 <li><strong>Project Lead:</strong> To be announced</li>
                 <li><strong>Legal Advisor:</strong> To be announced</li>
@@ -287,7 +290,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>13. Risk Factors</strong></h2>
+              <h2><strong>14. Risk Factors</strong></h2>
               <ul>
                   <li><strong>Crypto Market Volatility:</strong> Token prices may fluctuate.</li>
                   <li><strong>Regulatory Shifts:</strong> Government laws may impact operations.</li>
@@ -298,14 +301,14 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>14. Conclusion</strong></h2>
+              <h2><strong>15. Conclusion</strong></h2>
               <p>
                 EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGLIFE ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
           <section>
-              <h2><strong>15. Annexures</strong></h2>
+              <h2><strong>16. Annexures</strong></h2>
               <ul>
                   <li><strong>Smart Contract:</strong> Verified on BscScan</li>
                   <li><strong>ABI & Bytecode:</strong> Available</li>
@@ -320,6 +323,7 @@ export default function WhitepaperPage() {
   }
 
     
+
 
 
 
