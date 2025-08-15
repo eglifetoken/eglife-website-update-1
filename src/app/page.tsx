@@ -251,20 +251,6 @@ export default function Home() {
             <p className="text-lg text-foreground/80 mb-4">
                The Eglife Token (EGLIFE) is a decentralized BEP-20 cryptocurrency designed to build a real-world, utility-based token economy. Deployed on the BNB Smart Chain, EGLIFE bridges the gap between digital assets and everyday life by enabling seamless utility payments, staking rewards, and participation in a self-sustaining financial ecosystem. Our mission is to provide tangible value, foster long-term growth, and make cryptocurrency accessible and practical for everyone.
             </p>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <Target className="w-6 h-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                <span><strong className="font-headline">Purpose:</strong> To create a self-sustaining economy that supports wellness, sustainability, and community initiatives.</span>
-              </li>
-              <li className="flex items-start">
-                <Users className="w-6 h-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                <span><strong className="font-headline">Initiatives:</strong> Funding for green projects, wellness workshops, and local community-building events.</span>
-              </li>
-              <li className="flex items-start">
-                <GitCommit className="w-6 h-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                <span><strong className="font-headline">Future Goals:</strong> Expanding our DApp ecosystem, forging new partnerships, and launching a global community grant program.</span>
-              </li>
-            </ul>
           </div>
         </div>
       </section>
