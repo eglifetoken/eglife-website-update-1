@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -80,18 +82,40 @@ export default function ServicesPage() {
           <p className="text-lg text-foreground/80 mt-2 max-w-2xl mx-auto">
               Our vision is to create a seamless financial experience by integrating EGPAY with the services you use every day, making transactions effortless and universal.
           </p>
-           <div className="flex justify-center items-center gap-8 mt-8">
-                <div className="p-4 bg-muted rounded-full">
-                    <Smartphone className="h-8 w-8 text-muted-foreground" />
-                </div>
-                 <div className="p-4 bg-muted rounded-full">
-                    <Globe className="h-8 w-8 text-muted-foreground" />
-                </div>
-                 <div className="p-4 bg-muted rounded-full">
-                    <Lightbulb className="h-8 w-8 text-muted-foreground" />
-                </div>
-           </div>
+           <div className="mt-8 flex justify-center">
+            <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary/20 rounded-full flex items-center justify-center">
+                <Globe className="h-16 w-16 text-primary" />
+              </div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 p-3 bg-muted rounded-full animate-orbit" style={{ animationDelay: '0s', '--orbit-radius': '150px' } as React.CSSProperties}>
+                <Smartphone className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 p-3 bg-muted rounded-full animate-orbit" style={{ animationDelay: '-1s', '--orbit-radius': '150px' } as React.CSSProperties}>
+                <Tv className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 p-3 bg-muted rounded-full animate-orbit" style={{ animationDelay: '-2s', '--orbit-radius': '150px' } as React.CSSProperties}>
+                <Flame className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 p-3 bg-muted rounded-full animate-orbit" style={{ animationDelay: '-3s', '--orbit-radius': '150px' } as React.CSSProperties}>
+                <Lightbulb className="h-6 w-6 text-muted-foreground" />
+              </div>
+            </div>
+          </div>
       </div>
+       <style jsx>{`
+        @keyframes orbit {
+          0% { transform: rotate(0deg) translateX(var(--orbit-radius, 150px)) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(var(--orbit-radius, 150px)) rotate(-360deg); }
+        }
+        .animate-orbit {
+          animation: orbit 8s linear infinite;
+        }
+        @media (min-width: 768px) {
+            .animate-orbit {
+                --orbit-radius: 200px;
+            }
+        }
+      `}</style>
     </div>
   );
 }
