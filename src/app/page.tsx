@@ -27,25 +27,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold text-center mb-12">Our Mission</h2>
-          <div className="grid grid-cols-1 gap-8 max-w-lg mx-auto">
-            <Card className="text-center bg-transparent border-none shadow-none">
-              <CardHeader className="flex flex-col items-center">
-                 <div className="p-4 bg-secondary-foreground/20 rounded-full mb-4">
-                  <Users className="w-10 h-10 text-secondary-foreground" />
-                </div>
-                <CardTitle className="font-headline text-2xl">Community</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Building a strong, inclusive community that collaborates on projects and supports one another's growth.</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       <section className="w-full py-16 md:py-24 bg-primary/10">
         <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
