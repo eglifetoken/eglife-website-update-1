@@ -30,7 +30,7 @@ export default function Home() {
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-center mb-12">Our Mission</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="text-center bg-transparent border-none shadow-none">
               <CardHeader className="flex flex-col items-center">
                 <div className="p-4 bg-accent/20 rounded-full mb-4">
@@ -40,17 +40,6 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p>Promoting a holistic approach to well-being, encompassing physical, mental, and spiritual health for a balanced and fulfilling life.</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center bg-transparent border-none shadow-none">
-              <CardHeader className="flex flex-col items-center">
-                <div className="p-4 bg-primary/20 rounded-full mb-4">
-                  <Leaf className="w-10 h-10 text-primary" />
-                </div>
-                <CardTitle className="font-headline text-2xl">Sustainability</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Championing eco-friendly practices and supporting projects that protect our planet for future generations.</p>
               </CardContent>
             </Card>
             <Card className="text-center bg-transparent border-none shadow-none">
