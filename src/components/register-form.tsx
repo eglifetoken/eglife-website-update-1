@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -40,7 +41,7 @@ export function RegisterForm() {
             name: "",
             email: "",
             password: "",
-            referralCode: "EGLIFE-WELCOME",
+            referralCode: "EGLIFE-SIGNUP",
         },
     })
 
