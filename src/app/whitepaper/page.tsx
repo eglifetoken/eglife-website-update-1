@@ -1,4 +1,5 @@
 
+
 export default function WhitepaperPage() {
     return (
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -79,7 +80,7 @@ export default function WhitepaperPage() {
           
           <section>
             <h2><strong>5. The EGLIFE Ecosystem</strong></h2>
-            <p>The EGLIFE ecosystem is the flagship application suite powered by the EGLIFE Token. It is designed to bridge the gap between digital currency and real-world services, creating a seamless financial experience. The ecosystem includes:</p>
+            <p>The EGLIFE project will develop a flagship platform called <strong>EGPAY</strong>, which will be powered by the EGLIFE Token. This platform is designed to bridge the gap between digital currency and real-world services, allowing users to pay for daily utilities and other bills. The ecosystem includes:</p>
             <ol>
                 <li><strong>Utility Payments:</strong> Our platform will allow users to recharge their mobile plans and pay for essential utilities such as electricity, water, or gas bills directly with EGLIFE tokens. This transforms EGLIFE from a speculative asset into a practical tool for managing daily expenses.</li>
                 <li><strong>Airdrop & Referral Campaigns:</strong> To drive adoption and reward our community, we will conduct airdrop campaigns to distribute EGLIFE to early adopters. A multi-level referral system will also be implemented, allowing users to earn bonuses by inviting others, creating a powerful engine for organic growth.</li>
