@@ -66,20 +66,29 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>4. Token Utility & Ecosystem</strong></h2>
-            <p>EGLIFE Token will serve as the backbone of multiple applications:</p>
+            <h2><strong>4. Token Utility</strong></h2>
+            <p>The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
+            <ul>
+                <li><strong>On-Chain Staking:</strong> Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</li>
+                <li><strong>Transaction Fees:</strong> EGLIFE is used to pay for transaction fees within the EGPAY ecosystem, ensuring a consistent demand and circulation of the token.</li>
+                <li><strong>Governance (Future):</strong> We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</li>
+                <li><strong>Exclusive Access:</strong> Holding EGLIFE may grant users access to premium features, lower fees, and early access to new products and services within the ecosystem.</li>
+            </ul>
+          </section>
+          
+          <section>
+            <h2><strong>5. The EGPAY Ecosystem</strong></h2>
+            <p>The EGPAY ecosystem is the flagship application suite powered by the EGLIFE Token. It is designed to bridge the gap between digital currency and real-world services, creating a seamless financial experience. The ecosystem includes:</p>
             <ol>
-              <li><strong>Utility Payments:</strong> Recharge mobile, pay electricity, water, or gas bills using EGLIFE.</li>
-              <li><strong>Airdrop Campaigns:</strong> Distribute EGLIFE to early adopters and incentivize growth.</li>
-              <li><strong>Referral System:</strong> Encourage users to invite others and earn a 10% bonus.</li>
-              <li><strong>On-Chain Staking:</strong> Stake EGLIFE tokens and receive rewards after lock-in.</li>
-              <li><strong>Token Burn:</strong> Users can burn EGLIFE voluntarily, reducing overall supply and increasing value.</li>
-              <li><strong>Merchant Acceptance (Phase 2):</strong> EGLIFE aims to integrate with real-world POS systems.</li>
+                <li><strong>Utility Payments:</strong> Our platform will allow users to recharge their mobile plans and pay for essential utilities such as electricity, water, or gas bills directly with EGLIFE tokens. This transforms EGLIFE from a speculative asset into a practical tool for managing daily expenses.</li>
+                <li><strong>Airdrop & Referral Campaigns:</strong> To drive adoption and reward our community, we will conduct airdrop campaigns to distribute EGLIFE to early adopters. A multi-level referral system will also be implemented, allowing users to earn bonuses by inviting others, creating a powerful engine for organic growth.</li>
+                <li><strong>Token Burn Mechanism:</strong> To promote deflation and increase token value over time, the smart contract includes a function that allows any user to voluntarily "burn" their tokens. This permanently removes them from the circulating supply.</li>
+                <li><strong>Merchant Acceptance (Phase 2):</strong> A key long-term goal is to integrate EGLIFE with real-world Point-of-Sale (POS) systems, enabling users to pay for goods and services at a growing network of partner merchants.</li>
             </ol>
           </section>
 
           <section>
-            <h2><strong>5. Technology Overview</strong></h2>
+            <h2><strong>6. Technology Overview</strong></h2>
             <ul>
                 <li><strong>Blockchain:</strong> Binance Smart Chain (BNB Chain)</li>
                 <li><strong>Smart Contract Language:</strong> Solidity 0.8.20</li>
@@ -91,7 +100,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>6. Smart Contract Design</strong></h2>
+            <h2><strong>7. Smart Contract Design</strong></h2>
              <p>The EGLIFE smart contract includes the following core modules:</p>
             <ul>
               <li><strong>ERC20 Compliance:</strong> Uses OpenZeppelin standard.</li>
@@ -104,7 +113,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>7. Staking Mechanism</strong></h2>
+            <h2><strong>8. Staking Mechanism</strong></h2>
             <p>EGLIFE introduces a simple yet powerful staking system:</p>
             <ul>
                 <li><strong>Minimum Lock Period:</strong> 30 days</li>
@@ -116,7 +125,7 @@ export default function WhitepaperPage() {
           </section>
           
           <section>
-              <h2><strong>8. Airdrop & Referral System</strong></h2>
+              <h2><strong>9. Airdrop & Referral System</strong></h2>
               <h3><strong>Airdrop:</strong></h3>
               <p>Owner distributes a fixed number of EGLIFE tokens to selected addresses. This promotes awareness and adoption.</p>
               <h3><strong>Referral:</strong></h3>
@@ -128,7 +137,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>9. Tokenomics</strong></h2>
+            <h2><strong>10. Tokenomics</strong></h2>
             <h3><strong>Token Distribution:</strong></h3>
             <ul>
               <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
@@ -142,7 +151,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>10. Roadmap</strong></h2>
+            <h2><strong>11. Roadmap</strong></h2>
             <ul>
                 <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
                 <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
@@ -154,7 +163,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>11. Legal & Regulatory Compliance</strong></h2>
+            <h2><strong>12. Legal & Regulatory Compliance</strong></h2>
             <ul>
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
                 <li>It is a <strong>utility token</strong> built for use within EGLIFE and EGPAY ecosystem.</li>
@@ -164,7 +173,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>12. Team</strong></h2>
+            <h2><strong>13. Team</strong></h2>
             <ul>
                 <li><strong>Project Lead:</strong> To be announced</li>
                 <li><strong>Legal Advisor:</strong> To be announced</li>
@@ -175,7 +184,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>13. Risk Factors</strong></h2>
+              <h2><strong>14. Risk Factors</strong></h2>
               <ul>
                   <li><strong>Crypto Market Volatility:</strong> Token prices may fluctuate.</li>
                   <li><strong>Regulatory Shifts:</strong> Government laws may impact operations.</li>
@@ -186,14 +195,14 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>14. Conclusion</strong></h2>
+              <h2><strong>15. Conclusion</strong></h2>
               <p>
                 EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGPAY ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
           <section>
-              <h2><strong>15. Annexures</strong></h2>
+              <h2><strong>16. Annexures</strong></h2>
               <ul>
                   <li><strong>Smart Contract:</strong> Verified on BscScan</li>
                   <li><strong>ABI & Bytecode:</strong> Available</li>
@@ -208,3 +217,6 @@ export default function WhitepaperPage() {
   }
 
 
+
+
+    
