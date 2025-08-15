@@ -151,44 +151,44 @@ export default function WhitepaperPage() {
               <li><strong>Admin Controls (Live, no redeploy):</strong> Change APY %, change Tier ranges (min/max), add/remove tiers</li>
             </ul>
             <h4>Tiered APY & Ranges (Initial – Fully Editable by Admin)</h4>
-            <table>
+            <table className="table-fixed">
               <thead>
                 <tr>
-                  <th>Tier</th>
-                  <th>Staking Amount (EGLIFE)</th>
-                  <th>APY</th>
+                  <th className="p-4">Tier</th>
+                  <th className="p-4">Staking Amount (EGLIFE)</th>
+                  <th className="p-4">APY</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Tier 1</td>
-                  <td>10 - 100</td>
-                  <td>12%</td>
+                  <td className="p-4">Tier 1</td>
+                  <td className="p-4">10 - 100</td>
+                  <td className="p-4">12%</td>
                 </tr>
                 <tr>
-                  <td>Tier 2</td>
-                  <td>101 - 500</td>
-                  <td>18%</td>
+                  <td className="p-4">Tier 2</td>
+                  <td className="p-4">101 - 500</td>
+                  <td className="p-4">18%</td>
                 </tr>
                 <tr>
-                  <td>Tier 3</td>
-                  <td>501 - 1,000</td>
-                  <td>20%</td>
+                  <td className="p-4">Tier 3</td>
+                  <td className="p-4">501 - 1,000</td>
+                  <td className="p-4">20%</td>
                 </tr>
                 <tr>
-                  <td>Tier 4</td>
-                  <td>1,001 - 5,000</td>
-                  <td>22%</td>
+                  <td className="p-4">Tier 4</td>
+                  <td className="p-4">1,001 - 5,000</td>
+                  <td className="p-4">22%</td>
                 </tr>
                 <tr>
-                  <td>Tier 5</td>
-                  <td>5,001 - 10,000</td>
-                  <td>24%</td>
+                  <td className="p-4">Tier 5</td>
+                  <td className="p-4">5,001 - 10,000</td>
+                  <td className="p-4">24%</td>
                 </tr>
                  <tr>
-                  <td>Tier 6</td>
-                  <td>10,001 - ∞</td>
-                  <td>26%</td>
+                  <td className="p-4">Tier 6</td>
+                  <td className="p-4">10,001 - ∞</td>
+                  <td className="p-4">26%</td>
                 </tr>
               </tbody>
             </table>
@@ -319,14 +319,35 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>15. Conclusion</strong></h2>
+            <h2><strong>15. Disclaimer for Stakeholders</strong></h2>
+            <p>
+              Participation in the EGLIFE staking program involves inherent risks. All stakeholders are advised to read and understand the following before committing their assets:
+            </p>
+            <ul>
+                <li>
+                    <strong>Not Financial Advice:</strong> This whitepaper does not constitute financial advice. The EGLIFE token is a utility token, and its value can be highly volatile. Do not stake more than you can afford to lose.
+                </li>
+                <li>
+                    <strong>Variable APY:</strong> The Annual Percentage Yield (APY) for staking is not guaranteed and is subject to change at any time by the project administrators based on market conditions and ecosystem needs.
+                </li>
+                <li>
+                    <strong>Smart Contract Risk:</strong> While we have built upon audited OpenZeppelin libraries, all smart contracts carry a risk of bugs or vulnerabilities. We plan to conduct a full third-party audit, but this does not eliminate all risks.
+                </li>
+                <li>
+                    <strong>No Guarantee of Returns:</strong> Past performance is not indicative of future results. There is no guarantee that the value of EGLIFE tokens or the staking rewards will increase over time.
+                </li>
+            </ul>
+          </section>
+
+          <section>
+              <h2><strong>16. Conclusion</strong></h2>
               <p>
                 EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGLIFE ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
           <section>
-              <h2><strong>16. Annexures</strong></h2>
+              <h2><strong>17. Annexures</strong></h2>
               <ul>
                   <li><strong>Smart Contract:</strong> Verified on BscScan</li>
                   <li><strong>ABI & Bytecode:</strong> Available</li>
@@ -352,3 +373,4 @@ export default function WhitepaperPage() {
 
 
     
+
