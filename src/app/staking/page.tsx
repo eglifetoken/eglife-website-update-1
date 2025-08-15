@@ -8,10 +8,34 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
-import { useAccount, useConnect, useBalance } from 'wagmi'
+import { useAccount, useConnect, useBalance, useWriteContract } from 'wagmi'
 import { injected } from 'wagmi/connectors'
+import { useState } from "react"
+import { useToast } from "@/hooks/use-toast"
+import { parseEther } from "viem"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
+// TODO: Replace with your actual staking contract address
+const EGLIFE_STAKING_CONTRACT = '0x0000000000000000000000000000000000000000'; 
+
+// TODO: Replace with your actual staking contract ABI
+const stakingContractAbi = [
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "stake",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+];
+
 
 const stakingTiers = [
     { tier: 1, amount: "10 - 100", apy: "12%" },
@@ -29,6 +53,44 @@ export default function StakingPage() {
     address,
     token: EGLIFE_TOKEN_CONTRACT,
   })
+
+  const [stakeAmount, setStakeAmount] = useState("");
+  const { toast } = useToast();
+  const { writeContract, isPending } = useWriteContract();
+
+  const handleStake = async () => {
+    if (!stakeAmount || parseFloat(stakeAmount) < 10) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Amount",
+        description: "Please enter an amount of 10 EGLIFE or more to stake.",
+      });
+      return;
+    }
+
+    writeContract({
+        address: EGLIFE_STAKING_CONTRACT,
+        abi: stakingContractAbi,
+        functionName: 'stake',
+        args: [parseEther(stakeAmount)],
+    }, {
+        onSuccess: () => {
+            toast({
+                title: "Staking Successful!",
+                description: `You have successfully staked ${stakeAmount} EGLIFE.`,
+            });
+            setStakeAmount("");
+        },
+        onError: (error) => {
+             toast({
+                variant: "destructive",
+                title: "Staking Failed",
+                description: error.shortMessage || "An unknown error occurred.",
+            });
+        }
+    })
+  };
+
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -156,12 +218,25 @@ export default function StakingPage() {
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="stake-amount">Amount to Stake</Label>
-                        <Input id="stake-amount" type="number" placeholder="Min 10 EGLIFE" disabled={!isConnected} />
+                        <Input 
+                           id="stake-amount" 
+                           type="number" 
+                           placeholder="Min 10 EGLIFE" 
+                           disabled={!isConnected || isPending}
+                           value={stakeAmount}
+                           onChange={(e) => setStakeAmount(e.target.value)}
+                        />
                     </div>
                     <p className="text-sm text-muted-foreground">Your stake will be locked for 365 days. Rewards start accruing immediately.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" disabled={!isConnected}>Stake Now</Button>
+                    <Button 
+                        className="w-full" 
+                        disabled={!isConnected || isPending || !stakeAmount}
+                        onClick={handleStake}
+                    >
+                        {isPending ? "Staking..." : "Stake Now"}
+                    </Button>
                     </CardFooter>
                 </TabsContent>
                 <TabsContent value="unstake">
