@@ -70,6 +70,7 @@ export default function WhitepaperPage() {
             <p>The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
             <ul>
                 <li><strong>On-Chain Staking:</strong> Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</li>
+                <li><strong>Daily Life Utility:</strong> EGLIFE serves as a digital currency for everyday transactions. Through the EGPAY ecosystem, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</li>
                 <li><strong>Transaction Fees:</strong> EGLIFE is used to pay for transaction fees within the EGPAY ecosystem, ensuring a consistent demand and circulation of the token.</li>
                 <li><strong>Governance (Future):</strong> We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</li>
                 <li><strong>Exclusive Access:</strong> Holding EGLIFE may grant users access to premium features, lower fees, and early access to new products and services within the ecosystem.</li>
@@ -215,8 +216,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-
-
-
-    
