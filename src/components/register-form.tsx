@@ -22,7 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, UploadCloud } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
 
@@ -50,6 +50,11 @@ const formSchema = z.object({
   aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
   referralCode: z.string().optional(),
+  // Note: File handling in React Hook Form with server actions is complex.
+  // We're adding the fields to the schema for structure, but not validating the file itself here.
+  // The actual file upload would need to be handled via a separate process or endpoint.
+  aadharUpload: z.any().optional(),
+  panUpload: z.any().optional(),
   kycConsent: z.boolean().default(false).refine(value => value === true, {
     message: "You must agree to the identity verification.",
   }),
@@ -84,6 +89,15 @@ export function RegisterForm() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true);
+        // In a real app, you would handle the file uploads here, likely by
+        // sending them to a secure storage service and passing the URL/ID
+        // to the registerUser action.
+        console.log("Form values (excluding files):", {
+            ...values,
+            aadharUpload: undefined,
+            panUpload: undefined
+        });
+
         try {
             const result = await registerUser(values);
             if (result.success) {
@@ -107,9 +121,11 @@ export function RegisterForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Personal & Account Info */}
+        <div className="space-y-4">
+             <h3 className="text-lg font-medium font-headline border-b pb-2">Personal & Account Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <FormField
                 control={form.control}
                 name="name"
@@ -118,32 +134,6 @@ export function RegisterForm() {
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
                         <Input type="text" placeholder="As per your government ID" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Email Address</FormLabel>
-                    <FormControl>
-                        <Input type="email" placeholder="m@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                        <Input type="password" placeholder="••••••••" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -190,9 +180,39 @@ export function RegisterForm() {
                         </FormItem>
                     )}
                 />
+                <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                        <Input type="email" placeholder="m@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                        <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
             </div>
+        </div>
 
-            <div className="space-y-4">
+        {/* Address Information */}
+         <div className="space-y-4">
+             <h3 className="text-lg font-medium font-headline border-b pb-2">Address Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <FormField
                     control={form.control}
                     name="country"
@@ -230,7 +250,7 @@ export function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-2">
                     <FormField
                         control={form.control}
                         name="city"
@@ -271,25 +291,13 @@ export function RegisterForm() {
                         )}
                     />
                 </div>
-                 <FormField
-                    control={form.control}
-                    name="referralCode"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Referral Code (Optional)</FormLabel>
-                        <FormControl>
-                            <Input type="text" placeholder="Enter referral code" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
             </div>
         </div>
 
-        <div className="space-y-4 pt-4 border-t">
-            <h3 className="text-lg font-medium font-headline">Identity Verification (India)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* KYC & Referral */}
+        <div className="space-y-4">
+            <h3 className="text-lg font-medium font-headline border-b pb-2">Identity Verification (India) & Referral</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <FormField
                     control={form.control}
                     name="aadhar"
@@ -303,6 +311,19 @@ export function RegisterForm() {
                         </FormItem>
                     )}
                 />
+                 <FormField
+                    control={form.control}
+                    name="aadharUpload"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Upload Aadhar Card</FormLabel>
+                        <FormControl>
+                             <Input id="aadhar-upload" type="file" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="pan"
@@ -311,6 +332,32 @@ export function RegisterForm() {
                         <FormLabel>PAN Number</FormLabel>
                         <FormControl>
                             <Input placeholder="ABCDE1234F" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="panUpload"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Upload PAN Card</FormLabel>
+                        <FormControl>
+                            <Input id="pan-upload" type="file" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="referralCode"
+                    render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                        <FormLabel>Referral Code (Optional)</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="Enter referral code" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -349,3 +396,5 @@ export function RegisterForm() {
     </Form>
   )
 }
+
+    
