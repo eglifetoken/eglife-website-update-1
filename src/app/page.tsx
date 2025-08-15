@@ -89,7 +89,7 @@ export default function Home() {
           <div>
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-6">About the Eglife Token</h2>
             <p className="text-lg text-foreground/80 mb-4">
-              The Eglife Token (EGLIFE) is more than just a cryptocurrency. It's the key to a new ecosystem designed to reward positive actions and fund projects that align with our core values.
+              The Eglife Token (EGLIFE) is a decentralized BEP-20 cryptocurrency on the BNB Smart Chain. EGLIFE is designed to bridge the gap between cryptocurrency and real-world utility, creating a stable token economy for long-term value. Through our EGPAY ecosystem, you can use EGLIFE for utility payments, staking, and more. Join us in building the future of decentralized finance.
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">
