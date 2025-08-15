@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
@@ -49,6 +50,43 @@ const teamMembers = [
   },
 ];
 
+const roadmapData = [
+   {
+    date: "Q1 2024",
+    title: "Staking Platform Launch",
+    description: "Launch of the official EGLIFE staking platform, allowing holders to earn passive rewards.",
+    icon: GitCommit,
+    status: "completed",
+  },
+  {
+    date: "Q2 2024",
+    title: "DApp V1 Release",
+    description: "Release of the first version of our decentralized application, including wallet and basic features.",
+    icon: Target,
+    status: "in_progress",
+  },
+  {
+    date: "Q3 2024",
+    title: "Global Ambassador Program",
+    description: "Establishment of a global ambassador program to expand community reach and engagement.",
+    icon: Users,
+    status: "upcoming",
+  },
+  {
+    date: "Q4 2024",
+    title: "Wellness Platform Integration",
+    description: "Partnering with wellness apps to integrate EGLIFE as a rewards token for healthy activities.",
+    icon: Lightbulb,
+    status: "upcoming",
+  },
+];
+
+const statusStyles: { [key: string]: string } = {
+    completed: "border-primary bg-primary/10 text-primary",
+    in_progress: "border-accent bg-accent/10 text-accent",
+    upcoming: "border-muted-foreground bg-muted-foreground/10 text-muted-foreground",
+}
+
 
 export default function Home() {
     const [livePrice, setLivePrice] = useState(0.25);
@@ -75,7 +113,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <section className="w-full py-20 md:py-32 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
+          <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
             Empowering Your Financial Future
           </h1>
@@ -231,6 +269,48 @@ export default function Home() {
         </Card>
       </section>
 
+      <section className="w-full py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Roadmap</h2>
+            <p className="text-lg text-foreground/80 mt-2 max-w-3xl mx-auto">
+              A glimpse into our journey. Follow our progress as we build the future of decentralized finance.
+            </p>
+          </div>
+          <div className="relative">
+            {/* Horizontal Line */}
+            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2 hidden md:block"></div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0 relative">
+              {roadmapData.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div key={index} className="flex md:flex-col items-start md:items-center gap-6 md:gap-4 text-center">
+                    <div className={cn(
+                      "relative z-10 flex items-center justify-center p-3 rounded-full border-2",
+                      statusStyles[item.status as keyof typeof statusStyles]
+                    )}>
+                      <Icon className="w-7 h-7" />
+                    </div>
+                    <div className="text-left md:text-center">
+                      <p className="font-semibold">{item.title}</p>
+                      <p className="text-sm text-muted-foreground mb-1">{item.date}</p>
+                      <p className="text-sm text-foreground/80 hidden md:block">{item.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="text-center mt-12">
+            <Button asChild>
+              <Link href="/roadmap">
+                View Full Roadmap <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
        <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
@@ -267,3 +347,6 @@ export default function Home() {
 
     
 
+
+
+    
