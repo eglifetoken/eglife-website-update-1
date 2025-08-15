@@ -25,16 +25,16 @@ export default function WhitepaperPage() {
             </p>
             <ul>
                 <li>
-                    <strong>Absence of Reward Mechanisms:</strong> Many tokens do not offer compelling reasons for holders to maintain their positions long-term. Without staking rewards, profit-sharing, or other incentives, tokens are often dumped at the first sign of market volatility, leading to price instability.
+                    <strong>Absence of Reward Mechanisms:</strong> Many tokens do not offer compelling reasons for holders to maintain their positions long-term. Without staking rewards, profit-sharing, or other incentives, tokens are often dumped at the first sign of market volatility, leading to price instability. EGLIFE solves this by offering a straightforward, on-chain staking system that rewards users for their commitment.
                 </li>
                 <li>
-                    <strong>High Token Inflation Without Supply Control:</strong> Projects often mint excessive tokens for rewards or operational costs without a counteracting deflationary mechanism. This leads to high inflation, which devalues the token over time and erodes holder confidence and purchasing power.
+                    <strong>High Token Inflation Without Supply Control:</strong> Projects often mint excessive tokens for rewards or operational costs without a counteracting deflationary mechanism. This leads to high inflation, which devalues the token over time and erodes holder confidence and purchasing power. EGLIFE introduces a voluntary burn mechanism and a fixed total supply to manage inflation effectively.
                 </li>
                 <li>
-                    <strong>Lack of Real-World Utility:</strong> A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce, which limits their adoption to a niche audience of traders and investors, rather than the general public.
+                    <strong>Lack of Real-World Utility:</strong> A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce, which limits their adoption to a niche audience of traders and investors, rather than the general public. EGLIFE is designed from the ground up to power the EGPAY ecosystem, enabling users to pay for real services.
                 </li>
                 <li>
-                    <strong>Unfair Token Allocations:</strong> Many projects allocate a disproportionately large share of tokens to the team and private investors, with short vesting periods. This often leads to "pump and dump" schemes where insiders exit at the expense of the community and early public adopters, damaging trust and long-term viability.
+                    <strong>Unfair Token Allocations:</strong> Many projects allocate a disproportionately large share of tokens to the team and private investors, with short vesting periods. This often leads to "pump and dump" schemes where insiders exit at the expense of the community and early public adopters, damaging trust and long-term viability. EGLIFE's tokenomics are designed for fair distribution, with significant portions allocated to community growth and ecosystem development.
                 </li>
             </ul>
             <p>
@@ -46,7 +46,7 @@ export default function WhitepaperPage() {
             <h2><strong>3. Vision & Mission</strong></h2>
             <h3><strong>Vision:</strong></h3>
             <p>
-              Empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
+              Our vision is to <strong>empower every generation with easy-to-use decentralized financial solutions backed by blockchain.</strong> We envision a future where financial tools are not confined by traditional banking systems, but are accessible, transparent, and controlled by the users themselves. By simplifying the complexities of cryptocurrency, we aim to bridge the gap between digital assets and everyday life, creating an inclusive ecosystem where individuals from all walks of life can confidently participate in the digital economy. We believe that by providing practical, real-world utility, we can foster widespread adoption and build a more equitable financial landscape for generations to come.
             </p>
             <h3><strong>Mission:</strong></h3>
             <ul>
@@ -198,3 +198,4 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
