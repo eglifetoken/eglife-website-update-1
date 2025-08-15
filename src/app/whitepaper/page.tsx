@@ -10,10 +10,10 @@ export default function WhitepaperPage() {
           <section>
             <h2>1. Executive Summary</h2>
             <p>
-              EGLIFE Token is a decentralized BEP-20 cryptocurrency deployed on the BNB Smart Chain. It aims to address core limitations in financial inclusivity and real-world crypto use-cases through a fully on-chain token economy.
+              EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> deployed on the BNB Smart Chain. It aims to address core limitations in financial inclusivity and real-world crypto use-cases through a <strong>fully on-chain token economy</strong>.
             </p>
             <p>
-              By integrating taxation, staking, and utility payments, EGLIFE creates a stable environment for sustainable growth and long-term value creation. Its flagship use-case, the EGPAY ecosystem, allows users to make payments, recharge utilities, and earn staking rewards using EGLIFE tokens.
+              By integrating taxation, staking, and utility payments, EGLIFE creates a stable environment for sustainable growth and long-term value creation. Its flagship use-case, the <strong>EGPAY ecosystem</strong>, allows users to make payments, recharge utilities, and earn staking rewards using EGLIFE tokens.
             </p>
           </section>
 
@@ -94,7 +94,7 @@ export default function WhitepaperPage() {
                 <li><strong>Stake Function:</strong> Users call <code>stake(amount)</code> to lock tokens</li>
                 <li><strong>Reward:</strong> 5% of staked amount is minted as reward on withdrawal</li>
                 <li><strong>Unstake Function:</strong> After 30 days, users call <code>unstake()</code> to receive principal + reward</li>
-                <li>Staking is trustless, on-chain, and does not require manual approval.</li>
+                <li>Staking is <strong>trustless, on-chain, and does not require manual approval.</strong></li>
             </ul>
           </section>
           
@@ -105,7 +105,7 @@ export default function WhitepaperPage() {
               <h3>Referral:</h3>
               <ul>
                   <li>Every airdrop participant gets a referral code (Google Form backend)</li>
-                  <li>On valid referral, the referrer receives a 10% bonus</li>
+                  <li>On valid referral, the referrer receives a <strong>10% bonus</strong></li>
                   <li>System tracks wallet addresses and referrer mappings using Google Sheets or Firebase</li>
               </ul>
           </section>
@@ -139,10 +139,10 @@ export default function WhitepaperPage() {
           <section>
             <h2>11. Legal & Regulatory Compliance</h2>
             <ul>
-                <li>EGLIFE Token is not a security or financial instrument.</li>
-                <li>It is a utility token built for use within EGLIFE and EGPAY ecosystem.</li>
+                <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
+                <li>It is a <strong>utility token</strong> built for use within EGLIFE and EGPAY ecosystem.</li>
                 <li>Project adheres to KYC/AML guidelines where applicable.</li>
-                <li>Registered under Indian jurisdiction via EGPAY PRIVATE LIMITED.</li>
+                <li>Registered under <strong>Indian jurisdiction</strong> via EGPAY PRIVATE LIMITED.</li>
                 <li>Complies with open-source and transparency principles.</li>
             </ul>
           </section>
