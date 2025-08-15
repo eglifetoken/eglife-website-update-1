@@ -52,31 +52,31 @@ const teamMembers = [
 
 const roadmapData = [
    {
-    date: "Q1 2024",
-    title: "Staking Platform Launch",
-    description: "Launch of the official EGLIFE staking platform, allowing holders to earn passive rewards.",
-    icon: GitCommit,
+    date: "Q2 2025",
+    title: "Foundation & Pre-Launch",
+    description: "Finalization and deployment of the BEP-20 smart contract, launch of our official website, and publication of the whitepaper.",
+    icon: Rocket,
     status: "completed",
   },
   {
-    date: "Q2 2024",
-    title: "DApp V1 Release",
-    description: "Release of the first version of our decentralized application, including wallet and basic features.",
-    icon: Target,
+    date: "Q3 2025",
+    title: "Security & Market Prep",
+    description: "Commissioning a full smart contract audit and pursuing listings on major crypto data aggregators.",
+    icon: CheckCircle,
     status: "in_progress",
   },
   {
-    date: "Q3 2024",
-    title: "Global Ambassador Program",
-    description: "Establishment of a global ambassador program to expand community reach and engagement.",
+    date: "Q4 2025",
+    title: "Community Growth",
+    description: "Creation of the initial liquidity pool on PancakeSwap and launch of the on-chain staking platform.",
     icon: Users,
     status: "upcoming",
   },
   {
-    date: "Q4 2024",
-    title: "Wellness Platform Integration",
-    description: "Partnering with wellness apps to integrate EGLIFE as a rewards token for healthy activities.",
-    icon: Lightbulb,
+    date: "Q1 2026",
+    title: "EGLIFE App Beta",
+    description: "Release of the beta version of the EGLIFE App with wallet and payment functionalities.",
+    icon: Target,
     status: "upcoming",
   },
 ];
@@ -343,3 +343,4 @@ export default function Home() {
 
 
     
+
