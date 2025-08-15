@@ -155,46 +155,39 @@ export default function WhitepaperPage() {
               <thead>
                 <tr>
                   <th>Tier</th>
-                  <th>Min (EGLIFE)</th>
-                  <th>Max (EGLIFE)</th>
+                  <th>Staking Amount (EGLIFE)</th>
                   <th>APY</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Tier 1</td>
-                  <td>10</td>
-                  <td>100</td>
+                  <td>10 - 100</td>
                   <td>12%</td>
                 </tr>
                 <tr>
                   <td>Tier 2</td>
-                  <td>101</td>
-                  <td>500</td>
+                  <td>101 - 500</td>
                   <td>18%</td>
                 </tr>
                 <tr>
                   <td>Tier 3</td>
-                  <td>501</td>
-                  <td>1,000</td>
+                  <td>501 - 1,000</td>
                   <td>20%</td>
                 </tr>
                 <tr>
                   <td>Tier 4</td>
-                  <td>1,001</td>
-                  <td>5,000</td>
+                  <td>1,001 - 5,000</td>
                   <td>22%</td>
                 </tr>
                 <tr>
                   <td>Tier 5</td>
-                  <td>5,001</td>
-                  <td>10,000</td>
+                  <td>5,001 - 10,000</td>
                   <td>24%</td>
                 </tr>
                  <tr>
                   <td>Tier 6</td>
-                  <td>10,001</td>
-                  <td>∞</td>
+                  <td>10,001 - ∞</td>
                   <td>26%</td>
                 </tr>
               </tbody>
