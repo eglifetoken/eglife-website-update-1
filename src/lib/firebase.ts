@@ -6,7 +6,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   projectId: "egli-hub",
-  appId: "1:669798404623:web:c18c65f6b80de5f4e6897a",
+  appId: "1:669798404623:web:a92835d0a1a36ea6e6897a",
   storageBucket: "egli-hub.firebasestorage.app",
   apiKey: "AIzaSyAQRIpGu8u0gym566nK4Xfu2LcxSih9XDU",
   authDomain: "egli-hub.firebaseapp.com",
