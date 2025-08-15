@@ -7,7 +7,7 @@ const teamMembers = [
   {
     name: "Alex Johnson",
     role: "Founder & CEO",
-    avatar: "https://placehold.co/100x100.png",
+    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400",
     bio: "Visionary leader with a passion for sustainable technology and community empowerment.",
     social: {
       twitter: "#",
@@ -18,7 +18,7 @@ const teamMembers = [
   {
     name: "Samantha Carter",
     role: "Lead Developer",
-    avatar: "https://placehold.co/100x100.png",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400",
     bio: "Expert blockchain developer driving the technical innovation behind the Eglife ecosystem.",
     social: {
       twitter: "#",
@@ -29,7 +29,7 @@ const teamMembers = [
   {
     name: "Ben Richards",
     role: "Community Manager",
-    avatar: "https://placehold.co/100x100.png",
+    avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?q=80&w=400",
     bio: "Dedicated to building a vibrant and inclusive community around the Eglife mission.",
     social: {
       twitter: "#",
@@ -59,7 +59,7 @@ export default function AboutPage() {
           </div>
           <div className="order-1 md:order-2">
             <Image
-              src="https://placehold.co/600x400.png"
+              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=600"
               alt="Team working together"
               width={600}
               height={400}
@@ -74,7 +74,7 @@ export default function AboutPage() {
          <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
              <Image
-              src="https://placehold.co/600x400.png"
+              src="https://images.unsplash.com/photo-1534447677768-be436a0976f2?q=80&w=600"
               alt="Futuristic city with nature"
               width={600}
               height={400}

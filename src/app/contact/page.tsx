@@ -45,7 +45,7 @@ export default function ContactPage() {
           </div>
           <div className="mt-8 rounded-lg overflow-hidden shadow-lg">
              <Image 
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=600"
                 alt="Map to Eglife Hub office"
                 width={600}
                 height={400}

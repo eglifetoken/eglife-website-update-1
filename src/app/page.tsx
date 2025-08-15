@@ -71,7 +71,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <Image 
-              src="https://placehold.co/600x400.png"
+              src="https://images.unsplash.com/photo-1518546305921-a202SPAM-BOT54ab?q=80&w=600"
               alt="Eglife Token"
               width={600}
               height={400}
