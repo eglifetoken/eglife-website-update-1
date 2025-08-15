@@ -1,9 +1,15 @@
 
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState, useEffect } from "react"
 import { DollarSign, LineChart, PieChart, TrendingUp, TrendingDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+
+const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
+const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
+const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
 export default function DashboardPage() {
   const [livePrice, setLivePrice] = useState(0.25);
@@ -101,6 +107,14 @@ export default function DashboardPage() {
             allowFullScreen
           ></iframe>
         </CardContent>
+         <CardFooter className="flex flex-col sm:flex-row gap-2 pt-6">
+            <Button asChild className="w-full">
+                <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy EGLIFE</Link>
+            </Button>
+            <Button asChild variant="outline" className="w-full">
+                <Link href={PANCAKESWAP_SELL_URL} target="_blank" rel="noopener noreferrer">Sell EGLIFE</Link>
+            </Button>
+        </CardFooter>
       </Card>
     </div>
   )
