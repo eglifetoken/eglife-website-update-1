@@ -10,14 +10,46 @@ const TwitterIcon = () => (
     </svg>
 );
 
+const Logo = () => (
+    <div className="flex items-center gap-2">
+         <svg
+            width="32"
+            height="32"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-primary"
+            >
+            <defs>
+                <linearGradient id="logoGradientFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
+                </linearGradient>
+            </defs>
+            <path
+                d="M85,20 H35 C25,20 20,25 20,35 V65 C20,75 25,80 35,80 H85 V65 H40 V52.5 H75 V35 H40 V20 Z"
+                fill="url(#logoGradientFooter)"
+                strokeWidth="5"
+                stroke="hsl(var(--primary) / 0.5)"
+            />
+        </svg>
+        <span 
+            className="font-headline text-2xl font-bold"
+            style={{ textShadow: '1px 1px 3px hsl(var(--primary) / 0.3)' }}
+        >
+            EGLIFE TOKEN
+        </span>
+    </div>
+);
+
+
 export default function Footer() {
   return (
     <footer className="bg-primary/10">
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-               <span className="font-headline text-2xl font-bold">EGLIFE TOKEN</span>
+            <Link href="/" className="mb-4">
+               <Logo />
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
           </div>

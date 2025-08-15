@@ -18,6 +18,42 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const Logo = () => (
+    <div className="flex items-center gap-2">
+         <svg
+            width="32"
+            height="32"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-primary"
+            >
+            <defs>
+                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
+                </linearGradient>
+            </defs>
+            <path
+                d="M85,20 H35 C25,20 20,25 20,35 V65 C20,75 25,80 35,80 H85 V65 H40 V52.5 H75 V35 H40 V20 Z"
+                fill="url(#logoGradient)"
+                strokeWidth="5"
+                stroke="hsl(var(--primary) / 0.5)"
+                filter="url(#logoGlow)"
+            />
+            <filter id="logoGlow">
+                <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="hsl(var(--accent))" />
+            </filter>
+        </svg>
+        <span 
+            className="font-headline text-2xl font-bold"
+            style={{ textShadow: '1px 1px 3px hsl(var(--primary) / 0.3)' }}
+        >
+            EGLIFE TOKEN
+        </span>
+    </div>
+);
+
+
 export default function Header() {
   const pathname = usePathname();
 
@@ -36,8 +72,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-3 font-headline text-2xl font-bold">
-          EGLIFE TOKEN
+        <Link href="/">
+          <Logo />
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
@@ -61,8 +97,8 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-3 mb-4 font-headline text-2xl font-bold">
-                 EGLIFE TOKEN
+                <Link href="/" className="mb-4">
+                  <Logo />
                 </Link>
                 {navLinks.map(link => (
                   <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
