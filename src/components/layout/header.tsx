@@ -10,11 +10,12 @@ import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/staking", label: "Staking" },
   { href: "/roadmap", label: "Roadmap" },
-  { href: "/recommendations", label: "Recommendations" },
-  { href: "/whitepaper", label: "Whitepaper" },
+  { href: "/recommendations", label: "For You" },
   { href: "/dapp", label: "DApp" },
   { href: "/contact", label: "Contact" },
 ];
@@ -38,7 +39,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/egli-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+          <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
           <span className="text-2xl font-bold font-headline">Eglife Hub</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
@@ -64,7 +65,7 @@ export default function Header() {
             <SheetContent side="right">
               <div className="flex flex-col gap-6 p-6">
                 <Link href="/" className="flex items-center gap-2 mb-4">
-                  <Image src="/egli-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+                  <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
                   <span className="text-2xl font-bold font-headline">Eglife Hub</span>
                 </Link>
                 {navLinks.map(link => (

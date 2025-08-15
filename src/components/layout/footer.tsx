@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/egli-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+              <Image src="/eglife-logo.png" alt="Eglife Token Logo" width={32} height={32} />
               <span className="text-2xl font-bold font-headline">Eglife Hub</span>
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
@@ -27,9 +27,10 @@ export default function Footer() {
             <h3 className="text-lg font-headline font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-foreground/80 hover:text-primary">About Us</Link></li>
+              <li><Link href="/services" className="text-foreground/80 hover:text-primary">Services</Link></li>
               <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
-              <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact</Link></li>
               <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
+              <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div>
@@ -44,7 +45,7 @@ export default function Footer() {
             <h3 className="text-lg font-headline font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
               <Button asChild variant="ghost" size="icon">
-                <a href="https://x.com/eglitoken" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on X">
+                <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on X">
                   <TwitterIcon />
                 </a>
               </Button>
