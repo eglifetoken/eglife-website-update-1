@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
@@ -57,19 +58,19 @@ export default function AboutPage() {
              <ul className="space-y-4 text-lg text-foreground/80">
                 <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span>Provide real utility and day-to-day usage with EGLIFE Token.</span>
+                    <span><strong>Provide Real Utility:</strong> To move beyond speculation by enabling EGLIFE for daily transactions like utility payments and merchant services, making crypto a practical tool for everyone.</span>
                 </li>
                 <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span>Encourage mass adoption with zero-barrier participation.</span>
+                    <span><strong>Encourage Mass Adoption:</strong> To design intuitive, user-friendly applications and educational resources that remove barriers to entry, making it easy for anyone to join the digital economy.</span>
                 </li>
                 <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span>Deliver transparency and decentralization via smart contract.</span>
+                    <span><strong>Deliver Transparency:</strong> To build trust through verifiable on-chain operations and open-source smart contracts, ensuring every transaction and process is clear and auditable by our community.</span>
                 </li>
                 <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span>Enable earning, saving, and spending within the same ecosystem.</span>
+                    <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
                 </li>
              </ul>
           </div>
