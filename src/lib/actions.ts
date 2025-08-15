@@ -1,3 +1,4 @@
+
 "use server"
 
 import { z } from "zod"
@@ -39,6 +40,8 @@ const registerFormSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
+    country: z.string(),
+    kycConsent: z.boolean(),
     referralCode: z.string().optional(),
 });
 
