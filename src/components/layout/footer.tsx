@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
-import Image from "next/image";
 
 const TwitterIcon = () => (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -11,17 +10,6 @@ const TwitterIcon = () => (
     </svg>
 );
 
-const Logo = () => (
-     <Image 
-      src="/logo.png" 
-      alt="Eglife Logo" 
-      width={50} 
-      height={50} 
-      className="rounded-full" 
-    />
-);
-
-
 export default function Footer() {
   return (
     <footer className="bg-primary/10">
@@ -29,7 +17,6 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start">
             <Link href="/" className="flex items-center gap-3 mb-4">
-               <Logo />
                <span className="font-headline text-2xl font-bold">EGLIFE TOKEN</span>
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
