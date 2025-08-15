@@ -142,7 +142,7 @@ export default function WhitepaperPage() {
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
                 <li>It is a <strong>utility token</strong> built for use within EGLIFE and EGPAY ecosystem.</li>
                 <li>Project adheres to KYC/AML guidelines where applicable.</li>
-                <li>Registered under <strong>Indian jurisdiction</strong> via EGPAY PRIVATE LIMITED.</li>
+                <li>Registered under <strong>Indian jurisdiction</strong> via EGPAY TECH PRIVATE LIMITED.</li>
                 <li>Complies with open-source and transparency principles.</li>
             </ul>
           </section>
