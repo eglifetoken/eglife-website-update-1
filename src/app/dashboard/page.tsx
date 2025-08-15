@@ -1,32 +1,9 @@
+
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
 import { useState, useEffect } from "react"
 import { DollarSign, LineChart, PieChart, TrendingUp, TrendingDown } from "lucide-react"
-
-const chartData = [
-  { date: "2024-05-01", price: 0.12 },
-  { date: "2024-05-02", price: 0.13 },
-  { date: "2024-05-03", price: 0.15 },
-  { date: "2024-05-04", price: 0.14 },
-  { date: "2024-05-05", price: 0.16 },
-  { date: "2024-05-06", price: 0.18 },
-  { date: "2024-05-07", price: 0.17 },
-  { date: "2024-05-08", price: 0.19 },
-  { date: "2024-05-09", price: 0.22 },
-  { date: "2024-05-10", price: 0.21 },
-  { date: "2024-05-11", price: 0.23 },
-  { date: "2024-05-12", price: 0.25 },
-];
-
-const chartConfig = {
-  price: {
-    label: "Price (USD)",
-    color: "hsl(var(--accent))",
-  },
-}
 
 export default function DashboardPage() {
   const [livePrice, setLivePrice] = useState(0.25);
@@ -109,25 +86,20 @@ export default function DashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Price History (USD)</CardTitle>
-          <CardDescription>Historical price data for EGLIFE over the last 12 days.</CardDescription>
+          <CardTitle className="font-headline">Live Price Chart</CardTitle>
+          <CardDescription>Live EGLIFE/WBNB price chart from GeckoTerminal.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[350px] w-full">
-            <AreaChart data={chartData} margin={{ left: 12, right: 12, top: 12, bottom: 12 }}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" />
-              <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(5)} />
-              <YAxis tickLine={false} axisLine={false} tickMargin={8} domain={['dataMin - 0.05', 'dataMax + 0.05']} tickFormatter={(value) => `$${Number(value).toFixed(2)}`} />
-              <Tooltip cursor={{ fill: 'hsl(var(--background))', opacity: 0.5 }} content={<ChartTooltipContent indicator="line" labelFormatter={(label, payload) => payload?.[0]?.payload.date} />} />
-              <defs>
-                  <linearGradient id="fillPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0.1}/>
-                  </linearGradient>
-              </defs>
-              <Area dataKey="price" type="monotone" fill="url(#fillPrice)" stroke="hsl(var(--accent))" stackId="a" />
-            </AreaChart>
-          </ChartContainer>
+        <CardContent className="h-[500px] p-0">
+            <iframe
+                height="100%"
+                width="100%"
+                id="geckoterminal-embed"
+                title="GeckoTerminal Embed"
+                src="https://www.geckoterminal.com/bsc/pools/0x5b66393526f7c9e04863e46114134b823e9a460a?embed=1&info=0&swaps=0"
+                frameBorder="0"
+                allow="clipboard-write"
+                allowFullScreen
+            ></iframe>
         </CardContent>
       </Card>
     </div>
