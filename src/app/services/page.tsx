@@ -4,7 +4,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,74 +67,78 @@ export default function ServicesPage() {
       
       <Card className="mb-12">
         <CardHeader>
-            <CardTitle className="font-headline text-2xl">UPI Payment Services</CardTitle>
+            <CardTitle className="font-headline text-2xl">Transfer Money</CardTitle>
             <CardDescription>Send money, scan QR codes, and manage your finances with ease.</CardDescription>
         </CardHeader>
         <CardContent>
-             <Tabs defaultValue="send" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="send">Send Money</TabsTrigger>
-                    <TabsTrigger value="scan">Scan QR</TabsTrigger>
-                    <TabsTrigger value="balance">Check Balance</TabsTrigger>
+             <Tabs defaultValue="mobile" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="mobile"><User className="mr-2 h-4 w-4" />To Mobile</TabsTrigger>
+                    <TabsTrigger value="bank"><BankIcon className="mr-2 h-4 w-4" />To Bank</TabsTrigger>
+                    <TabsTrigger value="scan"><QrCode className="mr-2 h-4 w-4" />Scan QR</TabsTrigger>
+                    <TabsTrigger value="balance"><Wallet className="mr-2 h-4 w-4" />Check Balance</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="send" className="mt-6">
-                     <Tabs defaultValue="mobile" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="mobile">To Mobile Number</TabsTrigger>
-                            <TabsTrigger value="bank">To Bank Account</TabsTrigger>
-                        </TabsList>
-                         <TabsContent value="mobile" className="pt-4">
-                             <Card>
-                                <CardContent className="pt-6 space-y-4">
-                                     <div className="space-y-2">
-                                        <Label htmlFor="mobile-number">Enter Mobile Number</Label>
-                                        <Input id="mobile-number" type="tel" placeholder="10-digit mobile number" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="mobile-amount">Enter Amount</Label>
-                                        <Input id="mobile-amount" type="number" placeholder="₹0.00" />
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button className="w-full">Proceed to Pay</Button>
-                                </CardFooter>
-                             </Card>
-                        </TabsContent>
-                         <TabsContent value="bank" className="pt-4">
-                            <Card>
-                                <CardContent className="pt-6 space-y-4">
-                                     <div className="space-y-2">
-                                        <Label htmlFor="account-number">Enter Account Number</Label>
-                                        <Input id="account-number" type="text" placeholder="Recipient's account number" />
-                                    </div>
-                                      <div className="space-y-2">
-                                        <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
-                                        <Input id="ifsc-code" type="text" placeholder="Bank's IFSC code" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="bank-amount">Enter Amount</Label>
-                                        <Input id="bank-amount" type="number" placeholder="₹0.00" />
-                                    </div>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button className="w-full">Proceed to Pay</Button>
-                                </CardFooter>
-                             </Card>
-                        </TabsContent>
-                     </Tabs>
-                </TabsContent>
-
-                <TabsContent value="scan">
-                    <Card className="text-center flex flex-col items-center justify-center p-8 min-h-[250px]">
-                        <QrCode className="w-24 h-24 text-muted-foreground mb-4"/>
-                        <p className="text-muted-foreground">Position the QR code within the frame</p>
-                        <Button variant="outline" className="mt-4">Open Camera</Button>
+                <TabsContent value="mobile" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Send to Mobile Number</CardTitle>
+                            <CardDescription>Enter the recipient's mobile number and the amount to send.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                <Label htmlFor="mobile-number">Enter Mobile Number</Label>
+                                <Input id="mobile-number" type="tel" placeholder="10-digit mobile number" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="mobile-amount">Enter Amount</Label>
+                                <Input id="mobile-amount" type="number" placeholder="₹0.00" />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button className="w-full">Proceed to Pay</Button>
+                        </CardFooter>
                     </Card>
                 </TabsContent>
 
-                <TabsContent value="balance">
-                    <Card className="text-center p-8 min-h-[250px] flex flex-col justify-center">
+                 <TabsContent value="bank" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Send to Bank Account</CardTitle>
+                            <CardDescription>Enter the recipient's bank details and the amount to send.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                <Label htmlFor="account-number">Enter Account Number</Label>
+                                <Input id="account-number" type="text" placeholder="Recipient's account number" />
+                            </div>
+                                <div className="space-y-2">
+                                <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
+                                <Input id="ifsc-code" type="text" placeholder="Bank's IFSC code" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="bank-amount">Enter Amount</Label>
+                                <Input id="bank-amount" type="number" placeholder="₹0.00" />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button className="w-full">Proceed to Pay</Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
+
+
+                <TabsContent value="scan" className="mt-6">
+                    <Card className="text-center flex flex-col items-center justify-center p-8 min-h-[300px]">
+                        <QrCode className="w-24 h-24 text-muted-foreground mb-4"/>
+                        <h3 className="text-xl font-semibold">Scan any QR code</h3>
+                        <p className="text-muted-foreground mt-2">Position the QR code within the frame to pay.</p>
+                        <Button variant="outline" className="mt-6">Open Camera</Button>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="balance" className="mt-6">
+                    <Card className="text-center p-8 min-h-[300px] flex flex-col justify-center">
                          <Wallet className="w-16 h-16 text-primary mx-auto mb-4"/>
                         <h3 className="text-xl font-semibold mb-2">Check Your EGLIFE Balance</h3>
                         <p className="text-muted-foreground mb-6">Click the button below to see your current balance.</p>
