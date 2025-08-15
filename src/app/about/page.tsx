@@ -1,0 +1,125 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
+import { Linkedin, Twitter } from "lucide-react";
+
+const teamMembers = [
+  {
+    name: "Alex Johnson",
+    role: "Founder & CEO",
+    avatar: "https://placehold.co/100x100.png",
+    bio: "Visionary leader with a passion for sustainable technology and community empowerment.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+    aiHint: "man portrait"
+  },
+  {
+    name: "Samantha Carter",
+    role: "Lead Developer",
+    avatar: "https://placehold.co/100x100.png",
+    bio: "Expert blockchain developer driving the technical innovation behind the Eglife ecosystem.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+    aiHint: "woman portrait"
+  },
+  {
+    name: "Ben Richards",
+    role: "Community Manager",
+    avatar: "https://placehold.co/100x100.png",
+    bio: "Dedicated to building a vibrant and inclusive community around the Eglife mission.",
+    social: {
+      twitter: "#",
+      linkedin: "#",
+    },
+    aiHint: "man smiling"
+  },
+];
+
+export default function AboutPage() {
+  return (
+    <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
+      <div className="text-center mb-16">
+        <h1 className="text-4xl md:text-5xl font-headline font-bold">About Eglife Hub</h1>
+        <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
+          We are on a mission to create a sustainable, wellness-focused future through the power of community and decentralized technology.
+        </p>
+      </div>
+
+      <section className="mb-24">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="order-2 md:order-1">
+            <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
+            <p className="text-foreground/80 text-lg mb-4">
+              To build a global ecosystem that empowers individuals to live healthier, more sustainable lives. We believe in harnessing blockchain technology to fund and support projects that create a positive impact on the planet and its people.
+            </p>
+          </div>
+          <div className="order-1 md:order-2">
+            <Image
+              src="https://placehold.co/600x400.png"
+              alt="Team working together"
+              width={600}
+              height={400}
+              className="rounded-lg shadow-xl"
+              data-ai-hint="diverse team"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="mb-24">
+         <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+             <Image
+              src="https://placehold.co/600x400.png"
+              alt="Futuristic city with nature"
+              width={600}
+              height={400}
+              className="rounded-lg shadow-xl"
+              data-ai-hint="futuristic city"
+            />
+          </div>
+          <div>
+            <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
+            <p className="text-foreground/80 text-lg mb-4">
+             We envision a world where technology and nature coexist in harmony. A future where our decentralized platform provides the foundation for community-driven initiatives in wellness, green energy, and sustainable agriculture, creating a regenerative economy for all.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-headline font-bold">Meet the Team</h2>
+          <p className="text-lg text-foreground/80 mt-2">The passionate individuals driving the Eglife vision forward.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {teamMembers.map((member) => (
+            <Card key={member.name} className="text-center p-6">
+                <Avatar className="w-24 h-24 mx-auto mb-4">
+                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.aiHint} />
+                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <h3 className="text-xl font-headline font-semibold">{member.name}</h3>
+                <p className="text-primary font-medium mb-2">{member.role}</p>
+                <CardContent>
+                    <p className="text-foreground/80 mb-4">{member.bio}</p>
+                    <div className="flex justify-center gap-4">
+                    <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                        <Twitter className="w-5 h-5" />
+                    </a>
+                    <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                        <Linkedin className="w-5 h-5" />
+                    </a>
+                    </div>
+                </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
