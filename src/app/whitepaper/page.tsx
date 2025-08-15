@@ -313,11 +313,17 @@ export default function WhitepaperPage() {
   
           <section>
             <h2><strong>12. Legal & Regulatory Compliance</strong></h2>
+            <p>The EGLIFE project is committed to operating in a manner that is compliant with the evolving legal and regulatory landscape for digital assets. Our approach is designed to foster trust and ensure long-term sustainability. All prospective participants should be aware of the following:</p>
             <ul>
-                <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
-                <li>It is a <strong>utility token</strong> built for use within the EGLIFE ecosystem.</li>
-                <li>Project adheres to KYC/AML guidelines where applicable.</li>
-                <li>Complies with open-source and transparency principles.</li>
+                <li>
+                    <strong>Utility Token Classification:</strong> The EGLIFE Token is designed and intended to be a utility token for use within the EGLIFE ecosystem. Its primary purpose is to grant access to the platform's services, such as utility payments and staking. It is not intended to be a security, financial instrument, or speculative investment. Ownership of EGLIFE tokens does not confer any equity, profit-sharing, or voting rights equivalent to shares in a traditional company.
+                </li>
+                <li>
+                    <strong>Adherence to Applicable Laws:</strong> While the decentralized nature of cryptocurrency presents a unique regulatory environment, we are committed to adhering to all applicable laws and regulations in the jurisdictions where we operate. This includes, but is not limited to, compliance with Know Your Customer (KYC) and Anti-Money Laundering (AML) requirements as they may apply to specific services offered through the EGPAY platform, particularly where fiat-to-crypto gateways or partnerships with regulated entities are involved.
+                </li>
+                <li>
+                    <strong>Commitment to Transparency:</strong> We operate on a principle of radical transparency to build and maintain community trust. Our smart contracts are open-source and verified on BscScan, allowing for public audit and verification. This commitment ensures that our stated tokenomics, contract functions, and on-chain activities are clear and auditable by anyone at any time.
+                </li>
             </ul>
           </section>
 
@@ -398,6 +404,7 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
 
