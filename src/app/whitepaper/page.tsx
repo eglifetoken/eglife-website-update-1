@@ -12,10 +12,13 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>1. Executive Summary</strong></h2>
             <p>
-              EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> deployed on the BNB Smart Chain. It aims to address core limitations in financial inclusivity and real-world crypto use-cases through a <strong>fully on-chain token economy</strong>.
+              The EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> thoughtfully deployed on the robust and efficient BNB Smart Chain. It has been conceived to directly address the core limitations that hinder the widespread adoption of digital currencies: a lack of financial inclusivity for underserved populations and a scarcity of genuine, real-world crypto use-cases. By establishing a <strong>fully on-chain token economy</strong>, EGLIFE is building a transparent and self-sustaining financial ecosystem that operates beyond the confines of traditional banking.
             </p>
             <p>
-              By integrating taxation, staking, and utility payments, EGLIFE creates a stable environment for sustainable growth and long-term value creation. Its flagship use-case, the <strong>EGLIFE ecosystem</strong>, allows users to make payments, recharge utilities, and earn staking rewards using EGLIFE tokens.
+              Our strategic approach integrates several key pillars to foster a stable environment primed for sustainable growth and long-term value creation. Through a fair and transparent <strong>taxation</strong> model, we ensure the project's continuous development and funding for community-driven initiatives. Our on-chain <strong>staking</strong> mechanism provides tangible rewards to our long-term holders, incentivizing community loyalty and reducing market volatility.
+            </p>
+            <p>
+             Most critically, EGLIFE's flagship use-case is the <strong>EGLIFE ecosystem</strong>, a user-centric platform that allows individuals to seamlessly make utility payments, recharge services, and transact in their daily lives using EGLIFE tokens. This focus on practical, real-world application is what sets EGLIFE apart, transforming it from a speculative asset into an essential tool for modern finance.
             </p>
           </section>
 
@@ -219,3 +222,4 @@ export default function WhitepaperPage() {
   }
 
     
+
