@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { Linkedin, Twitter } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 const teamMembers = [
   {
@@ -53,11 +54,23 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
-             <ul className="space-y-3 text-lg text-foreground/80">
-                <li>- Provide real utility and day-to-day usage with EGLIFE Token.</li>
-                <li>- Encourage mass adoption with zero-barrier participation.</li>
-                <li>- Deliver transparency and decentralization via smart contract.</li>
-                <li>- Enable earning, saving, and spending within the same ecosystem.</li>
+             <ul className="space-y-4 text-lg text-foreground/80">
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span>Provide real utility and day-to-day usage with EGLIFE Token.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span>Encourage mass adoption with zero-barrier participation.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span>Deliver transparency and decentralization via smart contract.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span>Enable earning, saving, and spending within the same ecosystem.</span>
+                </li>
              </ul>
           </div>
           <div className="order-1 md:order-2">
@@ -87,7 +100,7 @@ export default function AboutPage() {
           </div>
           <div>
             <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
-            <p className="text-foreground/80 text-lg mb-4">
+            <p className="text-foreground/80 text-xl mb-4 leading-relaxed">
              To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
             </p>
           </div>
