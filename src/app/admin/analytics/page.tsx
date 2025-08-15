@@ -25,12 +25,31 @@ const revenueSourceData = [
     { source: "Unstake Penalty", revenue: 4050, fill: "hsl(var(--chart-3))" },
 ]
 
-const chartConfig = {
+const stakingChartConfig = {
     users: {
       label: "Users",
+      color: "hsl(var(--chart-1))",
     },
+};
+
+const tokenStatusChartConfig = {
+    value: {
+        label: "Tokens"
+    },
+    Staked: {
+        label: "Staked",
+        color: "hsl(var(--chart-1))"
+    },
+    "In Wallets": {
+        label: "In Wallets",
+        color: "hsl(var(--chart-2))"
+    }
+}
+
+const revenueChartConfig = {
     revenue: {
         label: "Revenue",
+        color: "hsl(var(--chart-1))"
     }
 };
 
@@ -49,8 +68,8 @@ export default function AdminAnalyticsPage() {
                         <CardDescription>Number of users in each staking tier.</CardDescription>
                     </CardHeader>
                     <CardContent className="h-[350px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={stakingDistributionData} layout="vertical" margin={{ left: 10, right: 10 }}>
+                        <ChartContainer config={stakingChartConfig} className="w-full h-full">
+                            <BarChart data={stakingDistributionData} layout="vertical" margin={{ left: 10, right: 10 }} accessibilityLayer>
                                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                                 <XAxis type="number" hide />
                                 <YAxis 
@@ -65,9 +84,13 @@ export default function AdminAnalyticsPage() {
                                     cursor={false}
                                     content={<ChartTooltipContent indicator="dot" />}
                                 />
-                                <Bar dataKey="users" radius={[0, 4, 4, 0]} />
+                                <Bar dataKey="users" radius={[0, 4, 4, 0]}>
+                                     {stakingDistributionData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                                    ))}
+                                </Bar>
                             </BarChart>
-                        </ResponsiveContainer>
+                        </ChartContainer>
                     </CardContent>
                 </Card>
                  <Card>
@@ -76,8 +99,8 @@ export default function AdminAnalyticsPage() {
                         <CardDescription>A comparison of staked tokens versus tokens held in user wallets.</CardDescription>
                     </CardHeader>
                     <CardContent className="h-[350px] flex items-center justify-center">
-                         <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
+                         <ChartContainer config={tokenStatusChartConfig} className="w-full h-full">
+                            <PieChart accessibilityLayer>
                                 <ChartTooltip 
                                     cursor={false}
                                     content={<ChartTooltipContent indicator="dot" />}
@@ -105,9 +128,9 @@ export default function AdminAnalyticsPage() {
                                         <Cell key={`cell-${index}`} fill={entry.fill} />
                                     ))}
                                 </Pie>
-                               <ChartLegend content={<ChartLegendContent />} />
+                               <ChartLegend content={<ChartLegendContent nameKey="name" />} />
                             </PieChart>
-                        </ResponsiveContainer>
+                        </ChartContainer>
                     </CardContent>
                 </Card>
                  <Card className="lg:col-span-2">
@@ -116,8 +139,8 @@ export default function AdminAnalyticsPage() {
                         <CardDescription>Breakdown of platform revenue streams for the current month.</CardDescription>
                     </CardHeader>
                     <CardContent className="h-[350px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                           <BarChart data={revenueSourceData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
+                        <ChartContainer config={revenueChartConfig} className="w-full h-full">
+                           <BarChart data={revenueSourceData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }} accessibilityLayer>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                 <XAxis dataKey="source" tickLine={false} axisLine={false} />
                                 <YAxis tickLine={false} axisLine={false} tickFormatter={(value) => `$${value/1000}k`} />
@@ -125,9 +148,13 @@ export default function AdminAnalyticsPage() {
                                     cursor={false}
                                     content={<ChartTooltipContent indicator="dot" formatter={(value) => `$${Number(value).toLocaleString()}`} />}
                                 />
-                                <Bar dataKey="revenue" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
+                                     {revenueSourceData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                                    ))}
+                                </Bar>
                            </BarChart>
-                        </ResponsiveContainer>
+                        </ChartContainer>
                     </CardContent>
                 </Card>
             </div>
