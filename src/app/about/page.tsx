@@ -46,7 +46,7 @@ export default function AboutPage() {
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-headline font-bold">About Eglife Hub</h1>
         <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-          We are on a mission to create a sustainable, wellness-focused future through the power of community and decentralized technology.
+          EGLIFE Token is a decentralized BEP-20 cryptocurrency deployed on the BNB Smart Chain, designed to build a real-world utility-based token economy.
         </p>
       </div>
 
