@@ -301,13 +301,6 @@ export default function Home() {
               })}
             </div>
           </div>
-          <div className="text-center mt-12">
-            <Button asChild>
-              <Link href="/roadmap">
-                View Full Roadmap <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
