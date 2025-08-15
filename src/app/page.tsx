@@ -66,7 +66,7 @@ export default function Home() {
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-xl text-foreground/80 leading-relaxed">
-                  To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
+                  Our mission is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
                 </p>
               </CardContent>
             </Card>
