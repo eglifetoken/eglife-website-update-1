@@ -37,7 +37,6 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-headline font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-foreground/80 hover:text-primary">About Us</Link></li>
               <li><Link href="/services" className="text-foreground/80 hover:text-primary">Services</Link></li>
               <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
               <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
@@ -48,7 +47,6 @@ export default function Footer() {
             <h3 className="text-lg font-headline font-semibold mb-4">Ecosystem</h3>
             <ul className="space-y-2">
               <li><Link href="/staking" className="text-foreground/80 hover:text-primary">Staking</Link></li>
-              <li><Link href="/dashboard" className="text-foreground/80 hover:text-primary">Dashboard</Link></li>
               <li><Link href="/dapp" className="text-foreground/80 hover:text-primary">DApp</Link></li>
             </ul>
           </div>
@@ -56,12 +54,12 @@ export default function Footer() {
             <h3 className="text-lg font-headline font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
               <Button asChild variant="ghost" size="icon">
-                <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on X">
+                <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on X">
                   <TwitterIcon />
                 </a>
               </Button>
               <Button asChild variant="ghost" size="icon">
-                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on Telegram">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on Telegram">
                   <Send className="h-5 w-5" />
                 </a>
               </Button>
