@@ -138,63 +138,71 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>8. Staking Plan</strong></h2>
-            <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY)</strong></h3>
-            <h4>Rules</h4>
+            <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY & Tier Ranges)</strong></h3>
+            <h4>Core Rules</h4>
             <ul>
               <li><strong>Minimum Stake:</strong> 10 EGLIFE</li>
               <li><strong>Maximum Stake:</strong> Unlimited</li>
-              <li><strong>Lock Period:</strong> 365 Days (principal locked, rewards claimable anytime)</li>
+              <li><strong>Lock Period:</strong> 365 Days (principal locked; rewards claimable anytime)</li>
               <li><strong>Minimum Reward Withdrawal:</strong> 1 EGLIFE</li>
               <li><strong>Early Unstake Penalty:</strong> 5% of staked amount + loss of unclaimed rewards</li>
               <li><strong>Reward Claim:</strong> Anytime after reaching 1 EGLIFE</li>
               <li><strong>Payout Token:</strong> EGLIFE (BEP-20)</li>
-              <li><strong>APY Control:</strong> Admin can change APY % for each tier anytime without redeploying contract</li>
+              <li><strong>Admin Controls (Live, no redeploy):</strong> Change APY %, change Tier ranges (min/max), add/remove tiers</li>
             </ul>
-            <h4>Tiered APY Rates (Initial – Editable by Admin)</h4>
+            <h4>Tiered APY & Ranges (Initial – Fully Editable by Admin)</h4>
             <table>
               <thead>
                 <tr>
                   <th>Tier</th>
-                  <th>Staking Amount (EGLIFE)</th>
+                  <th>Min (EGLIFE)</th>
+                  <th>Max (EGLIFE)</th>
                   <th>APY</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Tier 1</td>
-                  <td>10 – 100</td>
+                  <td>10</td>
+                  <td>100</td>
                   <td>12%</td>
                 </tr>
                 <tr>
                   <td>Tier 2</td>
-                  <td>101 – 500</td>
+                  <td>101</td>
+                  <td>500</td>
                   <td>18%</td>
                 </tr>
                 <tr>
                   <td>Tier 3</td>
-                  <td>501 – 1,000</td>
+                  <td>501</td>
+                  <td>1,000</td>
                   <td>20%</td>
                 </tr>
                 <tr>
                   <td>Tier 4</td>
-                  <td>1,001 – 5,000</td>
+                  <td>1,001</td>
+                  <td>5,000</td>
                   <td>22%</td>
                 </tr>
                 <tr>
                   <td>Tier 5</td>
-                  <td>5,001 – 10,000</td>
+                  <td>5,001</td>
+                  <td>10,000</td>
                   <td>24%</td>
                 </tr>
                  <tr>
                   <td>Tier 6</td>
-                  <td>10,001+</td>
+                  <td>10,001</td>
+                  <td>∞</td>
                   <td>26%</td>
                 </tr>
               </tbody>
             </table>
             <h4>Reward Formula</h4>
             <p><code>Daily Reward = (Staked Amount × APY %) ÷ 365</code></p>
-            <h4>Example Daily Earnings (Current APY)</h4>
+            <p>Rewards are calculated per second; user can claim anytime once earned ≥ 1 EGLIFE.</p>
+            <h4>Example Daily Earnings (at current settings)</h4>
             <ul>
               <li>50 EGLIFE @ 12% → 0.0164 EGLIFE/day</li>
               <li>200 EGLIFE @ 18% → 0.0986 EGLIFE/day</li>
@@ -203,6 +211,22 @@ export default function WhitepaperPage() {
               <li>7,000 EGLIFE @ 24% → 4.6027 EGLIFE/day</li>
               <li>15,000 EGLIFE @ 26% → 10.6849 EGLIFE/day</li>
             </ul>
+            <h4>Admin Controls & Safeguards (Suggested Contract/Panel Options)</h4>
+              <ul>
+                  <li><strong>Edit APY% per tier:</strong> setTierAPY(tierIndex, apyBpsOrRay)</li>
+                  <li><strong>Edit Tier ranges:</strong> setTierRange(tierIndex, minAmount, maxAmount)</li>
+                  <li><strong>Add/Remove tiers:</strong> addTier(min,max,apy), removeTier(tierIndex)</li>
+                  <li><strong>Validation:</strong> Ranges must not overlap; ensure continuity (end of Tier N = start of Tier N+1 − 1).</li>
+                  <li><strong>Grandfathering toggle:</strong> setApplyAPYToActiveStakes(bool). If OFF, existing stakes keep original APY; new APY applies only to new stakes.</li>
+                  <li><strong>Effective-from timestamp (optional):</strong> schedule APY/range change to take effect at a future block time to give users notice.</li>
+                  <li><strong>Emergency pause (optional):</strong> pauseOnlyStaking() without blocking claims.</li>
+              </ul>
+            <h4>Edge-Case Policy (Recommended)</h4>
+              <ul>
+                  <li>If a tier range is edited such that a user’s active stake no longer fits that tier, the user remains on the original APY (grandfathered) until unstake.</li>
+                  <li>For new stakes, tier selection is determined at stake time using the then-current ranges.</li>
+                  <li>Max tier may use ∞ (no upper limit). Store as type(uint256).max in contract.</li>
+              </ul>
           </section>
 
           <section>
@@ -211,9 +235,9 @@ export default function WhitepaperPage() {
             <h4>Referral Rules</h4>
             <ul>
               <li><strong>Eligibility:</strong> Referrer must have an active stake of at least 10 EGLIFE</li>
-              <li><strong>Bonus Payout:</strong> Paid instantly in EGLIFE (BEP-20)</li>
+              <li><strong>Bonus Payout:</strong> Paid instantly in EGLIFE (on successful stake by referred user)</li>
               <li><strong>Bonus Source:</strong> From staking deposits of referred users</li>
-              <li><strong>Admin Control:</strong> Can adjust referral % for each level anytime</li>
+              <li><strong>Admin Controls:</strong> Adjust referral % per level; enable/disable royalty beyond L10</li>
             </ul>
             <h4>Referral Bonus Structure (Initial – Editable by Admin)</h4>
             <table>
@@ -234,12 +258,13 @@ export default function WhitepaperPage() {
                 <tr><td>Level 8</td><td>0.5%</td></tr>
                 <tr><td>Level 9</td><td>0.25%</td></tr>
                 <tr><td>Level 10</td><td>0.25%</td></tr>
-                <tr><td>Beyond 10 Levels</td><td>0.1% Royalty (unlimited depth)</td></tr>
+                <tr><td>Beyond 10 Levels (Royalty)</td><td>0.1% (unlimited depth)</td></tr>
               </tbody>
             </table>
             <h4>Example Referral Bonus (Level 1)</h4>
             <p>If your referral stakes 1,000 EGLIFE:<br/>
-            <code>Referral Bonus = 1,000 × 10% = 100 EGLIFE (Paid instantly to your wallet)</code></p>
+            <code>Referral Bonus = 1,000 × 10% = 100 EGLIFE (paid instantly).</code></p>
+            <p><i>Note: This document reflects initial defaults. Admin may adjust APY %, tier ranges, and referral % at any time via the admin panel/contract functions described above.</i></p>
           </section>
           
           <section>
@@ -331,3 +356,6 @@ export default function WhitepaperPage() {
 
 
 
+
+
+    
