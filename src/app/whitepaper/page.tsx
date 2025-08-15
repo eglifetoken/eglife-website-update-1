@@ -233,25 +233,25 @@ export default function WhitepaperPage() {
               <li><strong>Admin Controls:</strong> Adjust referral % per level; enable/disable royalty beyond L10</li>
             </ul>
             <h4>Referral Bonus Structure (Initial – Editable by Admin)</h4>
-            <table>
+            <table className="table-fixed">
               <thead>
                 <tr>
-                  <th>Level</th>
-                  <th>Bonus % of Staked Amount</th>
+                  <th className="p-4">Level</th>
+                  <th className="p-4">Bonus % of Staked Amount</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Level 1</td><td>10%</td></tr>
-                <tr><td>Level 2</td><td>5%</td></tr>
-                <tr><td>Level 3</td><td>3%</td></tr>
-                <tr><td>Level 4</td><td>2%</td></tr>
-                <tr><td>Level 5</td><td>1%</td></tr>
-                <tr><td>Level 6</td><td>1%</td></tr>
-                <tr><td>Level 7</td><td>0.5%</td></tr>
-                <tr><td>Level 8</td><td>0.5%</td></tr>
-                <tr><td>Level 9</td><td>0.25%</td></tr>
-                <tr><td>Level 10</td><td>0.25%</td></tr>
-                <tr><td>Beyond 10 Levels (Royalty)</td><td>0.1% (unlimited depth)</td></tr>
+                <tr><td className="p-4">Level 1</td><td className="p-4">10%</td></tr>
+                <tr><td className="p-4">Level 2</td><td className="p-4">5%</td></tr>
+                <tr><td className="p-4">Level 3</td><td className="p-4">3%</td></tr>
+                <tr><td className="p-4">Level 4</td><td className="p-4">2%</td></tr>
+                <tr><td className="p-4">Level 5</td><td className="p-4">1%</td></tr>
+                <tr><td className="p-4">Level 6</td><td className="p-4">1%</td></tr>
+                <tr><td className="p-4">Level 7</td><td className="p-4">0.5%</td></tr>
+                <tr><td className="p-4">Level 8</td><td className="p-4">0.5%</td></tr>
+                <tr><td className="p-4">Level 9</td><td className="p-4">0.25%</td></tr>
+                <tr><td className="p-4">Level 10</td><td className="p-4">0.25%</td></tr>
+                <tr><td className="p-4">Beyond 10 Levels (Royalty)</td><td className="p-4">0.1% (unlimited depth)</td></tr>
               </tbody>
             </table>
             <h4>Example Referral Bonus (Level 1)</h4>
@@ -417,25 +417,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-    
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
