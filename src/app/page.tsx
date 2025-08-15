@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Leaf, Users, Target } from "lucide-react";
+import { Leaf, Users, Target, Eye, CheckCircle } from "lucide-react";
 
 export default function Home() {
   return (
@@ -23,6 +23,43 @@ export default function Home() {
             <Button asChild size="lg" variant="outline">
               <Link href="/contact">Get in Touch</Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-4">
+              <div className="inline-block bg-primary/10 text-primary p-3 rounded-full mb-4">
+                <Eye className="w-8 h-8" />
+              </div>
+              <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
+              <p className="text-xl text-foreground/80 leading-relaxed">
+                To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
+              </p>
+            </div>
+            <div className="space-y-6">
+               <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
+                <ul className="space-y-4 text-lg text-foreground/80">
+                    <li className="flex items-start">
+                        <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                        <span>Provide real utility and day-to-day usage with EGLIFE Token.</span>
+                    </li>
+                    <li className="flex items-start">
+                        <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                        <span>Encourage mass adoption with zero-barrier participation.</span>
+                    </li>
+                    <li className="flex items-start">
+                        <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                        <span>Deliver transparency and decentralization via smart contract.</span>
+                    </li>
+                    <li className="flex items-start">
+                        <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                        <span>Enable earning, saving, and spending within the same ecosystem.</span>
+                    </li>
+                </ul>
+            </div>
           </div>
         </div>
       </section>
