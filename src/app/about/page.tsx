@@ -53,9 +53,12 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
-            <p className="text-foreground/80 text-lg mb-4">
-              To build a global ecosystem that empowers individuals to live healthier, more sustainable lives. We believe in harnessing blockchain technology to fund and support projects that create a positive impact on the planet and its people.
-            </p>
+             <ul className="space-y-3 text-lg text-foreground/80">
+                <li>- Provide real utility and day-to-day usage with EGLIFE Token.</li>
+                <li>- Encourage mass adoption with zero-barrier participation.</li>
+                <li>- Deliver transparency and decentralization via smart contract.</li>
+                <li>- Enable earning, saving, and spending within the same ecosystem.</li>
+             </ul>
           </div>
           <div className="order-1 md:order-2">
             <Image
@@ -85,7 +88,7 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
             <p className="text-foreground/80 text-lg mb-4">
-             We envision a world where technology and nature coexist in harmony. A future where our decentralized platform provides the foundation for community-driven initiatives in wellness, green energy, and sustainable agriculture, creating a regenerative economy for all.
+             To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
             </p>
           </div>
         </div>
