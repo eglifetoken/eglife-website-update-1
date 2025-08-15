@@ -107,10 +107,16 @@ export function RegisterForm() {
             if (result.success) {
                 toast({
                     title: "Registration Submitted!",
-                    description: "Thank you. Your information has been received for verification.",
+                    description: result.message,
                 });
                 form.reset();
                 // Here you would typically redirect the user e.g. router.push('/pending-verification')
+            } else {
+                 toast({
+                    variant: "destructive",
+                    title: "Registration Failed",
+                    description: result.message,
+                })
             }
         } catch (error) {
             toast({
@@ -426,5 +432,3 @@ export function RegisterForm() {
     </Form>
   )
 }
-
-    

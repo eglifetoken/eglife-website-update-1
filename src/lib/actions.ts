@@ -3,6 +3,9 @@
 
 import { z } from "zod"
 import { randomUUID } from "crypto"
+import { auth, db } from "./firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 // Contact Form Action
 const contactFormSchema = z.object({
@@ -30,9 +33,13 @@ const loginFormSchema = z.object({
 
 export async function loginUser(values: z.infer<typeof loginFormSchema>) {
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("Login attempt:", values.email);
-    // In a real app, you would authenticate the user here.
-    return { success: true, message: "Logged in successfully!" };
+    try {
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        return { success: true, message: "Logged in successfully!" };
+    } catch (error: any) {
+        console.error("Login error:", error.code, error.message);
+        return { success: false, message: error.message };
+    }
 }
 
 
@@ -61,9 +68,7 @@ const registerFormSchema = z.object({
   aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
   referralCode: z.string().optional(),
-  // Note: File handling in React Hook Form with server actions is complex.
-  // We're adding the fields to the schema for structure, but not validating the file itself here.
-  // The actual file upload would need to be handled via a separate process or endpoint.
+  // Note: File handling is not implemented in this action.
   aadharFrontUpload: z.any().optional(),
   aadharBackUpload: z.any().optional(),
   panUpload: z.any().optional(),
@@ -73,20 +78,43 @@ const registerFormSchema = z.object({
 });
 
 export async function registerUser(values: z.infer<typeof registerFormSchema>) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // In a real app, you would create a new user and trigger a KYC verification flow here.
-    console.log("Registration attempt:", values);
+    try {
+        // Step 1: Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
 
-    // Generate a unique ID for the new user.
-    const userId = randomUUID();
-    const referralCode = `EGLIFE-${userId.slice(0, 8).toUpperCase()}`;
+        // Step 2: Generate a unique referral code
+        const referralCode = `EGLIFE-${randomUUID().slice(0, 8).toUpperCase()}`;
 
-    console.log(`New user registered. Their unique Referral Code is: ${referralCode}`);
-    
-    // In a real application, you would save the user to the database along with their generated referralCode.
-    
-    return { success: true, message: "Registration successful!" };
+        // Step 3: Save user data to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name: values.name,
+            email: values.email,
+            mobile: values.mobile,
+            dob: values.dob,
+            country: values.country,
+            address: values.address,
+            city: values.city,
+            state: values.state,
+            postalCode: values.postalCode,
+            aadhar: values.aadhar,
+            pan: values.pan,
+            referredBy: values.referralCode || null,
+            referralCode: referralCode,
+            kycStatus: "Pending",
+            stakingStatus: "Inactive",
+            registrationDate: serverTimestamp(),
+        });
+        
+        return { success: true, message: "Registration successful! Your account is pending verification." };
+
+    } catch (error: any) {
+        console.error("Registration error:", error);
+        // Handle specific Firebase errors
+        if (error.code === 'auth/email-already-in-use') {
+            return { success: false, message: "This email address is already in use." };
+        }
+        return { success: false, message: "An unexpected error occurred. Please try again." };
+    }
 }
-
-    

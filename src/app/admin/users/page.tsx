@@ -1,67 +1,28 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MoreHorizontal, Search, PlusCircle } from "lucide-react";
+import { MoreHorizontal, Search, PlusCircle, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 
-const users = [
-  {
-    id: "usr_1",
-    name: "Alex Johnson",
-    email: "alex.j@example.com",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400",
-    registrationDate: "2024-07-20",
-    kycStatus: "Verified",
-    stakingStatus: "Active",
-    aiHint: "man portrait"
-  },
-  {
-    id: "usr_2",
-    name: "Samantha Carter",
-    email: "sam.c@example.com",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400",
-    registrationDate: "2024-07-18",
-    kycStatus: "Pending",
-    stakingStatus: "Inactive",
-    aiHint: "woman portrait"
-  },
-  {
-    id: "usr_3",
-    name: "Ben Richards",
-    email: "ben.r@example.com",
-    avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?q=80&w=400",
-    registrationDate: "2024-07-15",
-    kycStatus: "Verified",
-    stakingStatus: "Active",
-    aiHint: "man smiling"
-  },
-  {
-    id: "usr_4",
-    name: "Olivia Chen",
-    email: "olivia.c@example.com",
-    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=400",
-    registrationDate: "2024-07-12",
-    kycStatus: "Rejected",
-    stakingStatus: "Inactive",
-    aiHint: "woman face"
-  },
-  {
-    id: "usr_5",
-    name: "Marcus Rivera",
-    email: "marc.r@example.com",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400",
-    registrationDate: "2024-07-10",
-    kycStatus: "Verified",
-    stakingStatus: "Active",
-    aiHint: "man profile"
-  },
-];
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+    registrationDate: string;
+    kycStatus: "Verified" | "Pending" | "Rejected";
+    stakingStatus: "Active" | "Inactive";
+    aiHint?: string;
+}
 
 const kycStatusVariant: { [key: string]: "default" | "secondary" | "destructive" } = {
   Verified: "default",
@@ -71,6 +32,52 @@ const kycStatusVariant: { [key: string]: "default" | "secondary" | "destructive"
 
 
 export default function AdminUsersPage() {
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const usersCollection = collection(db, "users");
+                const userSnapshot = await getDocs(usersCollection);
+                const usersList = userSnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    // Convert Firestore Timestamp to a readable date string
+                    const registrationDate = data.registrationDate instanceof Timestamp 
+                        ? data.registrationDate.toDate().toLocaleDateString() 
+                        : new Date().toLocaleDateString();
+                    
+                    return {
+                        id: doc.id,
+                        name: data.name || 'N/A',
+                        email: data.email || 'N/A',
+                        registrationDate: registrationDate,
+                        kycStatus: data.kycStatus || 'Pending',
+                        stakingStatus: data.stakingStatus || 'Inactive',
+                        // You might want to add a default avatar or logic to generate one
+                        avatar: `https://avatar.vercel.sh/${data.email}.png`,
+                        aiHint: "user portrait"
+                    } as User;
+                });
+                setUsers(usersList);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        )
+    }
+
     return (
         <div className="space-y-8">
             <div className="flex items-center justify-between">
@@ -106,7 +113,14 @@ export default function AdminUsersPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {users.map(user => (
+                             {users.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">
+                                        No users found.
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                users.map(user => (
                                 <TableRow key={user.id}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
@@ -121,7 +135,7 @@ export default function AdminUsersPage() {
                                         </div>
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">
-                                        {new Date(user.registrationDate).toLocaleDateString()}
+                                        {user.registrationDate}
                                     </TableCell>
                                     <TableCell>
                                         <Badge variant={kycStatusVariant[user.kycStatus]}>{user.kycStatus}</Badge>
@@ -149,7 +163,8 @@ export default function AdminUsersPage() {
                                         </DropdownMenu>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>

@@ -43,17 +43,18 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    try {
-      // Check for hardcoded admin credentials
-      if (values.email === "admin@eglife.com" && values.password === "admin") {
-        toast({
-          title: "Admin Login Successful",
-          description: "Redirecting to the admin dashboard.",
-        })
-        router.push("/admin")
-        return;
-      }
+    // Check for hardcoded admin credentials
+    if (values.email === "admin@eglife.com" && values.password === "admin") {
+      toast({
+        title: "Admin Login Successful",
+        description: "Redirecting to the admin dashboard.",
+      })
+      router.push("/admin")
+      setIsSubmitting(false)
+      return;
+    }
 
+    try {
       const result = await loginUser(values)
       if (result.success) {
         toast({
@@ -61,12 +62,13 @@ export function LoginForm() {
           description: "Welcome back to EGLIFE TOKEN.",
         })
         form.reset()
-        // Here you would typically redirect the user e.g. router.push('/dashboard')
+        // On successful user login, redirect to the main page or a user dashboard
+        router.push("/")
       } else {
          toast({
             variant: "destructive",
             title: "Login Failed",
-            description: "Invalid email or password. Please try again.",
+            description: result.message || "Invalid email or password. Please try again.",
         })
       }
     } catch (error) {
