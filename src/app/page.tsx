@@ -32,7 +32,22 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-stretch">
             <Card className="flex flex-col">
               <CardHeader>
-                 <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
+                <div className="flex items-center gap-4">
+                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
+                    <Eye className="w-8 h-8" />
+                  </div>
+                  <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-xl text-foreground/80 leading-relaxed">
+                  Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="flex flex-col">
+              <CardHeader>
+                 <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
               </CardHeader>
               <CardContent className="flex-grow">
                   <ul className="space-y-4 text-lg text-foreground/80">
@@ -55,21 +70,6 @@ export default function Home() {
                   </ul>
               </CardContent>
             </Card>
-            <Card className="flex flex-col">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
-                    <Eye className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-xl text-foreground/80 leading-relaxed">
-                  Our mission is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>
@@ -89,7 +89,7 @@ export default function Home() {
           <div>
             <h2 className="text-3xl md:text-4xl font-headline font-bold mb-6">About the EGLIFE TOKEN</h2>
             <p className="text-lg text-foreground/80 mb-4">
-              The Eglife Token (EGLIFE) is a decentralized BEP-20 cryptocurrency on the BNB Smart Chain. EGLIFE is designed to bridge the gap between cryptocurrency and real-world utility, creating a stable token economy for long-term value. Through our EGPAY ecosystem, you can use EGLIFE for utility payments, staking, and more. Join us in building the future of decentralized finance.
+              The Eglife Token (EGLIFE) is a decentralized BEP-20 cryptocurrency designed to build a real-world, utility-based token economy. Deployed on the BNB Smart Chain, EGLIFE bridges the gap between digital assets and everyday life by enabling seamless utility payments, staking rewards, and participation in a self-sustaining financial ecosystem. Our mission is to provide tangible value, foster long-term growth, and make cryptocurrency accessible and practical for everyone.
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">

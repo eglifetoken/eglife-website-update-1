@@ -55,24 +55,9 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
-             <ul className="space-y-4 text-lg text-foreground/80">
-                <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span><strong>Provide Real Utility:</strong> To move beyond speculation by enabling EGLIFE for daily transactions like utility payments and merchant services, making crypto a practical tool for everyone.</span>
-                </li>
-                <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span><strong>Encourage Mass Adoption:</strong> To design intuitive, user-friendly applications and educational resources that remove barriers to entry, making it easy for anyone to join the digital economy.</span>
-                </li>
-                <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span><strong>Deliver Transparency:</strong> To build trust through verifiable on-chain operations and open-source smart contracts, ensuring every transaction and process is clear and auditable by our community.</span>
-                </li>
-                <li className="flex items-start">
-                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
-                    <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
-                </li>
-             </ul>
+            <p className="text-foreground/80 text-xl mb-4 leading-relaxed">
+             Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
+            </p>
           </div>
           <div className="order-1 md:order-2">
             <Image
@@ -101,9 +86,24 @@ export default function AboutPage() {
           </div>
           <div>
             <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
-            <p className="text-foreground/80 text-xl mb-4 leading-relaxed">
-             Our mission is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
-            </p>
+             <ul className="space-y-4 text-lg text-foreground/80">
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span><strong>Provide Real Utility:</strong> To move beyond speculation by enabling EGLIFE for daily transactions like utility payments and merchant services, making crypto a practical tool for everyone.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span><strong>Encourage Mass Adoption:</strong> To design intuitive, user-friendly applications and educational resources that remove barriers to entry, making it easy for anyone to join the digital economy.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span><strong>Deliver Transparency:</strong> To build trust through verifiable on-chain operations and open-source smart contracts, ensuring every transaction and process is clear and auditable by our community.</span>
+                </li>
+                <li className="flex items-start">
+                    <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
+                    <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
+                </li>
+             </ul>
           </div>
         </div>
       </section>
