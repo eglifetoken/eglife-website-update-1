@@ -53,7 +53,8 @@ const formSchema = z.object({
   // Note: File handling in React Hook Form with server actions is complex.
   // We're adding the fields to the schema for structure, but not validating the file itself here.
   // The actual file upload would need to be handled via a separate process or endpoint.
-  aadharUpload: z.any().optional(),
+  aadharFrontUpload: z.any().optional(),
+  aadharBackUpload: z.any().optional(),
   panUpload: z.any().optional(),
   kycConsent: z.boolean().default(false).refine(value => value === true, {
     message: "You must agree to the identity verification.",
@@ -94,7 +95,8 @@ export function RegisterForm() {
         // to the registerUser action.
         console.log("Form values (excluding files):", {
             ...values,
-            aadharUpload: undefined,
+            aadharFrontUpload: undefined,
+            aadharBackUpload: undefined,
             panUpload: undefined
         });
 
@@ -302,7 +304,7 @@ export function RegisterForm() {
                     control={form.control}
                     name="aadhar"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="md:col-span-2">
                         <FormLabel>Aadhar Number</FormLabel>
                         <FormControl>
                             <Input placeholder="XXXX XXXX XXXX" {...field} />
@@ -313,12 +315,25 @@ export function RegisterForm() {
                 />
                  <FormField
                     control={form.control}
-                    name="aadharUpload"
+                    name="aadharFrontUpload"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>Upload Aadhar Card</FormLabel>
+                        <FormLabel>Upload Aadhar Card (Front)</FormLabel>
                         <FormControl>
-                             <Input id="aadhar-upload" type="file" {...field} />
+                             <Input id="aadhar-front-upload" type="file" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="aadharBackUpload"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Upload Aadhar Card (Back)</FormLabel>
+                        <FormControl>
+                             <Input id="aadhar-back-upload" type="file" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -396,5 +411,3 @@ export function RegisterForm() {
     </Form>
   )
 }
-
-    
