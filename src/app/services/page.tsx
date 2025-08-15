@@ -34,7 +34,7 @@ export default function ServicesPage() {
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold">Eglife Digital Payments</h1>
+        <h1 className="text-4xl md:text-5xl font-headline font-bold">EGPAY</h1>
         <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
           Leveraging the power of the EGLIFE token to create a fast, secure, and low-cost payment ecosystem for your daily needs.
         </p>
@@ -68,7 +68,7 @@ export default function ServicesPage() {
        <div className="text-center mt-20">
           <h2 className="text-3xl font-headline font-bold">Building a Unified Payment Ecosystem</h2>
           <p className="text-lg text-foreground/80 mt-2 max-w-2xl mx-auto">
-              Our vision is to create a seamless financial experience by integrating Eglife payments with the digital wallets and platforms you use every day, making transactions effortless and universal.
+              Our vision is to create a seamless financial experience by integrating EGPAY with the digital wallets and platforms you use every day, making transactions effortless and universal.
           </p>
            <div className="flex justify-center items-center gap-8 mt-8">
                 <div className="p-4 bg-muted rounded-full">
