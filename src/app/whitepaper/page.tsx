@@ -12,7 +12,7 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>1. Executive Summary</strong></h2>
             <p>
-              The EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> thoughtfully deployed on the robust and efficient BNB Smart Chain. It has been conceived to directly address the core limitations that hinder the widespread adoption of digital currencies: a lack of financial inclusivity for underserved populations and a scarcity of genuine, real-world crypto use-cases. By establishing a <strong>fully on-chain token economy</strong>, EGLIFE is building a transparent and self-sustaining financial ecosystem that operates beyond the confines of traditional banking.
+              The <strong>EGLIFE Token</strong> is a <strong>decentralized BEP-20 cryptocurrency</strong> thoughtfully deployed on the robust and efficient BNB Smart Chain. It has been conceived to directly address the core limitations that hinder the widespread adoption of digital currencies: a lack of financial inclusivity for underserved populations and a scarcity of genuine, real-world crypto use-cases. By establishing a <strong>fully on-chain token economy</strong>, EGLIFE is building a transparent and self-sustaining financial ecosystem that operates beyond the confines of traditional banking.
             </p>
             <p>
               Our strategic approach integrates several key pillars to foster a stable environment primed for sustainable growth and long-term value creation. Through a fair and transparent <strong>taxation</strong> model, we ensure the project's continuous development and funding for community-driven initiatives. Our on-chain <strong>staking</strong> mechanism provides tangible rewards to our long-term holders, incentivizing community loyalty and reducing market volatility.
@@ -125,14 +125,14 @@ export default function WhitepaperPage() {
   
           <section>
             <h2><strong>7. Smart Contract Design</strong></h2>
-             <p>The EGLIFE smart contract includes the following core modules:</p>
+             <p>The EGLIFE smart contract is engineered with modularity and security at its core, incorporating several key functions to manage the token's lifecycle and utility. The following modules are integral to its design:</p>
             <ul>
-              <li><strong>ERC20 Compliance:</strong> Uses OpenZeppelin standard.</li>
-              <li><strong>Tax Fee:</strong> Up to 10% fee configurable by the owner, default set to 2%.</li>
-              <li><strong>Burn:</strong> Any user can burn their tokens, reducing total supply.</li>
-              <li><strong>Airdrop:</strong> Owner can airdrop tokens to multiple addresses.</li>
-              <li><strong>Stake/Unstake Logic:</strong> Lock tokens and earn 5% reward post 30 days.</li>
-              <li><strong>Access Control:</strong> Only owner can change tax wallet, update tax, airdrop.</li>
+              <li><strong>BEP-20 Compliance:</strong> The contract strictly adheres to the BEP-20 standard using OpenZeppelin's extensively audited implementation. This ensures full compatibility with the BNB Chain ecosystem, including wallets, exchanges, and other decentralized applications, guaranteeing seamless interoperability and a secure token foundation.</li>
+              <li><strong>Tax Fee Mechanism:</strong> A configurable tax fee can be applied to transactions to fund the project's ongoing development, marketing efforts, and ecosystem growth. The owner has the authority to set this fee up to a maximum of 10%, with a default rate of 2%, providing flexibility to adapt to market dynamics while maintaining a sustainable operational model.</li>
+              <li><strong>Voluntary Token Burn:</strong> The contract includes a public `burn` function, allowing any token holder to permanently remove their tokens from the circulating supply. This acts as a deflationary mechanism, giving the community a direct role in controlling supply and potentially increasing the token's scarcity and long-term value.</li>
+              <li><strong>Airdrop Functionality:</strong> An owner-restricted airdrop function allows for the efficient distribution of tokens to multiple addresses in a single transaction. This is a crucial tool for executing marketing campaigns, rewarding community members, and bootstrapping the network by seeding initial users.</li>
+              <li><strong>On-Chain Staking Logic:</strong> The contract features a trustless staking system where users can lock their tokens for a minimum period of 30 days to earn a 5% reward, which is minted upon withdrawal. All staking and unstaking operations are executed directly on-chain without the need for manual intervention, ensuring transparency and security for all participants.</li>
+              <li><strong>Robust Access Control:</strong> To maintain security and operational integrity, critical functions are protected by an `onlyOwner` modifier. This ensures that only the designated owner address can perform sensitive actions such as updating the tax rate, modifying the tax wallet address, and initiating airdrops, preventing unauthorized changes to the contract's core parameters.</li>
             </ul>
           </section>
 
@@ -241,5 +241,6 @@ export default function WhitepaperPage() {
   }
 
     
+
 
 
