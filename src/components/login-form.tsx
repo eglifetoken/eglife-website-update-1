@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { loginUser } from "@/lib/actions"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -29,6 +31,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +44,16 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
+      // Check for hardcoded admin credentials
+      if (values.email === "admin@eglife.com" && values.password === "admin") {
+        toast({
+          title: "Admin Login Successful",
+          description: "Redirecting to the admin dashboard.",
+        })
+        router.push("/admin")
+        return;
+      }
+
       const result = await loginUser(values)
       if (result.success) {
         toast({
@@ -49,12 +62,18 @@ export function LoginForm() {
         })
         form.reset()
         // Here you would typically redirect the user e.g. router.push('/dashboard')
+      } else {
+         toast({
+            variant: "destructive",
+            title: "Login Failed",
+            description: "Invalid email or password. Please try again.",
+        })
       }
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
+        description: "An error occurred. Please try again.",
       })
     } finally {
       setIsSubmitting(false)
