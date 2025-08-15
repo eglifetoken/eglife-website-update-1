@@ -45,10 +45,6 @@ export default function DashboardPage() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  if (!isClient) {
-    return null;
-  }
   
   const PriceChangeIndicator = priceChange >= 0 ? TrendingUp : TrendingDown;
 
@@ -63,11 +59,20 @@ export default function DashboardPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${livePrice.toFixed(4)}</div>
-             <div className={`text-xs flex items-center ${priceChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                <PriceChangeIndicator className="h-3 w-3 mr-1" />
-                <span>{priceChange.toFixed(4)} (${(priceChange / (livePrice - priceChange) * 100).toFixed(2)}%)</span>
-            </div>
+            {isClient ? (
+                <>
+                    <div className="text-2xl font-bold">${livePrice.toFixed(4)}</div>
+                    <div className={`text-xs flex items-center ${priceChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        <PriceChangeIndicator className="h-3 w-3 mr-1" />
+                        <span>{priceChange.toFixed(4)} (${(priceChange / (livePrice - priceChange) * 100).toFixed(2)}%)</span>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="text-2xl font-bold">$0.2500</div>
+                    <p className="text-xs text-muted-foreground">Loading...</p>
+                </>
+            )}
           </CardContent>
         </Card>
          <Card>
