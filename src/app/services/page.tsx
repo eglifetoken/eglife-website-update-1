@@ -4,10 +4,12 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 const services = [
   {
@@ -54,6 +56,49 @@ const futureServices = [
     { icon: HandCoins, title: "Loan EMIs" },
 ];
 
+const transactionHistory = [
+  {
+    name: "Jio Recharge",
+    date: "2024-08-15",
+    amount: -239.00,
+    status: "Success",
+    type: "utility",
+    icon: Smartphone
+  },
+  {
+    name: "Received from Alex",
+    date: "2024-08-14",
+    amount: 500.00,
+    status: "Success",
+    type: "credit",
+    icon: User,
+  },
+    {
+    name: "Grocery Store",
+    date: "2024-08-14",
+    amount: -1250.50,
+    status: "Success",
+    type: "debit",
+    icon: QrCode
+  },
+   {
+    name: "Electricity Bill",
+    date: "2024-08-12",
+    amount: -850.00,
+    status: "Success",
+    type: "utility",
+    icon: Lightbulb
+  },
+  {
+    name: "Sent to Samantha",
+    date: "2024-08-11",
+    amount: -2000.00,
+    status: "Pending",
+    type: "debit",
+    icon: User,
+  }
+];
+
 
 export default function ServicesPage() {
   return (
@@ -72,11 +117,12 @@ export default function ServicesPage() {
         </CardHeader>
         <CardContent>
              <Tabs defaultValue="mobile" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                     <TabsTrigger value="mobile"><User className="mr-2 h-4 w-4" />To Mobile</TabsTrigger>
                     <TabsTrigger value="bank"><BankIcon className="mr-2 h-4 w-4" />To Bank</TabsTrigger>
                     <TabsTrigger value="scan"><QrCode className="mr-2 h-4 w-4" />Scan QR</TabsTrigger>
                     <TabsTrigger value="balance"><Wallet className="mr-2 h-4 w-4" />Check Balance</TabsTrigger>
+                    <TabsTrigger value="history"><History className="mr-2 h-4 w-4" />History</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="mobile" className="mt-6">
@@ -145,6 +191,44 @@ export default function ServicesPage() {
                         <Button size="lg">Check Balance</Button>
                     </Card>
                 </TabsContent>
+
+                <TabsContent value="history" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Transaction History</CardTitle>
+                            <CardDescription>View your recent UPI transactions.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {transactionHistory.map((tx, index) => {
+                                const isCredit = tx.amount > 0;
+                                return (
+                                <div key={index} className="flex items-center p-2 rounded-md hover:bg-muted/50">
+                                    <Avatar className="h-10 w-10 mr-4">
+                                        <div className="flex h-full w-full items-center justify-center rounded-full bg-primary/10">
+                                            <tx.icon className="h-5 w-5 text-primary" />
+                                        </div>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <p className="font-semibold">{tx.name}</p>
+                                        <p className="text-sm text-muted-foreground">{new Date(tx.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className={`font-bold ${isCredit ? 'text-green-500' : 'text-foreground'}`}>
+                                            {isCredit ? '+' : ''}₹{Math.abs(tx.amount).toFixed(2)}
+                                        </p>
+                                        <Badge variant={tx.status === 'Success' ? 'default' : 'secondary'} className={tx.status === 'Pending' ? 'bg-amber-500/80 text-white' : ''}>
+                                            {tx.status}
+                                        </Badge>
+                                    </div>
+                                </div>
+                                )
+                            })}
+                        </CardContent>
+                         <CardFooter>
+                            <Button variant="outline" className="w-full">Load More</Button>
+                        </CardFooter>
+                    </Card>
+                </TabsContent>
             </Tabs>
         </CardContent>
       </Card>
@@ -196,4 +280,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
