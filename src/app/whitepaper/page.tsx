@@ -262,14 +262,21 @@ export default function WhitepaperPage() {
           
           <section>
             <h2><strong>10. Tokenomics</strong></h2>
+            <p>Our tokenomics are designed to ensure a balanced, sustainable, and community-focused ecosystem. The total supply of <strong>1,000,000,000 EGLIFE</strong> tokens is fixed and has been minted at the time of contract deployment, meaning no new tokens can be created beyond this limit. The allocation is strategically distributed across key areas to foster long-term growth and stability.</p>
             <h3><strong>Token Distribution:</strong></h3>
             <ul>
-              <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
-              <li><strong>Staking Rewards:</strong> 20% (200,000,000)</li>
-              <li><strong>Ecosystem Growth:</strong> 30% (300,000,000)</li>
-              <li><strong>Liquidity Pool:</strong> 20% (200,000,000)</li>
-              <li><strong>Team & Advisors:</strong> 10% (100,000,000)</li>
-              <li><strong>Burn & Reserve:</strong> 10% (100,000,000)</li>
+              <li><strong>Public Airdrop: 10% (100,000,000)</strong><br/>
+              This portion is dedicated to community-building initiatives. It will be used for airdrop campaigns to reward early adopters, incentivize participation in community events, and execute marketing strategies to broaden our user base and ensure a wide and fair initial distribution of EGLIFE tokens.</li>
+              <li><strong>Staking Rewards: 20% (200,000,000)</strong><br/>
+              A substantial allocation is reserved to fund the rewards for our on-chain staking program. This dedicated pool ensures that we can provide attractive and sustainable returns to users who lock their tokens, thereby encouraging long-term holding, reducing market volatility, and securing the network.</li>
+              <li><strong>Ecosystem Growth: 30% (300,000,000)</strong><br/>
+              This is the largest allocation, reserved for fueling the long-term development and expansion of the EGLIFE platform. Funds will be used for ongoing technical development, forging strategic partnerships, integrating new utilities, and launching community-driven projects. This treasury ensures the project's longevity and its ability to adapt and innovate over time.</li>
+              <li><strong>Liquidity Pool: 20% (200,000,000)</strong><br/>
+              To ensure a healthy and stable trading environment, this portion will be used to provide initial liquidity on decentralized exchanges (DEXs) like PancakeSwap. Deep liquidity is crucial for minimizing price slippage, inspiring trader confidence, and providing a seamless trading experience for all users.</li>
+              <li><strong>Team & Advisors: 10% (100,000,000)</strong><br/>
+              This allocation is designated for the core team members, developers, and strategic advisors who have contributed to the project's inception and will guide its future. These tokens will be subject to a vesting schedule to align the team's long-term interests with the success of the community and the project.</li>
+              <li><strong>Burn & Reserve: 10% (100,000,000)</strong><br/>
+              This allocation serves two purposes. A portion is held in reserve as a contingency fund for unforeseen opportunities or needs, providing a safety net for the project. The remaining tokens are designated for future burn events, which can be initiated to strategically reduce the total supply, creating a deflationary effect that can positively impact token value.</li>
             </ul>
             <p><strong>Total Supply:</strong> 1,000,000,000 EGLIFE (minted once at deployment)</p>
           </section>
@@ -373,4 +380,5 @@ export default function WhitepaperPage() {
 
 
     
+
 
