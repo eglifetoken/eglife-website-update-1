@@ -35,11 +35,11 @@ export default function WhitepaperPage() {
   
           <section>
             <h2><strong>3. Vision & Mission</strong></h2>
-            <h3>Vision:</h3>
+            <h3><strong>Vision:</strong></h3>
             <p>
               Empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
             </p>
-            <h3>Mission:</h3>
+            <h3><strong>Mission:</strong></h3>
             <ul>
               <li>Provide real utility and day-to-day usage with EGLIFE Token.</li>
               <li>Encourage mass adoption with zero-barrier participation.</li>
@@ -100,9 +100,9 @@ export default function WhitepaperPage() {
           
           <section>
               <h2><strong>8. Airdrop & Referral System</strong></h2>
-              <h3>Airdrop:</h3>
+              <h3><strong>Airdrop:</strong></h3>
               <p>Owner distributes a fixed number of EGLIFE tokens to selected addresses. This promotes awareness and adoption.</p>
-              <h3>Referral:</h3>
+              <h3><strong>Referral:</strong></h3>
               <ul>
                   <li>Every airdrop participant gets a referral code (Google Form backend)</li>
                   <li>On valid referral, the referrer receives a <strong>10% bonus</strong></li>
@@ -112,7 +112,7 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>9. Tokenomics</strong></h2>
-            <h3>Token Distribution:</h3>
+            <h3><strong>Token Distribution:</strong></h3>
             <ul>
               <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
               <li><strong>Staking Rewards:</strong> 20% (200,000,000)</li>
@@ -150,8 +150,8 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>12. Team</strong></h2>
             <ul>
-                <li><strong>Project Lead:</strong> Pawan Kumar</li>
-                <li><strong>Legal Advisor:</strong> Advocate Bhagwan Kumar (Enrollment No. BR/1490/2022)</li>
+                <li><strong>Project Lead:</strong> To be announced</li>
+                <li><strong>Legal Advisor:</strong> To be announced</li>
                 <li><strong>Developers:</strong> Anonymous Solidity Contributors (OpenZeppelin based)</li>
                 <li><strong>Advisors:</strong> To be announced</li>
                 <li><strong>Community Support:</strong> EGLIFE Volunteers across India</li>
