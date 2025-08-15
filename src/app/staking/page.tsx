@@ -104,7 +104,7 @@ export default function StakingPage() {
         <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn competitive rewards and support the ecosystem's growth.</p>
       </div>
       
-       {isClient && !isConnected ? (
+       {isClient && !isConnected && (
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-2xl">Connect Your Wallet</CardTitle>
@@ -117,7 +117,9 @@ export default function StakingPage() {
                 </Button>
             </CardContent>
          </Card>
-      ) : isClient && isConnected && (
+      )}
+
+      {isClient && isConnected && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -275,5 +277,3 @@ export default function StakingPage() {
     </div>
   )
 }
-
-    
