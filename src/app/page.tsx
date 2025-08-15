@@ -13,7 +13,7 @@ export default function Home() {
             Welcome to Eglife Hub
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            Discover the Eglife Token, a project dedicated to fostering wellness, sustainability, and community. Join us in making a positive impact on the world.
+            Discover the Eglife Token (EGLIFE), your gateway to a decentralized world dedicated to fostering wellness, sustainability, and community. Eglife is more than a project; it's a movement to create a regenerative economy that rewards positive contributions to society and the planet. Join us in building a brighter, more equitable future for all.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
