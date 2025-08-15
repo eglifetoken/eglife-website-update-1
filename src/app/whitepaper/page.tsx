@@ -393,14 +393,25 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>17. Annexures</strong></h2>
-              <ul>
-                  <li><strong>Smart Contract:</strong> Verified on BscScan</li>
-                  <li><strong>ABI & Bytecode:</strong> Available</li>
-                  <li><strong>Audit:</strong> Scheduled (Q1 2026)</li>
-                  <li><strong>Website:</strong> eglifetoken.xyz</li>
-                  <li><strong>Whitepaper Format:</strong> DOCX, PDF, PPT (available on request)</li>
-              </ul>
+            <h2><strong>17. Annexures</strong></h2>
+            <p>To ensure full transparency and provide our community with all the necessary resources, the following documents and links are available:</p>
+            <ul>
+                <li>
+                    <strong>Smart Contract (Verified on BscScan):</strong> Our full smart contract code is publicly verified on the BNB Smart Chain's primary block explorer. This allows anyone to independently review and audit our on-chain logic, ensuring that our actions align with our promises. You can access it at our official contract address.
+                </li>
+                <li>
+                    <strong>ABI & Bytecode (Available):</strong> For developers and technical partners wishing to integrate with EGLIFE, the Application Binary Interface (ABI) and bytecode are readily available. This facilitates seamless interaction with our smart contract for building third-party applications and services on top of our ecosystem.
+                </li>
+                <li>
+                    <strong>Smart Contract Audit:</strong> A comprehensive security audit by a reputable third-party firm is scheduled for the first quarter of 2026. The full audit report will be made public upon completion to provide the community with an independent assessment of our contract's security and integrity.
+                </li>
+                <li>
+                    <strong>Official Website:</strong> For the latest updates, news, and direct access to our ecosystem, please visit our official website at <a href="https://eglifetoken.xyz" target="_blank" rel="noopener noreferrer">eglifetoken.xyz</a>.
+                </li>
+                <li>
+                    <strong>Whitepaper Formats:</strong> For the convenience of our partners and community members who may require different formats, this whitepaper is also available in DOCX, PDF, and PPT formats upon request.
+                </li>
+            </ul>
           </section>
         </article>
       </div>
@@ -419,6 +430,7 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
 
