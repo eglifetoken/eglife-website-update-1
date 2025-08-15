@@ -28,12 +28,12 @@ const Logo = () => (
             className="text-primary"
             >
             <defs>
-                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="logoGradientHeader" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
                 <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
                 </linearGradient>
             </defs>
-            <circle cx="24" cy="24" r="22" fill="url(#logoGradient)" />
+            <circle cx="24" cy="24" r="22" fill="url(#logoGradientHeader)" />
             <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Alegreya">
                 E
             </text>
