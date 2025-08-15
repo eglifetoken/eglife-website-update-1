@@ -145,6 +145,7 @@ export default function WhitepaperPage() {
                 <li><strong>Reward:</strong> 5% of staked amount is minted as reward on withdrawal</li>
                 <li><strong>Unstake Function:</strong> After 30 days, users call <code>unstake()</code> to receive principal + reward</li>
                 <li>Staking is <strong>trustless, on-chain, and does not require manual approval.</strong></li>
+                <li><strong>Staking Contract Address:</strong> 0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6</li>
             </ul>
           </section>
           
@@ -241,6 +242,7 @@ export default function WhitepaperPage() {
   }
 
     
+
 
 
 
