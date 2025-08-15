@@ -32,22 +32,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-stretch">
             <Card className="flex flex-col">
               <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
-                    <Eye className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-xl text-foreground/80 leading-relaxed">
-                  To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="flex flex-col">
-              <CardHeader>
-                 <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
+                 <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
               </CardHeader>
               <CardContent className="flex-grow">
                   <ul className="space-y-4 text-lg text-foreground/80">
@@ -68,6 +53,21 @@ export default function Home() {
                           <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
                       </li>
                   </ul>
+              </CardContent>
+            </Card>
+            <Card className="flex flex-col">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
+                    <Eye className="w-8 h-8" />
+                  </div>
+                  <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-xl text-foreground/80 leading-relaxed">
+                  To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
+                </p>
               </CardContent>
             </Card>
           </div>

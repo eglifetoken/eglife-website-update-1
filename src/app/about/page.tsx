@@ -54,7 +54,7 @@ export default function AboutPage() {
       <section className="mb-24">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
-            <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
+            <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
              <ul className="space-y-4 text-lg text-foreground/80">
                 <li className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-primary mr-3 mt-1 flex-shrink-0" />
@@ -100,7 +100,7 @@ export default function AboutPage() {
             />
           </div>
           <div>
-            <h2 className="text-3xl font-headline font-bold mb-4">Our Vision</h2>
+            <h2 className="text-3xl font-headline font-bold mb-4">Our Mission</h2>
             <p className="text-foreground/80 text-xl mb-4 leading-relaxed">
              To empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
             </p>
