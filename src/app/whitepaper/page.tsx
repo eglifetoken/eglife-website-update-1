@@ -94,13 +94,32 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>6. Technology Overview</strong></h2>
+            <p>The EGLIFE Token is built on a foundation of proven, secure, and scalable technologies to ensure reliability and a seamless user experience. Our technical architecture is designed for long-term stability and interoperability within the broader blockchain ecosystem.</p>
             <ul>
-                <li><strong>Blockchain:</strong> Binance Smart Chain (BNB Chain)</li>
-                <li><strong>Smart Contract Language:</strong> Solidity 0.8.20</li>
-                <li><strong>Library:</strong> OpenZeppelin v4.9.0 (Audit-grade)</li>
-                <li><strong>Standard:</strong> BEP-20 (compatible with ERC-20)</li>
-                <li><strong>Verification:</strong> Fully verified on BscScan with source code</li>
-                <li><strong>Deployment Address:</strong> 0xca326a5e15b9451efC1A6BddaD6fB098a4D09113</li>
+                <li>
+                    <strong>Blockchain: Binance Smart Chain (BNB Chain)</strong><br />
+                    We have chosen the BNB Smart Chain for its high performance, low transaction fees, and robust security. Its EVM (Ethereum Virtual Machine) compatibility allows for easy integration with existing wallets, exchanges, and developer tools, providing a frictionless experience for both users and developers.
+                </li>
+                <li>
+                    <strong>Smart Contract Language: Solidity 0.8.20</strong><br />
+                    Our smart contract is written in Solidity, the industry-standard language for creating self-executing contracts on EVM-compatible chains. We use version 0.8.20 to leverage the latest security enhancements and features, ensuring our contract is both efficient and protected against common vulnerabilities.
+                </li>
+                <li>
+                    <strong>Library: OpenZeppelin v4.9.0 (Audit-grade)</strong><br />
+                    To ensure the highest level of security, our smart contract is built using OpenZeppelin's battle-tested and community-audited libraries. By relying on these industry-standard components for core functionalities like BEP-20 compliance and access control, we significantly reduce the risk of bugs and security flaws.
+                </li>
+                <li>
+                    <strong>Standard: BEP-20 (compatible with ERC-20)</strong><br />
+                    EGLIFE is a BEP-20 token, the standard for fungible tokens on the BNB Smart Chain. This ensures seamless compatibility with a wide range of wallets (like MetaMask and Trust Wallet), decentralized exchanges (like PancakeSwap), and other DApps within the BNB Chain ecosystem. Its similarity to the ERC-20 standard also simplifies cross-chain integrations.
+                </li>
+                <li>
+                    <strong>Verification: Fully verified on BscScan with source code</strong><br />
+                    Transparency is a core principle of EGLIFE. Our smart contract's source code is publicly available and verified on BscScan, the leading block explorer for the BNB Chain. This allows anyone to independently audit our code, verify its functionality, and confirm that the deployed contract matches the source code, fostering trust and confidence in our community.
+                </li>
+                <li>
+                    <strong>Deployment Address: 0xca326a5e15b9451efC1A6BddaD6fB098a4D09113</strong><br />
+                    This is the official and unique on-chain address of the EGLIFE Token smart contract. All transactions and interactions with the EGLIFE token can be tracked and verified using this address on a block explorer.
+                </li>
             </ul>
           </section>
   
@@ -222,4 +241,5 @@ export default function WhitepaperPage() {
   }
 
     
+
 
