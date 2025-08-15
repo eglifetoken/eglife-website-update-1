@@ -284,12 +284,18 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>11. Roadmap</strong></h2>
             <ul>
-                <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
-                <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
-                <li><strong>Phase 3 (Q4 2025):</strong> PancakeSwap Liquidity Launch, DEX Listing, Staking Live</li>
-                <li><strong>Phase 4 (Q1 2026):</strong> EGLIFE App Beta, Utility API Integrations</li>
-                <li><strong>Phase 5 (Q2 2026):</strong> CoinGecko & CMC Listing, Smart Contract Audit</li>
-                <li><strong>Phase 6 (Q3 2026):</strong> Launch EGLIFE v1, Support for POS & Merchant Gateway</li>
+                <li><strong>Phase 1 (Q2 2025): Foundation & Launch</strong><br/>
+                This initial phase focuses on establishing the technical and legal groundwork. Key activities include the finalization and deployment of the BEP-20 smart contract on the BNB Smart Chain, rigorous internal testing and security checks, and the launch of our official website to serve as a central hub for information and community updates.</li>
+                <li><strong>Phase 2 (Q3 2025): Community & Transparency</strong><br/>
+                With the foundation in place, our focus shifts to community growth and establishing trust. We will initiate our first Airdrop and Referral Campaigns to bootstrap our user base and reward early supporters. This phase will also see the official release and publication of this whitepaper, providing full transparency into our vision, technology, and strategic plans.</li>
+                <li><strong>Phase 3 (Q4 2025): Market Entry & Staking</strong><br/>
+                This phase marks our entry into the public market. We will create the initial liquidity pool on PancakeSwap to enable trading and ensure price stability. Following the DEX listing, we will launch our on-chain staking platform, allowing token holders to start earning rewards and participating in the ecosystem's long-term growth.</li>
+                <li><strong>Phase 4 (Q1 2026): Platform Development</strong><br/>
+                The focus turns to building our core product. We will release the beta version of the EGLIFE App, giving the community a first look at the wallet and payment functionalities. Concurrently, we will work on integrating with third-party utility API providers to connect our platform to real-world bill payment services.</li>
+                <li><strong>Phase 5 (Q2 2026): Credibility & Security</strong><br/>
+                To build mainstream credibility, we will pursue listings on major crypto data aggregators like CoinGecko and CoinMarketCap. Critically, we will commission a full, independent smart contract audit from a reputable security firm to validate the integrity and safety of our code, providing peace of mind to our users and stakeholders.</li>
+                <li><strong>Phase 6 (Q3 2026): Full Ecosystem Launch</strong><br/>
+                This phase culminates in the public launch of EGLIFE v1, our fully-featured utility payment application. We will also begin developing the necessary infrastructure to support Point-of-Sale (POS) systems and merchant gateways, laying the groundwork for widespread adoption of EGLIFE as a payment method in everyday commerce.</li>
             </ul>
           </section>
   
@@ -380,5 +386,6 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
