@@ -6,12 +6,12 @@ import { DollarSign, Users, PiggyBank, Receipt } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const userGrowthData = [
-    { month: "Jan", users: 150 },
-    { month: "Feb", users: 280 },
-    { month: "Mar", users: 420 },
-    { month: "Apr", users: 600 },
-    { month: "May", users: 850 },
-    { month: "Jun", users: 1200 },
+    { month: "Jan", users: 0 },
+    { month: "Feb", users: 0 },
+    { month: "Mar", users: 0 },
+    { month: "Apr", users: 0 },
+    { month: "May", users: 0 },
+    { month: "Jun", users: 0 },
 ];
 
 export default function AdminDashboard() {
@@ -26,8 +26,8 @@ export default function AdminDashboard() {
             <Users className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,254</div>
-            <p className="text-xs text-muted-foreground">+50 since last week</p>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">No users registered yet</p>
           </CardContent>
         </Card>
         <Card>
@@ -36,8 +36,8 @@ export default function AdminDashboard() {
             <PiggyBank className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$1.2M</div>
-            <p className="text-xs text-muted-foreground">+12% from last month</p>
+            <div className="text-2xl font-bold">$0.00</div>
+            <p className="text-xs text-muted-foreground">No active stakes</p>
           </CardContent>
         </Card>
         <Card>
@@ -46,8 +46,8 @@ export default function AdminDashboard() {
             <Receipt className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">15,832</div>
-            <p className="text-xs text-muted-foreground">+1,200 in last 24 hours</p>
+            <div className="text-2xl font-bold">0</div>
+            <p className="text-xs text-muted-foreground">No transactions recorded</p>
           </CardContent>
         </Card>
         <Card>
@@ -56,8 +56,8 @@ export default function AdminDashboard() {
             <DollarSign className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$25,350</div>
-            <p className="text-xs text-muted-foreground">This month so far</p>
+            <div className="text-2xl font-bold">$0.00</div>
+            <p className="text-xs text-muted-foreground">No revenue generated</p>
           </CardContent>
         </Card>
       </div>
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>User Growth</CardTitle>
-          <CardDescription>Monthly active users over the last 6 months.</CardDescription>
+          <CardDescription>Monthly active users will be displayed here.</CardDescription>
         </CardHeader>
         <CardContent className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
