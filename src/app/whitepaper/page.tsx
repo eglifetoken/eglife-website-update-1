@@ -8,7 +8,7 @@ export default function WhitepaperPage() {
           <p><strong>Contact Email:</strong> <a href="mailto:eglifetoken@gmail.com">eglifetoken@gmail.com</a></p>
   
           <section>
-            <h2>1. Executive Summary</h2>
+            <h2><strong>1. Executive Summary</strong></h2>
             <p>
               EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> deployed on the BNB Smart Chain. It aims to address core limitations in financial inclusivity and real-world crypto use-cases through a <strong>fully on-chain token economy</strong>.
             </p>
@@ -18,7 +18,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>2. Problem Statement</h2>
+            <h2><strong>2. Problem Statement</strong></h2>
             <p>
               The majority of token projects suffer from poor utility and low community incentives. Common problems include:
             </p>
@@ -34,7 +34,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2>3. Vision & Mission</h2>
+            <h2><strong>3. Vision & Mission</strong></h2>
             <h3>Vision:</h3>
             <p>
               Empower every generation with easy-to-use decentralized financial solutions backed by blockchain.
@@ -49,7 +49,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>4. Token Utility & Ecosystem</h2>
+            <h2><strong>4. Token Utility & Ecosystem</strong></h2>
             <p>EGLIFE Token will serve as the backbone of multiple applications:</p>
             <ol>
               <li><strong>Utility Payments:</strong> Recharge mobile, pay electricity, water, or gas bills using EGLIFE.</li>
@@ -62,7 +62,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>5. Technology Overview</h2>
+            <h2><strong>5. Technology Overview</strong></h2>
             <ul>
                 <li><strong>Blockchain:</strong> Binance Smart Chain (BNB Chain)</li>
                 <li><strong>Smart Contract Language:</strong> Solidity 0.8.20</li>
@@ -74,7 +74,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2>6. Smart Contract Design</h2>
+            <h2><strong>6. Smart Contract Design</strong></h2>
              <p>The EGLIFE smart contract includes the following core modules:</p>
             <ul>
               <li><strong>ERC20 Compliance:</strong> Uses OpenZeppelin standard.</li>
@@ -87,7 +87,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>7. Staking Mechanism</h2>
+            <h2><strong>7. Staking Mechanism</strong></h2>
             <p>EGLIFE introduces a simple yet powerful staking system:</p>
             <ul>
                 <li><strong>Minimum Lock Period:</strong> 30 days</li>
@@ -99,7 +99,7 @@ export default function WhitepaperPage() {
           </section>
           
           <section>
-              <h2>8. Airdrop & Referral System</h2>
+              <h2><strong>8. Airdrop & Referral System</strong></h2>
               <h3>Airdrop:</h3>
               <p>Owner distributes a fixed number of EGLIFE tokens to selected addresses. This promotes awareness and adoption.</p>
               <h3>Referral:</h3>
@@ -111,7 +111,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>9. Tokenomics</h2>
+            <h2><strong>9. Tokenomics</strong></h2>
             <h3>Token Distribution:</h3>
             <ul>
               <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
@@ -125,7 +125,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2>10. Roadmap</h2>
+            <h2><strong>10. Roadmap</strong></h2>
             <ul>
                 <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
                 <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
@@ -137,7 +137,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2>11. Legal & Regulatory Compliance</h2>
+            <h2><strong>11. Legal & Regulatory Compliance</strong></h2>
             <ul>
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
                 <li>It is a <strong>utility token</strong> built for use within EGLIFE and EGPAY ecosystem.</li>
@@ -148,7 +148,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2>12. Team</h2>
+            <h2><strong>12. Team</strong></h2>
             <ul>
                 <li><strong>Project Lead:</strong> Pawan Kumar</li>
                 <li><strong>Legal Advisor:</strong> Advocate Bhagwan Kumar (Enrollment No. BR/1490/2022)</li>
@@ -159,7 +159,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2>13. Risk Factors</h2>
+              <h2><strong>13. Risk Factors</strong></h2>
               <ul>
                   <li><strong>Crypto Market Volatility:</strong> Token prices may fluctuate.</li>
                   <li><strong>Regulatory Shifts:</strong> Government laws may impact operations.</li>
@@ -170,14 +170,14 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2>14. Conclusion</h2>
+              <h2><strong>14. Conclusion</strong></h2>
               <p>
                 EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGPAY ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
           <section>
-              <h2>15. Annexures</h2>
+              <h2><strong>15. Annexures</strong></h2>
               <ul>
                   <li><strong>Smart Contract:</strong> Verified on BscScan</li>
                   <li><strong>ABI & Bytecode:</strong> Available</li>
