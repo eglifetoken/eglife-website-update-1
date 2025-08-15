@@ -6,9 +6,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
-import { useState, useEffect } from "react"
+import { useAccount, useConnect, useBalance } from 'wagmi'
+import { injected } from 'wagmi/connectors'
+
+const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 
 const stakingTiers = [
     { tier: 1, amount: "10 - 100", apy: "12%" },
@@ -20,20 +23,12 @@ const stakingTiers = [
 ];
 
 export default function StakingPage() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const handleConnectWallet = () => {
-    setIsWalletConnected(true);
-  };
-
-  if (!isMounted) {
-    return null; // Or a loading spinner
-  }
+  const { address, isConnected } = useAccount()
+  const { connect } = useConnect()
+  const { data: balance } = useBalance({
+    address,
+    token: EGLIFE_TOKEN_CONTRACT,
+  })
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -42,15 +37,15 @@ export default function StakingPage() {
         <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn competitive rewards and support the ecosystem's growth.</p>
       </div>
       
-       {!isWalletConnected ? (
+       {!isConnected ? (
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-2xl">Connect Your Wallet</CardTitle>
                 <CardDescription>To view your balances and start staking, connect your BEP-20 compatible wallet.</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button onClick={handleConnectWallet} size="lg">
-                    <Link className="mr-2 h-5 w-5" />
+                <Button onClick={() => connect({ connector: injected() })} size="lg">
+                    <LinkIcon className="mr-2 h-5 w-5" />
                     Connect Wallet
                 </Button>
             </CardContent>
@@ -63,8 +58,8 @@ export default function StakingPage() {
                 <Wallet className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">10,530.00</div>
-                <p className="text-xs text-muted-foreground">~$2,632.50 USD</p>
+                <div className="text-2xl font-bold">{balance ? parseFloat(balance.formatted).toFixed(2) : '0.00'}</div>
+                <p className="text-xs text-muted-foreground">{balance?.symbol}</p>
             </CardContent>
             </Card>
             <Card>
@@ -73,8 +68,8 @@ export default function StakingPage() {
                 <Landmark className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">5,000.00</div>
-                <p className="text-xs text-muted-foreground">Locked for 365 days</p>
+                <div className="text-2xl font-bold">0.00</div>
+                 <p className="text-xs text-muted-foreground">Locked for 365 days</p>
             </CardContent>
             </Card>
             <Card>
@@ -83,7 +78,7 @@ export default function StakingPage() {
                 <PiggyBank className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">152.75</div>
+                <div className="text-2xl font-bold">0.00</div>
                 <p className="text-xs text-muted-foreground">Claimable anytime (min 1 EGLIFE)</p>
             </CardContent>
             </Card>
@@ -161,24 +156,24 @@ export default function StakingPage() {
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="stake-amount">Amount to Stake</Label>
-                        <Input id="stake-amount" type="number" placeholder="Min 10 EGLIFE" disabled={!isWalletConnected} />
+                        <Input id="stake-amount" type="number" placeholder="Min 10 EGLIFE" disabled={!isConnected} />
                     </div>
                     <p className="text-sm text-muted-foreground">Your stake will be locked for 365 days. Rewards start accruing immediately.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" disabled={!isWalletConnected}>Stake Now</Button>
+                    <Button className="w-full" disabled={!isConnected}>Stake Now</Button>
                     </CardFooter>
                 </TabsContent>
                 <TabsContent value="unstake">
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="unstake-amount">Amount to Unstake</Label>
-                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isWalletConnected} />
+                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isConnected} />
                     </div>
                     <p className="text-sm text-destructive">Warning: Early unstaking incurs a 5% penalty on your principal and forfeits unclaimed rewards.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" variant="destructive" disabled={!isWalletConnected}>Unstake Now</Button>
+                    <Button className="w-full" variant="destructive" disabled={!isConnected}>Unstake Now</Button>
                     </CardFooter>
                 </TabsContent>
                 </Tabs>

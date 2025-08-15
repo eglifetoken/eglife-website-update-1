@@ -1,13 +1,29 @@
+
+"use client";
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { bsc } from 'wagmi/chains';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const metadata: Metadata = {
-  title: 'Eglife Hub',
-  description: 'The central hub for the Eglife Token project.',
-};
+
+const config = createConfig({
+  chains: [bsc],
+  transports: {
+    [bsc.id]: http(),
+  },
+})
+
+const queryClient = new QueryClient()
+
+// export const metadata: Metadata = {
+//   title: 'Eglife Hub',
+//   description: 'The central hub for the Eglife Token project.',
+// };
 
 export default function RootLayout({
   children,
@@ -16,16 +32,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+       <head>
+        <title>Eglife Hub</title>
+        <meta name="description" content="The central hub for the Eglife Token project." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <Toaster />
+       <WagmiProvider config={config}>
+         <QueryClientProvider client={queryClient}>
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <Toaster />
+          </QueryClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );
