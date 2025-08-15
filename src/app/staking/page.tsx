@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
+import { useState } from "react"
 
 const stakingTiers = [
     { tier: 1, amount: "10 - 100", apy: "12%" },
@@ -19,6 +20,12 @@ const stakingTiers = [
 ];
 
 export default function StakingPage() {
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
+
+  const handleConnectWallet = () => {
+    setIsWalletConnected(true);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center md:text-left mb-8">
@@ -26,46 +33,63 @@ export default function StakingPage() {
         <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn competitive rewards and support the ecosystem's growth.</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium font-headline">Your EGLIFE Balance</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">10,530.00</div>
-            <p className="text-xs text-muted-foreground">~$2,632.50 USD</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium font-headline">Total Staked</CardTitle>
-            <Landmark className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5,000.00</div>
-            <p className="text-xs text-muted-foreground">Locked for 365 days</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium font-headline">Total Rewards Earned</CardTitle>
-            <PiggyBank className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">152.75</div>
-            <p className="text-xs text-muted-foreground">Claimable anytime (min 1 EGLIFE)</p>
-          </CardContent>
-        </Card>
-         <Card className="bg-primary/5 border-primary">
-          <CardHeader className="pb-2">
-             <CardTitle className="text-sm font-medium font-headline text-primary">Ready to Earn?</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <Button className="w-full">Claim Rewards</Button>
-          </CardContent>
-        </Card>
-      </div>
+       {!isWalletConnected && (
+         <Card className="mb-8 text-center">
+            <CardHeader>
+                <CardTitle className="font-headline text-2xl">Connect Your Wallet</CardTitle>
+                <CardDescription>To view your balances and start staking, connect your BEP-20 compatible wallet.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button onClick={handleConnectWallet} size="lg">
+                    <Link className="mr-2 h-5 w-5" />
+                    Connect Wallet
+                </Button>
+            </CardContent>
+         </Card>
+      )}
+
+      {isWalletConnected && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium font-headline">Your EGLIFE Balance</CardTitle>
+                <Wallet className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">10,530.00</div>
+                <p className="text-xs text-muted-foreground">~$2,632.50 USD</p>
+            </CardContent>
+            </Card>
+            <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium font-headline">Total Staked</CardTitle>
+                <Landmark className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">5,000.00</div>
+                <p className="text-xs text-muted-foreground">Locked for 365 days</p>
+            </CardContent>
+            </Card>
+            <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium font-headline">Total Rewards Earned</CardTitle>
+                <PiggyBank className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">152.75</div>
+                <p className="text-xs text-muted-foreground">Claimable anytime (min 1 EGLIFE)</p>
+            </CardContent>
+            </Card>
+            <Card className="bg-primary/5 border-primary">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium font-headline text-primary">Ready to Earn?</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Button className="w-full">Claim Rewards</Button>
+            </CardContent>
+            </Card>
+        </div>
+      )}
 
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
@@ -130,24 +154,24 @@ export default function StakingPage() {
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="stake-amount">Amount to Stake</Label>
-                        <Input id="stake-amount" type="number" placeholder="Min 10 EGLIFE" />
+                        <Input id="stake-amount" type="number" placeholder="Min 10 EGLIFE" disabled={!isWalletConnected} />
                     </div>
                     <p className="text-sm text-muted-foreground">Your stake will be locked for 365 days. Rewards start accruing immediately.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full">Stake Now</Button>
+                    <Button className="w-full" disabled={!isWalletConnected}>Stake Now</Button>
                     </CardFooter>
                 </TabsContent>
                 <TabsContent value="unstake">
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="unstake-amount">Amount to Unstake</Label>
-                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" />
+                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isWalletConnected} />
                     </div>
                     <p className="text-sm text-destructive">Warning: Early unstaking incurs a 5% penalty on your principal and forfeits unclaimed rewards.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" variant="destructive">Unstake Now</Button>
+                    <Button className="w-full" variant="destructive" disabled={!isWalletConnected}>Unstake Now</Button>
                     </CardFooter>
                 </TabsContent>
                 </Tabs>
@@ -169,3 +193,5 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    
