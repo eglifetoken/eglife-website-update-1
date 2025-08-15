@@ -12,10 +12,10 @@ const TwitterIcon = () => (
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-         <svg
+        <svg
             width="32"
             height="32"
-            viewBox="0 0 100 100"
+            viewBox="0 0 48 48"
             xmlns="http://www.w3.org/2000/svg"
             className="text-primary"
             >
@@ -25,11 +25,11 @@ const Logo = () => (
                 <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
                 </linearGradient>
             </defs>
+            <circle cx="24" cy="24" r="22" fill="url(#logoGradientFooter)" />
             <path
-                d="M85,20 H35 C25,20 20,25 20,35 V65 C20,75 25,80 35,80 H85 V65 H40 V52.5 H75 V35 H40 V20 Z"
-                fill="url(#logoGradientFooter)"
-                strokeWidth="5"
-                stroke="hsl(var(--primary) / 0.5)"
+                d="M32,13H18c-1.1,0-2,0.9-2,2v6h12v-4h-8v-2h8v-2z M18,33h14c1.1,0,2-0.9,2-2v-6H16v4h8v2h-8v2z M16,23h16v2H16v-2z"
+                fill="hsl(var(--primary-foreground))"
+                 style={{ textShadow: '1px 1px 3px hsl(var(--primary) / 0.5)' }}
             />
         </svg>
         <span 
