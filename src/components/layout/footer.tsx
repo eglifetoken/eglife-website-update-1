@@ -13,8 +13,8 @@ const TwitterIcon = () => (
 const Logo = () => (
     <div className="flex items-center gap-2">
         <svg
-            width="96"
-            height="96"
+            width="48"
+            height="48"
             viewBox="0 0 48 48"
             xmlns="http://www.w3.org/2000/svg"
             className="text-primary"
@@ -26,7 +26,7 @@ const Logo = () => (
                 </linearGradient>
             </defs>
             <circle cx="24" cy="24" r="22" fill="url(#logoGradientFooter)" />
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="64" fontWeight="bold" fontFamily="Alegreya">
+            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Alegreya">
                 E
             </text>
         </svg>
