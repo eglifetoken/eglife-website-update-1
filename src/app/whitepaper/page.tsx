@@ -329,12 +329,13 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>13. Team</strong></h2>
+            <p>The EGLIFE project is driven by a combination of experienced professionals and a decentralized network of contributors who are passionate about our vision. Our team structure prioritizes security, expertise, and community engagement.</p>
             <ul>
-                <li><strong>Project Lead:</strong> To be announced</li>
-                <li><strong>Legal Advisor:</strong> To be announced</li>
-                <li><strong>Developers:</strong> Anonymous Solidity Contributors (OpenZeppelin based)</li>
-                <li><strong>Advisors:</strong> To be announced</li>
-                <li><strong>Community Support:</strong> EGLIFE Volunteers across India</li>
+                <li><strong>Project Lead:</strong> To be announced. The strategic direction of the project is guided by an experienced lead who is deeply embedded in the blockchain industry. Their identity will be revealed at a strategic milestone to maximize impact and maintain focus on project development in the early stages.</li>
+                <li><strong>Legal Advisor:</strong> To be announced. We are in the process of engaging a legal advisor with specialized expertise in digital assets and international compliance to ensure the project navigates the regulatory landscape effectively.</li>
+                <li><strong>Developers:</strong> Anonymous Solidity Contributors. In line with DeFi best practices for security and privacy, our core development is handled by a team of vetted, anonymous contributors. Their expertise is evidenced by the quality and security of the smart contract, which is built upon industry-standard, audited OpenZeppelin libraries.</li>
+                <li><strong>Advisors:</strong> To be announced. We are assembling a board of advisors with diverse backgrounds in finance, technology, and community-building to provide strategic guidance and support the project's long-term growth.</li>
+                <li><strong>Community Support:</strong> EGLIFE Volunteers across India. The heart of our project is our vibrant and dedicated community. A network of volunteers across India provides on-the-ground support, drives local adoption, and ensures that the EGLIFE ecosystem remains closely connected to the needs of its users.</li>
             </ul>
           </section>
 
@@ -404,6 +405,7 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
 
