@@ -14,7 +14,7 @@ const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${E
 const ecosystemComponents = [
   {
     icon: Wallet,
-    title: "EGLIFE Wallet",
+    title: "Trade EGLIFE",
     description: "The central hub for managing your EGLIFE tokens and interacting with the ecosystem.",
     link: "/dashboard",
     status: "Live",
@@ -94,7 +94,7 @@ export default function DappPage() {
                 <CardDescription>{component.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-end">
-                {component.title === "EGLIFE Wallet" ? (
+                {component.title === "Trade EGLIFE" ? (
                   <div className="flex flex-col sm:flex-row gap-2 mt-4">
                      <Button asChild className="flex-1">
                         <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy EGLIFE</Link>
