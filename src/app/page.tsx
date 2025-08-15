@@ -73,7 +73,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-32 bg-primary/10 text-center">
+      <section className="w-full py-20 md:py-32 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
             Bridging Digital Assets & Everyday Life
