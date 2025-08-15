@@ -52,7 +52,6 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-3">
           <Logo />
-           <span className="font-headline text-xl font-bold">EGLIFE</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
@@ -78,7 +77,6 @@ export default function Header() {
               <div className="flex flex-col gap-6 p-6">
                 <Link href="/" className="flex items-center gap-3 mb-4">
                  <Logo />
-                 <span className="font-headline text-xl font-bold">EGLIFE</span>
                 </Link>
                 {navLinks.map(link => (
                   <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
