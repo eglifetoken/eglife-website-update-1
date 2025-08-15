@@ -42,7 +42,7 @@ const Logo = () => (
             className="font-headline text-2xl font-bold"
             style={{ textShadow: '1px 1px 3px hsl(var(--primary) / 0.3)' }}
         >
-            EGLIFE TOKEN
+            EGLIFE
         </span>
     </div>
 );
