@@ -8,21 +8,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, YAxis } from "recharts";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
-const chartData = [
-  { price: 0.23 },
-  { price: 0.24 },
-  { price: 0.22 },
-  { price: 0.25 },
-  { price: 0.26 },
-  { price: 0.24 },
-  { price: 0.27 },
-];
+const generateChartData = (basePrice: number) => {
+  const data = [];
+  let currentPrice = basePrice * (1 - (Math.random() * 0.1 - 0.05)); // Start slightly off
+  for (let i = 0; i < 15; i++) {
+    data.push({ price: currentPrice });
+    currentPrice *= (1 + (Math.random() * 0.04 - 0.02)); // smaller fluctuations
+  }
+  // Ensure the last point is close to the live price
+  data[data.length - 1] = { price: basePrice };
+  return data;
+}
 
 
 const ecosystemComponents = [
@@ -84,6 +86,7 @@ const ecosystemComponents = [
 
 export default function DappPage() {
   const [livePrice, setLivePrice] = useState(0.25);
+  const [chartData, setChartData] = useState(generateChartData(0.25));
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -92,16 +95,16 @@ export default function DappPage() {
       setLivePrice(prevPrice => {
         const change = (Math.random() - 0.5) * 0.02;
         const newPrice = prevPrice + change;
-        return newPrice > 0 ? newPrice : 0.01;
+        if (newPrice > 0) {
+            setChartData(prevData => [...prevData.slice(1), { price: newPrice }]);
+            return newPrice;
+        }
+        return 0.01;
       });
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  if (!isClient) {
-    // Render a skeleton or null on the server to avoid hydration mismatch
-    return null; 
-  }
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -133,9 +136,10 @@ export default function DappPage() {
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex items-baseline gap-2">
                             <DollarSign className="h-5 w-5 text-muted-foreground" />
-                            <span className="text-2xl font-bold">${livePrice.toFixed(4)}</span>
+                             {isClient ? <span className="text-2xl font-bold">${livePrice.toFixed(4)}</span> : <span className="text-2xl font-bold">$0.2500</span>}
                         </div>
                         <div className="h-10 w-24">
+                           {isClient && (
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
                                     <defs>
@@ -155,9 +159,11 @@ export default function DappPage() {
                                       labelFormatter={() => ''}
                                       formatter={(value:any) => [`$${Number(value).toFixed(4)}`, 'Price']}
                                     />
+                                    <YAxis domain={['dataMin', 'dataMax']} hide />
                                     <Area type="monotone" dataKey="price" stroke="hsl(var(--accent))" fill="url(#chartGradient)" />
                                 </AreaChart>
                             </ResponsiveContainer>
+                           )}
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2">
