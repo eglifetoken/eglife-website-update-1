@@ -39,6 +39,7 @@ export async function loginUser(values: z.infer<typeof loginFormSchema>) {
 const registerFormSchema = z.object({
     name: z.string(),
     email: z.string().email(),
+    mobile: z.string(),
     password: z.string(),
     dob: z.date(),
     country: z.string(),
@@ -48,6 +49,7 @@ const registerFormSchema = z.object({
     postalCode: z.string(),
     aadhar: z.string(),
     pan: z.string(),
+    referralCode: z.string().optional(),
     kycConsent: z.boolean(),
 });
 
@@ -57,3 +59,5 @@ export async function registerUser(values: z.infer<typeof registerFormSchema>) {
     // In a real app, you would create a new user and trigger a KYC verification flow here.
     return { success: true, message: "Registration successful!" };
 }
+
+    

@@ -34,6 +34,7 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
+  mobile: z.string().regex(/^\d{10}$/, { message: "Please enter a valid 10-digit mobile number."}),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
@@ -82,6 +83,7 @@ export function RegisterForm() {
         defaultValues: {
             name: "",
             email: "",
+            mobile: "",
             password: "",
             referralCode: "",
             kycConsent: false,
@@ -184,6 +186,19 @@ export function RegisterForm() {
                 />
                 <FormField
                 control={form.control}
+                name="mobile"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Mobile Number</FormLabel>
+                    <FormControl>
+                        <Input type="tel" placeholder="9876543210" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
                 name="email"
                 render={({ field }) => (
                     <FormItem>
@@ -199,7 +214,7 @@ export function RegisterForm() {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="md:col-span-2">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                         <Input type="password" placeholder="••••••••" {...field} />
@@ -411,3 +426,5 @@ export function RegisterForm() {
     </Form>
   )
 }
+
+    
