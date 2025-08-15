@@ -6,9 +6,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
-import { useAccount, useConnect, useBalance, useWriteContract } from 'wagmi'
+import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
@@ -54,6 +54,7 @@ export default function StakingPage() {
 
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
+  const { disconnect } = useDisconnect()
   const { data: balance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
@@ -121,6 +122,22 @@ export default function StakingPage() {
             </CardContent>
          </Card>
       )}
+      
+       {isClient && isConnected && (
+         <Card className="mb-8 text-center">
+            <CardHeader>
+                <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
+                <CardDescription>Your wallet is connected. You can now stake or unstake your tokens.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button onClick={() => disconnect()} variant="outline">
+                    <Link2Off className="mr-2 h-5 w-5" />
+                    Disconnect Wallet
+                </Button>
+            </CardContent>
+         </Card>
+      )}
+
 
       {isClient && isConnected && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
