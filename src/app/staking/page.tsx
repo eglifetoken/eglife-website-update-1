@@ -54,12 +54,13 @@ export default function StakingPage() {
 
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
-  const { data: balance } = useBalance({
+  const { data: balance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
   })
 
   const [stakeAmount, setStakeAmount] = useState("");
+  const [totalStaked, setTotalStaked] = useState(0.00);
   const { toast } = useToast();
   const { writeContract, isPending } = useWriteContract();
 
@@ -84,6 +85,8 @@ export default function StakingPage() {
                 title: "Staking Successful!",
                 description: `You have successfully staked ${stakeAmount} EGLIFE.`,
             });
+            setTotalStaked(prevStaked => prevStaked + parseFloat(stakeAmount));
+            refetchBalance();
             setStakeAmount("");
         },
         onError: (error) => {
@@ -137,7 +140,7 @@ export default function StakingPage() {
                 <Landmark className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">0.00</div>
+                <div className="text-2xl font-bold">{totalStaked.toFixed(2)}</div>
                  <p className="text-xs text-muted-foreground">Locked for 365 days</p>
             </CardContent>
             </Card>
@@ -213,6 +216,7 @@ export default function StakingPage() {
         </div>
 
         <div>
+           {isClient && (
             <Card>
                 <Tabs defaultValue="stake" className="w-full">
                 <CardHeader>
@@ -229,7 +233,7 @@ export default function StakingPage() {
                            id="stake-amount" 
                            type="number" 
                            placeholder="Min 10 EGLIFE" 
-                           disabled={!isClient || !isConnected || isPending}
+                           disabled={!isConnected || isPending}
                            value={stakeAmount}
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
@@ -239,7 +243,7 @@ export default function StakingPage() {
                     <CardFooter>
                     <Button 
                         className="w-full" 
-                        disabled={!isClient || !isConnected || isPending || !stakeAmount}
+                        disabled={!isConnected || isPending || !stakeAmount}
                         onClick={handleStake}
                     >
                         {isPending ? "Staking..." : "Stake Now"}
@@ -250,16 +254,17 @@ export default function StakingPage() {
                     <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="unstake-amount">Amount to Unstake</Label>
-                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isClient || !isConnected} />
+                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isConnected} />
                     </div>
                     <p className="text-sm text-destructive">Warning: Early unstaking incurs a 5% penalty on your principal and forfeits unclaimed rewards.</p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" variant="destructive" disabled={!isClient || !isConnected}>Unstake Now</Button>
+                    <Button className="w-full" variant="destructive" disabled={!isConnected}>Unstake Now</Button>
                     </CardFooter>
                 </TabsContent>
                 </Tabs>
             </Card>
+           )}
 
             <Card className="mt-8">
                  <CardHeader className="flex-row items-center gap-3 space-y-0">
@@ -277,3 +282,5 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    
