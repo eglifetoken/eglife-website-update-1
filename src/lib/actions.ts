@@ -40,14 +40,20 @@ const registerFormSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
+    dob: z.date(),
     country: z.string(),
+    address: z.string(),
+    city: z.string(),
+    state: z.string(),
+    postalCode: z.string(),
+    aadhar: z.string(),
+    pan: z.string(),
     kycConsent: z.boolean(),
-    referralCode: z.string().optional(),
 });
 
 export async function registerUser(values: z.infer<typeof registerFormSchema>) {
     await new Promise(resolve => setTimeout(resolve, 1000));
     console.log("Registration attempt:", values);
-    // In a real app, you would create a new user here.
+    // In a real app, you would create a new user and trigger a KYC verification flow here.
     return { success: true, message: "Registration successful!" };
 }
