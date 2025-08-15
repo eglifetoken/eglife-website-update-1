@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Target, Eye, CheckCircle, GitCommit, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -76,10 +76,10 @@ export default function Home() {
       <section className="w-full py-20 md:py-32 bg-primary/10 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Welcome to EGLIFE TOKEN
+            Bridging Digital Assets & Everyday Life
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            EGLIFE Token is a decentralized BEP-20 cryptocurrency on the BNB Smart Chain, meticulously designed to build a real-world, utility-based token economy that bridges the gap between digital assets and everyday life. Our mission is to tackle the core challenges hindering crypto's mainstream adoption by providing genuine, practical use-cases. Through the EGPAY ecosystem, EGLIFE transforms from a simple digital currency into a powerful tool for daily financial management, allowing users to seamlessly pay for utility bills, recharge services, and transact with unparalleled ease. We are building a transparent, inclusive, and self-sustaining financial ecosystem for everyone.
+            EGLIFE is a decentralized BEP-20 token on the BNB Smart Chain, designed to build a real-world, utility-based economy. We transform crypto from a speculative asset into a powerful tool for daily finance, enabling seamless utility payments, staking rewards, and community participation.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
@@ -91,9 +91,69 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+       <section className="w-full py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-stretch">
+            <Card className="flex flex-col">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
+                    <Eye className="w-8 h-8" />
+                  </div>
+                  <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col">
+                <Image
+                  src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=600"
+                  alt="Financial technology"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-lg mb-6 w-full"
+                  data-ai-hint="financial technology"
+                />
+                <p className="text-xl text-foreground/80 leading-relaxed">
+                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="flex flex-col">
+               <CardHeader>
+                 <div className="flex items-center gap-4">
+                    <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
+                      <Users className="w-8 h-8" />
+                    </div>
+                    <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
+                 </div>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col">
+                  <ul className="space-y-4 text-lg text-foreground/80">
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Provide Real Utility:</strong> To move beyond speculation by enabling EGLIFE for daily transactions like utility payments and merchant services, making crypto a practical tool for everyone.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Encourage Mass Adoption:</strong> To design intuitive, user-friendly applications and educational resources that remove barriers to entry, making it easy for anyone to join the digital economy.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Deliver Transparency:</strong> To build trust through verifiable on-chain operations and open-source smart contracts, ensuring every transaction and process is clear and auditable by our community.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
+                      </li>
+                  </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       <section className="w-full py-16 md:py-24 container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">EGLIFE Token Dashboard</h2>
+        <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Live Market Data</h2>
       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>
@@ -152,8 +212,8 @@ export default function Home() {
 
         <Card>
             <CardHeader>
-            <CardTitle className="font-headline">Live Price Chart</CardTitle>
-            <CardDescription>Live EGLIFE price chart from GeckoTerminal.</CardDescription>
+            <CardTitle className="font-headline">EGLIFE Price Chart</CardTitle>
+            <CardDescription>Live data from GeckoTerminal.</CardDescription>
             </CardHeader>
             <CardContent className="h-[500px] p-0">
             <iframe
@@ -176,62 +236,6 @@ export default function Home() {
                 </Button>
             </CardFooter>
         </Card>
-      </section>
-
-
-      <section className="w-full py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-stretch">
-            <Card className="flex flex-col">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="inline-block bg-primary/10 text-primary p-3 rounded-full">
-                    <Eye className="w-8 h-8" />
-                  </div>
-                  <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow flex flex-col">
-                <Image
-                  src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=600"
-                  alt="Financial technology"
-                  width={600}
-                  height={400}
-                  className="rounded-lg shadow-lg mb-6 w-full"
-                  data-ai-hint="financial technology"
-                />
-                <p className="text-xl text-foreground/80 leading-relaxed">
-                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="flex flex-col">
-               <CardHeader>
-                 <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
-              </CardHeader>
-              <CardContent className="flex-grow flex flex-col">
-                  <ul className="space-y-4 text-lg text-foreground/80">
-                      <li className="flex items-start">
-                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                          <span><strong>Provide Real Utility:</strong> To move beyond speculation by enabling EGLIFE for daily transactions like utility payments and merchant services, making crypto a practical tool for everyone.</span>
-                      </li>
-                      <li className="flex items-start">
-                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                          <span><strong>Encourage Mass Adoption:</strong> To design intuitive, user-friendly applications and educational resources that remove barriers to entry, making it easy for anyone to join the digital economy.</span>
-                      </li>
-                      <li className="flex items-start">
-                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                          <span><strong>Deliver Transparency:</strong> To build trust through verifiable on-chain operations and open-source smart contracts, ensuring every transaction and process is clear and auditable by our community.</span>
-                      </li>
-                      <li className="flex items-start">
-                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                          <span><strong>Create a Self-Sustaining Ecosystem:</strong> To build a circular economy where users can earn rewards through staking and then spend those rewards on real-world services, all within a single, integrated platform.</span>
-                      </li>
-                  </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
       </section>
 
        <section className="w-full py-16 md:py-24">
@@ -267,4 +271,5 @@ export default function Home() {
       </section>
     </div>
   );
-}
+
+    
