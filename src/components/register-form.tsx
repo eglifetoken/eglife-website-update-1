@@ -41,7 +41,7 @@ export function RegisterForm() {
             name: "",
             email: "",
             password: "",
-            referralCode: "EGLIFE-SIGNUP",
+            referralCode: "",
         },
     })
 
