@@ -137,46 +137,110 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>8. Staking Mechanism</strong></h2>
-            <p>
-                The EGLIFE staking mechanism is a core component of our ecosystem, designed to reward long-term token holders, promote network stability, and give the community a direct stake in our collective success. Our approach is built on the principles of transparency, simplicity, and security, with all operations executed trustlessly on the BNB Smart Chain.
-            </p>
-            <h3><strong>Staking Plan & Rewards</strong></h3>
-            <p>
-                Our staking plan is straightforward and accessible to all token holders. By participating, users lock their EGLIFE tokens in our audited smart contract and earn rewards in return.
-            </p>
+            <h2><strong>8. Staking & Referral Plans</strong></h2>
+            <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY)</strong></h3>
+            <h4>Rules</h4>
             <ul>
-                <li><strong>Reward Rate:</strong> Participants will earn a fixed reward of <strong>5%</strong> on their staked amount.</li>
-                <li><strong>Minimum Lock-up Period:</strong> To ensure network stability, all staked tokens are subject to a mandatory <strong>30-day lock-up period</strong>. After this period, users are free to withdraw their principal and rewards at any time.</li>
-                <li><strong>Reward Distribution:</strong> The 5% reward is <strong>minted and transferred to the user automatically upon withdrawal</strong>. This is done by the smart contract when the `unstake` function is successfully called. This minting mechanism ensures that rewards are generated on-demand and are not held in a separate treasury, providing full transparency.</li>
+              <li><strong>Minimum Stake:</strong> 10 EGLIFE</li>
+              <li><strong>Maximum Stake:</strong> Unlimited</li>
+              <li><strong>Lock Period:</strong> 365 Days (principal locked, rewards claimable anytime)</li>
+              <li><strong>Minimum Reward Withdrawal:</strong> 1 EGLIFE</li>
+              <li><strong>Early Unstake Penalty:</strong> 5% of staked amount + loss of unclaimed rewards</li>
+              <li><strong>Reward Claim:</strong> Anytime after reaching 1 EGLIFE</li>
+              <li><strong>Payout Token:</strong> EGLIFE (BEP-20)</li>
+              <li><strong>APY Control:</strong> Admin can change APY % for each tier anytime without redeploying contract</li>
             </ul>
-            <h3><strong>How It Works: A Trustless On-Chain Process</strong></h3>
-            <p>
-                The entire staking process is handled by our smart contract, eliminating the need for intermediaries and ensuring that users have full control over their funds.
-            </p>
-            <ol>
-                <li><strong>Staking:</strong> A user calls the <code>stake(amount)</code> function in the smart contract, specifying the number of EGLIFE tokens they wish to lock. The contract then securely holds these tokens and records the stake details, including the amount and start time.</li>
-                <li><strong>Lock-up:</strong> The tokens remain locked for the 30-day minimum period. During this time, they cannot be withdrawn or transferred.</li>
-                <li><strong>Unstaking:</strong> Once the 30-day period has passed, the user can call the <code>unstake()</code> function. The smart contract verifies that the lock-up period is complete, mints a 5% reward based on the original staked amount, and transfers both the principal and the newly minted reward back to the user’s wallet in a single, atomic transaction.</li>
-            </ol>
-            <p>This on-chain process is <strong>fully automated and does not require manual approval</strong>, providing a secure, reliable, and trustless experience for all participants.</p>
-            <p><strong>Staking Contract Address:</strong> <a href="https://bscscan.com/address/0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6" target="_blank" rel="noopener noreferrer">0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6</a></p>
+            <h4>Tiered APY Rates (Initial – Editable by Admin)</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tier</th>
+                  <th>Staking Amount (EGLIFE)</th>
+                  <th>APY</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tier 1</td>
+                  <td>10 – 100</td>
+                  <td>12%</td>
+                </tr>
+                <tr>
+                  <td>Tier 2</td>
+                  <td>101 – 500</td>
+                  <td>18%</td>
+                </tr>
+                <tr>
+                  <td>Tier 3</td>
+                  <td>501 – 1,000</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td>Tier 4</td>
+                  <td>1,001 – 5,000</td>
+                  <td>22%</td>
+                </tr>
+                <tr>
+                  <td>Tier 5</td>
+                  <td>5,001 – 10,000</td>
+                  <td>24%</td>
+                </tr>
+                 <tr>
+                  <td>Tier 6</td>
+                  <td>10,001+</td>
+                  <td>26%</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4>Reward Formula</h4>
+            <p><code>Daily Reward = (Staked Amount × APY %) ÷ 365</code></p>
+            <h4>Example Daily Earnings (Current APY)</h4>
+            <ul>
+              <li>50 EGLIFE @ 12% → 0.0164 EGLIFE/day</li>
+              <li>200 EGLIFE @ 18% → 0.0986 EGLIFE/day</li>
+              <li>800 EGLIFE @ 20% → 0.4384 EGLIFE/day</li>
+              <li>3,000 EGLIFE @ 22% → 1.8082 EGLIFE/day</li>
+              <li>7,000 EGLIFE @ 24% → 4.6027 EGLIFE/day</li>
+              <li>15,000 EGLIFE @ 26% → 10.6849 EGLIFE/day</li>
+            </ul>
+
+            <h3><strong>EGLIFE Token – Multi-Level Referral Plan</strong></h3>
+            <h4>Referral Rules</h4>
+            <ul>
+              <li><strong>Eligibility:</strong> Referrer must have an active stake of at least 10 EGLIFE</li>
+              <li><strong>Bonus Payout:</strong> Paid instantly in EGLIFE (BEP-20)</li>
+              <li><strong>Bonus Source:</strong> From staking deposits of referred users</li>
+              <li><strong>Admin Control:</strong> Can adjust referral % for each level anytime</li>
+            </ul>
+            <h4>Referral Bonus Structure (Initial – Editable by Admin)</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Level</th>
+                  <th>Bonus % of Staked Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Level 1</td><td>10%</td></tr>
+                <tr><td>Level 2</td><td>5%</td></tr>
+                <tr><td>Level 3</td><td>3%</td></tr>
+                <tr><td>Level 4</td><td>2%</td></tr>
+                <tr><td>Level 5</td><td>1%</td></tr>
+                <tr><td>Level 6</td><td>1%</td></tr>
+                <tr><td>Level 7</td><td>0.5%</td></tr>
+                <tr><td>Level 8</td><td>0.5%</td></tr>
+                <tr><td>Level 9</td><td>0.25%</td></tr>
+                <tr><td>Level 10</td><td>0.25%</td></tr>
+                <tr><td>Beyond 10 Levels</td><td>0.1% Royalty (unlimited depth)</td></tr>
+              </tbody>
+            </table>
+            <h4>Example Referral Bonus (Level 1)</h4>
+            <p>If your referral stakes 1,000 EGLIFE:<br/>
+            <code>Referral Bonus = 1,000 × 10% = 100 EGLIFE (Paid instantly to your wallet)</code></p>
           </section>
           
           <section>
-              <h2><strong>9. Airdrop & Referral System</strong></h2>
-              <h3><strong>Airdrop:</strong></h3>
-              <p>Owner distributes a fixed number of EGLIFE tokens to selected addresses. This promotes awareness and adoption.</p>
-              <h3><strong>Referral:</strong></h3>
-              <ul>
-                  <li>Every airdrop participant gets a referral code (Google Form backend)</li>
-                  <li>On valid referral, the referrer receives a <strong>10% bonus</strong></li>
-                  <li>System tracks wallet addresses and referrer mappings using Google Sheets or Firebase</li>
-              </ul>
-          </section>
-
-          <section>
-            <h2><strong>10. Tokenomics</strong></h2>
+            <h2><strong>9. Tokenomics</strong></h2>
             <h3><strong>Token Distribution:</strong></h3>
             <ul>
               <li><strong>Public Airdrop:</strong> 10% (100,000,000)</li>
@@ -190,7 +254,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>11. Roadmap</strong></h2>
+            <h2><strong>10. Roadmap</strong></h2>
             <ul>
                 <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
                 <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
@@ -202,7 +266,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2><strong>12. Legal & Regulatory Compliance</strong></h2>
+            <h2><strong>11. Legal & Regulatory Compliance</strong></h2>
             <ul>
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
                 <li>It is a <strong>utility token</strong> built for use within the EGLIFE ecosystem.</li>
@@ -212,7 +276,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-            <h2><strong>13. Team</strong></h2>
+            <h2><strong>12. Team</strong></h2>
             <ul>
                 <li><strong>Project Lead:</strong> To be announced</li>
                 <li><strong>Legal Advisor:</strong> To be announced</li>
@@ -223,7 +287,7 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>14. Risk Factors</strong></h2>
+              <h2><strong>13. Risk Factors</strong></h2>
               <ul>
                   <li><strong>Crypto Market Volatility:</strong> Token prices may fluctuate.</li>
                   <li><strong>Regulatory Shifts:</strong> Government laws may impact operations.</li>
@@ -234,14 +298,14 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>15. Conclusion</strong></h2>
+              <h2><strong>14. Conclusion</strong></h2>
               <p>
                 EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGLIFE ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
           <section>
-              <h2><strong>16. Annexures</strong></h2>
+              <h2><strong>15. Annexures</strong></h2>
               <ul>
                   <li><strong>Smart Contract:</strong> Verified on BscScan</li>
                   <li><strong>ABI & Bytecode:</strong> Available</li>
@@ -256,6 +320,7 @@ export default function WhitepaperPage() {
   }
 
     
+
 
 
 
