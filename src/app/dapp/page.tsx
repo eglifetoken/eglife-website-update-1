@@ -1,30 +1,99 @@
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wallet } from "lucide-react";
+import { ArrowRight, Briefcase, Landmark, ShoppingCart, Users, Vote, Wallet } from "lucide-react";
+import Link from "next/link";
+
+const ecosystemComponents = [
+  {
+    icon: Wallet,
+    title: "EGLIFE Wallet",
+    description: "The central hub for managing your EGLIFE tokens and interacting with the ecosystem.",
+    link: "/dapp",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "digital wallet"
+  },
+  {
+    icon: Landmark,
+    title: "Token Staking",
+    description: "Stake your EGLIFE tokens to earn competitive rewards and help secure the network.",
+    link: "/staking",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "bank building"
+  },
+   {
+    icon: Briefcase,
+    title: "EGPAY Services",
+    description: "Pay for utility bills and other services directly with your EGLIFE tokens.",
+    link: "/services",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "briefcase"
+  },
+  {
+    icon: Users,
+    title: "Referral Program",
+    description: "Earn bonuses by inviting new users to join the EGLIFE staking platform.",
+    link: "/whitepaper",
+    status: "Upcoming",
+    statusVariant: "secondary",
+    aiHint: "people network"
+  },
+  {
+    icon: Vote,
+    title: "Community Governance",
+    description: "Participate in key project decisions by voting with your staked EGLIFE.",
+    link: "#",
+    status: "Upcoming",
+    statusVariant: "secondary",
+    aiHint: "voting box"
+  },
+  {
+    icon: ShoppingCart,
+    title: "Merchant Gateway",
+    description: "Accept EGLIFE as payment for goods and services at your business.",
+    link: "#",
+    status: "Upcoming",
+    statusVariant: "secondary",
+    aiHint: "shopping cart"
+  },
+];
 
 export default function DappPage() {
   return (
-    <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 flex items-center justify-center min-h-[calc(100vh-10rem)]">
-      <Card className="max-w-md w-full text-center">
-        <CardHeader>
-          <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
-            <Wallet className="h-12 w-12 text-primary" />
-          </div>
-          <CardTitle className="text-3xl font-headline">Eglife DApp</CardTitle>
-          <CardDescription>The gateway to the Eglife Token ecosystem.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-6 text-foreground/80">
-            Connect your wallet to interact with our staking platform, participate in governance, and access exclusive features.
-          </p>
-          <Button size="lg" className="w-full">
-            Connect Wallet
-          </Button>
-          <p className="text-xs text-muted-foreground mt-4">
-            The full DApp is under development. This button is a placeholder for wallet integration.
-          </p>
-        </CardContent>
-      </Card>
+    <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
+       <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-headline font-bold">Eglife Ecosystem</h1>
+        <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
+          Explore the suite of tools and platforms that make up the Eglife universe. Each component is designed to add real-world utility to your tokens.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {ecosystemComponents.map((component) => {
+          const Icon = component.icon;
+          return (
+            <Card key={component.title} className="flex flex-col hover:shadow-lg transition-shadow">
+               <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div className="p-3 bg-primary/10 rounded-md w-fit">
+                        <Icon className="h-8 w-8 text-primary" />
+                    </div>
+                    <Badge variant={component.statusVariant as any}>{component.status}</Badge>
+                </div>
+                <CardTitle className="font-headline pt-4">{component.title}</CardTitle>
+                <CardDescription>{component.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow flex items-end">
+                <Link href={component.link} className="text-sm font-medium text-accent hover:underline flex items-center">
+                    Explore <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 }
