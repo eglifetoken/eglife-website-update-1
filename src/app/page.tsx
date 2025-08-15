@@ -106,14 +106,6 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col">
-                <Image
-                  src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=600"
-                  alt="Financial technology"
-                  width={600}
-                  height={400}
-                  className="rounded-lg shadow-lg mb-6 w-full"
-                  data-ai-hint="financial technology"
-                />
                 <p className="text-xl text-foreground/80 leading-relaxed">
                    Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
                 </p>
