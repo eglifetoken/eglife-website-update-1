@@ -1,8 +1,15 @@
 
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Briefcase, Landmark, ShoppingCart, Users, Vote, Wallet } from "lucide-react";
 import Link from "next/link";
+
+const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
+const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
+const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
+
 
 const ecosystemComponents = [
   {
@@ -86,10 +93,21 @@ export default function DappPage() {
                 <CardTitle className="font-headline pt-4">{component.title}</CardTitle>
                 <CardDescription>{component.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow flex items-end">
-                <Link href={component.link} className="text-sm font-medium text-accent hover:underline flex items-center">
-                    Explore <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
+              <CardContent className="flex-grow flex flex-col justify-end">
+                {component.title === "EGLIFE Wallet" ? (
+                  <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                     <Button asChild className="flex-1">
+                        <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy EGLIFE</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="flex-1">
+                        <Link href={PANCAKESWAP_SELL_URL} target="_blank" rel="noopener noreferrer">Sell EGLIFE</Link>
+                    </Button>
+                  </div>
+                ) : (
+                  <Link href={component.link} className="text-sm font-medium text-accent hover:underline flex items-center mt-4">
+                      Explore <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                )}
               </CardContent>
             </Card>
           );
