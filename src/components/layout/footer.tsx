@@ -18,8 +18,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/egli-logo.png" alt="Egli Life Token Logo" width={32} height={32} />
-              <span className="text-2xl font-bold font-headline">Egli Hub</span>
+              <Image src="/egli-logo.png" alt="Eglife Token Logo" width={32} height={32} />
+              <span className="text-2xl font-bold font-headline">Eglife Hub</span>
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
           </div>
@@ -44,12 +44,12 @@ export default function Footer() {
             <h3 className="text-lg font-headline font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
               <Button asChild variant="ghost" size="icon">
-                <a href="https://x.com/eglitoken" target="_blank" rel="noopener noreferrer" aria-label="Egli Token on X">
+                <a href="https://x.com/eglitoken" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on X">
                   <TwitterIcon />
                 </a>
               </Button>
               <Button asChild variant="ghost" size="icon">
-                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Egli Token on Telegram">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Eglife Token on Telegram">
                   <Send className="h-5 w-5" />
                 </a>
               </Button>
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Egli Hub. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Eglife Hub. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

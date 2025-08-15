@@ -5,14 +5,14 @@ const roadmapData = [
   {
     date: "Q2 2023",
     title: "Project Inception",
-    description: "Initial idea and concept development for the Egli Life Token. Core team formation and initial whitepaper draft.",
+    description: "Initial idea and concept development for the Eglife Token. Core team formation and initial whitepaper draft.",
     icon: Lightbulb,
     status: "completed",
   },
   {
     date: "Q3 2023",
     title: "Token Launch (IDO)",
-    description: "Successful Initial DEX Offering. EGLI token becomes publicly available for trading.",
+    description: "Successful Initial DEX Offering. EGLIFE token becomes publicly available for trading.",
     icon: Rocket,
     status: "completed",
   },
@@ -26,7 +26,7 @@ const roadmapData = [
   {
     date: "Q1 2024",
     title: "Staking Platform Launch",
-    description: "Launch of the official EGLI staking platform, allowing holders to earn passive rewards.",
+    description: "Launch of the official EGLIFE staking platform, allowing holders to earn passive rewards.",
     icon: GitCommit,
     status: "completed",
   },
@@ -47,7 +47,7 @@ const roadmapData = [
   {
     date: "Q4 2024",
     title: "Wellness Platform Integration",
-    description: "Partnering with wellness apps to integrate EGLI as a rewards token for healthy activities.",
+    description: "Partnering with wellness apps to integrate EGLIFE as a rewards token for healthy activities.",
     icon: Lightbulb,
     status: "upcoming",
   },
@@ -64,7 +64,7 @@ export default function RoadmapPage() {
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-headline font-bold">Our Roadmap</h1>
-        <p className="text-lg text-foreground/80 mt-2">Follow our journey as we build the future of the Egli ecosystem.</p>
+        <p className="text-lg text-foreground/80 mt-2">Follow our journey as we build the future of the Eglife ecosystem.</p>
       </div>
 
       <div className="relative">

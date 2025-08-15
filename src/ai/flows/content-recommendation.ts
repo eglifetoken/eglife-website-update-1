@@ -36,7 +36,7 @@ const prompt = ai.definePrompt({
   name: 'recommendContentPrompt',
   input: {schema: RecommendContentInputSchema},
   output: {schema: RecommendContentOutputSchema},
-  prompt: `You are a content recommendation engine for the Egli Life Token project.
+  prompt: `You are a content recommendation engine for the Eglife Token project.
 
   Based on the user's interests, provide personalized content recommendations sourced exclusively from eglifetoken.xyz.
 

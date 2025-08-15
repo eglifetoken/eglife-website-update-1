@@ -56,7 +56,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Live Token Price</CardTitle>
-            <CardDescription>Real-time price of Egli Life Token (EGLI)</CardDescription>
+            <CardDescription>Real-time price of Eglife Token (EGLIFE)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-4">
@@ -72,7 +72,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Price History</CardTitle>
-            <CardDescription>Historical price data for EGLI</CardDescription>
+            <CardDescription>Historical price data for EGLIFE</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px] w-full">

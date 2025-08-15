@@ -10,10 +10,10 @@ export default function Home() {
       <section className="w-full py-20 md:py-32 bg-primary/10 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Welcome to Egli Hub
+            Welcome to Eglife Hub
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            Discover the Egli Life Token, a project dedicated to fostering wellness, sustainability, and community. Join us in making a positive impact on the world.
+            Discover the Eglife Token, a project dedicated to fostering wellness, sustainability, and community. Join us in making a positive impact on the world.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
@@ -72,7 +72,7 @@ export default function Home() {
           <div>
             <Image 
               src="https://placehold.co/600x400.png"
-              alt="Egli Life Token"
+              alt="Eglife Token"
               width={600}
               height={400}
               className="rounded-lg shadow-xl"
@@ -80,9 +80,9 @@ export default function Home() {
             />
           </div>
           <div>
-            <h2 className="text-3xl md:text-4xl font-headline font-bold mb-6">About the Egli Life Token</h2>
+            <h2 className="text-3xl md:text-4xl font-headline font-bold mb-6">About the Eglife Token</h2>
             <p className="text-lg text-foreground/80 mb-4">
-              The Egli Life Token (EGLI) is more than just a cryptocurrency. It's the key to a new ecosystem designed to reward positive actions and fund projects that align with our core values.
+              The Eglife Token (EGLIFE) is more than just a cryptocurrency. It's the key to a new ecosystem designed to reward positive actions and fund projects that align with our core values.
             </p>
             <ul className="space-y-3">
               <li className="flex items-start">

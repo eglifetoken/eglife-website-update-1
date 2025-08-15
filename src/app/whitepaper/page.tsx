@@ -2,7 +2,7 @@ export default function WhitepaperPage() {
     return (
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
         <article className="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-h1:font-headline prose-h2:font-headline prose-h3:font-headline prose-headings:text-primary prose-a:text-accent hover:prose-a:text-accent/80">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Egli Life Token Whitepaper</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Eglife Token Whitepaper</h1>
           <p className="text-lg text-muted-foreground">Version 1.0 - Last Updated: June 2024</p>
   
           <section>
@@ -16,7 +16,7 @@ export default function WhitepaperPage() {
           </section>
   
           <section>
-            <h2>2. The Egli Ecosystem</h2>
+            <h2>2. The Eglife Ecosystem</h2>
             <p>
               Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue.
             </p>

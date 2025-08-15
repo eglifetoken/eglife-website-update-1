@@ -10,8 +10,8 @@ export default function DappPage() {
           <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
             <Wallet className="h-12 w-12 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-headline">Egli DApp</CardTitle>
-          <CardDescription>The gateway to the Egli Life Token ecosystem.</CardDescription>
+          <CardTitle className="text-3xl font-headline">Eglife DApp</CardTitle>
+          <CardDescription>The gateway to the Eglife Token ecosystem.</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="mb-6 text-foreground/80">

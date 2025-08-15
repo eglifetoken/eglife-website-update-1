@@ -11,7 +11,7 @@ export default function RecommendationsPage() {
             </div>
             <h1 className="text-3xl md:text-4xl font-headline font-bold">Personalized Content</h1>
             <p className="text-lg text-foreground/80 mt-2">
-                Tell us your interests, and our AI will recommend relevant content from the Egli ecosystem, just for you.
+                Tell us your interests, and our AI will recommend relevant content from the Eglife ecosystem, just for you.
             </p>
         </div>
         <RecommendationForm />

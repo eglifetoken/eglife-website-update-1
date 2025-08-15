@@ -5,8 +5,8 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
 export const metadata: Metadata = {
-  title: 'Egli Hub',
-  description: 'The central hub for the Egli Life Token project.',
+  title: 'Eglife Hub',
+  description: 'The central hub for the Eglife Token project.',
 };
 
 export default function RootLayout({
