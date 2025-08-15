@@ -87,19 +87,19 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle className="font-headline">Live Price Chart</CardTitle>
-          <CardDescription>Live EGLIFE price chart from CoinMarketCap.</CardDescription>
+          <CardDescription>Live EGLIFE price chart from GeckoTerminal.</CardDescription>
         </CardHeader>
         <CardContent className="h-[500px] p-0">
-            <iframe
-                height="100%"
-                width="100%"
-                id="coinmarketcap-embed"
-                title="CoinMarketCap Embed"
-                src="https://dex.coinmarketcap.com/token/bsc/0xca326a5e15b9451efc1a6bddad6fb098a4d09113/?embed=1&theme=light&info=0"
-                frameBorder="0"
-                allow="clipboard-write"
-                allowFullScreen
-            ></iframe>
+          <iframe
+            height="100%"
+            width="100%"
+            id="geckoterminal-embed"
+            title="GeckoTerminal Embed"
+            src="https://www.geckoterminal.com/bsc/pools/0xca326a5e15b9451efc1a6bddad6fb098a4d09113?embed=1&info=0&swaps=0"
+            frameBorder="0"
+            allow="clipboard-write"
+            allowFullScreen
+          ></iframe>
         </CardContent>
       </Card>
     </div>
