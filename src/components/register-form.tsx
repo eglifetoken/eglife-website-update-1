@@ -49,6 +49,7 @@ const formSchema = z.object({
   postalCode: z.string().min(4, { message: "Please enter a postal code."}),
   aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
+  referralCode: z.string().optional(),
   kycConsent: z.boolean().default(false).refine(value => value === true, {
     message: "You must agree to the identity verification.",
   }),
@@ -76,6 +77,7 @@ export function RegisterForm() {
             name: "",
             email: "",
             password: "",
+            referralCode: "",
             kycConsent: false,
         },
     })
@@ -106,162 +108,177 @@ export function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="space-y-4">
-            <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                    <Input type="text" placeholder="As per your government ID" {...field} />
-                </FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Email Address</FormLabel>
-                <FormControl>
-                    <Input type="email" placeholder="m@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-             <FormField
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+                <FormField
                 control={form.control}
-                name="dob"
-                render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                    <FormLabel>Date of Birth</FormLabel>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                        <FormControl>
-                            <Button
-                            variant={"outline"}
-                            className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                            )}
-                            >
-                            {field.value ? (
-                                format(field.value, "PPP")
-                            ) : (
-                                <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                        </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                        />
-                        </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                    </FormItem>
-                )}
-             />
-        </div>
-
-        <div className="space-y-4">
-            <FormField
-                control={form.control}
-                name="country"
+                name="name"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Country of Residence</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select your country" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        {countries.map(country => (
-                            <SelectItem key={country.code} value={country.name}>
-                            {country.name}
-                            </SelectItem>
-                        ))}
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Street Address</FormLabel>
+                    <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                        <Input placeholder="123 Main Street" {...field} />
+                        <Input type="text" placeholder="As per your government ID" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
                 )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                />
+                <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                        <Input type="email" placeholder="m@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                        <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                    control={form.control}
+                    name="dob"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                        <FormLabel>Date of Birth</FormLabel>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                            <FormControl>
+                                <Button
+                                variant={"outline"}
+                                className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                )}
+                                >
+                                {field.value ? (
+                                    format(field.value, "PPP")
+                                ) : (
+                                    <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                            </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                date > new Date() || date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                            />
+                            </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+
+            <div className="space-y-4">
+                <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Country of Residence</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select your country" />
+                            </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                            {countries.map(country => (
+                                <SelectItem key={country.code} value={country.name}>
+                                {country.name}
+                                </SelectItem>
+                            ))}
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                            <Input type="text" placeholder="123 Main Street" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="city"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>City</FormLabel>
+                            <FormControl>
+                                <Input type="text" placeholder="Mumbai" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <FormField
+                        control={form.control}
+                        name="state"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>State / Province</FormLabel>
+                            <FormControl>
+                                <Input type="text" placeholder="Maharashtra" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <FormField
+                        control={form.control}
+                        name="postalCode"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Postal Code</FormLabel>
+                            <FormControl>
+                                <Input type="text" placeholder="400001" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
                  <FormField
                     control={form.control}
-                    name="city"
+                    name="referralCode"
                     render={({ field }) => (
                         <FormItem>
-                        <FormLabel>City</FormLabel>
+                        <FormLabel>Referral Code (Optional)</FormLabel>
                         <FormControl>
-                            <Input placeholder="Mumbai" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                <FormField
-                    control={form.control}
-                    name="state"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>State / Province</FormLabel>
-                        <FormControl>
-                            <Input placeholder="Maharashtra" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                <FormField
-                    control={form.control}
-                    name="postalCode"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Postal Code</FormLabel>
-                        <FormControl>
-                            <Input placeholder="400001" {...field} />
+                            <Input type="text" placeholder="Enter referral code" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -270,34 +287,36 @@ export function RegisterForm() {
             </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 pt-4 border-t">
             <h3 className="text-lg font-medium font-headline">Identity Verification (India)</h3>
-             <FormField
-                control={form.control}
-                name="aadhar"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Aadhar Number</FormLabel>
-                    <FormControl>
-                        <Input placeholder="XXXX XXXX XXXX" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
-             <FormField
-                control={form.control}
-                name="pan"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>PAN Number</FormLabel>
-                    <FormControl>
-                        <Input placeholder="ABCDE1234F" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                    control={form.control}
+                    name="aadhar"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Aadhar Number</FormLabel>
+                        <FormControl>
+                            <Input placeholder="XXXX XXXX XXXX" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="pan"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>PAN Number</FormLabel>
+                        <FormControl>
+                            <Input placeholder="ABCDE1234F" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
         </div>
 
         <FormField
