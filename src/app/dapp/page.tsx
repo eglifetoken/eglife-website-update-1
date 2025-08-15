@@ -1,10 +1,12 @@
 
+"use client";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Briefcase, Landmark, ShoppingCart, Users, Vote, Wallet } from "lucide-react";
+import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, DollarSign } from "lucide-react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
@@ -13,13 +15,13 @@ const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${E
 
 const ecosystemComponents = [
   {
-    icon: Wallet,
+    icon: Repeat,
     title: "Trade EGLIFE",
     description: "The central hub for managing your EGLIFE tokens and interacting with the ecosystem.",
     link: "/dashboard",
     status: "Live",
     statusVariant: "default",
-    aiHint: "digital wallet"
+    aiHint: "token exchange"
   },
   {
     icon: Landmark,
@@ -69,6 +71,26 @@ const ecosystemComponents = [
 ];
 
 export default function DappPage() {
+  const [livePrice, setLivePrice] = useState(0.25);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const interval = setInterval(() => {
+      setLivePrice(prevPrice => {
+        const change = (Math.random() - 0.5) * 0.02;
+        const newPrice = prevPrice + change;
+        return newPrice > 0 ? newPrice : 0.01;
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!isClient) {
+    // Render a skeleton or null on the server to avoid hydration mismatch
+    return null; 
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
        <div className="text-center mb-12">
@@ -95,13 +117,20 @@ export default function DappPage() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-end">
                 {component.title === "Trade EGLIFE" ? (
-                  <div className="flex flex-col sm:flex-row gap-2 mt-4">
-                     <Button asChild className="flex-1">
-                        <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy EGLIFE</Link>
-                    </Button>
-                    <Button asChild variant="outline" className="flex-1">
-                        <Link href={PANCAKESWAP_SELL_URL} target="_blank" rel="noopener noreferrer">Sell EGLIFE</Link>
-                    </Button>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-baseline gap-2">
+                        <DollarSign className="h-5 w-5 text-muted-foreground" />
+                        <span className="text-2xl font-bold">${livePrice.toFixed(4)}</span>
+                        <span className="text-sm text-muted-foreground">Live Price</span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <Button asChild className="flex-1">
+                            <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy EGLIFE</Link>
+                        </Button>
+                        <Button asChild variant="outline" className="flex-1">
+                            <Link href={PANCAKESWAP_SELL_URL} target="_blank" rel="noopener noreferrer">Sell EGLIFE</Link>
+                        </Button>
+                    </div>
                   </div>
                 ) : (
                   <Link href={component.link} className="text-sm font-medium text-accent hover:underline flex items-center mt-4">
