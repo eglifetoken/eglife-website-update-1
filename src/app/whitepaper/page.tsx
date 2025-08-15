@@ -3,7 +3,7 @@
 export default function WhitepaperPage() {
     return (
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-        <article className="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-h1:font-headline prose-h2:font-headline prose-h3:font-headline prose-headings:text-primary prose-a:text-accent hover:prose-a:text-accent/80">
+        <article className="prose prose-lg max-w-4xl mx-auto dark:prose-invert prose-h1:font-headline prose-h2:font-headline prose-h3:font-headline prose-headings:text-primary prose-a:text-accent hover:prose-a:text-accent/80 prose-table:w-full prose-th:p-4 prose-td:p-4 prose-td:border-t">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">EGLIFE Token Whitepaper</h1>
           <p className="text-lg text-muted-foreground">Version 1.0 - Last Updated: August 2025</p>
           <p><strong>Website:</strong> <a href="https://eglifetoken.xyz" target="_blank" rel="noopener noreferrer">https://eglifetoken.xyz</a></p>
