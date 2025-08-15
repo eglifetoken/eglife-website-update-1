@@ -39,7 +39,15 @@ export default function Home() {
                   <h2 className="text-3xl font-headline font-bold">Our Vision</h2>
                 </div>
               </CardHeader>
-              <CardContent className="flex-grow">
+              <CardContent className="flex-grow flex flex-col">
+                <Image
+                  src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=600"
+                  alt="Financial technology"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-lg mb-6 w-full"
+                  data-ai-hint="financial technology"
+                />
                 <p className="text-xl text-foreground/80 leading-relaxed">
                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
                 </p>
@@ -49,7 +57,15 @@ export default function Home() {
               <CardHeader>
                  <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
               </CardHeader>
-              <CardContent className="flex-grow">
+              <CardContent className="flex-grow flex flex-col">
+                 <Image
+                    src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600"
+                    alt="Collaborative team"
+                    width={600}
+                    height={400}
+                    className="rounded-lg shadow-lg mb-6 w-full"
+                    data-ai-hint="collaborative team"
+                  />
                   <ul className="space-y-4 text-lg text-foreground/80">
                       <li className="flex items-start">
                           <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
