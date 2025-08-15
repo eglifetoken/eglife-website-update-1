@@ -78,7 +78,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Your Name" {...field} />
+                <Input type="text" placeholder="Your Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -117,7 +117,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Referral Code (Optional)</FormLabel>
               <FormControl>
-                <Input placeholder="Enter referral code" {...field} />
+                <Input type="text" placeholder="Enter referral code" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
