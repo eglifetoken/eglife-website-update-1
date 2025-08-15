@@ -14,7 +14,7 @@ export default function Home() {
             Welcome to Eglife Hub
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            Discover the Eglife Token (EGLIFE), your gateway to a decentralized world dedicated to fostering wellness, sustainability, and community. Eglife is more than a project; it's a movement to create a regenerative economy that rewards positive contributions to society and the planet. Join us in building a brighter, more equitable future for all.
+            Discover the Eglife Token (EGLIFE), a decentralized BEP-20 cryptocurrency on the BNB Smart Chain. EGLIFE is designed to bridge the gap between cryptocurrency and real-world utility, creating a stable token economy for long-term value. Through our EGPAY ecosystem, you can use EGLIFE for utility payments, staking, and more. Join us in building the future of decentralized finance.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
