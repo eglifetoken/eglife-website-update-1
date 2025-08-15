@@ -66,14 +66,20 @@ export default function ServicesPage() {
       </div>
 
        <div className="text-center mt-20">
-          <h2 className="text-3xl font-headline font-bold">Integrations with Leading Platforms</h2>
+          <h2 className="text-3xl font-headline font-bold">Building a Unified Payment Ecosystem</h2>
           <p className="text-lg text-foreground/80 mt-2 max-w-2xl mx-auto">
-              We are working to bring Eglife payments to the platforms you already use, including Google Pay, PhonePe, and Bharat Pay for a unified experience.
+              Our vision is to create a seamless financial experience by integrating Eglife payments with the digital wallets and platforms you use every day, making transactions effortless and universal.
           </p>
            <div className="flex justify-center items-center gap-8 mt-8">
-                <span className="text-2xl font-bold text-foreground/70">Google Pay</span>
-                <span className="text-2xl font-bold text-foreground/70">PhonePe</span>
-                <span className="text-2xl font-bold text-foreground/70">Bharat Pay</span>
+                <div className="p-4 bg-muted rounded-full">
+                    <Landmark className="h-8 w-8 text-muted-foreground" />
+                </div>
+                 <div className="p-4 bg-muted rounded-full">
+                    <Store className="h-8 w-8 text-muted-foreground" />
+                </div>
+                 <div className="p-4 bg-muted rounded-full">
+                    <Smartphone className="h-8 w-8 text-muted-foreground" />
+                </div>
            </div>
       </div>
     </div>
