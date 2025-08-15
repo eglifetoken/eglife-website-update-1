@@ -1,33 +1,45 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Landmark, Receipt, Store, ArrowRight, Smartphone, Globe } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv } from "lucide-react";
 
 const services = [
   {
     icon: Smartphone,
-    title: "Seamless Money Transfer",
-    description: "Instantly send and receive EGLIFE tokens with anyone, anywhere in the world, right from your digital wallet.",
-    aiHint: "person using phone"
+    title: "Mobile Recharge",
+    description: "Instantly top-up your prepaid mobile plan or pay your postpaid bill.",
+    aiHint: "mobile phone"
   },
   {
-    icon: Receipt,
-    title: "Utility Bill Payments",
-    description: "Pay for your electricity, water, internet, and other essential services using EGLIFE tokens, simplifying your monthly bills.",
-    aiHint: "online payment"
+    icon: Lightbulb,
+    title: "Electricity Bill",
+    description: "Pay your electricity bills from various providers across the country.",
+    aiHint: "lightbulb idea"
   },
   {
-    icon: Store,
-    title: "Business & Merchant Payments",
-    description: "Accept EGLIFE at your business. Our platform provides easy integration for merchants to tap into a growing crypto economy.",
-    aiHint: "modern storefront"
+    icon: Droplets,
+    title: "Water Bill",
+    description: "Settle your water bills quickly and securely with EGLIFE tokens.",
+    aiHint: "water droplets"
   },
   {
-    icon: Globe,
-    title: "Global Remittance",
-    description: "A fast, secure, and low-cost way to send funds across borders, bypassing traditional banking fees and delays.",
-    aiHint: "global network"
-  }
+    icon: Flame,
+    title: "Piped Gas",
+    description: "Pay for your piped gas connection without any hassle.",
+    aiHint: "gas flame"
+  },
+   {
+    icon: Wifi,
+    title: "Broadband/Landline",
+    description: "Clear your internet and landline dues in a few simple steps.",
+    aiHint: "wifi symbol"
+  },
+   {
+    icon: Tv,
+    title: "DTH Recharge",
+    description: "Recharge your DTH service to enjoy uninterrupted entertainment.",
+    aiHint: "television screen"
+  },
 ];
 
 export default function ServicesPage() {
@@ -40,24 +52,22 @@ export default function ServicesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => {
             const Icon = service.icon;
             return (
-          <Card key={service.title} className="flex flex-col">
-            <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-4">
-                <div className="p-3 bg-primary/10 rounded-md">
-                    <Icon className="w-6 h-6 text-primary" />
+          <Card key={service.title} className="flex flex-col hover:shadow-lg transition-shadow">
+            <CardHeader>
+                <div className="p-3 bg-primary/10 rounded-md w-fit mb-4">
+                    <Icon className="w-8 h-8 text-primary" />
                 </div>
-                <div>
-                    <CardTitle className="font-headline text-2xl mb-1">{service.title}</CardTitle>
-                    <CardDescription>{service.description}</CardDescription>
-                </div>
+                <CardTitle className="font-headline text-xl mb-1">{service.title}</CardTitle>
+                <CardDescription>{service.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow flex items-end">
-                 <Button asChild variant="link" className="p-0 h-auto">
-                    <Link href="/dapp">
-                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                 <Button asChild variant="link" className="p-0 h-auto text-sm text-accent">
+                    <Link href="#">
+                        Pay Now <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </CardContent>
@@ -66,19 +76,19 @@ export default function ServicesPage() {
       </div>
 
        <div className="text-center mt-20">
-          <h2 className="text-3xl font-headline font-bold">Building a Unified Payment Ecosystem</h2>
+          <h2 className="text-3xl font-headline font-bold">And Much More...</h2>
           <p className="text-lg text-foreground/80 mt-2 max-w-2xl mx-auto">
-              Our vision is to create a seamless financial experience by integrating EGPAY with the digital wallets and platforms you use every day, making transactions effortless and universal.
+              Our vision is to create a seamless financial experience by integrating EGPAY with the services you use every day, making transactions effortless and universal.
           </p>
            <div className="flex justify-center items-center gap-8 mt-8">
                 <div className="p-4 bg-muted rounded-full">
-                    <Landmark className="h-8 w-8 text-muted-foreground" />
-                </div>
-                 <div className="p-4 bg-muted rounded-full">
-                    <Store className="h-8 w-8 text-muted-foreground" />
-                </div>
-                 <div className="p-4 bg-muted rounded-full">
                     <Smartphone className="h-8 w-8 text-muted-foreground" />
+                </div>
+                 <div className="p-4 bg-muted rounded-full">
+                    <Globe className="h-8 w-8 text-muted-foreground" />
+                </div>
+                 <div className="p-4 bg-muted rounded-full">
+                    <Lightbulb className="h-8 w-8 text-muted-foreground" />
                 </div>
            </div>
       </div>
