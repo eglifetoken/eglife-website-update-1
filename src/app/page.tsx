@@ -234,26 +234,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-16 md:py-24 bg-primary/10">
-        <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <Image
-              src="/logo.png"
-              alt="Eglife Token"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-xl"
-              data-ai-hint="abstract blockchain"
-            />
-          </div>
-          <div>
-            <h2 className="text-3xl md:text-4xl font-headline font-bold mb-6">About EGLIFE TOKEN</h2>
-            <p className="text-lg text-foreground/80 mb-4">
-               The Eglife Token (EGLIFE) is a decentralized BEP-20 cryptocurrency designed to build a real-world, utility-based token economy. Deployed on the BNB Smart Chain, EGLIFE bridges the gap between digital assets and everyday life by enabling seamless utility payments, staking rewards, and participation in a self-sustaining financial ecosystem. Our mission is to provide tangible value, foster long-term growth, and make cryptocurrency accessible and practical for everyone.
-            </p>
-          </div>
-        </div>
-      </section>
        <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
