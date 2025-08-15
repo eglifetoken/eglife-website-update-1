@@ -49,11 +49,19 @@ export default function WhitepaperPage() {
               Our vision is to <strong>empower every generation with easy-to-use decentralized financial solutions backed by blockchain.</strong> We envision a future where financial tools are not confined by traditional banking systems, but are accessible, transparent, and controlled by the users themselves. By simplifying the complexities of cryptocurrency, we aim to bridge the gap between digital assets and everyday life, creating an inclusive ecosystem where individuals from all walks of life can confidently participate in the digital economy. We believe that by providing practical, real-world utility, we can foster widespread adoption and build a more equitable financial landscape for generations to come.
             </p>
             <h3><strong>Mission:</strong></h3>
-            <ul>
-              <li>Provide real utility and day-to-day usage with EGLIFE Token.</li>
-              <li>Encourage mass adoption with zero-barrier participation.</li>
-              <li>Deliver transparency and decentralization via smart contract.</li>
-              <li>Enable earning, saving, and spending within the same ecosystem.</li>
+             <ul>
+                <li>
+                    <strong>Provide Real Utility:</strong> Our primary mission is to move beyond speculation and offer tangible, day-to-day use cases for the EGLIFE Token. Through the EGPAY ecosystem, we will enable users to seamlessly pay for utilities, transfer funds, and engage in commerce, making cryptocurrency a practical tool for everyday financial management.
+                </li>
+                <li>
+                    <strong>Encourage Mass Adoption:</strong> We are committed to breaking down the barriers that prevent mainstream adoption of cryptocurrency. By designing intuitive, user-friendly applications and providing clear educational resources, we will create a zero-barrier entry point for individuals who are new to blockchain, fostering a diverse and inclusive community.
+                </li>
+                <li>
+                    <strong>Deliver Radical Transparency:</strong> Trust is the cornerstone of a decentralized economy. Our mission is to operate with complete transparency by building on the public BNB Smart Chain, where all transactions are verifiable. Our smart contracts will be open-source, allowing anyone to audit our code and confirm our commitment to fairness and security.
+                </li>
+                <li>
+                    <strong>Create a Unified Ecosystem:</strong> We aim to build a self-sustaining financial loop where users can earn, save, and spend within a single, integrated platform. By offering on-chain staking rewards, we provide a mechanism for wealth creation, which can then be used to access real-world services through EGPAY, creating a vibrant and circular token economy.
+                </li>
             </ul>
           </section>
 
@@ -198,4 +206,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
 
