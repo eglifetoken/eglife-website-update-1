@@ -340,14 +340,25 @@ export default function WhitepaperPage() {
           </section>
 
           <section>
-              <h2><strong>14. Risk Factors</strong></h2>
-              <ul>
-                  <li><strong>Crypto Market Volatility:</strong> Token prices may fluctuate.</li>
-                  <li><strong>Regulatory Shifts:</strong> Government laws may impact operations.</li>
-                  <li><strong>Technical Errors:</strong> Bugs, contract failures, etc.</li>
-                  <li><strong>Security Attacks:</strong> Smart contract hacks (audit pending)</li>
-                  <li><strong>Adoption Delays:</strong> Utility partnerships may take time</li>
-              </ul>
+            <h2><strong>14. Risk Factors</strong></h2>
+             <p>Prospective participants should be fully aware of the inherent risks associated with cryptocurrencies and the EGLIFE project. While we are committed to mitigating these risks, they cannot be entirely eliminated. Key factors include:</p>
+            <ul>
+                <li>
+                    <strong>Crypto Market Volatility:</strong> The value of EGLIFE, like all digital assets, is subject to extreme price fluctuations. Market sentiment, trading activity, and broader economic factors can cause significant and rapid changes in price. Participants should be prepared for potential volatility and not invest more than they are willing to lose.
+                </li>
+                <li>
+                    <strong>Regulatory Shifts:</strong> The legal and regulatory framework for digital assets is still developing and varies by jurisdiction. New laws, regulations, or policies from government bodies could potentially impact the legality, utility, or value of EGLIFE. The project will endeavor to adapt to such changes, but sudden shifts could have adverse effects.
+                </li>
+                <li>
+                    <strong>Technical Errors & Bugs:</strong> Although the EGLIFE smart contract is built on industry-standard OpenZeppelin libraries and will undergo an independent audit, all software carries an inherent risk of bugs, vulnerabilities, or programming errors. Such flaws could potentially be exploited, leading to a partial or total loss of funds.
+                </li>
+                <li>
+                    <strong>Security Attacks & Hacking:</strong> The EGLIFE ecosystem, including its smart contracts and associated platforms, may be targeted by malicious actors. Despite our focus on security best practices, there is a risk of sophisticated cyber-attacks, such as hacking or phishing, which could compromise the system or individual wallets.
+                </li>
+                <li>
+                    <strong>Adoption & Partnership Delays:</strong> The success and utility of the EGLIFE token are heavily dependent on the growth of its ecosystem and the successful integration with utility providers and merchants. Delays in platform development, failure to secure key partnerships, or slower-than-expected user adoption could hinder the project's growth and impact the token's real-world usability.
+                </li>
+            </ul>
           </section>
 
           <section>
@@ -405,6 +416,7 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
 
