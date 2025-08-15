@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="flex flex-col items-start">
             <Link href="/" className="flex items-center gap-3 mb-4">
                <Logo />
-               <span className="font-headline text-2xl font-bold">EGLIFE</span>
+               <span className="font-headline text-2xl font-bold">EGLIFE TOKEN</span>
             </Link>
             <p className="text-foreground/70">Fostering wellness, sustainability, and community.</p>
           </div>
