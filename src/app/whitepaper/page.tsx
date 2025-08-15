@@ -284,18 +284,30 @@ export default function WhitepaperPage() {
           <section>
             <h2><strong>11. Roadmap</strong></h2>
             <ul>
-                <li><strong>Phase 1 (Q2 2025): Foundation & Launch</strong><br/>
-                This initial phase focuses on establishing the technical and legal groundwork. Key activities include the finalization and deployment of the BEP-20 smart contract on the BNB Smart Chain, rigorous internal testing and security checks, and the launch of our official website to serve as a central hub for information and community updates.</li>
-                <li><strong>Phase 2 (Q3 2025): Community & Transparency</strong><br/>
-                With the foundation in place, our focus shifts to community growth and establishing trust. We will initiate our first Airdrop and Referral Campaigns to bootstrap our user base and reward early supporters. This phase will also see the official release and publication of this whitepaper, providing full transparency into our vision, technology, and strategic plans.</li>
-                <li><strong>Phase 3 (Q4 2025): Market Entry & Staking</strong><br/>
-                This phase marks our entry into the public market. We will create the initial liquidity pool on PancakeSwap to enable trading and ensure price stability. Following the DEX listing, we will launch our on-chain staking platform, allowing token holders to start earning rewards and participating in the ecosystem's long-term growth.</li>
-                <li><strong>Phase 4 (Q1 2026): Platform Development</strong><br/>
-                The focus turns to building our core product. We will release the beta version of the EGLIFE App, giving the community a first look at the wallet and payment functionalities. Concurrently, we will work on integrating with third-party utility API providers to connect our platform to real-world bill payment services.</li>
-                <li><strong>Phase 5 (Q2 2026): Credibility & Security</strong><br/>
-                To build mainstream credibility, we will pursue listings on major crypto data aggregators like CoinGecko and CoinMarketCap. Critically, we will commission a full, independent smart contract audit from a reputable security firm to validate the integrity and safety of our code, providing peace of mind to our users and stakeholders.</li>
-                <li><strong>Phase 6 (Q3 2026): Full Ecosystem Launch</strong><br/>
-                This phase culminates in the public launch of EGLIFE v1, our fully-featured utility payment application. We will also begin developing the necessary infrastructure to support Point-of-Sale (POS) systems and merchant gateways, laying the groundwork for widespread adoption of EGLIFE as a payment method in everyday commerce.</li>
+                <li><strong>Phase 1 (Q2 2025): Foundation & Pre-Launch</strong><br/>
+                    This phase focuses on establishing the project's technical and communication groundwork. Key activities include the finalization and deployment of the BEP-20 smart contract, rigorous internal testing, the launch of our official website, and the publication of this whitepaper.
+                </li>
+                <li><strong>Phase 2 (Q3 2025): Security & Market Preparation</strong><br/>
+                    With the foundation laid, our focus shifts to security and building market trust. We will commission a full, independent smart contract audit from a reputable security firm and pursue listings on major crypto data aggregators like CoinGecko and CoinMarketCap to enhance transparency and visibility.
+                </li>
+                <li><strong>Phase 3 (Q4 2025): Community Growth & Market Entry</strong><br/>
+                    This phase marks our entry into the public market. We will create the initial liquidity pool on PancakeSwap and initiate our first Airdrop and Referral Campaigns to bootstrap our user base. The launch of our on-chain staking platform will follow, allowing early supporters to earn rewards.
+                </li>
+                <li><strong>Phase 4 (Q1 2026): Platform Development & Beta Launch</strong><br/>
+                    The focus turns to building our core product, the EGPAY platform. We will release the beta version of the EGLIFE App, giving the community a first look at the wallet and payment functionalities, while working on integrating with third-party utility API providers.
+                </li>
+                <li><strong>Phase 5 (Q2 2026): Full Ecosystem Launch</strong><br/>
+                    This phase culminates in the public launch of EGPAY v1, our fully-featured utility payment application. The app will enable seamless bill payments, mobile recharges, and other transactions using EGLIFE tokens, bringing our core vision of real-world utility to life.
+                </li>
+                <li><strong>Phase 6 (Q3 2026): Merchant Integration & POS Support</strong><br/>
+                    We will expand the ecosystem by developing the necessary infrastructure to support Point-of-Sale (POS) systems and merchant gateways. Our goal is to onboard a network of partner merchants, allowing EGLIFE to be used for everyday purchases in real-world scenarios.
+                </li>
+                <li><strong>Phase 7 (Q4 2026): Global Expansion & New Utilities</strong><br/>
+                    Our focus will broaden to include international markets, exploring regulatory compliance and partnerships in new regions. We will also research and integrate additional utility services into the EGPAY platform, such as travel bookings, event ticketing, and more.
+                </li>
+                <li><strong>Phase 8 (2027 & Beyond): Decentralized Governance & DAO</strong><br/>
+                    Looking to the future, we plan to transition towards a fully decentralized autonomous organization (DAO). This will empower EGLIFE token holders with governance rights, allowing them to vote on key project decisions, treasury allocations, and the future direction of the ecosystem.
+                </li>
             </ul>
           </section>
   
@@ -386,6 +398,7 @@ export default function WhitepaperPage() {
 
 
     
+
 
 
 
