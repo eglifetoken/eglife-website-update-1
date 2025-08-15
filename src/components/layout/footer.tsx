@@ -26,11 +26,9 @@ const Logo = () => (
                 </linearGradient>
             </defs>
             <circle cx="24" cy="24" r="22" fill="url(#logoGradientFooter)" />
-            <path
-                d="M32,13H18c-1.1,0-2,0.9-2,2v6h12v-4h-8v-2h8v-2z M18,33h14c1.1,0,2-0.9,2-2v-6H16v4h8v2h-8v2z M16,23h16v2H16v-2z"
-                fill="hsl(var(--primary-foreground))"
-                 style={{ textShadow: '1px 1px 3px hsl(var(--primary) / 0.5)' }}
-            />
+            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="28" fontWeight="bold" fontFamily="Alegreya">
+                E
+            </text>
         </svg>
         <span 
             className="font-headline text-2xl font-bold"
