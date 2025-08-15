@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Briefcase, Landmark, ShoppingCart, Users, Vote, Wallet } from "lucide-react";
@@ -8,7 +9,7 @@ const ecosystemComponents = [
     icon: Wallet,
     title: "EGLIFE Wallet",
     description: "The central hub for managing your EGLIFE tokens and interacting with the ecosystem.",
-    link: "/dapp",
+    link: "/dashboard",
     status: "Live",
     statusVariant: "default",
     aiHint: "digital wallet"
