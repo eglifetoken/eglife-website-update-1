@@ -45,7 +45,7 @@ export function LoginForm() {
       if (result.success) {
         toast({
           title: "Logged In!",
-          description: "Welcome back to Eglife Hub.",
+          description: "Welcome back to EGLIFE TOKEN.",
         })
         form.reset()
         // Here you would typically redirect the user e.g. router.push('/dashboard')

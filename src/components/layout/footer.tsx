@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Eglife Hub. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} EGLIFE TOKEN. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

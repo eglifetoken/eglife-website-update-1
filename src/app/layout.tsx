@@ -21,7 +21,7 @@ const config = createConfig({
 const queryClient = new QueryClient()
 
 // export const metadata: Metadata = {
-//   title: 'Eglife Hub',
+//   title: 'EGLIFE TOKEN',
 //   description: 'The central hub for the Eglife Token project.',
 // };
 
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
        <head>
-        <title>Eglife Hub</title>
+        <title>EGLIFE TOKEN</title>
         <meta name="description" content="The central hub for the Eglife Token project." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

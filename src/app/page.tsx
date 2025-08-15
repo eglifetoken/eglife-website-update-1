@@ -11,7 +11,7 @@ export default function Home() {
       <section className="w-full py-20 md:py-32 bg-primary/10 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Welcome to Eglife Hub
+            Welcome to EGLIFE TOKEN
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
             Discover the Eglife Token (EGLIFE), a decentralized BEP-20 cryptocurrency on the BNB Smart Chain. EGLIFE is designed to bridge the gap between cryptocurrency and real-world utility, creating a stable token economy for long-term value. Through our EGPAY ecosystem, you can use EGLIFE for utility payments, staking, and more. Join us in building the future of decentralized finance.

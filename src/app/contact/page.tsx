@@ -46,7 +46,7 @@ export default function ContactPage() {
           <div className="mt-8 rounded-lg overflow-hidden shadow-lg">
              <Image 
                 src="https://images.unsplash.com/photo-1534536281715-e28d76689b4d?q=80&w=600"
-                alt="Map to Eglife Hub office"
+                alt="Map to EGLIFE TOKEN office"
                 width={600}
                 height={400}
                 className="w-full"
