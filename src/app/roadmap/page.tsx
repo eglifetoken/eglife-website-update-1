@@ -5,7 +5,7 @@ const roadmapData = [
   {
     date: "Q2 2025",
     title: "Foundation & Pre-Launch",
-    description: "Finalization and deployment of the BEP-20 smart contract, internal testing, launch of our official website, and publication of the whitepaper.",
+    description: "Finalization and deployment of the BEP-20 smart contract, rigorous internal testing, launch of our official website, and publication of the whitepaper.",
     icon: Rocket,
     status: "completed",
   },
