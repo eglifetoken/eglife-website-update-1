@@ -39,11 +39,12 @@ const registerFormSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
+    referralCode: z.string().optional(),
 });
 
 export async function registerUser(values: z.infer<typeof registerFormSchema>) {
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("Registration attempt:", values.email);
+    console.log("Registration attempt:", values);
     // In a real app, you would create a new user here.
     return { success: true, message: "Registration successful!" };
 }
