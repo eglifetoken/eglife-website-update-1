@@ -14,7 +14,7 @@ export default function WhitepaperPage() {
               EGLIFE Token is a <strong>decentralized BEP-20 cryptocurrency</strong> deployed on the BNB Smart Chain. It aims to address core limitations in financial inclusivity and real-world crypto use-cases through a <strong>fully on-chain token economy</strong>.
             </p>
             <p>
-              By integrating taxation, staking, and utility payments, EGLIFE creates a stable environment for sustainable growth and long-term value creation. Its flagship use-case, the <strong>EGPAY ecosystem</strong>, allows users to make payments, recharge utilities, and earn staking rewards using EGLIFE tokens.
+              By integrating taxation, staking, and utility payments, EGLIFE creates a stable environment for sustainable growth and long-term value creation. Its flagship use-case, the <strong>EGLIFE ecosystem</strong>, allows users to make payments, recharge utilities, and earn staking rewards using EGLIFE tokens.
             </p>
           </section>
 
@@ -31,7 +31,7 @@ export default function WhitepaperPage() {
                     <strong>High Token Inflation Without Supply Control:</strong> Projects often mint excessive tokens for rewards or operational costs without a counteracting deflationary mechanism. This leads to high inflation, which devalues the token over time and erodes holder confidence and purchasing power. EGLIFE introduces a voluntary burn mechanism and a fixed total supply to manage inflation effectively.
                 </li>
                 <li>
-                    <strong>Lack of Real-World Utility:</strong> A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce, which limits their adoption to a niche audience of traders and investors, rather than the general public. EGLIFE is designed from the ground up to power the EGPAY ecosystem, enabling users to pay for real services.
+                    <strong>Lack of Real-World Utility:</strong> A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce, which limits their adoption to a niche audience of traders and investors, rather than the general public. EGLIFE is designed from the ground up to power the EGLIFE ecosystem, enabling users to pay for real services.
                 </li>
                 <li>
                     <strong>Unfair Token Allocations:</strong> Many projects allocate a disproportionately large share of tokens to the team and private investors, with short vesting periods. This often leads to "pump and dump" schemes where insiders exit at the expense of the community and early public adopters, damaging trust and long-term viability. EGLIFE's tokenomics are designed for fair distribution, with significant portions allocated to community growth and ecosystem development.
@@ -51,7 +51,7 @@ export default function WhitepaperPage() {
             <h3><strong>Mission:</strong></h3>
              <ul>
                 <li>
-                    <strong>Provide Real Utility:</strong> Our primary mission is to move beyond speculation and offer tangible, day-to-day use cases for the EGLIFE Token. Through the EGPAY ecosystem, we will enable users to seamlessly pay for utilities, transfer funds, and engage in commerce, making cryptocurrency a practical tool for everyday financial management.
+                    <strong>Provide Real Utility:</strong> Our primary mission is to move beyond speculation and offer tangible, day-to-day use cases for the EGLIFE Token. Through the EGLIFE ecosystem, we will enable users to seamlessly pay for utilities, transfer funds, and engage in commerce, making cryptocurrency a practical tool for everyday financial management.
                 </li>
                 <li>
                     <strong>Encourage Mass Adoption:</strong> We are committed to breaking down the barriers that prevent mainstream adoption of cryptocurrency. By designing intuitive, user-friendly applications and providing clear educational resources, we will create a zero-barrier entry point for individuals who are new to blockchain, fostering a diverse and inclusive community.
@@ -60,7 +60,7 @@ export default function WhitepaperPage() {
                     <strong>Deliver Radical Transparency:</strong> Trust is the cornerstone of a decentralized economy. Our mission is to operate with complete transparency by building on the public BNB Smart Chain, where all transactions are verifiable. Our smart contracts will be open-source, allowing anyone to audit our code and confirm our commitment to fairness and security.
                 </li>
                 <li>
-                    <strong>Create a Unified Ecosystem:</strong> We aim to build a self-sustaining financial loop where users can earn, save, and spend within a single, integrated platform. By offering on-chain staking rewards, we provide a mechanism for wealth creation, which can then be used to access real-world services through EGPAY, creating a vibrant and circular token economy.
+                    <strong>Create a Unified Ecosystem:</strong> We aim to build a self-sustaining financial loop where users can earn, save, and spend within a single, integrated platform. By offering on-chain staking rewards, we provide a mechanism for wealth creation, which can then be used to access real-world services through EGLIFE, creating a vibrant and circular token economy.
                 </li>
             </ul>
           </section>
@@ -70,16 +70,16 @@ export default function WhitepaperPage() {
             <p>The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
             <ul>
                 <li><strong>On-Chain Staking:</strong> Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</li>
-                <li><strong>Daily Life Utility:</strong> EGLIFE serves as a digital currency for everyday transactions. Through the EGPAY ecosystem, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</li>
-                <li><strong>Transaction Fees:</strong> EGLIFE is used to pay for transaction fees within the EGPAY ecosystem, ensuring a consistent demand and circulation of the token.</li>
+                <li><strong>Daily Life Utility:</strong> EGLIFE serves as a digital currency for everyday transactions. Through the EGLIFE ecosystem, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</li>
+                <li><strong>Transaction Fees:</strong> EGLIFE is used to pay for transaction fees within the EGLIFE ecosystem, ensuring a consistent demand and circulation of the token.</li>
                 <li><strong>Governance (Future):</strong> We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</li>
                 <li><strong>Exclusive Access:</strong> Holding EGLIFE may grant users access to premium features, lower fees, and early access to new products and services within the ecosystem.</li>
             </ul>
           </section>
           
           <section>
-            <h2><strong>5. The EGPAY Ecosystem</strong></h2>
-            <p>The EGPAY ecosystem is the flagship application suite powered by the EGLIFE Token. It is designed to bridge the gap between digital currency and real-world services, creating a seamless financial experience. The ecosystem includes:</p>
+            <h2><strong>5. The EGLIFE Ecosystem</strong></h2>
+            <p>The EGLIFE ecosystem is the flagship application suite powered by the EGLIFE Token. It is designed to bridge the gap between digital currency and real-world services, creating a seamless financial experience. The ecosystem includes:</p>
             <ol>
                 <li><strong>Utility Payments:</strong> Our platform will allow users to recharge their mobile plans and pay for essential utilities such as electricity, water, or gas bills directly with EGLIFE tokens. This transforms EGLIFE from a speculative asset into a practical tool for managing daily expenses.</li>
                 <li><strong>Airdrop & Referral Campaigns:</strong> To drive adoption and reward our community, we will conduct airdrop campaigns to distribute EGLIFE to early adopters. A multi-level referral system will also be implemented, allowing users to earn bonuses by inviting others, creating a powerful engine for organic growth.</li>
@@ -157,9 +157,9 @@ export default function WhitepaperPage() {
                 <li><strong>Phase 1 (Q2 2025):</strong> Contract Deployment, Testing, Website Live</li>
                 <li><strong>Phase 2 (Q3 2025):</strong> Airdrop & Referral Campaign, Whitepaper Release</li>
                 <li><strong>Phase 3 (Q4 2025):</strong> PancakeSwap Liquidity Launch, DEX Listing, Staking Live</li>
-                <li><strong>Phase 4 (Q1 2026):</strong> EGPAY App Beta, Utility API Integrations</li>
+                <li><strong>Phase 4 (Q1 2026):</strong> EGLIFE App Beta, Utility API Integrations</li>
                 <li><strong>Phase 5 (Q2 2026):</strong> CoinGecko & CMC Listing, Smart Contract Audit</li>
-                <li><strong>Phase 6 (Q3 2026):</strong> Launch EGPAY v1, Support for POS & Merchant Gateway</li>
+                <li><strong>Phase 6 (Q3 2026):</strong> Launch EGLIFE v1, Support for POS & Merchant Gateway</li>
             </ul>
           </section>
   
@@ -167,7 +167,7 @@ export default function WhitepaperPage() {
             <h2><strong>12. Legal & Regulatory Compliance</strong></h2>
             <ul>
                 <li>EGLIFE Token is <strong>not a security or financial instrument.</strong></li>
-                <li>It is a <strong>utility token</strong> built for use within EGLIFE and EGPAY ecosystem.</li>
+                <li>It is a <strong>utility token</strong> built for use within the EGLIFE ecosystem.</li>
                 <li>Project adheres to KYC/AML guidelines where applicable.</li>
                 <li>Complies with open-source and transparency principles.</li>
             </ul>
@@ -198,7 +198,7 @@ export default function WhitepaperPage() {
           <section>
               <h2><strong>15. Conclusion</strong></h2>
               <p>
-                EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGPAY ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
+                EGLIFE bridges the gap between speculative tokens and real-life crypto applications. With a clear roadmap, staking incentives, and the EGLIFE ecosystem, EGLIFE Token offers a sustainable, inclusive, and user-friendly experience for crypto adoption in India and beyond.
               </p>
           </section>
 
@@ -216,3 +216,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
+    
