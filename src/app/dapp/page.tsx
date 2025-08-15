@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { Badge } from "@/components/ui/badge";
@@ -7,10 +8,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
+
+const chartData = [
+  { price: 0.23 },
+  { price: 0.24 },
+  { price: 0.22 },
+  { price: 0.25 },
+  { price: 0.26 },
+  { price: 0.24 },
+  { price: 0.27 },
+];
 
 
 const ecosystemComponents = [
@@ -118,10 +130,35 @@ export default function DappPage() {
               <CardContent className="flex-grow flex flex-col justify-end">
                 {component.title === "Trade EGLIFE" ? (
                   <div className="flex flex-col gap-4">
-                    <div className="flex items-baseline gap-2">
-                        <DollarSign className="h-5 w-5 text-muted-foreground" />
-                        <span className="text-2xl font-bold">${livePrice.toFixed(4)}</span>
-                        <span className="text-sm text-muted-foreground">Live Price</span>
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-baseline gap-2">
+                            <DollarSign className="h-5 w-5 text-muted-foreground" />
+                            <span className="text-2xl font-bold">${livePrice.toFixed(4)}</span>
+                        </div>
+                        <div className="h-10 w-24">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
+                                    <defs>
+                                        <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <Tooltip
+                                      cursor={false}
+                                      contentStyle={{ 
+                                          backgroundColor: 'hsl(var(--background))', 
+                                          border: '1px solid hsl(var(--border))',
+                                          borderRadius: 'var(--radius)' 
+                                        }}
+                                      itemStyle={{ color: 'hsl(var(--foreground))' }}
+                                      labelFormatter={() => ''}
+                                      formatter={(value:any) => [`$${Number(value).toFixed(4)}`, 'Price']}
+                                    />
+                                    <Area type="monotone" dataKey="price" stroke="hsl(var(--accent))" fill="url(#chartGradient)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2">
                         <Button asChild className="flex-1">
