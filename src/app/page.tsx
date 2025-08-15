@@ -75,6 +75,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <section className="w-full py-20 md:py-32 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
+          <h2 className="text-xl md:text-2xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
             Empowering Your Financial Future
           </h1>
@@ -273,4 +274,3 @@ export default function Home() {
   );
 
     
-
