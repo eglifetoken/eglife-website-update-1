@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -70,8 +71,8 @@ export default function Home() {
       <section className="w-full py-16 md:py-24 bg-primary/10">
         <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <Image 
-              src="https://images.unsplash.com/photo-1518546305921-a202SPAM-BOT54ab?q=80&w=600"
+            <Image
+              src="/logo.png"
               alt="Eglife Token"
               width={600}
               height={400}
