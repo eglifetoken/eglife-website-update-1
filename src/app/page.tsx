@@ -58,14 +58,6 @@ export default function Home() {
                  <h2 className="text-3xl font-headline font-bold">Our Mission</h2>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col">
-                 <Image
-                    src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=600"
-                    alt="Collaborative team"
-                    width={600}
-                    height={400}
-                    className="rounded-lg shadow-lg mb-6 w-full"
-                    data-ai-hint="collaborative team"
-                  />
                   <ul className="space-y-4 text-lg text-foreground/80">
                       <li className="flex items-start">
                           <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
