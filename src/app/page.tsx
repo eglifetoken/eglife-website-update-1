@@ -39,7 +39,7 @@ export default function Home() {
                 <CardTitle className="font-headline text-2xl">Wellness</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Promoting a holistic approach to well-being, encompassing physical, mental, and spiritual health for a balanced life.</p>
+                <p>Promoting a holistic approach to well-being, encompassing physical, mental, and spiritual health for a balanced and fulfilling life.</p>
               </CardContent>
             </Card>
             <Card className="text-center bg-transparent border-none shadow-none">
