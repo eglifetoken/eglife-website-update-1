@@ -76,10 +76,10 @@ export default function Home() {
       <section className="w-full py-20 md:py-32 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Bridging Digital Assets & Everyday Life
+            Empowering Your Financial Future
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            EGLIFE is a decentralized BEP-20 token on the BNB Smart Chain, designed to build a real-world, utility-based economy. We transform crypto from a speculative asset into a powerful tool for daily finance, enabling seamless utility payments, staking rewards, and community participation.
+            EGLIFE provides the tools for a new generation of financial independence. We are building a decentralized, utility-driven ecosystem on the BNB Smart Chain that transforms digital assets into practical instruments for everyday use, from seamless payments to rewarding staking opportunities.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
@@ -273,3 +273,4 @@ export default function Home() {
   );
 
     
+
