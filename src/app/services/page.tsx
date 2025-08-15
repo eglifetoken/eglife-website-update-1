@@ -1,10 +1,13 @@
 
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const services = [
   {
@@ -55,13 +58,95 @@ const futureServices = [
 export default function ServicesPage() {
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-      <div className="text-center mb-16">
+      <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-headline font-bold">EGPAY: Powered by EGLIFE</h1>
         <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
           Leveraging the power of the EGLIFE token to create a fast, secure, and low-cost payment ecosystem for your daily needs.
         </p>
       </div>
+      
+      <Card className="mb-12">
+        <CardHeader>
+            <CardTitle className="font-headline text-2xl">UPI Payment Services</CardTitle>
+            <CardDescription>Send money, scan QR codes, and manage your finances with ease.</CardDescription>
+        </CardHeader>
+        <CardContent>
+             <Tabs defaultValue="send" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="send">Send Money</TabsTrigger>
+                    <TabsTrigger value="scan">Scan QR</TabsTrigger>
+                    <TabsTrigger value="balance">Check Balance</TabsTrigger>
+                </TabsList>
 
+                <TabsContent value="send" className="mt-6">
+                     <Tabs defaultValue="mobile" className="w-full">
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="mobile">To Mobile Number</TabsTrigger>
+                            <TabsTrigger value="bank">To Bank Account</TabsTrigger>
+                        </TabsList>
+                         <TabsContent value="mobile" className="pt-4">
+                             <Card>
+                                <CardContent className="pt-6 space-y-4">
+                                     <div className="space-y-2">
+                                        <Label htmlFor="mobile-number">Enter Mobile Number</Label>
+                                        <Input id="mobile-number" type="tel" placeholder="10-digit mobile number" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="mobile-amount">Enter Amount</Label>
+                                        <Input id="mobile-amount" type="number" placeholder="₹0.00" />
+                                    </div>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button className="w-full">Proceed to Pay</Button>
+                                </CardFooter>
+                             </Card>
+                        </TabsContent>
+                         <TabsContent value="bank" className="pt-4">
+                            <Card>
+                                <CardContent className="pt-6 space-y-4">
+                                     <div className="space-y-2">
+                                        <Label htmlFor="account-number">Enter Account Number</Label>
+                                        <Input id="account-number" type="text" placeholder="Recipient's account number" />
+                                    </div>
+                                      <div className="space-y-2">
+                                        <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
+                                        <Input id="ifsc-code" type="text" placeholder="Bank's IFSC code" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="bank-amount">Enter Amount</Label>
+                                        <Input id="bank-amount" type="number" placeholder="₹0.00" />
+                                    </div>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button className="w-full">Proceed to Pay</Button>
+                                </CardFooter>
+                             </Card>
+                        </TabsContent>
+                     </Tabs>
+                </TabsContent>
+
+                <TabsContent value="scan">
+                    <Card className="text-center flex flex-col items-center justify-center p-8 min-h-[250px]">
+                        <QrCode className="w-24 h-24 text-muted-foreground mb-4"/>
+                        <p className="text-muted-foreground">Position the QR code within the frame</p>
+                        <Button variant="outline" className="mt-4">Open Camera</Button>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="balance">
+                    <Card className="text-center p-8 min-h-[250px] flex flex-col justify-center">
+                         <Wallet className="w-16 h-16 text-primary mx-auto mb-4"/>
+                        <h3 className="text-xl font-semibold mb-2">Check Your EGLIFE Balance</h3>
+                        <p className="text-muted-foreground mb-6">Click the button below to see your current balance.</p>
+                        <Button size="lg">Check Balance</Button>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+        </CardContent>
+      </Card>
+
+
+      <h2 className="text-3xl font-headline font-bold mb-8 text-center">Utility Bill Payments</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => {
             const Icon = service.icon;
@@ -107,3 +192,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+
