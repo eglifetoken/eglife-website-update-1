@@ -265,9 +265,6 @@ export default function Home() {
                 <span><strong className="font-headline">Future Goals:</strong> Expanding our DApp ecosystem, forging new partnerships, and launching a global community grant program.</span>
               </li>
             </ul>
-             <Button asChild size="lg" className="mt-8">
-              <Link href="/roadmap">View Our Roadmap</Link>
-            </Button>
           </div>
         </div>
       </section>
