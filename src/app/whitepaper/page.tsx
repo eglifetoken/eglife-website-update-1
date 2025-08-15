@@ -138,15 +138,29 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>8. Staking Mechanism</strong></h2>
-            <p>EGLIFE introduces a simple yet powerful staking system:</p>
+            <p>
+                The EGLIFE staking mechanism is a core component of our ecosystem, designed to reward long-term token holders, promote network stability, and give the community a direct stake in our collective success. Our approach is built on the principles of transparency, simplicity, and security, with all operations executed trustlessly on the BNB Smart Chain.
+            </p>
+            <h3><strong>Staking Plan & Rewards</strong></h3>
+            <p>
+                Our staking plan is straightforward and accessible to all token holders. By participating, users lock their EGLIFE tokens in our audited smart contract and earn rewards in return.
+            </p>
             <ul>
-                <li><strong>Minimum Lock Period:</strong> 30 days</li>
-                <li><strong>Stake Function:</strong> Users call <code>stake(amount)</code> to lock tokens</li>
-                <li><strong>Reward:</strong> 5% of staked amount is minted as reward on withdrawal</li>
-                <li><strong>Unstake Function:</strong> After 30 days, users call <code>unstake()</code> to receive principal + reward</li>
-                <li>Staking is <strong>trustless, on-chain, and does not require manual approval.</strong></li>
-                <li><strong>Staking Contract Address:</strong> 0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6</li>
+                <li><strong>Reward Rate:</strong> Participants will earn a fixed reward of <strong>5%</strong> on their staked amount.</li>
+                <li><strong>Minimum Lock-up Period:</strong> To ensure network stability, all staked tokens are subject to a mandatory <strong>30-day lock-up period</strong>. After this period, users are free to withdraw their principal and rewards at any time.</li>
+                <li><strong>Reward Distribution:</strong> The 5% reward is <strong>minted and transferred to the user automatically upon withdrawal</strong>. This is done by the smart contract when the `unstake` function is successfully called. This minting mechanism ensures that rewards are generated on-demand and are not held in a separate treasury, providing full transparency.</li>
             </ul>
+            <h3><strong>How It Works: A Trustless On-Chain Process</strong></h3>
+            <p>
+                The entire staking process is handled by our smart contract, eliminating the need for intermediaries and ensuring that users have full control over their funds.
+            </p>
+            <ol>
+                <li><strong>Staking:</strong> A user calls the <code>stake(amount)</code> function in the smart contract, specifying the number of EGLIFE tokens they wish to lock. The contract then securely holds these tokens and records the stake details, including the amount and start time.</li>
+                <li><strong>Lock-up:</strong> The tokens remain locked for the 30-day minimum period. During this time, they cannot be withdrawn or transferred.</li>
+                <li><strong>Unstaking:</strong> Once the 30-day period has passed, the user can call the <code>unstake()</code> function. The smart contract verifies that the lock-up period is complete, mints a 5% reward based on the original staked amount, and transfers both the principal and the newly minted reward back to the user’s wallet in a single, atomic transaction.</li>
+            </ol>
+            <p>This on-chain process is <strong>fully automated and does not require manual approval</strong>, providing a secure, reliable, and trustless experience for all participants.</p>
+            <p><strong>Staking Contract Address:</strong> <a href="https://bscscan.com/address/0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6" target="_blank" rel="noopener noreferrer">0xe23e6DFc77bEAb07a9a54cA5272CeD369f73d8f6</a></p>
           </section>
           
           <section>
@@ -242,6 +256,7 @@ export default function WhitepaperPage() {
   }
 
     
+
 
 
 
