@@ -39,9 +39,9 @@ const ecosystemComponents = [
     icon: Users,
     title: "Referral Program",
     description: "Earn bonuses by inviting new users to join the EGLIFE staking platform.",
-    link: "/whitepaper",
-    status: "Upcoming",
-    statusVariant: "secondary",
+    link: "/referral",
+    status: "Live",
+    statusVariant: "default",
     aiHint: "people network"
   },
   {
