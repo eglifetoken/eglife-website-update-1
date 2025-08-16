@@ -144,9 +144,24 @@ export default function Home() {
                 </div>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col">
-                <p className="text-xl text-foreground/80 leading-relaxed">
-                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all. Our focus is on fostering financial literacy through clear, educational resources and promoting a user-centric design that prioritizes simplicity and security, ensuring everyone can transact with confidence.
-                </p>
+                 <ul className="space-y-4 text-lg text-foreground/80">
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Financial Empowerment:</strong> To provide user-friendly decentralized financial tools that empower every generation, removing reliance on traditional banking systems.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Simplified Accessibility:</strong> To break down barriers by creating intuitive platforms that make the complexities of cryptocurrency easy to understand and accessible for everyone.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Bridging Digital & Reality:</strong> To build an inclusive financial future by seamlessly connecting digital assets with everyday life, making crypto practical for daily use.</span>
+                      </li>
+                      <li className="flex items-start">
+                          <CheckCircle className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
+                          <span><strong>Education and Trust:</strong> To foster widespread financial literacy through clear educational resources and promote user-centric design that prioritizes simplicity and security.</span>
+                      </li>
+                  </ul>
               </CardContent>
             </Card>
             <Card className="flex flex-col">
@@ -343,5 +358,6 @@ export default function Home() {
 
 
     
+
 
 
