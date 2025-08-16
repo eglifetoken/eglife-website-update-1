@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +48,21 @@ const services = [
     description: "Recharge your DTH service to enjoy uninterrupted entertainment.",
     aiHint: "television screen"
   },
+    { 
+    icon: School, 
+    title: "Tuition Fees",
+    description: "Pay school, college, or university fees directly with your tokens." 
+  },
+  { 
+    icon: Building, 
+    title: "Rent Payments",
+    description: "Manage your monthly rent payments through our secure platform."
+   },
+  { 
+    icon: HandCoins, 
+    title: "Loan EMIs",
+    description: "Settle your loan equated monthly installments with ease."
+   },
 ];
 
 const businessServices = [
@@ -63,12 +79,6 @@ const businessServices = [
         link: "#"
     }
 ]
-
-const futureServices = [
-    { icon: School, title: "Tuition Fees" },
-    { icon: Building, title: "Rent Payments" },
-    { icon: HandCoins, title: "Loan EMIs" },
-];
 
 const transactionHistory = [
   {
@@ -304,17 +314,9 @@ export default function ServicesPage() {
               Our vision is to create a seamless financial experience by integrating EGPAY with the services you use every day, making transactions effortless and universal.
           </p>
            <div className="mt-12 flex flex-wrap justify-center items-center gap-8">
-              {futureServices.map((service, index) => {
-                const Icon = service.icon;
-                return (
-                  <div key={index} className="flex flex-col items-center gap-3 text-center">
-                    <div className="p-4 bg-muted rounded-full">
-                      <Icon className="h-10 w-10 text-muted-foreground" />
-                    </div>
-                    <span className="font-semibold text-foreground/80">{service.title}</span>
-                  </div>
-                )
-              })}
+              <div className="flex flex-col items-center gap-3 text-center text-muted-foreground">
+                <p>... and many other upcoming services!</p>
+              </div>
             </div>
       </div>
     </div>
