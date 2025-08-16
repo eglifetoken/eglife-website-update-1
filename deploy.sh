@@ -14,10 +14,10 @@ git commit -m "Pushing project files to GitHub"
 # If the connection already exists, it will update it. Otherwise, it will add it.
 if git remote get-url origin > /dev/null 2>&1; then
   echo "Remote 'origin' already exists. Updating URL..."
-  git remote set-url origin https://github.com/eglifetoken/eglife-hub.git
+  git remote set-url origin https://github.com/eglifetoken/EGLIFE-WEBSITE.git
 else
   echo "Adding remote 'origin'..."
-  git remote add origin https://github.com/eglifetoken/eglife-hub.git
+  git remote add origin https://github.com/eglifetoken/EGLIFE-WEBSITE.git
 fi
 
 # Step 3: Ensure the branch is named 'main'
@@ -26,7 +26,7 @@ git branch -M main
 
 # Step 4: Push the code to GitHub
 echo "Pushing code to GitHub... This may take a moment."
-git push -u origin main
+git push -u origin main --force
 
 echo ""
 echo ">>> SCRIPT FINISHED <<<"
