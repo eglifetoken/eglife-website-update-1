@@ -134,11 +134,11 @@ export default function Home() {
                   </div>
                    <div className="hidden md:block">
                       <Image 
-                          src="https://images.unsplash.com/photo-1642155533899-56e665653112?q=80&w=600"
+                          src="https://images.unsplash.com/photo-1642155533899-56e66565112?q=80&w=600"
                           alt="Blockchain Technology"
                           width={600}
                           height={400}
-                          className="rounded-xl shadow-2xl"
+                          className="rounded-xl shadow-2xl w-full"
                           data-ai-hint="blockchain finance"
                       />
                   </div>
