@@ -2,10 +2,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Users, PiggyBank, Settings, LogOut, BarChart } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useToast } from "@/hooks/use-toast";
 
 const adminNavLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -41,6 +44,26 @@ const Logo = () => (
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+      router.push("/login");
+    } catch (error) {
+      console.error("Error signing out: ", error);
+      toast({
+        variant: "destructive",
+        title: "Logout Failed",
+        description: "There was an error while trying to log out. Please try again.",
+      });
+    }
+  };
 
   return (
     <aside className="w-64 flex-shrink-0 bg-background border-r p-4 hidden md:flex flex-col">
@@ -68,7 +91,7 @@ export default function AdminSidebar() {
         )})}
       </nav>
       <div className="mt-auto">
-         <Button variant="ghost" className="w-full justify-start gap-3">
+         <Button variant="ghost" className="w-full justify-start gap-3" onClick={handleLogout}>
             <LogOut className="h-5 w-5" />
             Logout
          </Button>
