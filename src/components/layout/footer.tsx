@@ -51,6 +51,7 @@ export default function Footer() {
                 <ul className="space-y-2">
                   <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
                   <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
+                  <li><Link href="/business-plan" className="text-foreground/80 hover:text-primary">Business Plan</Link></li>
                   <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact</Link></li>
                 </ul>
               </div>
@@ -59,6 +60,7 @@ export default function Footer() {
                 <ul className="space-y-2">
                   <li><Link href="/dapp" className="text-foreground/80 hover:text-primary">DApp</Link></li>
                   <li><Link href="/staking" className="text-foreground/80 hover:text-primary">Staking</Link></li>
+                   <li><Link href="/referral" className="text-foreground/80 hover:text-primary">Referrals</Link></li>
                   <li><Link href="/services" className="text-foreground/80 hover:text-primary">Services</Link></li>
                 </ul>
               </div>
