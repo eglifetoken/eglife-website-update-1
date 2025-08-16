@@ -53,7 +53,7 @@ export default function Footer() {
                   <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
                   <li><Link href="/business-plan" className="text-foreground/80 hover:text-primary">Business Plan</Link></li>
                   <li><Link href="/crypto-education" className="text-foreground/80 hover:text-primary">Education</Link></li>
-                  <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact</Link></li>
+                  <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact Us</Link></li>
                 </ul>
               </div>
               <div>

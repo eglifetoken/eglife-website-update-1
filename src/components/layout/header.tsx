@@ -16,7 +16,7 @@ const navLinks = [
   { href: "/dapp", label: "DApp" },
   { href: "/referral", label: "Referral" },
   { href: "/crypto-education", label: "Education" },
-  { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact Us" },
 ];
 
 const Logo = () => (
