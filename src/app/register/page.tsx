@@ -1,3 +1,4 @@
+
 import {
     Card,
     CardContent,
@@ -5,8 +6,13 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-  import { RegisterForm } from "@/components/register-form"
   import Link from "next/link"
+  import dynamic from "next/dynamic";
+
+  const RegisterForm = dynamic(() => import('@/components/register-form').then(mod => mod.RegisterForm), {
+    ssr: false,
+    loading: () => <p>Loading form...</p>
+  })
   
   export default function RegisterPage() {
     return (
