@@ -35,6 +35,9 @@ export default function RootLayout({
        <head>
         <title>EGLIFE TOKEN</title>
         <meta name="description" content="The central hub for the Eglife Token project." />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#262626" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
