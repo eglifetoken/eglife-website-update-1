@@ -2,7 +2,6 @@
 "use server"
 
 import { z } from "zod"
-import { randomUUID } from "crypto"
 import { auth, db } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore";
@@ -79,10 +78,10 @@ export async function registerUser(values: z.infer<typeof registerFormSchema>) {
         const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
         const user = userCredential.user;
 
-        // Step 2: Generate a unique referral code
-        const referralCode = `EGLIFE-${randomUUID().slice(0, 8).toUpperCase()}`;
+        // A unique referral code is generated server-side for reliability
+        const uniqueReferralCode = `EGLIFE-${user.uid.slice(0, 8).toUpperCase()}`;
 
-        // Step 3: Save user data to Firestore
+        // Step 2: Save user data to Firestore
         await setDoc(doc(db, "users", user.uid), {
             uid: user.uid,
             name: values.name,
@@ -97,7 +96,7 @@ export async function registerUser(values: z.infer<typeof registerFormSchema>) {
             aadhar: values.aadhar,
             pan: values.pan,
             referredBy: values.referralCode || null,
-            referralCode: referralCode,
+            referralCode: uniqueReferralCode, // Use the server-generated one
             kycStatus: "Pending",
             stakingStatus: "Inactive",
             registrationDate: serverTimestamp(),
