@@ -5,8 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, Gift, Users, BarChart2 } from "lucide-react";
+import { Copy, Gift, Users, BarChart2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
 
 const referralTiers = [
     { level: 1, bonus: "10%" },
@@ -31,6 +32,12 @@ const referralCode = "EGLIFE-A4B7X9";
 
 export default function ReferralPage() {
     const { toast } = useToast();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralCode);
@@ -39,6 +46,14 @@ export default function ReferralPage() {
             description: "Your referral code has been copied to the clipboard.",
         });
     };
+    
+    if (!isClient) {
+        return (
+            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
