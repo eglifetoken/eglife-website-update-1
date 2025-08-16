@@ -1,10 +1,9 @@
-
 "use client"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,6 +48,21 @@ const services = [
     aiHint: "television screen"
   },
 ];
+
+const businessServices = [
+    {
+        icon: Store,
+        title: "Retailer Services",
+        description: "Access the retailer portal to manage customers and facilitate payments.",
+        link: "#"
+    },
+    {
+        icon: Network,
+        title: "Distributor Network",
+        description: "Manage your network, track performance, and access distributor tools.",
+        link: "#"
+    }
+]
 
 const futureServices = [
     { icon: School, title: "Tuition Fees" },
@@ -257,6 +271,32 @@ export default function ServicesPage() {
           </Card>
         )})}
       </div>
+
+       <div className="mt-20">
+          <h2 className="text-3xl font-headline font-bold mb-8 text-center">Business &amp; Partner Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {businessServices.map((service) => {
+                const Icon = service.icon;
+                return (
+              <Card key={service.title} className="flex flex-col hover:shadow-lg transition-shadow">
+                <CardHeader>
+                    <div className="p-3 bg-primary/10 rounded-md w-fit mb-4">
+                        <Icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <CardTitle className="font-headline text-xl mb-1">{service.title}</CardTitle>
+                    <CardDescription>{service.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow flex items-end">
+                     <Button asChild variant="link" className="p-0 h-auto text-sm text-accent">
+                        <Link href={service.link}>
+                            Go to Portal <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </CardContent>
+              </Card>
+            )})}
+          </div>
+       </div>
 
        <div className="text-center mt-20">
           <h2 className="text-3xl font-headline font-bold">And Much More...</h2>
