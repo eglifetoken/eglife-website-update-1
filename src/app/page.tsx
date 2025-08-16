@@ -132,15 +132,15 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                   <div>
-                       <Image 
-                          src="https://images.unsplash.com/photo-1640459392133-d2cf4117ac51?q=80&w=600"
-                          alt="Blockchain Technology"
-                          width={600}
-                          height={400}
-                          className="rounded-xl shadow-2xl w-full"
-                          data-ai-hint="blockchain finance"
-                      />
+                  <div className="w-full aspect-video rounded-xl shadow-2xl overflow-hidden">
+                    <video
+                      src="https://videos.pexels.com/video-files/853875/853875-hd_1920_1080_25fps.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
                   </div>
               </div>
           </div>
