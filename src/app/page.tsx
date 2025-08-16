@@ -132,16 +132,14 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                   <div className="md:block">
-                      <Image 
-                          src="https://images.unsplash.com/photo-1642155533899-56e66565112?q=80&w=600"
-                          alt="Blockchain Technology"
-                          width={600}
-                          height={400}
-                          className="rounded-xl shadow-2xl w-full"
-                          data-ai-hint="blockchain finance"
-                      />
-                  </div>
+                  <Image 
+                      src="https://images.unsplash.com/photo-1642155533899-56e66565112?q=80&w=600"
+                      alt="Blockchain Technology"
+                      width={600}
+                      height={400}
+                      className="rounded-xl shadow-2xl w-full"
+                      data-ai-hint="blockchain finance"
+                  />
               </div>
           </div>
       </section>
@@ -383,5 +381,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
