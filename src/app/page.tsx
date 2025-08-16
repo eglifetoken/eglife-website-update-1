@@ -132,7 +132,7 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                   <Image 
+                  <Image 
                       src="https://placehold.co/500x300.png"
                       alt="Blockchain Technology"
                       width={500}
