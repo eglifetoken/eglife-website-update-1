@@ -112,24 +112,38 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-16 md:py-20 bg-background/80 text-center">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
-          <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Empowering Your Financial Future
-          </h1>
-          <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            EGLIFE provides the tools for a new generation of financial independence. We are building a decentralized, utility-driven ecosystem on the BNB Smart Chain that transforms digital assets into practical instruments for everyday use, from seamless payments to rewarding staking opportunities.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button asChild size="lg">
-              <Link href="/whitepaper">Read Whitepaper</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/dapp">Explore Ecosystem</Link>
-            </Button>
+      <section className="w-full py-16 md:py-20 bg-background/80">
+          <div className="container mx-auto px-4 md:px-6">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                  <div className="text-center md:text-left">
+                      <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
+                      <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
+                          Empowering Your Financial Future
+                      </h1>
+                      <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-foreground/80 mb-8">
+                          EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
+                      </p>
+                      <div className="flex justify-center md:justify-start gap-4">
+                          <Button asChild size="lg">
+                              <Link href="/whitepaper">Read Whitepaper</Link>
+                          </Button>
+                          <Button asChild size="lg" variant="outline">
+                              <Link href="/dapp">Explore Ecosystem</Link>
+                          </Button>
+                      </div>
+                  </div>
+                   <div className="hidden md:block">
+                      <Image 
+                          src="https://images.unsplash.com/photo-1642155533899-56e665653112?q=80&w=600"
+                          alt="Blockchain Technology"
+                          width={600}
+                          height={400}
+                          className="rounded-xl shadow-2xl"
+                          data-ai-hint="blockchain finance"
+                      />
+                  </div>
+              </div>
           </div>
-        </div>
       </section>
       
        <section className="w-full py-16 md:py-20">
@@ -369,3 +383,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
