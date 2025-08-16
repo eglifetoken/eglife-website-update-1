@@ -111,7 +111,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-32 bg-background/80 text-center">
+      <section className="w-full py-20 md:py-28 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
@@ -131,7 +131,7 @@ export default function Home() {
         </div>
       </section>
       
-       <section className="w-full py-16 md:py-24">
+       <section className="w-full py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-stretch">
             <Card className="flex flex-col">
@@ -198,7 +198,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="w-full py-16 md:py-24 container mx-auto px-4 md:px-6">
+      <section className="w-full py-16 md:py-20 container mx-auto px-4 md:px-6">
         <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Live Market Data</h2>
       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -284,7 +284,7 @@ export default function Home() {
         </Card>
       </section>
 
-      <section className="w-full py-16 md:py-24">
+      <section className="w-full py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Roadmap</h2>
@@ -319,7 +319,7 @@ export default function Home() {
         </div>
       </section>
 
-       <section className="w-full py-16 md:py-24">
+       <section className="w-full py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">Meet the Team</h2>
@@ -361,3 +361,6 @@ export default function Home() {
 
 
 
+
+
+    
