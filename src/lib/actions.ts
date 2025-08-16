@@ -5,7 +5,7 @@ import { z } from "zod"
 import { randomUUID } from "crypto"
 import { auth, db } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, Timestamp } from "firebase/firestore";
 
 // Contact Form Action
 const contactFormSchema = z.object({
@@ -92,7 +92,7 @@ export async function registerUser(values: z.infer<typeof registerFormSchema>) {
             name: values.name,
             email: values.email,
             mobile: values.mobile,
-            dob: values.dob,
+            dob: Timestamp.fromDate(values.dob),
             country: values.country,
             address: values.address,
             city: values.city,
