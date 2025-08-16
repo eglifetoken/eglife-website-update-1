@@ -132,7 +132,7 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                   <div className="hidden md:block">
+                   <div className="md:block">
                       <Image 
                           src="https://images.unsplash.com/photo-1642155533899-56e66565112?q=80&w=600"
                           alt="Blockchain Technology"
