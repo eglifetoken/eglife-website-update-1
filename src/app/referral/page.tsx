@@ -67,22 +67,22 @@ export default function ReferralPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Referrals</CardTitle>
+                        <CardTitle className="text-sm font-medium">Total Platform Referrals</CardTitle>
                         <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">12</div>
-                        <p className="text-xs text-muted-foreground">Users joined via your link</p>
+                        <div className="text-2xl font-bold">1,250</div>
+                        <p className="text-xs text-muted-foreground">Total users joined via referral</p>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Referral Bonus</CardTitle>
+                        <CardTitle className="text-sm font-medium">Total Referral Bonuses Paid</CardTitle>
                         <Gift className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">250 EGLIFE</div>
-                        <p className="text-xs text-muted-foreground">Total rewards earned</p>
+                        <div className="text-2xl font-bold">450,000 EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">Total rewards paid to referrers</p>
                     </CardContent>
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
@@ -132,7 +132,7 @@ export default function ReferralPage() {
 
                  <Card>
                     <CardHeader>
-                        <CardTitle className="font-headline">Referral History</CardTitle>
+                        <CardTitle className="font-headline">Your Referral History</CardTitle>
                         <CardDescription>Track the activity and earnings from your referrals.</CardDescription>
                     </CardHeader>
                     <CardContent>
