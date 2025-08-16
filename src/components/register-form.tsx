@@ -79,6 +79,12 @@ export function RegisterForm() {
             email: "",
             mobile: "",
             password: "",
+            address: "",
+            city: "",
+            state: "",
+            postalCode: "",
+            aadhar: "",
+            pan: "",
             referralCode: "",
             kycConsent: false,
         },
@@ -381,3 +387,5 @@ export function RegisterForm() {
     </Form>
   )
 }
+
+    
