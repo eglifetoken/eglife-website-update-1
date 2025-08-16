@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/staking", label: "Staking" },
   { href: "/dapp", label: "DApp" },
+  { href: "/referral", label: "Referral" },
   { href: "/contact", label: "Contact" },
 ];
 
