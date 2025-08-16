@@ -3,8 +3,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, DollarSign, UserPlus, Link as LinkIcon, Link2Off } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, UserPlus, Link as LinkIcon, Link2Off } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
@@ -212,5 +212,3 @@ export default function DappPage() {
     </div>
   );
 }
-
-    
