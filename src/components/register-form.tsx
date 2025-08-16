@@ -183,6 +183,9 @@ export function RegisterForm() {
                                 date > new Date() || date < new Date("1900-01-01")
                                 }
                                 initialFocus
+                                captionLayout="dropdown-buttons"
+                                fromYear={1950}
+                                toYear={new Date().getFullYear() - 18}
                             />
                             </PopoverContent>
                         </Popover>
