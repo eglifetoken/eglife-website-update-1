@@ -79,6 +79,8 @@ export function RegisterForm() {
             email: "",
             mobile: "",
             password: "",
+            dob: undefined,
+            country: "",
             address: "",
             city: "",
             state: "",
