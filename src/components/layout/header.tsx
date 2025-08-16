@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -45,18 +44,13 @@ const Logo = () => (
 
 export default function Header() {
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
     <Link
       href={href}
       className={cn(
         "text-lg font-medium transition-colors hover:text-primary",
-        isClient && pathname === href ? "text-primary" : "text-foreground/80"
+        pathname === href ? "text-primary" : "text-foreground/80"
       )}
     >
       {children}
