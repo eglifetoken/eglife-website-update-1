@@ -132,9 +132,9 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                  <div className="w-full aspect-video rounded-xl shadow-2xl overflow-hidden">
+                   <div className="w-full aspect-video rounded-xl shadow-2xl overflow-hidden">
                     <video
-                      src="https://videos.pexels.com/video-files/853875/853875-hd_1920_1080_25fps.mp4"
+                      src="https://cdn.pixabay.com/video/2022/03/24/111345-684814481_large.mp4"
                       autoPlay
                       loop
                       muted
