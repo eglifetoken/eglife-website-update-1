@@ -132,11 +132,11 @@ export default function Home() {
                           </Button>
                       </div>
                   </div>
-                  <Image 
-                      src="https://placehold.co/500x300.png"
+                   <Image 
+                      src="https://images.unsplash.com/photo-1640459392133-d2cf4117ac51?q=80&w=600"
                       alt="Blockchain Technology"
-                      width={500}
-                      height={300}
+                      width={600}
+                      height={400}
                       className="rounded-xl shadow-2xl w-full"
                       data-ai-hint="blockchain finance"
                   />
@@ -381,6 +381,8 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
 
