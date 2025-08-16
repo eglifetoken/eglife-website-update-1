@@ -51,12 +51,6 @@ const formSchema = z.object({
   aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
   referralCode: z.string().optional(),
-  // Note: File handling in React Hook Form with server actions is complex.
-  // We're adding the fields to the schema for structure, but not validating the file itself here.
-  // The actual file upload would need to be handled via a separate process or endpoint.
-  aadharFrontUpload: z.any().optional(),
-  aadharBackUpload: z.any().optional(),
-  panUpload: z.any().optional(),
   kycConsent: z.boolean().default(false).refine(value => value === true, {
     message: "You must agree to the identity verification.",
   }),
@@ -92,16 +86,6 @@ export function RegisterForm() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true);
-        // In a real app, you would handle the file uploads here, likely by
-        // sending them to a secure storage service and passing the URL/ID
-        // to the registerUser action.
-        console.log("Form values (excluding files):", {
-            ...values,
-            aadharFrontUpload: undefined,
-            aadharBackUpload: undefined,
-            panUpload: undefined
-        });
-
         try {
             const result = await registerUser(values);
             if (result.success) {
@@ -323,41 +307,16 @@ export function RegisterForm() {
         {/* KYC & Referral */}
         <div className="space-y-4">
             <h3 className="text-lg font-medium font-headline border-b pb-2">Identity Verification (India) & Referral</h3>
+            <p className="text-sm text-muted-foreground pt-2">KYC document uploads will be enabled in a future update. For now, please enter your details below.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <FormField
                     control={form.control}
                     name="aadhar"
                     render={({ field }) => (
-                        <FormItem className="md:col-span-2">
+                        <FormItem>
                         <FormLabel>Aadhar Number</FormLabel>
                         <FormControl>
                             <Input placeholder="XXXX XXXX XXXX" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="aadharFrontUpload"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Upload Aadhar Card (Front)</FormLabel>
-                        <FormControl>
-                             <Input id="aadhar-front-upload" type="file" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="aadharBackUpload"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Upload Aadhar Card (Back)</FormLabel>
-                        <FormControl>
-                             <Input id="aadhar-back-upload" type="file" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>
@@ -371,19 +330,6 @@ export function RegisterForm() {
                         <FormLabel>PAN Number</FormLabel>
                         <FormControl>
                             <Input placeholder="ABCDE1234F" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="panUpload"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Upload PAN Card</FormLabel>
-                        <FormControl>
-                            <Input id="pan-upload" type="file" {...field} />
                         </FormControl>
                         <FormMessage />
                         </FormItem>

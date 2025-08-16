@@ -68,10 +68,6 @@ const registerFormSchema = z.object({
   aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
   referralCode: z.string().optional(),
-  // Note: File handling is not implemented in this action.
-  aadharFrontUpload: z.any().optional(),
-  aadharBackUpload: z.any().optional(),
-  panUpload: z.any().optional(),
   kycConsent: z.boolean().default(false).refine(value => value === true, {
     message: "You must agree to the identity verification.",
   }),
