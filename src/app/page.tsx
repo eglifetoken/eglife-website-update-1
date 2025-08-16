@@ -145,7 +145,7 @@ export default function Home() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col">
                 <p className="text-xl text-foreground/80 leading-relaxed">
-                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all.
+                   Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by the security and transparency of blockchain technology. We aim to break down the barriers to entry by creating intuitive platforms that simplify the complexities of crypto, making it accessible for everyone, regardless of their technical expertise. By bridging the gap between digital assets and everyday life, we are building an inclusive financial future for all. Our focus is on fostering financial literacy through clear, educational resources and promoting a user-centric design that prioritizes simplicity and security, ensuring everyone can transact with confidence.
                 </p>
               </CardContent>
             </Card>
@@ -343,4 +343,5 @@ export default function Home() {
 
 
     
+
 
