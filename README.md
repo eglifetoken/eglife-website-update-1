@@ -1,6 +1,6 @@
 # EGLIFE WEBSITE - Deployment Guide
 
-This guide will walk you through the final steps to publish your website online. The process involves getting the code from Firebase Studio onto your computer and then pushing it to GitHub.
+This guide will walk you through the final steps to publish your website online. The process involves getting the code from Firebase Studio onto your computer and then pushing it to GitHub using a simple script.
 
 ---
 
@@ -21,7 +21,7 @@ Before you can deploy, you need all the project files on your local computer.
 
 ## **Part 2: Deploy to GitHub from Your Computer**
 
-Once all the files are on your computer inside the `eglife-website` folder, you can push them to GitHub.
+Once all the files are on your computer inside the `eglife-website` folder, you can push them to GitHub by running a single script.
 
 **Requirements:**
 *   You must have [Git](https://git-scm.com/downloads) installed on your computer.
@@ -39,39 +39,34 @@ Use the `cd` (change directory) command to move into the folder you created.
 cd Desktop/eglife-website
 ```
 
-**2. Run the Deployment Commands:**
+**2. Make the Script Executable (for Mac/Linux users):**
 
-Copy and paste these commands into your terminal one by one, pressing `Enter` after each one.
+If you are on a Mac or Linux, you need to give the script permission to run. Skip this step if you are on Windows.
 
 ```bash
-# Initializes Git in your folder
-git init
-
-# Adds all your files to be saved
-git add .
-
-# Saves your files with a message
-git commit -m "Final project files ready for deployment"
-
-# Connects your folder to the GitHub repository
-git remote add origin https://github.com/eglifetoken/EGLIFE-WEBSITE.git
-
-# IMPORTANT: If the above command gives an error saying "remote origin already exists",
-# run this command instead to update it:
-# git remote set-url origin https://github.com/eglifetoken/EGLIFE-WEBSITE.git
-
-# Renames your primary branch to 'main'
-git branch -M main
-
-# Pushes your code to GitHub. This will upload all the files.
-git push -u origin main --force
+chmod +x deploy.sh
 ```
+
+**3. Run the Deployment Script:**
+
+Now, run the script. This will handle all the git commands for you.
+
+*   On Mac or Linux:
+    ```bash
+    ./deploy.sh
+    ```
+*   On Windows:
+    ```bash
+    sh deploy.sh
+    ```
+
+The script will initialize Git, save your files, connect to your GitHub repository, and push all the code.
 
 ---
 
 ## **Part 3: Go Live with Netlify**
 
-After your code is successfully pushed to GitHub, your website is ready to be deployed live. Your project is already configured to work with Netlify.
+After the script finishes and your code is successfully pushed to GitHub, your website is ready to be deployed live.
 
 1.  Go to [https://www.netlify.com/](https://www.netlify.com/) and sign up or log in.
 2.  Click **"Add new site"** or **"Import an existing project"**.
