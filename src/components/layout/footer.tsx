@@ -47,11 +47,11 @@ export default function Footer() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:col-span-3">
               <div>
-                <h3 className="text-lg font-headline font-semibold mb-4">Quick Links</h3>
+                <h3 className="text-lg font-headline font-semibold mb-4">Company</h3>
                 <ul className="space-y-2">
-                  <li><Link href="/" className="text-foreground/80 hover:text-primary">Home</Link></li>
+                  <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
+                  <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
                   <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact</Link></li>
-                  <li><Link href="/admin" className="text-foreground/80 hover:text-primary">Admin</Link></li>
                 </ul>
               </div>
               <div>
@@ -63,9 +63,11 @@ export default function Footer() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-headline font-semibold mb-4">Legal</h3>
+                <h3 className="text-lg font-headline font-semibold mb-4">Account</h3>
                 <ul className="space-y-2">
-                  <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
+                   <li><Link href="/login" className="text-foreground/80 hover:text-primary">Login</Link></li>
+                  <li><Link href="/register" className="text-foreground/80 hover:text-primary">Register</Link></li>
+                  <li><Link href="/admin" className="text-foreground/80 hover:text-primary">Admin</Link></li>
                 </ul>
               </div>
           </div>
