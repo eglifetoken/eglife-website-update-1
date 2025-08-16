@@ -108,7 +108,7 @@ export default function Home() {
         fetchData();
     }, []);
     
-    const PriceChangeIndicator = tokenData && tokenData.priceChange24h >= 0 ? TrendingUp : TrendingDown;
+    const PriceChangeIndicator = tokenData && tokenData.priceChangePercentage24h >= 0 ? TrendingUp : TrendingDown;
 
   return (
     <div className="flex flex-col items-center">
@@ -212,7 +212,7 @@ export default function Home() {
                 {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
                     <>
                         <div className="text-2xl font-bold">${tokenData.priceUsd.toFixed(4)}</div>
-                        <div className={`text-xs flex items-center ${tokenData.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        <div className={`text-xs flex items-center ${tokenData.priceChangePercentage24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                             <PriceChangeIndicator className="h-3 w-3 mr-1" />
                             <span>{tokenData.priceChangePercentage24h.toFixed(2)}% (24h)</span>
                         </div>
@@ -246,7 +246,7 @@ export default function Home() {
             <CardContent>
                 {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
                      <>
-                        <div className="text-2xl font-bold">${(tokenData.volume24hUsd / 1_000_000).toFixed(2)}M</div>
+                        <div className="text-2xl font-bold">${(tokenData.volume24hUsd / 1_000).toFixed(2)}K</div>
                         <p className="text-xs text-muted-foreground">Last 24 hours</p>
                     </>
                 ) : (
@@ -368,15 +368,4 @@ export default function Home() {
       </section>
     </div>
   );
-
-    
-
-
-
-    
-
-
-
-
-
-    
+}
