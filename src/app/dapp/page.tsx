@@ -70,6 +70,7 @@ export default function DappPage() {
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
 
+  const { data: egldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
   const { data: bnbBalance } = useBalance({ address, })
   const { data: usdtBalance } = useBalance({ address, token: USDT_CONTRACT_ADDRESS })
 
@@ -129,8 +130,8 @@ export default function DappPage() {
                                         <CardTitle className="text-sm font-medium">EGLIFE Balance</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-xl font-bold">0.00</p>
-                                        <p className="text-xs text-muted-foreground">EGLIFE</p>
+                                        <p className="text-xl font-bold">{egldBalance ? parseFloat(formatUnits(egldBalance.value, egldBalance.decimals)).toFixed(2) : '0.00'}</p>
+                                        <p className="text-xs text-muted-foreground">{egldBalance?.symbol}</p>
                                     </CardContent>
                                 </Card>
                                  <Card>
