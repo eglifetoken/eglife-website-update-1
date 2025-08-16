@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { getTokenData, TokenData } from "@/ai/flows/getTokenData";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
@@ -89,29 +90,29 @@ const statusStyles: { [key: string]: string } = {
 
 
 export default function Home() {
-    const [livePrice, setLivePrice] = useState(0.25);
-    const [priceChange, setPriceChange] = useState(0.01);
-    const [isClient, setIsClient] = useState(false);
+    const [tokenData, setTokenData] = useState<TokenData | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setIsClient(true);
-        const interval = setInterval(() => {
-        setLivePrice(prevPrice => {
-            const change = (Math.random() - 0.5) * 0.02;
-            const newPrice = prevPrice + change;
-            setPriceChange(newPrice - prevPrice);
-            return newPrice > 0 ? newPrice : 0.01;
-        });
-        }, 3000);
-        return () => clearInterval(interval);
+        const fetchData = async () => {
+            try {
+                const data = await getTokenData();
+                setTokenData(data);
+            } catch (error) {
+                console.error("Failed to fetch token data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
     
-    const PriceChangeIndicator = priceChange >= 0 ? TrendingUp : TrendingDown;
-
+    const PriceChangeIndicator = tokenData && tokenData.priceChange24h >= 0 ? TrendingUp : TrendingDown;
 
   return (
     <div className="flex flex-col items-center">
-      <section className="w-full py-20 md:py-28 bg-background/80 text-center">
+      <section className="w-full py-16 md:py-20 bg-background/80 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-2xl md:text-4xl font-semibold text-primary mb-2">Welcome to EGLIFE TOKEN</h2>
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
@@ -208,19 +209,16 @@ export default function Home() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                {isClient ? (
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
                     <>
-                        <div className="text-2xl font-bold">${livePrice.toFixed(4)}</div>
-                        <div className={`text-xs flex items-center ${priceChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        <div className="text-2xl font-bold">${tokenData.priceUsd.toFixed(4)}</div>
+                        <div className={`text-xs flex items-center ${tokenData.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                             <PriceChangeIndicator className="h-3 w-3 mr-1" />
-                            <span>{priceChange.toFixed(4)} (${(priceChange / (livePrice - priceChange) * 100).toFixed(2)}%)</span>
+                            <span>{tokenData.priceChangePercentage24h.toFixed(2)}% (24h)</span>
                         </div>
                     </>
                 ) : (
-                    <>
-                        <div className="text-2xl font-bold">$0.2500</div>
-                        <p className="text-xs text-muted-foreground">Loading...</p>
-                    </>
+                    <div className="text-2xl font-bold text-muted-foreground">N/A</div>
                 )}
             </CardContent>
             </Card>
@@ -230,8 +228,14 @@ export default function Home() {
                 <LineChart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">$25.5M</div>
-                <p className="text-xs text-muted-foreground">Based on current price</p>
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
+                    <>
+                        <div className="text-2xl font-bold">${(tokenData.marketCapUsd / 1_000_000).toFixed(2)}M</div>
+                        <p className="text-xs text-muted-foreground">Based on current price</p>
+                    </>
+                ) : (
+                    <div className="text-2xl font-bold text-muted-foreground">N/A</div>
+                )}
             </CardContent>
             </Card>
             <Card>
@@ -240,8 +244,14 @@ export default function Home() {
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">$1.2M</div>
-                <p className="text-xs text-muted-foreground">+5.2% from yesterday</p>
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
+                     <>
+                        <div className="text-2xl font-bold">${(tokenData.volume24hUsd / 1_000_000).toFixed(2)}M</div>
+                        <p className="text-xs text-muted-foreground">Last 24 hours</p>
+                    </>
+                ) : (
+                    <div className="text-2xl font-bold text-muted-foreground">N/A</div>
+                )}
             </CardContent>
             </Card>
             <Card>
@@ -250,8 +260,14 @@ export default function Home() {
                 <PieChart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">102M EGLIFE</div>
-                <p className="text-xs text-muted-foreground">out of 1B total supply</p>
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : tokenData ? (
+                     <>
+                        <div className="text-2xl font-bold">{(tokenData.circulatingSupply / 1_000_000).toFixed(2)}M EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">out of 1B total supply</p>
+                    </>
+                ) : (
+                     <div className="text-2xl font-bold text-muted-foreground">N/A</div>
+                )}
             </CardContent>
             </Card>
         </div>
