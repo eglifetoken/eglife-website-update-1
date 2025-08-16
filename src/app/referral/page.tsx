@@ -22,10 +22,8 @@ const referralTiers = [
     { level: 10, bonus: "0.25%" },
 ];
 
-const referralHistory = [
-    { referredUser: "user123@email.com", level: 1, stakedAmount: "1,000 EGLIFE", bonus: "100 EGLIFE", date: "2024-08-01" },
-    { referredUser: "user456@email.com", level: 1, stakedAmount: "500 EGLIFE", bonus: "50 EGLIFE", date: "2024-07-28" },
-    { referredUser: "user789@email.com", level: 2, stakedAmount: "2,000 EGLIFE", bonus: "100 EGLIFE", date: "2024-07-25" },
+const referralHistory: any[] = [
+    // Data will be populated once the system is live
 ];
 
 const referralCode = "EGLIFE-A4B7X9";
@@ -71,8 +69,8 @@ export default function ReferralPage() {
                         <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">1,250</div>
-                        <p className="text-xs text-muted-foreground">Total users joined via referral</p>
+                        <div className="text-2xl font-bold">0</div>
+                        <p className="text-xs text-muted-foreground">No users have joined via referral yet.</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -81,8 +79,8 @@ export default function ReferralPage() {
                         <Gift className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">450,000 EGLIFE</div>
-                        <p className="text-xs text-muted-foreground">Total rewards paid to referrers</p>
+                        <div className="text-2xl font-bold">0 EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">No referral bonuses paid out yet.</p>
                     </CardContent>
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
@@ -145,7 +143,7 @@ export default function ReferralPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                 {referralHistory.map((ref, index) => (
+                                 {referralHistory.length > 0 ? referralHistory.map((ref, index) => (
                                     <TableRow key={index}>
                                         <TableCell>
                                             <div className="font-medium truncate">{ref.referredUser}</div>
@@ -154,10 +152,16 @@ export default function ReferralPage() {
                                         <TableCell>{ref.stakedAmount}</TableCell>
                                         <TableCell className="text-right font-semibold text-green-500">+{ref.bonus}</TableCell>
                                     </TableRow>
-                                ))}
+                                )) : (
+                                    <TableRow>
+                                        <TableCell colSpan={3} className="h-24 text-center">
+                                            No referral history yet.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
                             </TableBody>
                         </Table>
-                         <Button variant="outline" className="w-full mt-4">Load More</Button>
+                         <Button variant="outline" className="w-full mt-4" disabled>Load More</Button>
                     </CardContent>
                 </Card>
             </div>
