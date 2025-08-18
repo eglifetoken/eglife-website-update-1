@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Zap } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast"
 import { parseEther } from "viem"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Switch } from "@/components/ui/switch"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 // TODO: Replace with your actual staking contract address
@@ -40,13 +41,20 @@ const stakingContractAbi = [
 
 
 const stakingTiers = [
-    { tier: "Starter Stake", amount: "10 - 100", apy: "12%" },
-    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%" },
-    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%" },
-    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
-    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
-    { tier: "Diamond Stake", amount: "10,001+", apy: "26%" },
+    { tier: "Starter Stake", amount: "10 - 100", apy: "12%", min: 10, max: 100 },
+    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%", min: 101, max: 500 },
+    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%", min: 501, max: 1000 },
+    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%", min: 1001, max: 5000 },
+    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%", min: 5001, max: 10000 },
+    { tier: "Diamond Stake", amount: "10,001+", apy: "26%", min: 10001, max: Infinity },
 ];
+
+const getTierFromAmount = (amount: number) => {
+    if (amount < 10) return { tier: "No Active Stake" };
+    const currentTier = stakingTiers.find(t => amount >= t.min && amount <= t.max);
+    return currentTier || stakingTiers[stakingTiers.length - 1]; // Default to highest tier if it exceeds all maxes
+};
+
 
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
@@ -65,6 +73,7 @@ export default function StakingPage() {
 
   const [stakeAmount, setStakeAmount] = useState("");
   const [totalStaked, setTotalStaked] = useState(0.00);
+  const [isAutoUpgrade, setIsAutoUpgrade] = useState(true);
   const { toast } = useToast();
   const { writeContract, isPending } = useWriteContract();
 
@@ -102,6 +111,8 @@ export default function StakingPage() {
         }
     })
   };
+  
+  const currentTier = getTierFromAmount(totalStaked);
 
 
   return (
@@ -161,7 +172,7 @@ export default function StakingPage() {
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">{totalStaked.toFixed(2)}</div>
-                 <p className="text-xs text-muted-foreground">Locked for 365 days</p>
+                 <p className="text-xs text-muted-foreground font-semibold">{currentTier.tier}</p>
             </CardContent>
             </Card>
             <Card>
@@ -188,15 +199,24 @@ export default function StakingPage() {
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline text-2xl">Staking Tiers & APY</CardTitle>
-                    <CardDescription>The more you stake, the higher your annual percentage yield (APY).</CardDescription>
+                <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <CardTitle className="font-headline text-2xl">Staking Tiers & APY</CardTitle>
+                        <CardDescription>The more you stake, the higher your annual percentage yield (APY).</CardDescription>
+                    </div>
+                     <div className="flex items-center space-x-2 pt-4 md:pt-0">
+                        <Switch id="auto-upgrade" checked={isAutoUpgrade} onCheckedChange={setIsAutoUpgrade} />
+                        <Label htmlFor="auto-upgrade" className="flex items-center gap-1.5 text-sm">
+                            <Zap className="h-4 w-4 text-accent"/>
+                            Auto-Upgrade Package
+                        </Label>
+                    </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center">
                         {stakingTiers.map(tier => (
-                             <div key={tier.tier} className="p-4 rounded-lg bg-muted/50 border">
-                                <p className="text-sm text-muted-foreground">{tier.tier}</p>
+                             <div key={tier.tier} className="p-3 rounded-lg bg-muted/50 border">
+                                <p className="text-sm font-medium text-foreground">{tier.tier}</p>
                                 <p className="font-bold text-lg text-primary">{tier.apy}</p>
                                 <p className="text-xs text-muted-foreground">{tier.amount}</p>
                             </div>
@@ -317,3 +337,5 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    
