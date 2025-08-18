@@ -9,17 +9,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { UserPlus, Wallet, Link2Off } from "lucide-react";
+import { UserPlus, Wallet, Link2Off, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
     const { address, isConnected } = useAccount();
     const { connect } = useConnect();
     const { disconnect } = useDisconnect();
     const { toast } = useToast();
+    const router = useRouter();
     const [sponsorAddress, setSponsorAddress] = useState("0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d");
+    const [isRegistering, setIsRegistering] = useState(false);
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (!sponsorAddress) {
              toast({
                 variant: "destructive",
@@ -28,12 +31,25 @@ export default function RegisterPage() {
             });
             return;
         }
+
+        setIsRegistering(true);
+
         // TODO: Implement actual on-chain registration logic
+        // For now, we will simulate a successful transaction.
         console.log("Registering:", { user: address, sponsor: sponsorAddress });
+        
+        // Simulate a delay for the transaction
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // On successful registration:
         toast({
-            title: "Registration Submitted!",
-            description: "Your registration transaction has been sent to your wallet for approval.",
+            title: "Registration Successful!",
+            description: "You have successfully joined the EGLIFE ecosystem. Welcome!",
         });
+        
+        setIsRegistering(false);
+        // Redirect to a different page after success, e.g., the DApp page
+        router.push("/dapp");
     };
 
     return (
@@ -67,12 +83,20 @@ export default function RegisterPage() {
                                     placeholder="0x..." 
                                     value={sponsorAddress}
                                     onChange={(e) => setSponsorAddress(e.target.value)}
+                                    disabled={isRegistering}
                                 />
                             </div>
-                            <Button onClick={handleRegister} className="w-full" size="lg">
-                                Complete Registration
+                            <Button onClick={handleRegister} className="w-full" size="lg" disabled={isRegistering}>
+                                {isRegistering ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                        Registering...
+                                    </>
+                                ) : (
+                                    "Complete Registration"
+                                )}
                             </Button>
-                             <Button onClick={() => disconnect()} variant="outline" className="w-full">
+                             <Button onClick={() => disconnect()} variant="outline" className="w-full" disabled={isRegistering}>
                                 <Link2Off className="mr-2 h-4 w-4" />
                                 Disconnect Wallet
                             </Button>
@@ -89,4 +113,3 @@ export default function RegisterPage() {
         </div>
     );
 }
-
