@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2 } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -124,12 +124,18 @@ export default function Home() {
                           EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
                       </p>
                       <div className="flex justify-center md:justify-start gap-4">
-                          <Button asChild size="lg">
-                              <Link href="/whitepaper">Read Whitepaper</Link>
-                          </Button>
-                          <Button asChild size="lg" variant="outline">
-                              <Link href="/dapp">Explore Ecosystem</Link>
-                          </Button>
+                            <Button asChild size="lg">
+                                <Link href="/register">
+                                    <UserPlus className="mr-2 h-5 w-5" />
+                                    Register
+                                </Link>
+                            </Button>
+                           <Button asChild size="lg" variant="outline">
+                                <Link href="/login">
+                                    <LogIn className="mr-2 h-5 w-5" />
+                                    Login
+                                </Link>
+                            </Button>
                       </div>
                   </div>
                    <div className="w-full aspect-video rounded-xl shadow-2xl overflow-hidden">
@@ -383,6 +389,8 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
 
