@@ -4,13 +4,14 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const services = [
   {
@@ -132,6 +133,7 @@ const transactionHistory = [
 
 export default function ServicesPage() {
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -333,8 +335,21 @@ export default function ServicesPage() {
               </div>
             </div>
       </div>
+      
+      <section className="w-full mt-16 pt-8 border-t">
+        <div className="container mx-auto px-4 md:px-6 flex justify-between">
+            <Button asChild variant="outline" onClick={() => router.back()}>
+                <Link href="#">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/staking">
+                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
+        </div>
+      </section>
     </div>
   );
 }
-
-    

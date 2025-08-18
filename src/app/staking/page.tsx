@@ -6,13 +6,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { parseEther } from "viem"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 // TODO: Replace with your actual staking contract address
@@ -48,6 +50,7 @@ const stakingTiers = [
 
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
+  const router = useRouter();
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -296,8 +299,21 @@ export default function StakingPage() {
             </Card>
         </div>
       </div>
+
+       <section className="w-full mt-8 pt-8 border-t">
+        <div className="container mx-auto px-4 md:px-6 flex justify-between">
+            <Button asChild variant="outline" onClick={() => router.back()}>
+                <Link href="#">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/dapp">
+                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
+        </div>
+      </section>
     </div>
   )
 }
-
-    

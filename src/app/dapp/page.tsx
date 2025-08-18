@@ -4,12 +4,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off } from "lucide-react";
+import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { formatUnits } from "viem";
+import { useRouter } from "next/navigation";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955';
@@ -69,6 +70,7 @@ export default function DappPage() {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
+  const router = useRouter();
 
   const { data: egldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
   const { data: bnbBalance } = useBalance({ address, })
@@ -191,6 +193,21 @@ export default function DappPage() {
           );
         })}
       </div>
+
+       <section className="w-full mt-16 pt-8 border-t">
+        <div className="container mx-auto px-4 md:px-6 flex justify-between">
+            <Button asChild variant="outline" onClick={() => router.back()}>
+                <Link href="#">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/referral">
+                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
+        </div>
+      </section>
     </div>
   );
 }

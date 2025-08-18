@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, Gift, Users, BarChart2, Loader2 } from "lucide-react";
+import { Copy, Gift, Users, BarChart2, Loader2, ArrowLeft, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const referralTiers = [
     { level: 1, bonus: "10%" },
@@ -31,6 +33,7 @@ const referralCode = "EGLIFE-A4B7X9";
 export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         setIsClient(true);
@@ -165,6 +168,21 @@ export default function ReferralPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            <section className="w-full mt-16 pt-8 border-t">
+                <div className="container mx-auto px-4 md:px-6 flex justify-between">
+                    <Button asChild variant="outline" onClick={() => router.back()}>
+                        <Link href="#">
+                            <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                        </Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href="/crypto-education">
+                            Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+            </section>
         </div>
     );
 }
