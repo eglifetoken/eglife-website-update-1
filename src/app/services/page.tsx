@@ -10,8 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -87,7 +88,18 @@ const businessServices = [
     }
 ]
 
-const transactionHistory = [
+type TransactionType = "utility" | "credit" | "debit";
+
+interface Transaction {
+    name: string;
+    date: string;
+    amount: number;
+    status: "Success" | "Pending" | "Failed";
+    type: TransactionType;
+    icon: React.ElementType;
+}
+
+const transactionHistory: Transaction[] = [
   {
     name: "Jio Recharge",
     date: "2024-08-15",
@@ -133,11 +145,19 @@ const transactionHistory = [
 
 export default function ServicesPage() {
   const [isClient, setIsClient] = useState(false);
+  const [filter, setFilter] = useState<"all" | TransactionType>("all");
   const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const filteredHistory = useMemo(() => {
+    if (filter === "all") {
+        return transactionHistory;
+    }
+    return transactionHistory.filter(tx => tx.type === filter);
+  }, [filter]);
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -237,8 +257,15 @@ export default function ServicesPage() {
                                 <CardTitle>Transaction History</CardTitle>
                                 <CardDescription>View your recent UPI transactions.</CardDescription>
                             </CardHeader>
-                            <CardContent className="space-y-4">
-                                {transactionHistory.map((tx, index) => {
+                            <CardContent>
+                                <div className="flex justify-center gap-2 mb-6">
+                                    <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')}>All</Button>
+                                    <Button variant={filter === 'credit' ? 'default' : 'outline'} onClick={() => setFilter('credit')}>Credit</Button>
+                                    <Button variant={filter === 'debit' ? 'default' : 'outline'} onClick={() => setFilter('debit')}>Debit</Button>
+                                    <Button variant={filter === 'utility' ? 'default' : 'outline'} onClick={() => setFilter('utility')}>Utility</Button>
+                                </div>
+                                <div className="space-y-4">
+                                {filteredHistory.length > 0 ? filteredHistory.map((tx, index) => {
                                     const isCredit = tx.amount > 0;
                                     return (
                                     <div key={index} className="flex items-center p-2 rounded-md hover:bg-muted/50">
@@ -255,16 +282,21 @@ export default function ServicesPage() {
                                             <p className={`font-bold ${isCredit ? 'text-green-500' : 'text-foreground'}`}>
                                                 {isCredit ? '+' : ''}₹{Math.abs(tx.amount).toFixed(2)}
                                             </p>
-                                            <Badge variant={tx.status === 'Success' ? 'default' : 'secondary'} className={tx.status === 'Pending' ? 'bg-amber-500/80 text-white' : ''}>
+                                            <Badge variant={tx.status === 'Success' ? 'default' : 'secondary'} className={cn({'bg-amber-500/80 text-white': tx.status === 'Pending', 'bg-red-500/80 text-white': tx.status === 'Failed' })}>
                                                 {tx.status}
                                             </Badge>
                                         </div>
                                     </div>
                                     )
-                                })}
+                                }) : (
+                                    <div className="text-center py-10 text-muted-foreground">
+                                        <p>No transactions found for this category.</p>
+                                    </div>
+                                )}
+                                </div>
                             </CardContent>
                             <CardFooter>
-                                <Button variant="outline" className="w-full">Load More</Button>
+                                <Button variant="outline" className="w-full" disabled={filteredHistory.length === 0}>Load More</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>
