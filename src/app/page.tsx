@@ -145,6 +145,28 @@ export default function Home() {
               </div>
           </div>
       </section>
+
+      <section className="w-full py-12">
+        <div className="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
+            <h3 className="text-xl font-semibold">
+                Ready to join the EGLIFE community?
+            </h3>
+            <div className="flex gap-4">
+                <Button asChild size="lg">
+                    <Link href="/register">
+                        <UserPlus className="mr-2 h-5 w-5" />
+                        Register Now
+                    </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                    <Link href="/login">
+                        <LogIn className="mr-2 h-5 w-5" />
+                        Admin Login
+                    </Link>
+                </Button>
+            </div>
+        </div>
+      </section>
       
        <section className="w-full py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
