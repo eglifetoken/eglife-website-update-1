@@ -6,13 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  projectId: "egli-hub",
-  appId: "1:669798404623:web:a92835d0a1a36ea6e6897a",
-  storageBucket: "egli-hub.firebasestorage.app",
   apiKey: "AIzaSyAQRIpGu8u0gym566nK4Xfu2LcxSih9XDU",
   authDomain: "egli-hub.firebaseapp.com",
-  measurementId: "",
-  messagingSenderId: "669798404623"
+  projectId: "egli-hub",
+  storageBucket: "egli-hub.appspot.com",
+  messagingSenderId: "669798404623",
+  appId: "1:669798404623:web:a92835d0a1a36ea6e6897a"
 };
 
 // Initialize Firebase
