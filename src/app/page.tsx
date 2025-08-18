@@ -123,20 +123,6 @@ export default function Home() {
                       <p className="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-foreground/80 mb-8">
                           EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
                       </p>
-                      <div className="flex justify-center md:justify-start gap-4">
-                            <Button asChild size="lg">
-                                <Link href="/register">
-                                    <UserPlus className="mr-2 h-5 w-5" />
-                                    Register
-                                </Link>
-                            </Button>
-                           <Button asChild size="lg" variant="outline">
-                                <Link href="/login">
-                                    <LogIn className="mr-2 h-5 w-5" />
-                                    Login
-                                </Link>
-                            </Button>
-                      </div>
                   </div>
                    <div className="w-full aspect-video rounded-xl shadow-2xl overflow-hidden">
                     <video
@@ -389,13 +375,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
-
-    
-
-    
-
-    
