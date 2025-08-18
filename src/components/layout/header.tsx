@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Wallet } from "lucide-react";
+import { Menu, LogIn, UserPlus } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
 
@@ -69,10 +69,16 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
+             <Button asChild variant="ghost">
+                <Link href="/login">
+                    <LogIn className="mr-2 h-5 w-5" />
+                    Login
+                </Link>
+            </Button>
             <Button asChild>
-                <Link href="/dapp">
-                    <Wallet className="mr-2 h-5 w-5" />
-                    Connect Wallet
+                <Link href="/register">
+                    <UserPlus className="mr-2 h-5 w-5" />
+                    Register
                 </Link>
             </Button>
         </div>
@@ -93,9 +99,15 @@ export default function Header() {
                 ))}
                 <div className="flex flex-col gap-4 pt-4 border-t">
                     <Button asChild>
-                        <Link href="/dapp">
-                           <Wallet className="mr-2 h-5 w-5" />
-                           Connect Wallet
+                        <Link href="/register">
+                           <UserPlus className="mr-2 h-5 w-5" />
+                           Register
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/login">
+                           <LogIn className="mr-2 h-5 w-5" />
+                           Login
                         </Link>
                     </Button>
                 </div>

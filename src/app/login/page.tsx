@@ -20,6 +20,12 @@ import {
           </CardHeader>
           <CardContent>
             <LoginForm />
+             <div className="mt-4 text-center text-sm">
+                New user?{" "}
+                <Link href="/register" className="underline text-accent">
+                    Create an account
+                </Link>
+            </div>
           </CardContent>
         </Card>
       </div>

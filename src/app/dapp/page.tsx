@@ -4,15 +4,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, UserPlus, Link as LinkIcon, Link2Off } from "lucide-react";
+import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { formatUnits } from "viem";
-import { useToast } from "@/hooks/use-toast";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955';
@@ -72,7 +69,6 @@ export default function DappPage() {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
-  const { toast } = useToast();
 
   const { data: egldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
   const { data: bnbBalance } = useBalance({ address, })
@@ -83,15 +79,6 @@ export default function DappPage() {
     setIsClient(true);
   }, []);
 
-  const handleRegister = () => {
-      // TODO: Implement actual on-chain registration logic
-      toast({
-          title: "Registration Submitted!",
-          description: "Your registration transaction has been sent to your wallet for approval."
-      });
-  }
-
-
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
        <div className="text-center mb-12">
@@ -101,8 +88,8 @@ export default function DappPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        <Card className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <Card className="lg:col-span-3">
             <CardHeader>
                 <div className="flex items-center gap-3">
                      <div className="p-3 bg-primary/10 rounded-md w-fit">
@@ -178,26 +165,6 @@ export default function DappPage() {
                   </Button>
               </CardFooter>
         </Card>
-        
-        <Card className="flex flex-col items-center justify-center text-center bg-primary/10 border-primary">
-            <CardHeader>
-                 <div className="p-3 bg-primary rounded-md w-fit mx-auto mb-4">
-                    <UserPlus className="h-8 w-8 text-primary-foreground" />
-                </div>
-                <CardTitle className="font-headline text-2xl">Join the Ecosystem</CardTitle>
-                <CardDescription>Register with your wallet to access staking, services, and more.</CardDescription>
-            </CardHeader>
-            <CardContent className="w-full px-6 space-y-4">
-                 <div className="space-y-2 text-left">
-                    <Label htmlFor="sponsor-address">Sponsor Wallet Address</Label>
-                    <Input id="sponsor-address" placeholder="0x..." disabled={!isConnected} />
-                </div>
-                <Button size="lg" className="w-full" onClick={handleRegister} disabled={!isConnected}>
-                    Register with Wallet
-                </Button>
-            </CardContent>
-        </Card>
-
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
