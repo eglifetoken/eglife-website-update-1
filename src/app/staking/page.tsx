@@ -40,12 +40,12 @@ const stakingContractAbi = [
 
 
 const stakingTiers = [
-    { tier: 1, amount: "10 - 100", apy: "12%" },
-    { tier: 2, amount: "101 - 500", apy: "18%" },
-    { tier: 3, amount: "501 - 1,000", apy: "20%" },
-    { tier: 4, amount: "1,001 - 5,000", apy: "22%" },
-    { tier: 5, amount: "5,001 - 10,000", apy: "24%" },
-    { tier: 6, amount: "10,001+", apy: "26%" },
+    { tier: "Starter Stake", amount: "10 - 100", apy: "12%" },
+    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%" },
+    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%" },
+    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
+    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
+    { tier: "Diamond Stake", amount: "10,001+", apy: "26%" },
 ];
 
 export default function StakingPage() {
@@ -196,7 +196,7 @@ export default function StakingPage() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
                         {stakingTiers.map(tier => (
                              <div key={tier.tier} className="p-4 rounded-lg bg-muted/50 border">
-                                <p className="text-sm text-muted-foreground">Tier {tier.tier}</p>
+                                <p className="text-sm text-muted-foreground whitespace-nowrap">{tier.tier}</p>
                                 <p className="font-bold text-lg text-primary">{tier.apy}</p>
                                 <p className="text-xs text-muted-foreground">{tier.amount}</p>
                             </div>

@@ -6,12 +6,12 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLe
 import { Bar, BarChart, CartesianGrid, Pie, PieChart, Cell, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 const stakingDistributionData = [
-    { tier: 'Tier 1', users: 450, fill: "hsl(var(--chart-1))" },
-    { tier: 'Tier 2', users: 320, fill: "hsl(var(--chart-2))" },
-    { tier: 'Tier 3', users: 210, fill: "hsl(var(--chart-3))" },
-    { tier: 'Tier 4', users: 150, fill: "hsl(var(--chart-4))" },
-    { tier: 'Tier 5', users: 80, fill: "hsl(var(--chart-5))" },
-    { tier: 'Tier 6', users: 44, fill: "hsl(var(--primary))"  },
+    { tier: 'Starter', users: 450, fill: "hsl(var(--chart-1))" },
+    { tier: 'Bronze', users: 320, fill: "hsl(var(--chart-2))" },
+    { tier: 'Silver', users: 210, fill: "hsl(var(--chart-3))" },
+    { tier: 'Gold', users: 150, fill: "hsl(var(--chart-4))" },
+    { tier: 'Platinum', users: 80, fill: "hsl(var(--chart-5))" },
+    { tier: 'Diamond', users: 44, fill: "hsl(var(--primary))"  },
 ];
 
 const tokenStatusData = [

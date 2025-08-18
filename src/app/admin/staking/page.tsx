@@ -8,12 +8,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DollarSign, Users, Award, Pencil } from "lucide-react";
 
 const stakingTiers = [
-    { tier: 1, amount: "10 - 100", apy: "12%" },
-    { tier: 2, amount: "101 - 500", apy: "18%" },
-    { tier: 3, amount: "501 - 1,000", apy: "20%" },
-    { tier: 4, amount: "1,001 - 5,000", apy: "22%" },
-    { tier: 5, amount: "5,001 - 10,000", apy: "24%" },
-    { tier: 6, amount: "10,001+", apy: "26%" },
+    { tier: "Starter Stake", amount: "10 - 100", apy: "12%" },
+    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%" },
+    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%" },
+    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
+    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
+    { tier: "Diamond Stake", amount: "10,001+", apy: "26%" },
 ];
 
 const recentActivity = [
@@ -82,7 +82,7 @@ export default function AdminStakingPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Tier</TableHead>
+                                    <TableHead>Package Name</TableHead>
                                     <TableHead>Staking Amount (EGLIFE)</TableHead>
                                     <TableHead>Current APY</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>
@@ -91,7 +91,7 @@ export default function AdminStakingPage() {
                             <TableBody>
                                 {stakingTiers.map(tier => (
                                     <TableRow key={tier.tier}>
-                                        <TableCell className="font-medium">Tier {tier.tier}</TableCell>
+                                        <TableCell className="font-medium">{tier.tier}</TableCell>
                                         <TableCell>{tier.amount}</TableCell>
                                         <TableCell className="font-semibold text-primary">{tier.apy}</TableCell>
                                         <TableCell className="text-right">
@@ -133,4 +133,3 @@ export default function AdminStakingPage() {
         </div>
     )
 }
-

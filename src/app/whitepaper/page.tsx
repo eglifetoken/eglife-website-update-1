@@ -154,39 +154,39 @@ export default function WhitepaperPage() {
             <table className="table-fixed">
               <thead>
                 <tr>
-                  <th className="p-4">Tier</th>
+                  <th className="p-4">Package</th>
                   <th className="p-4">Staking Amount (EGLIFE)</th>
                   <th className="p-4">APY</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="p-4">Tier 1</td>
+                  <td className="p-4">Starter Stake</td>
                   <td className="p-4">10 - 100</td>
                   <td className="p-4">12%</td>
                 </tr>
                 <tr>
-                  <td className="p-4">Tier 2</td>
+                  <td className="p-4">Bronze Stake</td>
                   <td className="p-4">101 - 500</td>
                   <td className="p-4">18%</td>
                 </tr>
                 <tr>
-                  <td className="p-4">Tier 3</td>
+                  <td className="p-4">Silver Stake</td>
                   <td className="p-4">501 - 1,000</td>
                   <td className="p-4">20%</td>
                 </tr>
                 <tr>
-                  <td className="p-4">Tier 4</td>
+                  <td className="p-4">Gold Stake</td>
                   <td className="p-4">1,001 - 5,000</td>
                   <td className="p-4">22%</td>
                 </tr>
                 <tr>
-                  <td className="p-4">Tier 5</td>
+                  <td className="p-4">Platinum Stake</td>
                   <td className="p-4">5,001 - 10,000</td>
                   <td className="p-4">24%</td>
                 </tr>
                  <tr>
-                  <td className="p-4">Tier 6</td>
+                  <td className="p-4">Diamond Stake</td>
                   <td className="p-4">10,001 - ∞</td>
                   <td className="p-4">26%</td>
                 </tr>
