@@ -155,13 +155,13 @@ export default function Home() {
                 <Button asChild size="lg">
                     <Link href="/register">
                         <UserPlus className="mr-2 h-5 w-5" />
-                        Register Now
+                        Register
                     </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
                     <Link href="/login">
                         <LogIn className="mr-2 h-5 w-5" />
-                        Admin Login
+                        Login
                     </Link>
                 </Button>
             </div>
