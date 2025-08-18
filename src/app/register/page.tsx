@@ -81,7 +81,7 @@ export default function RegisterPage() {
                      <div className="mt-4 text-center text-sm">
                         Already have an account?{" "}
                         <Link href="/login" className="underline text-accent">
-                            Admin Login
+                            Login
                         </Link>
                     </div>
                 </CardContent>
