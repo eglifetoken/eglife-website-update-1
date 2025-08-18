@@ -193,10 +193,10 @@ export default function StakingPage() {
                     <CardDescription>The more you stake, the higher your annual percentage yield (APY).</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
                         {stakingTiers.map(tier => (
                              <div key={tier.tier} className="p-4 rounded-lg bg-muted/50 border">
-                                <p className="text-sm text-muted-foreground whitespace-nowrap">{tier.tier}</p>
+                                <p className="text-sm text-muted-foreground">{tier.tier}</p>
                                 <p className="font-bold text-lg text-primary">{tier.apy}</p>
                                 <p className="text-xs text-muted-foreground">{tier.amount}</p>
                             </div>
