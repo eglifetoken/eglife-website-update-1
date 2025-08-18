@@ -17,7 +17,7 @@ export default function RegisterPage() {
     const { connect } = useConnect();
     const { disconnect } = useDisconnect();
     const { toast } = useToast();
-    const [sponsorAddress, setSponsorAddress] = useState("");
+    const [sponsorAddress, setSponsorAddress] = useState("0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d");
 
     const handleRegister = () => {
         if (!sponsorAddress) {
@@ -89,3 +89,4 @@ export default function RegisterPage() {
         </div>
     );
 }
+
