@@ -26,7 +26,7 @@ const Logo = () => (
                 </linearGradient>
             </defs>
             <circle cx="24" cy="24" r="22" fill="url(#logoGradientFooter)" />
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Alegreya">
+            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Poppins">
                 E
             </text>
         </svg>
@@ -68,9 +68,8 @@ export default function Footer() {
               <div>
                 <h3 className="text-lg font-headline font-semibold mb-4">Account</h3>
                 <ul className="space-y-2">
-                   <li><Link href="/login" className="text-foreground/80 hover:text-primary">Login</Link></li>
-                  <li><Link href="/register" className="text-foreground/80 hover:text-primary">Register</Link></li>
-                  <li><Link href="/admin" className="text-foreground/80 hover:text-primary">Admin</Link></li>
+                   <li><Link href="/dapp" className="text-foreground/80 hover:text-primary">Register</Link></li>
+                   <li><Link href="/admin" className="text-foreground/80 hover:text-primary">Admin Login</Link></li>
                 </ul>
               </div>
           </div>

@@ -4,12 +4,15 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ArrowRight, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, UserPlus, Link as LinkIcon, Link2Off } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { formatUnits } from "viem";
+import { useToast } from "@/hooks/use-toast";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955';
@@ -69,6 +72,7 @@ export default function DappPage() {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
+  const { toast } = useToast();
 
   const { data: egldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
   const { data: bnbBalance } = useBalance({ address, })
@@ -78,6 +82,14 @@ export default function DappPage() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleRegister = () => {
+      // TODO: Implement actual on-chain registration logic
+      toast({
+          title: "Registration Submitted!",
+          description: "Your registration transaction has been sent to your wallet for approval."
+      });
+  }
 
 
   return (
@@ -173,13 +185,15 @@ export default function DappPage() {
                     <UserPlus className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-headline text-2xl">Join the Ecosystem</CardTitle>
-                <CardDescription>Create an account to access staking, services, and more.</CardDescription>
+                <CardDescription>Register with your wallet to access staking, services, and more.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <Button asChild size="lg">
-                    <Link href="/register">
-                        Register Now
-                    </Link>
+            <CardContent className="w-full px-6 space-y-4">
+                 <div className="space-y-2 text-left">
+                    <Label htmlFor="sponsor-address">Sponsor Wallet Address</Label>
+                    <Input id="sponsor-address" placeholder="0x..." disabled={!isConnected} />
+                </div>
+                <Button size="lg" className="w-full" onClick={handleRegister} disabled={!isConnected}>
+                    Register with Wallet
                 </Button>
             </CardContent>
         </Card>

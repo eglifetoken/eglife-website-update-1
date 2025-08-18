@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Wallet } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
 
@@ -34,7 +34,7 @@ const Logo = () => (
                 </linearGradient>
             </defs>
             <circle cx="24" cy="24" r="22" fill="url(#logoGradientHeader)" />
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Alegreya">
+            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Poppins">
                 E
             </text>
         </svg>
@@ -69,11 +69,11 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
-            <Button asChild variant="ghost">
-                <Link href="/login">Login</Link>
-            </Button>
             <Button asChild>
-                <Link href="/register">Register</Link>
+                <Link href="/dapp">
+                    <Wallet className="mr-2 h-5 w-5" />
+                    Connect Wallet
+                </Link>
             </Button>
         </div>
         <div className="md:hidden">
@@ -93,10 +93,10 @@ export default function Header() {
                 ))}
                 <div className="flex flex-col gap-4 pt-4 border-t">
                     <Button asChild>
-                        <Link href="/login">Login</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                        <Link href="/register">Register</Link>
+                        <Link href="/dapp">
+                           <Wallet className="mr-2 h-5 w-5" />
+                           Connect Wallet
+                        </Link>
                     </Button>
                 </div>
               </div>
