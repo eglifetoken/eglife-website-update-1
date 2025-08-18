@@ -19,11 +19,11 @@ import {
   export default function RegisterPage() {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-10rem)] py-12">
-        <Card className="mx-auto max-w-4xl w-full">
+        <Card className="mx-auto max-w-sm w-full">
           <CardHeader>
-            <CardTitle className="text-2xl font-headline">Create your EGLIFE Account</CardTitle>
+            <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
             <CardDescription>
-              Please provide your details for identity verification. This information is required to comply with financial regulations.
+              Enter your details below to get started.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -39,6 +39,3 @@ import {
       </div>
     )
   }
-  
-
-    

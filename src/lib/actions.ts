@@ -45,31 +45,14 @@ export async function loginUser(values: z.infer<typeof loginFormSchema>) {
 // Register Action
 const registerFormSchema = z.object({
     name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  mobile: z.string().regex(/^\d{10}$/, { message: "Please enter a valid 10-digit mobile number."}),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  country: z.string({
-    required_error: "Please select a country.",
-  }),
-  address: z.string().min(10, { message: "Please enter a full address."}),
-  city: z.string().min(2, { message: "Please enter a city."}),
-  state: z.string().min(2, { message: "Please enter a state or province."}),
-  postalCode: z.string().min(4, { message: "Please enter a postal code."}),
-  aadhar: z.string().regex(/^\d{12}$/, { message: "Please enter a valid 12-digit Aadhar number."}),
-  pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Please enter a valid PAN number."}),
-  referralCode: z.string().optional(),
-  kycConsent: z.boolean().default(false).refine(value => value === true, {
-    message: "You must agree to the identity verification.",
-  }),
+        message: "Name must be at least 2 characters.",
+    }),
+    email: z.string().email({
+        message: "Please enter a valid email address.",
+    }),
+    password: z.string().min(8, {
+        message: "Password must be at least 8 characters.",
+    }),
 });
 
 export async function registerUser(values: z.infer<typeof registerFormSchema>) {
@@ -86,23 +69,23 @@ export async function registerUser(values: z.infer<typeof registerFormSchema>) {
             uid: user.uid,
             name: values.name,
             email: values.email,
-            mobile: values.mobile,
-            dob: Timestamp.fromDate(values.dob),
-            country: values.country,
-            address: values.address,
-            city: values.city,
-            state: values.state,
-            postalCode: values.postalCode,
-            aadhar: values.aadhar,
-            pan: values.pan,
-            referredBy: values.referralCode || null,
-            referralCode: uniqueReferralCode, // Use the server-generated one
+            mobile: null,
+            dob: null,
+            country: null,
+            address: null,
+            city: null,
+            state: null,
+            postalCode: null,
+            aadhar: null,
+            pan: null,
+            referredBy: null,
+            referralCode: uniqueReferralCode,
             kycStatus: "Pending",
             stakingStatus: "Inactive",
             registrationDate: serverTimestamp(),
         });
         
-        return { success: true, message: "Registration successful! Your account is pending verification." };
+        return { success: true, message: "Registration successful! Welcome to EGLIFE." };
 
     } catch (error: any) {
         console.error("Registration error:", error);
