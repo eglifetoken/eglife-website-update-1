@@ -30,9 +30,20 @@ const kycStatusVariant: { [key: string]: "default" | "secondary" | "destructive"
   Rejected: "destructive",
 };
 
+const adminUser: User = {
+    id: "5e9MkyOrCVdbsvedH0irws2hSZX2",
+    name: "Admin",
+    email: "admin@eglife.com",
+    avatar: `https://avatar.vercel.sh/admin@eglife.com.png`,
+    registrationDate: "Aug 21, 2025",
+    kycStatus: "Verified",
+    stakingStatus: "Active",
+    aiHint: "user portrait"
+};
+
 
 export default function AdminUsersPage() {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<User[]>([adminUser]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -59,7 +70,7 @@ export default function AdminUsersPage() {
                         aiHint: "user portrait"
                     } as User;
                 });
-                setUsers(usersList);
+                setUsers(prevUsers => [...prevUsers, ...usersList.filter(u => u.id !== adminUser.id)]);
             } catch (error) {
                 console.error("Error fetching users:", error);
             } finally {
