@@ -19,9 +19,11 @@ export default function AdminLayout({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      // Check if there is a user and if their email is the admin email
       if (currentUser && currentUser.email === "admin@eglife.com") {
         setUser(currentUser);
       } else {
+        // If not an admin or no user, redirect to login
         router.push("/login");
       }
       setLoading(false);

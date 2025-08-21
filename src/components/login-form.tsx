@@ -1,4 +1,3 @@
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -53,22 +52,13 @@ export function LoginForm() {
     try {
       const result = await loginUser(values)
       if (result.success) {
-        // Check if the logged-in user is the admin
-        if (values.email === "admin@eglife.com") {
-             toast({
-                title: "Admin Login Successful",
-                description: "Redirecting to the admin dashboard.",
-            })
-            router.push("/admin")
-        } else {
-            toast({
-              title: "Logged In!",
-              description: "Welcome back to EGLIFE TOKEN.",
-            })
-            form.reset()
-            // On successful user login, redirect to the DApp page
-            router.push("/dapp")
-        }
+        // The admin check is now handled by the admin layout,
+        // so we can redirect all successful logins.
+        toast({
+            title: "Login Successful!",
+            description: "Redirecting to your dashboard.",
+        })
+        router.push("/admin") // Or another appropriate default page
       } else {
          toast({
             variant: "destructive",
