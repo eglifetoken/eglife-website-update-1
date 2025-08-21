@@ -43,27 +43,26 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    // Check for hardcoded admin credentials
-    if (values.email === "admin@eglife.com" && values.password === "admin") {
-      toast({
-        title: "Admin Login Successful",
-        description: "Redirecting to the admin dashboard.",
-      })
-      router.push("/admin")
-      setIsSubmitting(false)
-      return;
-    }
 
     try {
       const result = await loginUser(values)
       if (result.success) {
-        toast({
-          title: "Logged In!",
-          description: "Welcome back to EGLIFE TOKEN.",
-        })
-        form.reset()
-        // On successful user login, redirect to the main page or a user dashboard
-        router.push("/")
+        // Check if the logged-in user is the admin
+        if (values.email === "admin@eglife.com") {
+             toast({
+                title: "Admin Login Successful",
+                description: "Redirecting to the admin dashboard.",
+            })
+            router.push("/admin")
+        } else {
+            toast({
+              title: "Logged In!",
+              description: "Welcome back to EGLIFE TOKEN.",
+            })
+            form.reset()
+            // On successful user login, redirect to the DApp page
+            router.push("/dapp")
+        }
       } else {
          toast({
             variant: "destructive",
