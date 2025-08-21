@@ -29,13 +29,19 @@ const loginFormSchema = z.object({
     password: z.string(),
 });
 
-export async function loginUser(values: z.infer<typeof loginFormSchema>) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+export async function loginUser(values: z.infer<typeof loginFormSchema>): Promise<{ success: boolean; message?: string }> {
     try {
-        await signInWithEmailAndPassword(auth, values.email, values.password);
-        return { success: true, message: "Logged in successfully!" };
+        const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+        if (userCredential.user) {
+            return { success: true };
+        }
+        return { success: false, message: "An unknown error occurred." };
     } catch (error: any) {
         console.error("Login error:", error.code, error.message);
-        return { success: false, message: error.message };
+        // Provide a more user-friendly error message
+        const message = error.code === 'auth/invalid-credential' 
+            ? 'Invalid email or password. Please try again.'
+            : 'An error occurred during login.';
+        return { success: false, message: message };
     }
 }

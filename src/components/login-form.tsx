@@ -1,3 +1,4 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -52,25 +53,23 @@ export function LoginForm() {
     try {
       const result = await loginUser(values)
       if (result.success) {
-        // The admin check is now handled by the admin layout,
-        // so we can redirect all successful logins.
         toast({
             title: "Login Successful!",
             description: "Redirecting to your dashboard.",
         })
-        router.push("/admin") // Or another appropriate default page
+        router.push("/admin")
       } else {
          toast({
             variant: "destructive",
             title: "Login Failed",
-            description: result.message || "Invalid email or password. Please try again.",
+            description: result.message || "An unknown error occurred.",
         })
       }
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "An error occurred. Please try again.",
+        description: "An unexpected error occurred. Please try again.",
       })
     } finally {
       setIsSubmitting(false)
@@ -95,7 +94,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="m@example.com" {...field} />
+                <Input type="email" placeholder="admin@eglife.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -115,7 +114,12 @@ export function LoginForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Logging in...
+            </>
+          ) : "Login"}
         </Button>
       </form>
     </Form>
