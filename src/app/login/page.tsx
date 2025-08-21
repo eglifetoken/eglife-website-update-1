@@ -1,3 +1,4 @@
+
 import {
     Card,
     CardContent,
@@ -15,17 +16,11 @@ import {
           <CardHeader>
             <CardTitle className="text-2xl font-headline">Admin Login</CardTitle>
             <CardDescription>
-              Enter your admin credentials below to login to the dashboard.
+              This page is for administrators only. Please enter your credentials to access the dashboard.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <LoginForm />
-             <div className="mt-4 text-center text-sm">
-                New user?{" "}
-                <Link href="/register" className="underline text-accent">
-                    Create an account
-                </Link>
-            </div>
           </CardContent>
         </Card>
       </div>

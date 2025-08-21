@@ -70,7 +70,7 @@ export default function Header() {
         </nav>
         <div className="hidden md:flex items-center gap-2">
              <Button asChild variant="ghost">
-                <Link href="/login">
+                <Link href="/dapp">
                     <LogIn className="mr-2 h-5 w-5" />
                     Login
                 </Link>
@@ -105,7 +105,7 @@ export default function Header() {
                         </Link>
                     </Button>
                     <Button asChild variant="outline">
-                        <Link href="/login">
+                        <Link href="/dapp">
                            <LogIn className="mr-2 h-5 w-5" />
                            Login
                         </Link>

@@ -103,9 +103,9 @@ export default function RegisterPage() {
                         </div>
                     )}
                      <div className="mt-4 text-center text-sm">
-                        Already have an account?{" "}
-                        <Link href="/login" className="underline text-accent">
-                            Login
+                        Already registered?{" "}
+                        <Link href="/dapp" className="underline text-accent">
+                            Go to DApp
                         </Link>
                     </div>
                 </CardContent>
