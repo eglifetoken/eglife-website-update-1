@@ -20,7 +20,8 @@ import {
     FileText,
     Target,
     Lightbulb,
-    Network
+    Network,
+    Flame
 } from "lucide-react";
 
 const SectionCard = ({ icon, title, children }: { icon: React.ReactNode, title: string, children: React.ReactNode }) => (
@@ -189,10 +190,10 @@ export default function WhitepaperPage() {
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
-                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <Flame className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Voluntary Token Burn Mechanism</h4>
-                            <p className="text-foreground/80">To combat inflation and promote long-term value appreciation, the EGLIFE smart contract includes a public `burn` function. This allows any token holder, including the project treasury, to permanently remove a portion of tokens from the total supply by sending them to an irrecoverable "dead" address. This deflationary pressure can increase the token's scarcity over time. The burn mechanism provides a transparent and community-participatory way to manage the token's economic model, aligning the interests of all stakeholders toward sustainable growth.</p>
+                             <p className="text-foreground/80 mb-4">To combat inflation and promote long-term value appreciation, the EGLIFE smart contract includes a public `burn` function. This allows any token holder, including the project treasury, to permanently remove a portion of tokens from the total supply by sending them to an irrecoverable "dead" address. This deflationary pressure can increase the token's scarcity over time. The burn mechanism provides a transparent and community-participatory way to manage the token's economic model, aligning the interests of all stakeholders toward sustainable growth.</p>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
@@ -344,3 +345,4 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
