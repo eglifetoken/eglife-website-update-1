@@ -162,7 +162,7 @@ export default function WhitepaperPage() {
                             </ul>
                         </div>
                     </li>
-                     <li className="flex items-start gap-4">
+                    <li className="flex items-start gap-4">
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Airdrop Campaigns</h4>
@@ -175,11 +175,17 @@ export default function WhitepaperPage() {
                             </ul>
                         </div>
                     </li>
-                     <li className="flex items-start gap-4">
+                    <li className="flex items-start gap-4">
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold text-lg">Referral Program</h4>
-                            <p className="text-foreground/80">Our Multi-Level Referral Program is designed to create a powerful, self-sustaining marketing engine driven by our own community. Users who have an active stake can earn instant bonuses in EGLIFE when they refer new users who also stake. This incentivizes our most committed users to become brand ambassadors, fostering organic, word-of-mouth growth and ensuring that rewards are channeled directly back to the community members who help expand the ecosystem.</p>
+                             <h4 className="font-semibold text-lg">Referral Program</h4>
+                             <p className="text-foreground/80 mb-4">Our Multi-Level Referral Program is a cornerstone of our growth strategy, designed to create a powerful, self-sustaining marketing engine driven by our own community. The program rewards users for actively helping to expand the EGLIFE ecosystem.</p>
+                             <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                 <li><strong>Objective:</strong> To foster organic, word-of-mouth growth by incentivizing our most loyal users to become brand ambassadors.</li>
+                                 <li><strong>Eligibility:</strong> To participate and earn rewards, a user must have an active stake in the EGLIFE staking contract.</li>
+                                 <li><strong>Mechanism:</strong> Users earn a percentage-based bonus from the staked amount of new users they refer, extending across multiple levels to reward network-building.</li>
+                                 <li><strong>Instant Payout:</strong> Bonuses are calculated and paid out instantly in EGLIFE tokens at the moment a referred user successfully stakes, providing immediate rewards for community-building efforts.</li>
+                             </ul>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
