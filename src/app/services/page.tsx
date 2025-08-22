@@ -4,7 +4,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,6 +70,16 @@ const services = [
     icon: ShieldCheck,
     title: "Insurance Premium",
     description: "Pay your life, health, or vehicle insurance premiums on time."
+   },
+   {
+    icon: Plane,
+    title: "Flight Tickets",
+    description: "Book your domestic and international flights using EGLIFE tokens."
+   },
+   {
+    icon: Ticket,
+    title: "Event Tickets",
+    description: "Purchase tickets for movies, concerts, and other events."
    }
 ];
 
@@ -307,7 +317,7 @@ export default function ServicesPage() {
 
 
       <h2 className="text-3xl font-headline font-bold mb-8 text-center">Utility Bill Payments</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {services.map((service) => {
             const Icon = service.icon;
             return (
@@ -385,3 +395,5 @@ export default function ServicesPage() {
     </div>
   );
 }
+
+    
