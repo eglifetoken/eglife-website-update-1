@@ -144,12 +144,36 @@ export default function WhitepaperPage() {
             </SectionCard>
             
             <SectionCard icon={<Network className="h-8 w-8 text-primary" />} title="5. The EGLIFE Ecosystem">
-                <p className="mb-6 text-foreground/80">The EGLIFE project will develop a flagship platform called EGPAY, which will be powered by the EGLIFE Token. This platform is designed to bridge the gap between digital currency and real-world services. The ecosystem includes:</p>
-                <ul className="space-y-4">
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Utility Payments</h4><p className="text-foreground/80">Our platform will allow users to recharge their mobile plans and pay for essential utilities such as electricity, water, or gas bills directly with EGLIFE tokens.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Airdrop & Referral Campaigns</h4><p className="text-foreground/80">To drive adoption, we will conduct airdrop campaigns and implement a multi-level referral system, allowing users to earn bonuses by inviting others.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Token Burn Mechanism</h4><p className="text-foreground/80">The smart contract includes a function that allows any user to voluntarily "burn" their tokens, permanently removing them from the circulating supply to promote deflation.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Merchant Acceptance (Phase 2)</h4><p className="text-foreground/80">A key long-term goal is to integrate EGLIFE with real-world Point-of-Sale (POS) systems, enabling users to pay for goods and services at a growing network of partner merchants.</p></div></li>
+                <p className="mb-6 text-foreground/80">The EGLIFE Ecosystem is a multi-faceted platform designed to seamlessly integrate cryptocurrency into everyday life. At its core is **EGPAY**, our flagship application powered by the EGLIFE Token. The ecosystem is built on a foundation of real-world utility, community incentives, and deflationary tokenomics, creating a self-sustaining financial loop where users can earn, spend, and grow their assets.</p>
+                <ul className="space-y-6">
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Utility Payments (EGPAY)</h4>
+                            <p className="text-foreground/80">The primary function of the EGLIFE ecosystem is to serve as a decentralized payment gateway for essential services. Through the EGPAY application, users can convert the value of their EGLIFE tokens to pay for a wide array of real-world utilities. This includes, but is not limited to, mobile recharges (prepaid and postpaid), electricity bills, water bills, piped gas, and DTH recharges. By providing a practical and convenient way to use crypto for non-discretionary spending, we create consistent, organic demand for the EGLIFE token, independent of speculative market trends.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Airdrop & Referral Campaigns</h4>
+                            <p className="text-foreground/80">Community growth is the lifeblood of any decentralized project. Our ecosystem includes built-in mechanisms to foster rapid and organic user adoption. We will conduct strategic **Airdrop Campaigns** to distribute tokens to early adopters and active community members, creating an initial user base. Furthermore, our **Multi-Level Referral Program** rewards users for bringing new participants into the ecosystem. When a referred user stakes EGLIFE, the referrer earns an instant bonus, creating a powerful, viral marketing engine driven by the community itself.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Voluntary Token Burn Mechanism</h4>
+                            <p className="text-foreground/80">To combat inflation and promote long-term value appreciation, the EGLIFE smart contract includes a public `burn` function. This allows any token holder, including the project treasury, to permanently remove a portion of tokens from the total supply by sending them to an irrecoverable "dead" address. This deflationary pressure can increase the token's scarcity over time. The burn mechanism provides a transparent and community-participatory way to manage the token's economic model, aligning the interests of all stakeholders toward sustainable growth.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Merchant Acceptance (Phase 2)</h4>
+                            <p className="text-foreground/80">Looking ahead, the ecosystem will expand to include direct merchant services. Our long-term goal is to develop and integrate a **Point-of-Sale (POS) system** and payment gateway for online and offline businesses. This will enable a network of partner merchants—from local shops to e-commerce stores—to accept EGLIFE as a direct payment method. This phase will complete the financial loop, allowing users to earn rewards through staking and then spend those rewards on a wide variety of goods and services, making EGLIFE a truly comprehensive medium of exchange.</p>
+                        </div>
+                    </li>
                 </ul>
             </SectionCard>
             
