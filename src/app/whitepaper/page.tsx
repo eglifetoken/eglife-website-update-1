@@ -17,7 +17,10 @@ import {
     Scale,
     Users2,
     TriangleAlert,
-    FileText
+    FileText,
+    Target,
+    Lightbulb,
+    Network
 } from "lucide-react";
 
 const SectionCard = ({ icon, title, children }: { icon: React.ReactNode, title: string, children: React.ReactNode }) => (
@@ -52,7 +55,7 @@ export default function WhitepaperPage() {
                 </p>
             </SectionCard>
 
-            <SectionCard icon={<AlertTriangle className="h-8 w-8 text-primary" />} title="2. Problem Statement">
+            <SectionCard icon={<TriangleAlert className="h-8 w-8 text-primary" />} title="2. Problem Statement">
                 <p className="mb-6 text-foreground/80">The digital currency landscape is saturated with projects that fail to deliver tangible value or long-term sustainability due to poor utility, weak tokenomics, and a lack of community incentives. EGLIFE addresses these key problems:</p>
                 <ul className="space-y-4">
                     <li className="flex items-start gap-3">
@@ -66,14 +69,14 @@ export default function WhitepaperPage() {
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold">Lack of Real-World Utility</h4>
-                            <p className="text-foreground/80">A significant number of cryptocurrencies exist purely as speculative assets. EGLIFE is designed from the ground up to power the EGLIFE ecosystem, enabling users to pay for real services.</p>
+                            <p className="text-foreground/80">A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce. EGLIFE is designed from the ground up to power the EGLIFE ecosystem, enabling users to pay for real services.</p>
                         </div>
                     </li>
                      <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold">Unfair Token Allocations</h4>
-                            <p className="text-foreground/80">Many projects allocate a disproportionately large share of tokens to the team and private investors. EGLIFE's tokenomics are designed for fair distribution, with significant portions allocated to community growth.</p>
+                            <p className="text-foreground/80">Many projects allocate a disproportionately large share of tokens to the team and private investors. EGLIFE's tokenomics are designed for fair distribution, with significant portions allocated to community growth and ecosystem development.</p>
                         </div>
                     </li>
                 </ul>
@@ -83,13 +86,63 @@ export default function WhitepaperPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <h3 className="font-semibold text-xl mb-2">Vision</h3>
-                        <p className="text-foreground/80">To empower every generation with easy-to-use decentralized financial solutions backed by blockchain. We envision a future where financial tools are accessible, transparent, and controlled by the users themselves, bridging the gap between digital assets and everyday life.</p>
+                        <p className="text-foreground/80">Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by blockchain. We envision a future where financial tools are accessible, transparent, and controlled by the users themselves, bridging the gap between digital assets and everyday life.</p>
                     </div>
                      <div>
                         <h3 className="font-semibold text-xl mb-2">Mission</h3>
                         <p className="text-foreground/80">Our mission is to provide real utility, encourage mass adoption through user-friendly design, deliver radical transparency with on-chain operations, and create a unified, self-sustaining ecosystem where users can earn, save, and spend.</p>
                     </div>
                 </div>
+            </SectionCard>
+            
+            <SectionCard icon={<Lightbulb className="h-8 w-8 text-primary" />} title="4. Token Utility">
+                <p className="mb-6 text-foreground/80">The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
+                <ul className="space-y-4">
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">On-Chain Staking</h4><p className="text-foreground/80">Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Daily Life Utility</h4><p className="text-foreground/80">EGLIFE serves as a digital currency for everyday transactions. Through the EGLIFE ecosystem, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Transaction Fees</h4><p className="text-foreground/80">EGLIFE is used to pay for transaction fees within the EGLIFE ecosystem, ensuring a consistent demand and circulation of the token.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Governance (Future)</h4><p className="text-foreground/80">We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</p></div></li>
+                </ul>
+            </SectionCard>
+            
+            <SectionCard icon={<Network className="h-8 w-8 text-primary" />} title="5. The EGLIFE Ecosystem">
+                <p className="mb-6 text-foreground/80">The EGLIFE project will develop a flagship platform called EGPAY, which will be powered by the EGLIFE Token. This platform is designed to bridge the gap between digital currency and real-world services. The ecosystem includes:</p>
+                <ul className="space-y-4">
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Utility Payments</h4><p className="text-foreground/80">Our platform will allow users to recharge their mobile plans and pay for essential utilities such as electricity, water, or gas bills directly with EGLIFE tokens.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Airdrop & Referral Campaigns</h4><p className="text-foreground/80">To drive adoption, we will conduct airdrop campaigns and implement a multi-level referral system, allowing users to earn bonuses by inviting others.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Token Burn Mechanism</h4><p className="text-foreground/80">The smart contract includes a function that allows any user to voluntarily "burn" their tokens, permanently removing them from the circulating supply to promote deflation.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Merchant Acceptance (Phase 2)</h4><p className="text-foreground/80">A key long-term goal is to integrate EGLIFE with real-world Point-of-Sale (POS) systems, enabling users to pay for goods and services at a growing network of partner merchants.</p></div></li>
+                </ul>
+            </SectionCard>
+            
+            <SectionCard icon={<Cpu className="h-8 w-8 text-primary" />} title="6. Technology Overview">
+                <p className="mb-6 text-foreground/80">The EGLIFE Token is built on a foundation of proven, secure, and scalable technologies to ensure reliability and a seamless user experience.</p>
+                 <Table>
+                     <TableHeader>
+                         <TableRow>
+                             <TableHead>Component</TableHead>
+                             <TableHead>Specification</TableHead>
+                         </TableRow>
+                     </TableHeader>
+                     <TableBody>
+                        <TableRow><TableCell>Blockchain</TableCell><TableCell>Binance Smart Chain (BNB Chain)</TableCell></TableRow>
+                        <TableRow><TableCell>Smart Contract Language</TableCell><TableCell>Solidity 0.8.20</TableCell></TableRow>
+                        <TableRow><TableCell>Library</TableCell><TableCell>OpenZeppelin v4.9.0 (Audit-grade)</TableCell></TableRow>
+                        <TableRow><TableCell>Standard</TableCell><TableCell>BEP-20 (compatible with ERC-20)</TableCell></TableRow>
+                        <TableRow><TableCell>Verification</TableCell><TableCell>Fully verified on BscScan with source code</TableCell></TableRow>
+                        <TableRow><TableCell>Deployment Address</TableCell><TableCell className="font-mono text-xs">0xca326a5e15b9451efC1A6BddaD6fB098a4D09113</TableCell></TableRow>
+                     </TableBody>
+                 </Table>
+            </SectionCard>
+
+            <SectionCard icon={<ShieldCheck className="h-8 w-8 text-primary" />} title="7. Smart Contract Design">
+                 <p className="mb-6 text-foreground/80">The EGLIFE smart contract is engineered with modularity and security at its core, incorporating several key functions to manage the token's lifecycle and utility. The following modules are integral to its design:</p>
+                <ul className="space-y-4">
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">BEP-20 Compliance</h4><p className="text-foreground/80">The contract strictly adheres to the BEP-20 standard using OpenZeppelin's extensively audited implementation.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Tax Fee Mechanism</h4><p className="text-foreground/80">A configurable tax fee (default 2%, max 10%) can be applied to transactions to fund the project's ongoing development.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Voluntary Token Burn</h4><p className="text-foreground/80">The contract includes a public `burn` function, allowing any token holder to permanently remove their tokens from the circulating supply.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">On-Chain Staking Logic</h4><p className="text-foreground/80">The contract features a trustless staking system where users lock tokens for 30 days to earn a 5% reward, minted upon withdrawal.</p></div></li>
+                </ul>
             </SectionCard>
 
             <SectionCard icon={<GanttChartSquare className="h-8 w-8 text-primary" />} title="8. Staking Plan">
@@ -189,6 +242,12 @@ export default function WhitepaperPage() {
             <SectionCard icon={<FileText className="h-8 w-8 text-primary" />} title="15. Disclaimer for Stakeholders">
                  <p className="text-foreground/80 leading-relaxed">
                    This whitepaper does not constitute financial advice. The APY for staking is not guaranteed and is subject to change. While we prioritize security and will conduct a third-party audit, smart contracts always carry inherent risks. There is no guarantee of returns.
+                </p>
+            </SectionCard>
+            
+            <SectionCard icon={<GitCommit className="h-8 w-8 text-primary" />} title="16. Conclusion">
+                <p className="text-foreground/80 leading-relaxed">
+                    EGLIFE represents a pivotal step forward in the evolution of cryptocurrency, deliberately moving beyond speculation to establish tangible, real-world value. Our core mission is to bridge the gap between the digital economy and everyday life. Through a clear and strategic roadmap, robust staking and referral incentives, and an unwavering commitment to security and transparency, we are building more than just a token; we are cultivating a self-sustaining ecosystem. We invite you to join us in creating a new era of decentralized finance.
                 </p>
             </SectionCard>
         </div>
