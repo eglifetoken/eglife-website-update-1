@@ -11,23 +11,23 @@ import {
 const faqItems = [
   {
     question: "What is the minimum amount I can stake?",
-    answer: "There is no official minimum, but you must have enough EGLIFE to cover the transaction fees."
+    answer: "There is no official minimum, but you must have enough EGLIFE to cover the transaction fees. The contract requires an amount greater than zero."
   },
   {
     question: "How long is my principal amount locked for?",
-    answer: "Your principal staked amount is locked for a period of 30 days."
+    answer: "Your stake is locked for 365 days to earn the full reward. You can unstake earlier, but you will incur a penalty."
   },
   {
-    question: "When do I receive my staking reward?",
-    answer: "You receive a one-time, 5% reward on your staked amount when you unstake your tokens after the 30-day lock period."
+    question: "How are staking rewards calculated?",
+    answer: "Rewards are calculated based on the 12% APY and the duration of your stake. The longer you stake, the more rewards you accrue."
   },
   {
     question: "Can I unstake my tokens early?",
-    answer: "No. The smart contract does not allow for early unstaking. You must wait for the full 30-day lock period to end before you can withdraw your tokens."
+    answer: "Yes, you can unstake at any time. However, if you unstake before the 365-day lock period is complete, a 5% penalty will be deducted from your total return (principal + rewards)."
   },
   {
-    question: "What happens if I stake multiple times?",
-    answer: "Each time you stake, it overwrites your previous stake. The new staked amount and the 30-day lock timer will reset from the moment of your latest stake."
+    question: "What happens if I want to stake more tokens?",
+    answer: "The current contract allows only one active stake per wallet. To add more funds, you must first unstake your current amount (which may incur a penalty) and then create a new stake with the total desired amount."
   }
 ];
 
@@ -46,3 +46,5 @@ export function StakingFAQ() {
     </Accordion>
   )
 }
+
+    

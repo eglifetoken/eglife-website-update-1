@@ -17,11 +17,207 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
-// The provided contract is both the token and staking contract.
-const EGLIFE_STAKING_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113'; 
+// This should be the address of your deployed EGLIFEStaking contract
+const EGLIFE_STAKING_CONTRACT = '0xYourNewStakingContractAddressHere'; 
 
-// ABI snippet for the stake and unstake functions from the provided contract
 const stakingContractAbi = [
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Staked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "reward",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "penalty",
+        "type": "bool"
+      }
+    ],
+    "name": "Unstaked",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "apy",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "calculateReward",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "contractTokenBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earlyUnstakePenalty",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "emergencyWithdrawTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lockPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_apy",
+        "type": "uint256"
+      }
+    ],
+    "name": "setAPY",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lockPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLockPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_penalty",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPenalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
   {
     "inputs": [
       {
@@ -36,6 +232,48 @@ const stakingContractAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "stakes",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "withdrawn",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "unstake",
     "outputs": [],
@@ -43,6 +281,7 @@ const stakingContractAbi = [
     "type": "function"
   }
 ];
+
 
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
@@ -194,7 +433,7 @@ export default function StakingPage() {
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">0.00</div>
-                <p className="text-xs text-muted-foreground">5% of staked amount</p>
+                <p className="text-xs text-muted-foreground">Rewards calculated in real-time</p>
             </CardContent>
             </Card>
         </div>
@@ -210,22 +449,22 @@ export default function StakingPage() {
                     <div className="flex items-start gap-3">
                         <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold text-foreground">Fixed Reward: 5%</h4>
-                            <p>You will receive a one-time reward of 5% of your total staked amount upon unstaking.</p>
+                            <h4 className="font-semibold text-foreground">Annual Reward (APY): 12%</h4>
+                            <p>Rewards are calculated based on your staked amount and the time staked. The APY is configurable by the admin.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-3">
                         <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                          <div>
-                            <h4 className="font-semibold text-foreground">Lock Period: 30 Days</h4>
-                            <p>Your principal staked amount is locked for a minimum of 30 days to ensure network stability.</p>
+                            <h4 className="font-semibold text-foreground">Lock Period: 365 Days</h4>
+                            <p>Your principal staked amount is intended to be locked for 365 days to maximize rewards.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
                          <div>
-                            <h4 className="font-semibold text-foreground">No Early Unstaking</h4>
-                            <p>You cannot withdraw your staked tokens before the 30-day lock period has ended. There is no early unstake option.</p>
+                            <h4 className="font-semibold text-foreground">Early Unstake Penalty: 5%</h4>
+                            <p>If you unstake before the 365-day lock period ends, a 5% penalty will be applied to your total return (principal + rewards).</p>
                         </div>
                     </div>
                 </CardContent>
@@ -255,7 +494,7 @@ export default function StakingPage() {
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
                     </div>
-                    <p className="text-sm text-muted-foreground">Your stake will be locked for 30 days. The 5% reward is paid upon unstaking.</p>
+                    <p className="text-sm text-muted-foreground">You can only stake once. To add more, you must unstake first.</p>
                     </CardContent>
                     <CardFooter>
                     <Button 
@@ -270,7 +509,7 @@ export default function StakingPage() {
                 <TabsContent value="unstake">
                     <CardContent className="space-y-4">
                      <p className="text-sm text-muted-foreground">
-                        Click the button below to withdraw all your staked tokens and your 5% reward. This is only possible after the 30-day lock period.
+                        Click the button below to withdraw all your staked tokens and your earned rewards. An early unstake penalty may apply.
                      </p>
                     </CardContent>
                     <CardFooter>
@@ -319,3 +558,5 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    

@@ -138,88 +138,24 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>8. Staking Plan</strong></h2>
-            <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY & Tier Ranges)</strong></h3>
+            <h3><strong>EGLIFE Token – Flexible Staking Plan</strong></h3>
             <h4>Core Rules</h4>
             <ul>
-              <li><strong>Minimum Stake:</strong> 10 EGLIFE</li>
-              <li><strong>Maximum Stake:</strong> Unlimited</li>
-              <li><strong>Lock Period:</strong> 365 Days (principal locked; rewards claimable anytime)</li>
-              <li><strong>Minimum Reward Withdrawal:</strong> 1 EGLIFE</li>
-              <li><strong>Early Unstake Penalty:</strong> 5% of staked amount + loss of unclaimed rewards</li>
-              <li><strong>Reward Claim:</strong> Anytime after reaching 1 EGLIFE</li>
-              <li><strong>Payout Token:</strong> EGLIFE (BEP-20)</li>
-              <li><strong>Admin Controls (Live, no redeploy):</strong> Change APY %, change Tier ranges (min/max), add/remove tiers</li>
+                <li><strong>Annual Percentage Yield (APY):</strong> 12% (Initial value, can be adjusted by admin). Rewards are calculated in real-time based on the duration of the stake.</li>
+                <li><strong>Lock Period:</strong> 365 Days. This is the full duration required to earn rewards without any penalty.</li>
+                <li><strong>Early Unstake Penalty:</strong> 5% of the total return (principal + earned rewards). This penalty is applied if a user withdraws their stake before the 365-day lock period has concluded.</li>
+                <li><strong>Payout Token:</strong> EGLIFE (BEP-20). Both the principal and the rewards are paid out in EGLIFE tokens.</li>
+                <li><strong>Admin Controls:</strong> The contract owner has the ability to modify the APY, the lock period, and the early unstake penalty percentage without needing to redeploy the contract, allowing for flexible management of the staking program.</li>
             </ul>
-            <h4>Tiered APY & Ranges (Initial – Fully Editable by Admin)</h4>
-            <table className="table-fixed">
-              <thead>
-                <tr>
-                  <th className="p-4">Package</th>
-                  <th className="p-4">Staking Amount (EGLIFE)</th>
-                  <th className="p-4">APY</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="p-4">Starter Stake</td>
-                  <td className="p-4">10 - 100</td>
-                  <td className="p-4">12%</td>
-                </tr>
-                <tr>
-                  <td className="p-4">Bronze Stake</td>
-                  <td className="p-4">101 - 500</td>
-                  <td className="p-4">18%</td>
-                </tr>
-                <tr>
-                  <td className="p-4">Silver Stake</td>
-                  <td className="p-4">501 - 1,000</td>
-                  <td className="p-4">20%</td>
-                </tr>
-                <tr>
-                  <td className="p-4">Gold Stake</td>
-                  <td className="p-4">1,001 - 5,000</td>
-                  <td className="p-4">22%</td>
-                </tr>
-                <tr>
-                  <td className="p-4">Platinum Stake</td>
-                  <td className="p-4">5,001 - 10,000</td>
-                  <td className="p-4">24%</td>
-                </tr>
-                 <tr>
-                  <td className="p-4">Diamond Stake</td>
-                  <td className="p-4">10,001 - ∞</td>
-                  <td className="p-4">26%</td>
-                </tr>
-              </tbody>
-            </table>
-            <h4>Reward Formula</h4>
-            <p><code>Daily Reward = (Staked Amount × APY %) ÷ 365</code></p>
-            <p>Rewards are calculated per second; user can claim anytime once earned ≥ 1 EGLIFE.</p>
-            <h4>Example Daily Earnings (at current settings)</h4>
+            <h4>Reward Calculation</h4>
+            <p>Rewards are calculated continuously based on the staked amount, the current APY, and the time elapsed since staking began. The formula is as follows:</p>
+            <p><code>Reward = (Staked Amount * APY * Staking Duration) / (365 days * 100)</code></p>
+            <p>This ensures that users are rewarded fairly for the exact amount of time their tokens are staked.</p>
+            <h4>Staking and Unstaking Process</h4>
             <ul>
-              <li>50 EGLIFE @ 12% → 0.0164 EGLIFE/day</li>
-              <li>200 EGLIFE @ 18% → 0.0986 EGLIFE/day</li>
-              <li>800 EGLIFE @ 20% → 0.4384 EGLIFE/day</li>
-              <li>3,000 EGLIFE @ 22% → 1.8082 EGLIFE/day</li>
-              <li>7,000 EGLIFE @ 24% → 4.6027 EGLIFE/day</li>
-              <li>15,000 EGLIFE @ 26% → 10.6849 EGLIFE/day</li>
+                <li><strong>Staking:</strong> A user can stake any amount of EGLIFE tokens, provided they have not already staked. The contract allows for only one active stake per address at a time.</li>
+                <li><strong>Unstaking:</strong> A user can unstake at any time. If the 365-day lock period is complete, they receive their full principal and all accrued rewards. If they unstake early, the 5% penalty is applied to the total amount before it is transferred back to their wallet.</li>
             </ul>
-            <h4>Admin Controls & Safeguards (Suggested Contract/Panel Options)</h4>
-              <ul>
-                  <li><strong>Edit APY% per tier:</strong> setTierAPY(tierIndex, apyBpsOrRay)</li>
-                  <li><strong>Edit Tier ranges:</strong> setTierRange(tierIndex, minAmount, maxAmount)</li>
-                  <li><strong>Add/Remove tiers:</strong> addTier(min,max,apy), removeTier(tierIndex)</li>
-                  <li><strong>Validation:</strong> Ranges must not overlap; ensure continuity (end of Tier N = start of Tier N+1 − 1).</li>
-                  <li><strong>Grandfathering toggle:</strong> setApplyAPYToActiveStakes(bool). If OFF, existing stakes keep original APY; new APY applies only to new stakes.</li>
-                  <li><strong>Effective-from timestamp (optional):</strong> schedule APY/range change to take effect at a future block time to give users notice.</li>
-                  <li><strong>Emergency pause (optional):</strong> pauseOnlyStaking() without blocking claims.</li>
-              </ul>
-            <h4>Edge-Case Policy (Recommended)</h4>
-              <ul>
-                  <li>If a tier range is edited such that a user’s active stake no longer fits that tier, the user remains on the original APY (grandfathered) until unstake.</li>
-                  <li>For new stakes, tier selection is determined at stake time using the then-current ranges.</li>
-                  <li>Max tier may use ∞ (no upper limit). Store as type(uint256).max in contract.</li>
-              </ul>
           </section>
 
           <section>
@@ -417,3 +353,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
+    
