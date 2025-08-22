@@ -126,10 +126,4 @@ export default function AdminStakingPage() {
                                     </div>
                                 </li>
                             ))}
-                        </ul>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
-    )
-}
+                        

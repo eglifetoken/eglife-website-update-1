@@ -138,23 +138,63 @@ export default function WhitepaperPage() {
 
           <section>
             <h2><strong>8. Staking Plan</strong></h2>
-            <h3><strong>EGLIFE Token – Flexible Staking Plan</strong></h3>
+            <h3><strong>EGLIFE Token – Tiered Staking Plan (Admin-Controlled APY & Tier Ranges)</strong></h3>
             <h4>Core Rules</h4>
             <ul>
-                <li><strong>Annual Percentage Yield (APY):</strong> 12% (Initial value, can be adjusted by admin). Rewards are calculated in real-time based on the duration of the stake.</li>
-                <li><strong>Lock Period:</strong> 365 Days. This is the full duration required to earn rewards without any penalty.</li>
-                <li><strong>Early Unstake Penalty:</strong> 5% of the total return (principal + earned rewards). This penalty is applied if a user withdraws their stake before the 365-day lock period has concluded.</li>
-                <li><strong>Payout Token:</strong> EGLIFE (BEP-20). Both the principal and the rewards are paid out in EGLIFE tokens.</li>
-                <li><strong>Admin Controls:</strong> The contract owner has the ability to modify the APY, the lock period, and the early unstake penalty percentage without needing to redeploy the contract, allowing for flexible management of the staking program.</li>
+                <li><strong>Minimum Stake:</strong> 10 EGLIFE</li>
+                <li><strong>Maximum Stake:</strong> Unlimited</li>
+                <li><strong>Lock Period:</strong> 365 Days (principal locked; rewards claimable anytime)</li>
+                <li><strong>Minimum Reward Withdrawal:</strong> 1 EGLIFE</li>
+                <li><strong>Early Unstake Penalty:</strong> 5% of staked amount + loss of unclaimed rewards</li>
+                <li><strong>Reward Claim:</strong> Anytime after reaching 1 EGLIFE</li>
+                <li><strong>Payout Token:</strong> EGLIFE (BEP-20)</li>
+                <li><strong>Admin Controls (Live, no redeploy):</strong> Change APY %, change Tier ranges (min/max), add/remove tiers</li>
             </ul>
-            <h4>Reward Calculation</h4>
-            <p>Rewards are calculated continuously based on the staked amount, the current APY, and the time elapsed since staking began. The formula is as follows:</p>
-            <p><code>Reward = (Staked Amount * APY * Staking Duration) / (365 days * 100)</code></p>
-            <p>This ensures that users are rewarded fairly for the exact amount of time their tokens are staked.</p>
-            <h4>Staking and Unstaking Process</h4>
+            <h4>Tiered APY & Ranges (Initial – Fully Editable by Admin)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Package</th>
+                        <th>Staking Amount (EGLIFE)</th>
+                        <th>APY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Starter Stake</td><td>10 - 100</td><td>12%</td></tr>
+                    <tr><td>Bronze Stake</td><td>101 - 500</td><td>18%</td></tr>
+                    <tr><td>Silver Stake</td><td>501 - 1,000</td><td>20%</td></tr>
+                    <tr><td>Gold Stake</td><td>1,001 - 5,000</td><td>22%</td></tr>
+                    <tr><td>Platinum Stake</td><td>5,001 - 10,000</td><td>24%</td></tr>
+                    <tr><td>Diamond Stake</td><td>10,001 - ∞</td><td>26%</td></tr>
+                </tbody>
+            </table>
+            <h4>Reward Formula</h4>
+            <p><code>Daily Reward = (Staked Amount × APY %) ÷ 365</code></p>
+            <p>Rewards are calculated per second; user can claim anytime once earned ≥ 1 EGLIFE.</p>
+            <h4>Example Daily Earnings (at current settings)</h4>
             <ul>
-                <li><strong>Staking:</strong> A user can stake any amount of EGLIFE tokens, provided they have not already staked. The contract allows for only one active stake per address at a time.</li>
-                <li><strong>Unstaking:</strong> A user can unstake at any time. If the 365-day lock period is complete, they receive their full principal and all accrued rewards. If they unstake early, the 5% penalty is applied to the total amount before it is transferred back to their wallet.</li>
+                <li>50 EGLIFE @ 12% → 0.0164 EGLIFE/day</li>
+                <li>200 EGLIFE @ 18% → 0.0986 EGLIFE/day</li>
+                <li>800 EGLIFE @ 20% → 0.4384 EGLIFE/day</li>
+                <li>3,000 EGLIFE @ 22% → 1.8082 EGLIFE/day</li>
+                <li>7,000 EGLIFE @ 24% → 4.6027 EGLIFE/day</li>
+                <li>15,000 EGLIFE @ 26% → 10.6849 EGLIFE/day</li>
+            </ul>
+            <h4>Admin Controls & Safeguards (Suggested Contract/Panel Options)</h4>
+            <ul>
+                <li>Edit APY% per tier: <code>setTierAPY(tierIndex, apyBpsOrRay)</code></li>
+                <li>Edit Tier ranges: <code>setTierRange(tierIndex, minAmount, maxAmount)</code></li>
+                <li>Add/Remove tiers: <code>addTier(min,max,apy)</code>, <code>removeTier(tierIndex)</code></li>
+                <li>Validation: Ranges must not overlap; ensure continuity (end of Tier N = start of Tier N+1 − 1).</li>
+                <li>Grandfathering toggle: <code>setApplyAPYToActiveStakes(bool)</code>. If OFF, existing stakes keep original APY; new APY applies only to new stakes.</li>
+                <li>Effective-from timestamp (optional): schedule APY/range change to take effect at a future block time to give users notice.</li>
+                <li>Emergency pause (optional): <code>pauseOnlyStaking()</code> without blocking claims.</li>
+            </ul>
+            <h4>Edge-Case Policy (Recommended)</h4>
+            <ul>
+                <li>If a tier range is edited such that a user’s active stake no longer fits that tier, the user remains on the original APY (grandfathered) until unstake.</li>
+                <li>For new stakes, tier selection is determined at stake time using the then-current ranges.</li>
+                <li>Max tier may use ∞ (no upper limit). Store as <code>type(uint256).max</code> in contract.</li>
             </ul>
           </section>
 
@@ -169,25 +209,25 @@ export default function WhitepaperPage() {
               <li><strong>Admin Controls:</strong> Adjust referral % per level; enable/disable royalty beyond L10</li>
             </ul>
             <h4>Referral Bonus Structure (Initial – Editable by Admin)</h4>
-            <table className="table-fixed">
+            <table>
               <thead>
                 <tr>
-                  <th className="p-4">Level</th>
-                  <th className="p-4">Bonus % of Staked Amount</th>
+                  <th>Level</th>
+                  <th>Bonus % of Staked Amount</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td className="p-4">Level 1</td><td className="p-4">10%</td></tr>
-                <tr><td className="p-4">Level 2</td><td className="p-4">5%</td></tr>
-                <tr><td className="p-4">Level 3</td><td className="p-4">3%</td></tr>
-                <tr><td className="p-4">Level 4</td><td className="p-4">2%</td></tr>
-                <tr><td className="p-4">Level 5</td><td className="p-4">1%</td></tr>
-                <tr><td className="p-4">Level 6</td><td className="p-4">1%</td></tr>
-                <tr><td className="p-4">Level 7</td><td className="p-4">0.5%</td></tr>
-                <tr><td className="p-4">Level 8</td><td className="p-4">0.5%</td></tr>
-                <tr><td className="p-4">Level 9</td><td className="p-4">0.25%</td></tr>
-                <tr><td className="p-4">Level 10</td><td className="p-4">0.25%</td></tr>
-                <tr><td className="p-4">Beyond 10 Levels (Royalty)</td><td className="p-4">0.1% (unlimited depth)</td></tr>
+                <tr><td>Level 1</td><td>10%</td></tr>
+                <tr><td>Level 2</td><td>5%</td></tr>
+                <tr><td>Level 3</td><td>3%</td></tr>
+                <tr><td>Level 4</td><td>2%</td></tr>
+                <tr><td>Level 5</td><td>1%</td></tr>
+                <tr><td>Level 6</td><td>1%</td></tr>
+                <tr><td>Level 7</td><td>0.5%</td></tr>
+                <tr><td>Level 8</td><td>0.5%</td></tr>
+                <tr><td>Level 9</td><td>0.25%</td></tr>
+                <tr><td>Level 10</td><td>0.25%</td></tr>
+                <tr><td>Beyond 10 Levels (Royalty)</td><td>0.1% (unlimited depth)</td></tr>
               </tbody>
             </table>
             <h4>Example Referral Bonus (Level 1)</h4>
@@ -353,5 +393,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-    
