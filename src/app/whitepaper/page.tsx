@@ -16,12 +16,12 @@ import {
     BookOpen,
     Scale,
     Users2,
-    TriangleAlert,
     FileText,
     Target,
     Lightbulb,
     Network,
-    Flame
+    Flame,
+    Store
 } from "lucide-react";
 
 const SectionCard = ({ icon, title, children }: { icon: React.ReactNode, title: string, children: React.ReactNode }) => (
@@ -56,7 +56,7 @@ export default function WhitepaperPage() {
                 </p>
             </SectionCard>
 
-            <SectionCard icon={<TriangleAlert className="h-8 w-8 text-primary" />} title="2. Problem Statement">
+            <SectionCard icon={<AlertTriangle className="h-8 w-8 text-primary" />} title="2. Problem Statement">
                 <p className="mb-6 text-foreground/80">The digital currency landscape is saturated with projects that, while innovative, often fail to deliver tangible value or long-term sustainability. The majority of token projects suffer from a combination of poor utility, weak tokenomics, and a lack of genuine community incentives. EGLIFE addresses these key problems:</p>
                 <ul className="space-y-6">
                     <li className="flex items-start gap-4">
@@ -167,12 +167,12 @@ export default function WhitepaperPage() {
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Airdrop Campaigns</h4>
-                            <p className="text-foreground/80 mb-4">To accelerate community growth and reward our earliest supporters, we will execute strategic Airdrop Campaigns using the dedicated `airdrop` function in our smart contract. These campaigns are designed to be transparent, efficient, and impactful. Our strategy includes:</p>
+                            <p className="text-foreground/80 mb-4">To accelerate community growth and reward our earliest supporters, we will execute strategic Airdrop Campaigns. These campaigns are designed to be transparent, efficient, and impactful.</p>
                             <ul className="space-y-2 list-disc list-inside text-foreground/80">
-                                <li><strong>Objective:</strong> To bootstrap our user base, ensure wide token distribution, and reward community members who contribute to our growth during the crucial early stages of the project.</li>
-                                <li><strong>Target Audience:</strong> Airdrops will be targeted toward specific groups, including early registrants on our platform, active participants in our social media channels (like X and Telegram), and winners of community contests or marketing events.</li>
-                                <li><strong>Mechanism:</strong> Participants will be required to submit their BEP-20 wallet addresses through a secure portal on our official website. The project owner will then execute a single, low-cost transaction to distribute tokens to all verified participants, ensuring efficient and timely delivery.</li>
-                                <li><strong>Transparency:</strong> Every airdrop transaction will be publicly verifiable on BscScan. This allows anyone to track the distribution of tokens, confirming that the airdrop was conducted fairly and as promised.</li>
+                                <li><strong>Objective:</strong> To bootstrap our user base, ensure wide token distribution, and reward community members who contribute to our growth during the crucial early stages.</li>
+                                <li><strong>Target Audience:</strong> Airdrops will be targeted toward specific groups, including early registrants on our platform, active participants in our social media channels, and winners of community contests.</li>
+                                <li><strong>Mechanism:</strong> The project owner will use a gas-efficient `airdrop` function in the smart contract to distribute tokens to multiple verified wallet addresses in a single transaction.</li>
+                                <li><strong>Transparency:</strong> Every airdrop transaction will be publicly verifiable on BscScan, ensuring the community can track the distribution and confirm its fairness.</li>
                             </ul>
                         </div>
                     </li>
@@ -180,7 +180,7 @@ export default function WhitepaperPage() {
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                              <h4 className="font-semibold text-lg">Referral Program</h4>
-                             <p className="text-foreground/80 mb-4">Our Multi-Level Referral Program is a cornerstone of our growth strategy, designed to create a powerful, self-sustaining marketing engine driven by our own community. The program rewards users for actively helping to expand the EGLIFE ecosystem.</p>
+                             <p className="text-foreground/80 mb-4">Our Multi-Level Referral Program is a cornerstone of our growth strategy, designed to create a powerful, self-sustaining marketing engine driven by our own community.</p>
                              <ul className="space-y-2 list-disc list-inside text-foreground/80">
                                  <li><strong>Objective:</strong> To foster organic, word-of-mouth growth by incentivizing our most loyal users to become brand ambassadors.</li>
                                  <li><strong>Eligibility:</strong> To participate and earn rewards, a user must have an active stake in the EGLIFE staking contract.</li>
@@ -193,14 +193,26 @@ export default function WhitepaperPage() {
                         <Flame className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Voluntary Token Burn Mechanism</h4>
-                             <p className="text-foreground/80 mb-4">To combat inflation and promote long-term value appreciation, the EGLIFE smart contract includes a public `burn` function. This allows any token holder, including the project treasury, to permanently remove a portion of tokens from the total supply by sending them to an irrecoverable "dead" address. This deflationary pressure can increase the token's scarcity over time. The burn mechanism provides a transparent and community-participatory way to manage the token's economic model, aligning the interests of all stakeholders toward sustainable growth.</p>
+                             <p className="text-foreground/80 mb-4">To combat inflation and promote long-term value appreciation, the EGLIFE smart contract includes a public `burn` function. This allows any token holder, including the project treasury, to permanently remove a portion of tokens from the total supply.</p>
+                             <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                <li><strong>Objective:</strong> To create a deflationary pressure on the token supply, potentially increasing its scarcity and value over time.</li>
+                                <li><strong>Mechanism:</strong> Tokens are sent to an irrecoverable "dead" address (e.g., `0x00...00dEaD`), where they are permanently locked and inaccessible.</li>
+                                 <li><strong>Transparency:</strong> Every burn transaction is a public, verifiable event on the blockchain, allowing the community to track the reduction in total supply in real-time.</li>
+                                 <li><strong>Community-Driven:</strong> This feature empowers the community to participate directly in the token's economic management, fostering a shared sense of ownership.</li>
+                             </ul>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
-                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <Store className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Merchant Acceptance (Phase 2)</h4>
-                            <p className="text-foreground/80">Looking ahead, the ecosystem will expand to include direct merchant services. Our long-term goal is to develop and integrate a **Point-of-Sale (POS) system** and payment gateway for online and offline businesses. This will enable a network of partner merchants—from local shops to e-commerce stores—to accept EGLIFE as a direct payment method. This phase will complete the financial loop, allowing users to earn rewards through staking and then spend those rewards on a wide variety of goods and services, making EGLIFE a truly comprehensive medium of exchange.</p>
+                            <p className="text-foreground/80 mb-4">Looking ahead, the ecosystem will expand to include direct merchant services, transforming EGLIFE into a comprehensive medium of exchange.</p>
+                            <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                <li><strong>Objective:</strong> To complete the financial loop, allowing users to spend their EGLIFE earnings directly on goods and services, thereby driving real-world adoption.</li>
+                                <li><strong>Key Infrastructure:</strong> We will develop and integrate a robust **Point-of-Sale (POS) system** and a secure payment gateway for both online and offline businesses.</li>
+                                <li><strong>Target Integration:</strong> This will enable a growing network of partner merchants, from local shops and restaurants to e-commerce stores, to seamlessly accept EGLIFE as a payment method.</li>
+                                <li><strong>Ecosystem Impact:</strong> By facilitating direct commerce, we solidify the token's utility, reduce the need for users to convert to fiat, and create a vibrant, circular economy within the EGLIFE platform.</li>
+                            </ul>
                         </div>
                     </li>
                 </ul>
@@ -324,7 +336,7 @@ export default function WhitepaperPage() {
                 </p>
             </SectionCard>
 
-            <SectionCard icon={<TriangleAlert className="h-8 w-8 text-primary" />} title="14. Risk Factors">
+            <SectionCard icon={<AlertTriangle className="h-8 w-8 text-primary" />} title="14. Risk Factors">
                  <p className="text-foreground/80 leading-relaxed">
                     Prospective participants should be fully aware of the inherent risks, including but not limited to: crypto market volatility, shifting regulations, technical errors or bugs in the smart contract, security attacks, and potential delays in platform adoption or partnerships. Do not invest more than you are willing to lose.
                 </p>
@@ -345,4 +357,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
 
