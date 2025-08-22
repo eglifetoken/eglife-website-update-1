@@ -4,12 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DollarSign, Gift, Users, BarChart2, TrendingUp, CheckCircle } from "lucide-react";
 
 const stakingTiers = [
-    { tier: "Starter Stake", amount: "10 - 100", apy: "12%" },
-    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%" },
-    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%" },
-    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
-    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
-    { tier: "Diamond Stake", amount: "10,001+", apy: "26%" },
+    { tier: "Fixed Reward Staking", amount: "Any Amount", reward: "5%" },
 ];
 
 const referralTiers = [
@@ -43,7 +38,7 @@ export default function BusinessPlanPage() {
                             <TrendingUp className="h-8 w-8 text-accent" />
                         </div>
                         <CardTitle className="font-headline text-3xl">Non-Working Income (Staking)</CardTitle>
-                        <CardDescription className="text-lg">Earn passive rewards simply by holding and staking your EGLIFE tokens. The more you stake, the higher your annual percentage yield (APY).</CardDescription>
+                        <CardDescription className="text-lg">Earn a passive reward simply by holding and staking your EGLIFE tokens.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -51,7 +46,7 @@ export default function BusinessPlanPage() {
                                 <TableRow>
                                     <TableHead>Package Name</TableHead>
                                     <TableHead>Staking Amount (EGLIFE)</TableHead>
-                                    <TableHead className="text-right">APY</TableHead>
+                                    <TableHead className="text-right">Reward</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -59,7 +54,7 @@ export default function BusinessPlanPage() {
                                     <TableRow key={tier.tier}>
                                         <TableCell className="font-medium">{tier.tier}</TableCell>
                                         <TableCell>{tier.amount}</TableCell>
-                                        <TableCell className="text-right font-semibold text-accent">{tier.apy}</TableCell>
+                                        <TableCell className="text-right font-semibold text-accent">{tier.reward}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -67,15 +62,15 @@ export default function BusinessPlanPage() {
                          <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
                            <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" />
-                                <span><strong>365-Day Lock:</strong> Principal is locked for one year to ensure stability.</span>
+                                <span><strong>30-Day Lock:</strong> Principal is locked for 30 days to ensure stability.</span>
                             </li>
                              <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" />
-                                <span><strong>Flexible Rewards:</strong> Claim your earned rewards anytime (minimum 1 EGLIFE).</span>
+                                <span><strong>One-Time Reward:</strong> The 5% reward is calculated and paid when you unstake.</span>
                             </li>
                              <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-accent flex-shrink-0" />
-                                <span><strong>Early Unstake:</strong> Incurs a 5% penalty on principal and forfeits unclaimed rewards.</span>
+                                <span><strong>No Early Unstake:</strong> You must wait the full 30 days to withdraw your tokens.</span>
                             </li>
                         </ul>
                     </CardContent>
@@ -111,7 +106,7 @@ export default function BusinessPlanPage() {
                          <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
                             <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-                                <span><strong>Eligibility:</strong> You must have an active stake of at least 10 EGLIFE to earn referral bonuses.</span>
+                                <span><strong>Eligibility:</strong> You must have an active stake to earn referral bonuses.</span>
                             </li>
                             <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />

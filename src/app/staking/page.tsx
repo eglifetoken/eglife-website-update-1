@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Zap } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
@@ -15,46 +15,34 @@ import { useToast } from "@/hooks/use-toast"
 import { parseEther } from "viem"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Switch } from "@/components/ui/switch"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
-// TODO: Replace with your actual staking contract address
-const EGLIFE_STAKING_CONTRACT = '0x0000000000000000000000000000000000000000'; 
+// The provided contract is both the token and staking contract.
+const EGLIFE_STAKING_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113'; 
 
-// TODO: Replace with your actual staking contract ABI
+// ABI snippet for the stake and unstake functions from the provided contract
 const stakingContractAbi = [
   {
-    "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
     ],
     "name": "stake",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
+  {
+    "inputs": [],
+    "name": "unstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ];
-
-
-const stakingTiers = [
-    { tier: "Starter Stake", amount: "10 - 100", apy: "12%", min: 10, max: 100 },
-    { tier: "Bronze Stake", amount: "101 - 500", apy: "18%", min: 101, max: 500 },
-    { tier: "Silver Stake", amount: "501 - 1,000", apy: "20%", min: 501, max: 1000 },
-    { tier: "Gold Stake", amount: "1,001 - 5,000", apy: "22%", min: 1001, max: 5000 },
-    { tier: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%", min: 5001, max: 10000 },
-    { tier: "Diamond Stake", amount: "10,001+", apy: "26%", min: 10001, max: Infinity },
-];
-
-const getTierFromAmount = (amount: number) => {
-    if (amount < 10) return { tier: "No Active Stake" };
-    const currentTier = stakingTiers.find(t => amount >= t.min && amount <= t.max);
-    return currentTier || stakingTiers[stakingTiers.length - 1]; // Default to highest tier if it exceeds all maxes
-};
-
 
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
@@ -72,17 +60,17 @@ export default function StakingPage() {
   })
 
   const [stakeAmount, setStakeAmount] = useState("");
-  const [totalStaked, setTotalStaked] = useState(0.00);
-  const [isAutoUpgrade, setIsAutoUpgrade] = useState(true);
+  const [unstakeAmount, setUnstakeAmount] = useState(""); // For unstake input
+  const [totalStaked, setTotalStaked] = useState(0.00); // Placeholder
   const { toast } = useToast();
   const { writeContract, isPending } = useWriteContract();
 
   const handleStake = async () => {
-    if (!stakeAmount || parseFloat(stakeAmount) < 10) {
+    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
       toast({
         variant: "destructive",
         title: "Invalid Amount",
-        description: "Please enter an amount of 10 EGLIFE or more to stake.",
+        description: "Please enter a valid amount to stake.",
       });
       return;
     }
@@ -98,6 +86,7 @@ export default function StakingPage() {
                 title: "Staking Successful!",
                 description: `You have successfully staked ${stakeAmount} EGLIFE.`,
             });
+            // In a real app, you would refetch the staked balance from the contract
             setTotalStaked(prevStaked => prevStaked + parseFloat(stakeAmount));
             refetchBalance();
             setStakeAmount("");
@@ -111,15 +100,38 @@ export default function StakingPage() {
         }
     })
   };
-  
-  const currentTier = getTierFromAmount(totalStaked);
 
+  const handleUnstake = async () => {
+     writeContract({
+        address: EGLIFE_STAKING_CONTRACT,
+        abi: stakingContractAbi,
+        functionName: 'unstake',
+        args: [],
+    }, {
+        onSuccess: () => {
+            toast({
+                title: "Unstaking Successful!",
+                description: `Your staked tokens and rewards have been sent to your wallet.`,
+            });
+             // In a real app, you would refetch the staked balance from the contract
+            setTotalStaked(0);
+            refetchBalance();
+        },
+        onError: (error) => {
+             toast({
+                variant: "destructive",
+                title: "Unstaking Failed",
+                description: error.shortMessage || "An unknown error occurred.",
+            });
+        }
+    })
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center md:text-left mb-8">
         <h1 className="text-3xl md:text-4xl font-headline font-bold mb-2">EGLIFE Staking</h1>
-        <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn competitive rewards and support the ecosystem's growth.</p>
+        <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn rewards and support the ecosystem's growth.</p>
       </div>
       
        {isClient && !isConnected && (
@@ -154,7 +166,7 @@ export default function StakingPage() {
 
 
       {isClient && isConnected && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium font-headline">Your EGLIFE Balance</CardTitle>
@@ -172,7 +184,7 @@ export default function StakingPage() {
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">{totalStaked.toFixed(2)}</div>
-                 <p className="text-xs text-muted-foreground font-semibold">{currentTier.tier}</p>
+                 <p className="text-xs text-muted-foreground">Staked in contract</p>
             </CardContent>
             </Card>
             <Card>
@@ -182,15 +194,7 @@ export default function StakingPage() {
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">0.00</div>
-                <p className="text-xs text-muted-foreground">Claimable anytime (min 1 EGLIFE)</p>
-            </CardContent>
-            </Card>
-            <Card className="bg-primary/5 border-primary">
-            <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium font-headline text-primary">Ready to Earn?</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Button className="w-full">Claim Rewards</Button>
+                <p className="text-xs text-muted-foreground">5% of staked amount</p>
             </CardContent>
             </Card>
         </div>
@@ -198,34 +202,7 @@ export default function StakingPage() {
 
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-            <Card>
-                <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <CardTitle className="font-headline text-2xl">Staking Tiers & APY</CardTitle>
-                        <CardDescription>The more you stake, the higher your annual percentage yield (APY).</CardDescription>
-                    </div>
-                     <div className="flex items-center space-x-2 pt-4 md:pt-0">
-                        <Switch id="auto-upgrade" checked={isAutoUpgrade} onCheckedChange={setIsAutoUpgrade} />
-                        <Label htmlFor="auto-upgrade" className="flex items-center gap-1.5 text-sm">
-                            <Zap className="h-4 w-4 text-accent"/>
-                            Auto-Upgrade Package
-                        </Label>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center">
-                        {stakingTiers.map(tier => (
-                             <div key={tier.tier} className="p-3 rounded-lg bg-muted/50 border">
-                                <p className="text-sm font-medium text-foreground">{tier.tier}</p>
-                                <p className="font-bold text-lg text-primary">{tier.apy}</p>
-                                <p className="text-xs text-muted-foreground">{tier.amount}</p>
-                            </div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-
-             <Card className="mt-8">
+             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl">Core Staking Rules</CardTitle>
                 </CardHeader>
@@ -233,22 +210,22 @@ export default function StakingPage() {
                     <div className="flex items-start gap-3">
                         <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold text-foreground">Lock Period: 365 Days</h4>
-                            <p>Your principal staked amount is locked for one year to ensure network stability.</p>
+                            <h4 className="font-semibold text-foreground">Fixed Reward: 5%</h4>
+                            <p>You will receive a one-time reward of 5% of your total staked amount upon unstaking.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-3">
                         <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                          <div>
-                            <h4 className="font-semibold text-foreground">Rewards: Claim Anytime</h4>
-                            <p>Your earned rewards are liquid and can be claimed at any time once you've accumulated at least 1 EGLIFE.</p>
+                            <h4 className="font-semibold text-foreground">Lock Period: 30 Days</h4>
+                            <p>Your principal staked amount is locked for a minimum of 30 days to ensure network stability.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
                          <div>
-                            <h4 className="font-semibold text-foreground">Early Unstake Penalty: 5% + Forfeited Rewards</h4>
-                            <p>If you unstake before the 365-day lock period ends, a 5% penalty will be applied to your principal, and you will lose any unclaimed rewards.</p>
+                            <h4 className="font-semibold text-foreground">No Early Unstaking</h4>
+                            <p>You cannot withdraw your staked tokens before the 30-day lock period has ended. There is no early unstake option.</p>
                         </div>
                     </div>
                 </CardContent>
@@ -272,13 +249,13 @@ export default function StakingPage() {
                         <Input 
                            id="stake-amount" 
                            type="number" 
-                           placeholder="Min 10 EGLIFE" 
+                           placeholder="Enter EGLIFE amount" 
                            disabled={!isConnected || isPending}
                            value={stakeAmount}
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
                     </div>
-                    <p className="text-sm text-muted-foreground">Your stake will be locked for 365 days. Rewards start accruing immediately.</p>
+                    <p className="text-sm text-muted-foreground">Your stake will be locked for 30 days. The 5% reward is paid upon unstaking.</p>
                     </CardContent>
                     <CardFooter>
                     <Button 
@@ -292,14 +269,19 @@ export default function StakingPage() {
                 </TabsContent>
                 <TabsContent value="unstake">
                     <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="unstake-amount">Amount to Unstake</Label>
-                        <Input id="unstake-amount" type="number" placeholder="0.00 EGLIFE" disabled={!isConnected} />
-                    </div>
-                    <p className="text-sm text-destructive">Warning: Early unstaking incurs a 5% penalty on your principal and forfeits unclaimed rewards.</p>
+                     <p className="text-sm text-muted-foreground">
+                        Click the button below to withdraw all your staked tokens and your 5% reward. This is only possible after the 30-day lock period.
+                     </p>
                     </CardContent>
                     <CardFooter>
-                    <Button className="w-full" variant="destructive" disabled={!isConnected}>Unstake Now</Button>
+                    <Button 
+                      className="w-full" 
+                      variant="outline" 
+                      disabled={!isConnected || isPending}
+                      onClick={handleUnstake}
+                    >
+                      {isPending ? "Unstaking..." : "Unstake All Tokens"}
+                    </Button>
                     </CardFooter>
                 </TabsContent>
                 </Tabs>
@@ -337,5 +319,3 @@ export default function StakingPage() {
     </div>
   )
 }
-
-    

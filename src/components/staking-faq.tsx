@@ -11,27 +11,23 @@ import {
 const faqItems = [
   {
     question: "What is the minimum amount I can stake?",
-    answer: "The minimum amount required to start staking is 10 EGLIFE tokens."
+    answer: "There is no official minimum, but you must have enough EGLIFE to cover the transaction fees."
   },
   {
     question: "How long is my principal amount locked for?",
-    answer: "Your principal staked amount is locked for a period of 365 days to ensure network stability and long-term growth."
+    answer: "Your principal staked amount is locked for a period of 30 days."
   },
   {
-    question: "Can I withdraw my rewards before the lock period ends?",
-    answer: "Yes, you can claim your earned rewards at any time, as long as you have accumulated a minimum of 1 EGLIFE in rewards."
+    question: "When do I receive my staking reward?",
+    answer: "You receive a one-time, 5% reward on your staked amount when you unstake your tokens after the 30-day lock period."
   },
   {
-    question: "What happens if I unstake my tokens early?",
-    answer: "If you decide to unstake before the 365-day lock period is over, a 5% penalty will be deducted from your principal staked amount. Additionally, you will forfeit any unclaimed rewards you have accrued."
+    question: "Can I unstake my tokens early?",
+    answer: "No. The smart contract does not allow for early unstaking. You must wait for the full 30-day lock period to end before you can withdraw your tokens."
   },
   {
-    question: "How are my staking rewards calculated?",
-    answer: "Your rewards are calculated based on your staking tier's APY (Annual Percentage Yield). The daily reward is determined by the formula: (Staked Amount × APY %) ÷ 365. Rewards are calculated continuously and can be tracked on your dashboard."
-  },
-    {
-    question: "Will my APY change if I add more tokens?",
-    answer: "Yes. If you add more tokens to your stake and your new total qualifies for a higher tier, your APY will be adjusted to the new, higher rate for the entire staked amount, effective from the moment you add the new tokens."
+    question: "What happens if I stake multiple times?",
+    answer: "Each time you stake, it overwrites your previous stake. The new staked amount and the 30-day lock timer will reset from the moment of your latest stake."
   }
 ];
 
