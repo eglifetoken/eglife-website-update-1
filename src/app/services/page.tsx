@@ -4,7 +4,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,6 +80,18 @@ const services = [
     icon: Ticket,
     title: "Event Tickets",
     description: "Purchase tickets for movies, concerts, and other events."
+   },
+   {
+    icon: ShoppingCart,
+    title: "Shopping Vouchers",
+    description: "Buy gift cards and vouchers for your favorite brands and stores.",
+    aiHint: "shopping cart"
+   },
+   {
+    icon: Fuel,
+    title: "Fuel Payments",
+    description: "Pay for fuel at participating petrol pumps across the country.",
+    aiHint: "fuel pump"
    }
 ];
 
@@ -395,5 +407,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-    

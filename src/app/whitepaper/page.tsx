@@ -152,11 +152,13 @@ export default function WhitepaperPage() {
                             <h4 className="font-semibold text-lg">Utility Payments (EGPAY)</h4>
                             <p className="text-foreground/80 mb-4">The primary function of the EGLIFE ecosystem is to serve as a decentralized payment gateway for essential services. Through the EGPAY application, users can convert the value of their EGLIFE tokens to pay for a wide array of real-world utilities. This creates consistent, organic demand for the token, independent of speculative market trends. The services include:</p>
                             <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                <li><strong>Money Transfer:</strong> Instantly send and receive EGLIFE tokens to other users or bank accounts.</li>
                                 <li><strong>Mobile & DTH Recharge:</strong> Instantly top-up prepaid mobile plans and Direct-to-Home (DTH) satellite services.</li>
                                 <li><strong>Utility Bills:</strong> Settle payments for electricity, water, piped gas, and broadband/landline connections.</li>
                                 <li><strong>Financial Services:</strong> Pay insurance premiums and loan EMIs through the platform.</li>
                                 <li><strong>Education & Housing:</strong> Handle payments for school, college, or university tuition fees and monthly rent.</li>
                                 <li><strong>Travel & Entertainment:</strong> Book flights, hotels, and event tickets using EGLIFE tokens (Future Integration).</li>
+                                <li><strong>Shopping & Fuel:</strong> Purchase shopping vouchers and pay for fuel at partner outlets.</li>
                             </ul>
                         </div>
                     </li>
@@ -330,7 +332,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-    
-
-    
