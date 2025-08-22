@@ -104,11 +104,42 @@ export default function WhitepaperPage() {
             
             <SectionCard icon={<Lightbulb className="h-8 w-8 text-primary" />} title="4. Token Utility">
                 <p className="mb-6 text-foreground/80">The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
-                <ul className="space-y-4">
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">On-Chain Staking</h4><p className="text-foreground/80">Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Daily Life Utility</h4><p className="text-foreground/80">EGLIFE serves as a digital currency for everyday transactions. Through the EGPAY platform, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Transaction Fees</h4><p className="text-foreground/80">EGLIFE is used to pay for transaction fees within the EGLIFE ecosystem, ensuring a consistent demand and circulation of the token.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Governance (Future)</h4><p className="text-foreground/80">We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</p></div></li>
+                <ul className="space-y-6">
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">On-Chain Staking & Yield Generation</h4>
+                            <p className="text-foreground/80">Token holders can lock their EGLIFE tokens in our on-chain staking contract to earn a passive yield. This mechanism serves two critical purposes: it directly rewards long-term supporters of the project with additional tokens, and it reduces the available circulating supply, which can contribute to price stability. By incentivizing holding over selling, we foster a more stable and committed community.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Core Currency for EGPAY Services</h4>
+                            <p className="text-foreground/80">EGLIFE is the exclusive currency for all transactions on the EGPAY platform. Users will use EGLIFE to pay for a wide range of real-world services, including mobile recharges, electricity bills, gas payments, and more. This creates a constant, organic demand for the token, as its utility is directly tied to essential daily activities, moving it beyond a purely speculative asset.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Fee Payments & Discounts</h4>
+                            <p className="text-foreground/80">All transaction fees within the EGPAY ecosystem will be settled in EGLIFE. Furthermore, holding a certain amount of EGLIFE may grant users access to tiered benefits, such as reduced transaction fees or special discounts on services, providing an additional layer of utility and encouraging users to maintain a balance in their wallets.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Eligibility for Referral Rewards</h4>
+                            <p className="text-foreground/80">To participate in our multi-level referral program and earn bonuses, a user must have an active stake in EGLIFE. This links network growth directly to token ownership, ensuring that those who are most invested in the project are the ones who are rewarded for helping it grow.</p>
+                        </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Future Governance Rights</h4>
+                            <p className="text-foreground/80">As outlined in our roadmap, we plan to transition to a Decentralized Autonomous Organization (DAO). In this model, holding and staking EGLIFE tokens will grant users voting rights on key proposals, such as changes to the protocol, treasury allocations, and the introduction of new features. This will give our community direct control over the future direction of the project.</p>
+                        </div>
+                    </li>
                 </ul>
             </SectionCard>
             
