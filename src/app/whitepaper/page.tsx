@@ -56,41 +56,48 @@ export default function WhitepaperPage() {
             </SectionCard>
 
             <SectionCard icon={<TriangleAlert className="h-8 w-8 text-primary" />} title="2. Problem Statement">
-                <p className="mb-6 text-foreground/80">The digital currency landscape is saturated with projects that fail to deliver tangible value or long-term sustainability due to poor utility, weak tokenomics, and a lack of community incentives. EGLIFE addresses these key problems:</p>
-                <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                <p className="mb-6 text-foreground/80">The digital currency landscape is saturated with projects that, while innovative, often fail to deliver tangible value or long-term sustainability. The majority of token projects suffer from a combination of poor utility, weak tokenomics, and a lack of genuine community incentives. EGLIFE addresses these key problems:</p>
+                <ul className="space-y-6">
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold">Absence of Reward Mechanisms</h4>
-                            <p className="text-foreground/80">Many tokens lack compelling reasons for long-term holding, leading to price instability. EGLIFE solves this by offering a straightforward, on-chain staking system that rewards users for their commitment.</p>
+                            <h4 className="font-semibold text-lg">Absence of Reward Mechanisms</h4>
+                            <p className="text-foreground/80">Many tokens do not offer compelling reasons for holders to maintain their positions long-term. Without staking rewards, profit-sharing, or other incentives, tokens are often dumped at the first sign of market volatility. This "mercenary capital" behavior leads to extreme price instability and discourages the formation of a loyal community. EGLIFE solves this by offering a straightforward, on-chain staking system that provides tangible rewards, encouraging users to become long-term stakeholders rather than short-term speculators.</p>
                         </div>
                     </li>
-                    <li className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold">Lack of Real-World Utility</h4>
-                            <p className="text-foreground/80">A significant number of cryptocurrencies exist purely as speculative assets. They have no integration with daily life utilities or commerce. EGLIFE is designed from the ground up to power the EGLIFE ecosystem, enabling users to pay for real services.</p>
+                            <h4 className="font-semibold text-lg">Lack of Real-World Utility</h4>
+                            <p className="text-foreground/80">A significant number of cryptocurrencies exist purely as speculative assets with no integration into daily life. This limits their adoption to a niche audience of traders and investors, rather than the general public. EGLIFE is designed from the ground up to power the EGPAY platform, enabling users to pay for real services like utility bills and mobile recharges. This focus on practical application makes EGLIFE a tool for financial management, not just an object of speculation.</p>
                         </div>
                     </li>
-                     <li className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                    <li className="flex items-start gap-4">
+                        <CheckCircle className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold">Unfair Token Allocations</h4>
-                            <p className="text-foreground/80">Many projects allocate a disproportionately large share of tokens to the team and private investors. EGLIFE's tokenomics are designed for fair distribution, with significant portions allocated to community growth and ecosystem development.</p>
+                            <h4 className="font-semibold text-lg">Unfair Token Allocations</h4>
+                            <p className="text-foreground/80">Many projects allocate a disproportionately large share of tokens to the team and private investors, often with short vesting periods. This structure can lead to "pump and dump" schemes where insiders exit at the expense of the community, damaging trust and long-term viability. EGLIFE's tokenomics are designed for fair distribution, with the largest portions allocated to community growth and ecosystem development, ensuring that the project's success is aligned with the interests of its users.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">High Token Inflation Without Supply Control</h4>
+                            <p className="text-foreground/80">Projects often mint excessive tokens for rewards or operational costs without a counteracting deflationary mechanism. This leads to high inflation, which devalues the token over time and erodes holder confidence and purchasing power. EGLIFE addresses this with a fixed total supply minted at inception and a voluntary burn mechanism, giving the community tools to manage inflation and preserve the token's long-term value.</p>
                         </div>
                     </li>
                 </ul>
             </SectionCard>
             
             <SectionCard icon={<Eye className="h-8 w-8 text-primary" />} title="3. Vision & Mission">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <h3 className="font-semibold text-xl mb-2">Vision</h3>
-                        <p className="text-foreground/80">Our vision is to empower every generation with easy-to-use decentralized financial solutions backed by blockchain. We envision a future where financial tools are accessible, transparent, and controlled by the users themselves, bridging the gap between digital assets and everyday life.</p>
+                        <h3 className="font-semibold text-xl mb-3">Our Vision</h3>
+                        <p className="text-foreground/80 leading-relaxed">To empower every generation with easy-to-use decentralized financial solutions backed by blockchain. We envision a future where financial tools are not confined by traditional banking systems, but are accessible, transparent, and controlled by the users themselves. By simplifying the complexities of cryptocurrency, we aim to bridge the gap between digital assets and everyday life, creating an inclusive ecosystem where individuals from all walks of life can confidently participate in the digital economy.</p>
                     </div>
                      <div>
-                        <h3 className="font-semibold text-xl mb-2">Mission</h3>
-                        <p className="text-foreground/80">Our mission is to provide real utility, encourage mass adoption through user-friendly design, deliver radical transparency with on-chain operations, and create a unified, self-sustaining ecosystem where users can earn, save, and spend.</p>
+                        <h3 className="font-semibold text-xl mb-3">Our Mission</h3>
+                        <p className="text-foreground/80 leading-relaxed">Our mission is to provide real utility, encourage mass adoption through user-friendly design, deliver radical transparency with on-chain operations, and create a unified, self-sustaining ecosystem where users can earn, save, and spend. We are committed to breaking down the barriers to entry and building a more equitable financial landscape for generations to come, starting in India and expanding globally.</p>
                     </div>
                 </div>
             </SectionCard>
@@ -99,7 +106,7 @@ export default function WhitepaperPage() {
                 <p className="mb-6 text-foreground/80">The EGLIFE Token is the native cryptocurrency of our ecosystem, designed with a clear focus on real-world application. Its utility is centered around providing tangible value and seamless integration into the daily financial activities of our users. The core utilities include:</p>
                 <ul className="space-y-4">
                     <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">On-Chain Staking</h4><p className="text-foreground/80">Token holders can stake their EGLIFE to participate in the network's security and, in return, earn rewards. This provides a direct incentive to hold the token long-term, fostering a stable and committed community.</p></div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Daily Life Utility</h4><p className="text-foreground/80">EGLIFE serves as a digital currency for everyday transactions. Through the EGLIFE ecosystem, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</p></div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Daily Life Utility</h4><p className="text-foreground/80">EGLIFE serves as a digital currency for everyday transactions. Through the EGPAY platform, users can use their tokens to pay for services such as mobile recharges, utility bills, and other day-to-day expenses, bridging the gap between crypto and real-world commerce.</p></div></li>
                     <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Transaction Fees</h4><p className="text-foreground/80">EGLIFE is used to pay for transaction fees within the EGLIFE ecosystem, ensuring a consistent demand and circulation of the token.</p></div></li>
                     <li className="flex items-start gap-3"><CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" /><div><h4 className="font-semibold">Governance (Future)</h4><p className="text-foreground/80">We plan to introduce a governance model where token holders can vote on key decisions, such as protocol upgrades and treasury allocations, giving the community a direct say in the project's future.</p></div></li>
                 </ul>
