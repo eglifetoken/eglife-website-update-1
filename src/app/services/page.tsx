@@ -381,7 +381,7 @@ export default function ServicesPage() {
        <div className="text-center mt-20">
           <h2 className="text-3xl font-headline font-bold">And Much More...</h2>
           <p className="text-lg text-foreground/80 mt-2 max-w-2xl mx-auto">
-              Our vision is to create a seamless financial experience by integrating EGPAY with the services you use every day, making transactions effortless and universal.
+              Our vision is to create a seamless financial experience by integrating EGPAY with the services you use every day, making transactions effortless and universal. More services will be added soon.
           </p>
            <div className="mt-12 flex flex-wrap justify-center items-center gap-8">
               <div className="flex flex-col items-center gap-3 text-center text-muted-foreground">
