@@ -150,7 +150,13 @@ export default function WhitepaperPage() {
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Utility Payments (EGPAY)</h4>
-                            <p className="text-foreground/80">The primary function of the EGLIFE ecosystem is to serve as a decentralized payment gateway for essential services. Through the EGPAY application, users can convert the value of their EGLIFE tokens to pay for a wide array of real-world utilities. This includes, but is not limited to, mobile recharges (prepaid and postpaid), electricity bills, water bills, piped gas, and DTH recharges. By providing a practical and convenient way to use crypto for non-discretionary spending, we create consistent, organic demand for the EGLIFE token, independent of speculative market trends.</p>
+                            <p className="text-foreground/80 mb-4">The primary function of the EGLIFE ecosystem is to serve as a decentralized payment gateway for essential services. Through the EGPAY application, users can convert the value of their EGLIFE tokens to pay for a wide array of real-world utilities. This creates consistent, organic demand for the token, independent of speculative market trends. The services include:</p>
+                            <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                <li><strong>Mobile & DTH Recharge:</strong> Instantly top-up prepaid mobile plans and Direct-to-Home (DTH) satellite services.</li>
+                                <li><strong>Bill Payments:</strong> Settle postpaid mobile bills, electricity bills, water bills, and piped gas connections.</li>
+                                <li><strong>Financial Services:</strong> Pay insurance premiums and loan EMIs through the platform.</li>
+                                <li><strong>Other Services:</strong> Handle payments for broadband/landline bills, tuition fees, and rent.</li>
+                            </ul>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
@@ -323,3 +329,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
+    
