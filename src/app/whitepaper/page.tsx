@@ -156,8 +156,15 @@ export default function WhitepaperPage() {
                      <li className="flex items-start gap-4">
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
-                            <h4 className="font-semibold text-lg">Airdrop & Referral Campaigns</h4>
-                            <p className="text-foreground/80">Community growth is the lifeblood of any decentralized project. Our ecosystem includes built-in mechanisms to foster rapid and organic user adoption. We will conduct strategic **Airdrop Campaigns** to distribute tokens to early adopters and active community members, creating an initial user base. Furthermore, our **Multi-Level Referral Program** rewards users for bringing new participants into the ecosystem. When a referred user stakes EGLIFE, the referrer earns an instant bonus, creating a powerful, viral marketing engine driven by the community itself.</p>
+                            <h4 className="font-semibold text-lg">Airdrop Campaigns</h4>
+                            <p className="text-foreground/80">To accelerate community growth and reward early supporters, we will conduct strategic Airdrop Campaigns. These campaigns will distribute a predetermined amount of EGLIFE tokens to early adopters, active community members, and participants in marketing events. Airdrops serve as a powerful tool to bootstrap our user base, increase token distribution, and generate initial buzz and excitement around the project.</p>
+                        </div>
+                    </li>
+                     <li className="flex items-start gap-4">
+                        <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                        <div>
+                            <h4 className="font-semibold text-lg">Referral Program</h4>
+                            <p className="text-foreground/80">Our Multi-Level Referral Program is designed to create a powerful, self-sustaining marketing engine driven by our own community. Users who have an active stake can earn instant bonuses in EGLIFE when they refer new users who also stake. This incentivizes our most committed users to become brand ambassadors, fostering organic, word-of-mouth growth and ensuring that rewards are channeled directly back to the community members who help expand the ecosystem.</p>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
@@ -316,5 +323,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-    
