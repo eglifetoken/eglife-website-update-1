@@ -166,7 +166,13 @@ export default function WhitepaperPage() {
                         <CheckCircle className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
                         <div>
                             <h4 className="font-semibold text-lg">Airdrop Campaigns</h4>
-                            <p className="text-foreground/80">To accelerate community growth and reward early supporters, we will conduct strategic Airdrop Campaigns. These campaigns will distribute a predetermined amount of EGLIFE tokens to early adopters, active community members, and participants in marketing events. Airdrops serve as a powerful tool to bootstrap our user base, increase token distribution, and generate initial buzz and excitement around the project.</p>
+                            <p className="text-foreground/80 mb-4">To accelerate community growth and reward our earliest supporters, we will execute strategic Airdrop Campaigns using the dedicated `airdrop` function in our smart contract. These campaigns are designed to be transparent, efficient, and impactful. Our strategy includes:</p>
+                            <ul className="space-y-2 list-disc list-inside text-foreground/80">
+                                <li><strong>Objective:</strong> To bootstrap our user base, ensure wide token distribution, and reward community members who contribute to our growth during the crucial early stages of the project.</li>
+                                <li><strong>Target Audience:</strong> Airdrops will be targeted toward specific groups, including early registrants on our platform, active participants in our social media channels (like X and Telegram), and winners of community contests or marketing events.</li>
+                                <li><strong>Mechanism:</strong> Participants will be required to submit their BEP-20 wallet addresses through a secure portal on our official website. The project owner will then execute a single, low-cost transaction to distribute tokens to all verified participants, ensuring efficient and timely delivery.</li>
+                                <li><strong>Transparency:</strong> Every airdrop transaction will be publicly verifiable on BscScan. This allows anyone to track the distribution of tokens, confirming that the airdrop was conducted fairly and as promised.</li>
+                            </ul>
                         </div>
                     </li>
                      <li className="flex items-start gap-4">
