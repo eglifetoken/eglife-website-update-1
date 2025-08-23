@@ -42,37 +42,28 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: "eglifetoken@gmail.com",
       password: "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
+    const result = await loginUser(values)
+    setIsSubmitting(false)
 
-    try {
-      const result = await loginUser(values)
-      if (result.success) {
-        toast({
-            title: "Login Successful!",
-            description: "Redirecting to your dashboard.",
-        })
-        router.push("/admin")
-      } else {
-         toast({
-            variant: "destructive",
-            title: "Login Failed",
-            description: result.message || "An unknown error occurred.",
-        })
-      }
-    } catch (error) {
+    if (result.success) {
       toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: "An unexpected error occurred. Please try again.",
+          title: "Login Successful!",
+          description: "Redirecting to your dashboard.",
       })
-    } finally {
-      setIsSubmitting(false)
+      router.push("/admin")
+    } else {
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: result.message || "An unknown error occurred.",
+      })
     }
   }
 

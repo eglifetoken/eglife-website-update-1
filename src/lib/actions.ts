@@ -35,13 +35,9 @@ export async function loginUser(values: z.infer<typeof loginFormSchema>): Promis
             return { success: false, message: "This email is not authorized for admin access." };
         }
         
-        const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+        await signInWithEmailAndPassword(auth, values.email, values.password);
         
-        if (userCredential.user) {
-            return { success: true };
-        }
-        
-        return { success: false, message: "An unknown error occurred during authentication." };
+        return { success: true };
 
     } catch (error: any) {
         console.error("Login error:", error.code, error.message);
@@ -54,3 +50,4 @@ export async function loginUser(values: z.infer<typeof loginFormSchema>): Promis
         return { success: false, message: message };
     }
 }
+
