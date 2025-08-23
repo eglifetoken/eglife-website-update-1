@@ -15,35 +15,43 @@ export default function AdminLayout({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isChecking, setIsChecking] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // Check if there is a user and if their email is the admin email
       if (currentUser && currentUser.email === "eglifetoken@gmail.com") {
         setUser(currentUser);
       } else {
-        // If not an admin or no user, redirect to login
-        router.push("/login");
+        setUser(null);
       }
-      setLoading(false);
+      setIsChecking(false);
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [router]);
+  }, []);
 
-  if (loading) {
+  useEffect(() => {
+    if (!isChecking) {
+      if (user) {
+        setLoading(false);
+      } else {
+        router.push("/login");
+      }
+    }
+  }, [isChecking, user, router]);
+
+  if (loading || isChecking) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
-
+  
   if (!user) {
-    // This will be briefly shown before the redirect kicks in
-    return null;
+     return null;
   }
 
   return (
