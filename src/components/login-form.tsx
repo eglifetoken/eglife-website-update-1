@@ -50,8 +50,7 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     const result = await loginUser(values)
-    setIsSubmitting(false)
-
+    
     if (result.success) {
       toast({
           title: "Login Successful!",
@@ -64,6 +63,7 @@ export function LoginForm() {
           title: "Login Failed",
           description: result.message || "An unknown error occurred.",
       })
+      setIsSubmitting(false)
     }
   }
 
