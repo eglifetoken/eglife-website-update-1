@@ -31,11 +31,11 @@ const kycStatusVariant: { [key: string]: "default" | "secondary" | "destructive"
 };
 
 const adminUser: User = {
-    id: "5e9MkyOrCVdbsvedH0irws2hSZX2",
+    id: "Gjb3zSeI9sUYaRvUI0t6old1FLt2",
     name: "Admin",
-    email: "admin@eglife.com",
-    avatar: `https://avatar.vercel.sh/admin@eglife.com.png`,
-    registrationDate: "Aug 21, 2025",
+    email: "eglifetoken@gmail.com",
+    avatar: `https://avatar.vercel.sh/eglifetoken@gmail.com.png`,
+    registrationDate: "Aug 23, 2025",
     kycStatus: "Verified",
     stakingStatus: "Active",
     aiHint: "user portrait"
