@@ -31,17 +31,26 @@ const loginFormSchema = z.object({
 
 export async function loginUser(values: z.infer<typeof loginFormSchema>): Promise<{ success: boolean; message?: string }> {
     try {
+        if (values.email.toLowerCase() !== "eglifetoken@gmail.com") {
+            return { success: false, message: "This email is not authorized for admin access." };
+        }
+        
         const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+        
         if (userCredential.user) {
             return { success: true };
         }
-        return { success: false, message: "An unknown error occurred." };
+        
+        return { success: false, message: "An unknown error occurred during authentication." };
+
     } catch (error: any) {
         console.error("Login error:", error.code, error.message);
-        // Provide a more user-friendly error message
-        const message = error.code === 'auth/invalid-credential' 
-            ? 'Invalid email or password. Please try again.'
-            : 'An error occurred during login.';
+        
+        let message = "An error occurred during login. Please try again.";
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+            message = 'Invalid email or password. Please check your credentials.';
+        }
+        
         return { success: false, message: message };
     }
 }
