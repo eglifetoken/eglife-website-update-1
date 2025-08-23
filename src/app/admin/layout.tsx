@@ -23,7 +23,8 @@ export default function AdminLayout({
         setUser(currentUser);
       } else {
         setUser(null);
-        if (typeof window !== 'undefined') {
+        // Only redirect if we are done loading and there is no user
+        if (!loading) {
             router.push("/login");
         }
       }
@@ -32,20 +33,29 @@ export default function AdminLayout({
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [router]);
+  }, [router, loading]); // Added loading to dependency array
 
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="ml-4">Authenticating...</p>
       </div>
     );
   }
   
   if (!user) {
-     return null; // Don't render anything if not logged in, redirection is handled in useEffect
+     // If not loading and no user, we redirect from useEffect.
+     // To prevent a flash of content, we show the loader until redirect happens.
+     return (
+        <div className="flex h-screen w-full items-center justify-center bg-background">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="ml-4">Redirecting to login...</p>
+      </div>
+     );
   }
 
+  // If loading is false and user exists, show the admin panel
   return (
     <div className="flex min-h-screen">
       <AdminSidebarWrapper />
