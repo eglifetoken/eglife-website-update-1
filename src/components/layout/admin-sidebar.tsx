@@ -90,8 +90,8 @@ export default function AdminSidebar() {
           </Link>
         )})}
       </nav>
-      <div className="mt-auto">
-         <Button variant="ghost" className="w-full justify-start gap-3" onClick={handleLogout}>
+      <div className="mt-auto p-4">
+         <Button variant="outline" className="w-full justify-center gap-3" onClick={handleLogout}>
             <LogOut className="h-5 w-5" />
             Logout
          </Button>

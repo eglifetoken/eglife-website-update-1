@@ -15,7 +15,6 @@ export default function AdminLayout({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isChecking, setIsChecking] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,25 +23,18 @@ export default function AdminLayout({
         setUser(currentUser);
       } else {
         setUser(null);
+        if (typeof window !== 'undefined') {
+            router.push("/login");
+        }
       }
-      setIsChecking(false);
+      setLoading(false);
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
-  useEffect(() => {
-    if (!isChecking) {
-      if (user) {
-        setLoading(false);
-      } else {
-        router.push("/login");
-      }
-    }
-  }, [isChecking, user, router]);
-
-  if (loading || isChecking) {
+  if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -51,7 +43,7 @@ export default function AdminLayout({
   }
   
   if (!user) {
-     return null;
+     return null; // Don't render anything if not logged in, redirection is handled in useEffect
   }
 
   return (
