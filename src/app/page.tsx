@@ -172,12 +172,12 @@ export default function Home() {
           </div>
            <div className="w-full max-w-lg mx-auto lg:max-w-none">
                 <Image
-                src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1000"
-                alt="Crypto Blockchain"
+                src="https://images.unsplash.com/photo-1535320903710-d973d3fb76f7?q=80&w=1000"
+                alt="Digital Financial Network"
                 width={1000}
                 height={800}
                 className="rounded-xl shadow-2xl object-cover"
-                data-ai-hint="blockchain technology"
+                data-ai-hint="digital network"
                 />
             </div>
         </div>
