@@ -43,7 +43,6 @@ export default function Footer() {
                 <h3 className="text-lg font-headline font-semibold mb-4">Account</h3>
                 <ul className="space-y-2">
                    <li><Link href="/register" className="text-foreground/80 hover:text-primary">Register</Link></li>
-                   <li><Link href="/login" className="text-foreground/80 hover:text-primary">Admin Login</Link></li>
                 </ul>
               </div>
           </div>
