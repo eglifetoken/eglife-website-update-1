@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogIn, UserPlus } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -20,7 +19,7 @@ const navLinks = [
 ];
 
 const Logo = () => (
-    <Image src="/logo.png" alt="EGLIFE Logo" width={32} height={32} />
+    <span className="text-xl font-headline font-bold">EGLIFE</span>
 );
 
 
