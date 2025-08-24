@@ -21,12 +21,6 @@ import {
           </CardHeader>
           <CardContent>
             <LoginForm />
-            <div className="mt-4 text-center text-sm">
-              First time?{" "}
-              <Link href="/admin/register" className="underline text-accent">
-                Register as Admin
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>
