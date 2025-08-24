@@ -1,58 +1,16 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import AdminSidebarWrapper from "@/components/layout/admin-sidebar-wrapper";
-import { Loader2 } from "lucide-react";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser && currentUser.email === "eglifetoken@gmail.com") {
-        setUser(currentUser);
-      } else {
-        // If there's no user or the user is not the admin, redirect to login.
-        router.push("/login");
-      }
-      setLoading(false);
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="ml-4">Authenticating...</p>
-      </div>
-    );
-  }
-  
-  if (!user) {
-     // This state should ideally not be reached due to the redirect in useEffect,
-     // but it serves as a fallback.
-     return (
-        <div className="flex h-screen w-full items-center justify-center bg-background">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="ml-4">Redirecting to login...</p>
-      </div>
-     );
-  }
-
-  // If loading is false and the correct user exists, show the admin panel
+  // The authentication logic has been moved to the individual pages
+  // to prevent layout-level redirect loops and ensure content is
+  // only rendered for authenticated admins.
   return (
     <div className="flex min-h-screen">
       <AdminSidebarWrapper />

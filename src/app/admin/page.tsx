@@ -1,8 +1,12 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, Users, PiggyBank, Receipt } from "lucide-react";
+import { DollarSign, Users, PiggyBank, Receipt, Loader2 } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const userGrowthData = [
@@ -15,6 +19,36 @@ const userGrowthData = [
 ];
 
 export default function AdminDashboard() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser && currentUser.email === "eglifetoken@gmail.com") {
+        setUser(currentUser);
+      } else {
+        router.push("/login");
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="ml-4">Verifying access...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Should be redirected, but this prevents a flash of content
+  }
+
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-headline font-bold">Admin Dashboard</h1>
@@ -95,5 +129,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-
-    
