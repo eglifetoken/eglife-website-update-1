@@ -16,6 +16,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start md:col-span-1">
+            
             <p className="text-foreground/70 mt-4">Empowering your financial future through decentralized solutions.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:col-span-3">

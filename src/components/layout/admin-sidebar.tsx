@@ -44,7 +44,7 @@ export default function AdminSidebar() {
   return (
     <aside className="w-64 flex-shrink-0 bg-background border-r p-4 hidden md:flex flex-col">
       <div className="p-4 mb-4">
-        {/* Logo removed */}
+        
       </div>
       <nav className="flex-grow space-y-2">
         {adminNavLinks.map((link) => {

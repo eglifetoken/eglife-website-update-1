@@ -75,7 +75,7 @@ export default function AdminSettingsPage() {
                         </CardContent>
                          <CardFooter>
                             <Button>Save Security Settings</Button>
-                        </CardFooter>
+                         </CardFooter>
                     </Card>
                 </TabsContent>
                 
