@@ -10,32 +10,14 @@ const TwitterIcon = () => (
     </svg>
 );
 
-const Logo = () => (
-    <div className="flex items-center gap-2">
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            width="24"
-            height="24"
-            className="text-primary"
-            fill="currentColor"
-            >
-            <path d="M16 0 A16 16 0 0 0 0 16 A16 16 0 0 0 16 32 A16 16 0 0 0 32 16 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 28 16 A12 12 0 0 1 16 28 A12 12 0 0 1 4 16 A12 12 0 0 1 16 4" />
-            <path d="M22 8 L12 8 L12 12 L18 12 L18 14 L12 14 L12 18 L18 18 L18 20 L12 20 L12 24 L22 24" />
-        </svg>
-        <span className="text-xl font-headline font-bold">EGLIFE</span>
-    </div>
-);
-
-
 export default function Footer() {
   return (
     <footer className="bg-primary/10">
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start md:col-span-1">
-            <Link href="/" className="mb-4">
-               <Logo />
+            <Link href="/" className="mb-4 font-headline text-2xl font-bold text-primary">
+               EGLIFE
             </Link>
             <p className="text-foreground/70">Empowering your financial future through decentralized solutions.</p>
           </div>

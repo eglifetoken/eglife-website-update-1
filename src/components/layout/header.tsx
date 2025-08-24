@@ -18,23 +18,6 @@ const navLinks = [
   { href: "/contact", label: "Contact Us" },
 ];
 
-const Logo = () => (
-    <div className="flex items-center gap-2">
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            width="32"
-            height="32"
-            className="text-primary"
-            fill="currentColor"
-            >
-            <path d="M16 0 A16 16 0 0 0 0 16 A16 16 0 0 0 16 32 A16 16 0 0 0 32 16 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 28 16 A12 12 0 0 1 16 28 A12 12 0 0 1 4 16 A12 12 0 0 1 16 4" />
-            <path d="M22 8 L12 8 L12 12 L18 12 L18 14 L12 14 L12 18 L18 18 L18 20 L12 20 L12 24 L22 24" />
-        </svg>
-    </div>
-);
-
-
 export default function Header() {
   const pathname = usePathname();
 
@@ -53,8 +36,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/">
-          <Logo />
+        <Link href="/" className="font-headline text-2xl font-bold text-primary">
+          EGLIFE
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
@@ -84,8 +67,8 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="mb-4">
-                  <Logo />
+                <Link href="/" className="mb-4 font-headline text-2xl font-bold text-primary">
+                  EGLIFE
                 </Link>
                 {navLinks.map(link => (
                   <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
