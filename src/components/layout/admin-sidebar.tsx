@@ -9,7 +9,6 @@ import { LayoutDashboard, Users, PiggyBank, Settings, LogOut, BarChart } from "l
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
-import Image from "next/image";
 
 const adminNavLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -21,7 +20,13 @@ const adminNavLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-         <Image src="/logo.png" alt="EGLIFE Logo" width={32} height={32} />
+        <div className="p-2 bg-primary/20 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-primary">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+            </svg>
+        </div>
         <span className="text-xl font-headline font-bold">Admin</span>
     </div>
 );
