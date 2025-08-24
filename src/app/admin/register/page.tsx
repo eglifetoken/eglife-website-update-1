@@ -78,7 +78,8 @@ export default function AdminRegisterPage() {
                                 id="email"
                                 type="email"
                                 value={email}
-                                disabled
+                                readOnly
+                                className="text-center"
                             />
                         </div>
                         <div className="space-y-2">

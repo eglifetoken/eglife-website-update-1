@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import AdminSidebarWrapper from "@/components/layout/admin-sidebar-wrapper";
@@ -16,6 +16,7 @@ export default function AdminLayout({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -23,8 +24,8 @@ export default function AdminLayout({
         setUser(currentUser);
       } else {
         setUser(null);
-        // Only redirect if we are done loading and there is no user
-        if (!loading) {
+        // Do not redirect from the register page
+        if (pathname !== '/admin/register') {
             router.push("/login");
         }
       }
@@ -33,7 +34,12 @@ export default function AdminLayout({
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [router, loading]); // Added loading to dependency array
+  }, [router, pathname]);
+
+  // Allow access to register page without auth
+  if (pathname === '/admin/register') {
+      return <>{children}</>;
+  }
 
   if (loading) {
     return (
