@@ -13,7 +13,7 @@ const TwitterIcon = () => (
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-       <Image src="/logo.png" alt="EGLIFE Logo" width={40} height={40} />
+       <Image src="/logo.png" alt="EGLIFE Logo" width={32} height={32} />
     </div>
 );
 
