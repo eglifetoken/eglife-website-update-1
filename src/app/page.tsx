@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,45 @@ import { getTokenData, TokenData } from "@/ai/flows/getTokenData";
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
+
+const ecosystemComponents = [
+  {
+    icon: Landmark,
+    title: "Token Staking",
+    description: "Stake your EGLIFE tokens to earn competitive rewards and help secure the network.",
+    link: "/staking",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "bank building"
+  },
+   {
+    icon: Briefcase,
+    title: "EGPAY Services",
+    description: "Pay for utility bills and other services directly with your EGLIFE tokens.",
+    link: "/services",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "briefcase"
+  },
+  {
+    icon: Users,
+    title: "Referral Program",
+    description: "Earn bonuses by inviting new users to join the EGLIFE staking platform.",
+    link: "/referral",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "people network"
+  },
+  {
+    icon: Vote,
+    title: "Community Governance",
+    description: "Participate in key project decisions by voting with your staked EGLIFE.",
+    link: "#",
+    status: "Upcoming",
+    statusVariant: "secondary",
+    aiHint: "voting box"
+  },
+];
 
 const teamMembers = [
   {
@@ -139,6 +178,41 @@ export default function Home() {
               className="w-full h-full object-cover"
             />
           </div>
+        </div>
+      </section>
+
+      <section className="w-full py-16 md:py-20 bg-muted/20">
+        <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Ecosystem</h2>
+                <p className="text-lg text-foreground/80 mt-2 max-w-3xl mx-auto">
+                    Explore the suite of tools and platforms that make up the Eglife universe, designed to add real-world utility to your tokens.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {ecosystemComponents.map((component) => {
+                const Icon = component.icon;
+                return (
+                    <Card key={component.title} className="flex flex-col hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <div className="p-3 bg-primary/10 rounded-md w-fit">
+                                <Icon className="h-8 w-8 text-primary" />
+                            </div>
+                            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${component.status === 'Live' ? 'bg-green-500/20 text-green-700' : 'bg-secondary'}`}>{component.status}</span>
+                        </div>
+                        <CardTitle className="font-headline pt-4">{component.title}</CardTitle>
+                        <CardDescription>{component.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow flex flex-col justify-end">
+                        <Link href={component.link} className="text-sm font-medium text-accent hover:underline flex items-center mt-4">
+                            Explore <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </CardContent>
+                    </Card>
+                );
+                })}
+            </div>
         </div>
       </section>
 
@@ -411,6 +485,5 @@ export default function Home() {
 
     </div>
   );
-}
 
     
