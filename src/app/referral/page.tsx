@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 
 const referralTiers = [
     { level: 1, bonus: "10%" },
@@ -28,23 +29,25 @@ const referralHistory: any[] = [
     // Data will be populated once the system is live
 ];
 
-const referralCode = "EGLIFE-A4B7X9";
+const defaultReferralAddress = "0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d";
 
 export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     const router = useRouter();
+    const { address, isConnected } = useAccount();
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
+    const referralCode = isConnected && address ? address : defaultReferralAddress;
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralCode);
         toast({
             title: "Copied!",
-            description: "Your referral code has been copied to the clipboard.",
+            description: "Your referral address has been copied to the clipboard.",
         });
     };
     
@@ -88,11 +91,12 @@ export default function ReferralPage() {
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
                     <CardHeader>
-                        <CardTitle className="font-headline text-xl">Your Referral Code</CardTitle>
+                        <CardTitle className="font-headline text-xl">Your Referral Address</CardTitle>
+                         <CardDescription>{isConnected ? "This is your wallet address." : "This is the default address."}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-center space-x-2">
-                            <Input value={referralCode} readOnly className="font-mono text-center" />
+                            <Input value={referralCode} readOnly className="font-mono text-center text-xs" />
                             <Button variant="outline" size="icon" onClick={handleCopy}>
                                 <Copy className="h-4 w-4" />
                             </Button>
