@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogIn, UserPlus } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -20,13 +21,7 @@ const navLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-       <div className="p-2 bg-primary/20 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-primary">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-            </svg>
-        </div>
+       <Image src="/logo.png" alt="EGLIFE Logo" width={40} height={40} />
         <span className="font-bold text-xl hidden sm:inline-block">EGLIFE</span>
     </div>
 );
