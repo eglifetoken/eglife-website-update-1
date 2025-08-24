@@ -9,6 +9,7 @@ import { LayoutDashboard, Users, PiggyBank, Settings, LogOut, BarChart } from "l
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 const adminNavLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -20,24 +21,7 @@ const adminNavLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-         <svg
-            width="32"
-            height="32"
-            viewBox="0 0 48 48"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-primary"
-            >
-            <defs>
-                <linearGradient id="logoGradientAdmin" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
-                </linearGradient>
-            </defs>
-            <circle cx="24" cy="24" r="22" fill="url(#logoGradientAdmin)" />
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Alegreya">
-                E
-            </text>
-        </svg>
+         <Image src="/logo.png" alt="EGLIFE Logo" width={32} height={32} />
         <span className="text-xl font-headline font-bold">Admin</span>
     </div>
 );

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import Image from "next/image";
 
 const TwitterIcon = () => (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -12,24 +13,7 @@ const TwitterIcon = () => (
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-        <svg
-            width="48"
-            height="48"
-            viewBox="0 0 48 48"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-primary"
-            >
-            <defs>
-                <linearGradient id="logoGradientFooter" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: 'hsl(var(--primary))', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: 'hsl(var(--accent))', stopOpacity: 1 }} />
-                </linearGradient>
-            </defs>
-            <circle cx="24" cy="24" r="22" fill="url(#logoGradientFooter)" />
-            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="hsl(var(--primary-foreground))" fontSize="32" fontWeight="bold" fontFamily="Poppins">
-                E
-            </text>
-        </svg>
+        <Image src="/logo.png" alt="EGLIFE Logo" width={48} height={48} />
     </div>
 );
 
