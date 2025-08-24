@@ -152,32 +152,34 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-16 md:py-20 bg-background/80">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold text-primary mb-2">Welcome to EGLIFE</h2>
-          <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Empowering Your Financial Future
-          </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-            EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link href="/whitepaper">Read Whitepaper</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/dapp">Explore Ecosystem</Link>
-            </Button>
+        <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <h2 className="text-2xl md:text-4xl font-bold text-primary mb-2">Welcome to EGLIFE</h2>
+            <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
+              Empowering Your Financial Future
+            </h1>
+            <p className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-foreground/80 mb-8">
+              EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button asChild size="lg">
+                <Link href="/whitepaper">Read Whitepaper</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/dapp">Explore Ecosystem</Link>
+              </Button>
+            </div>
           </div>
-          <div className="w-full max-w-4xl mx-auto mt-12 aspect-video rounded-xl shadow-2xl overflow-hidden">
-            <video
-              src="https://cdn.pixabay.com/video/2022/03/24/111345-684814481_large.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
+           <div className="w-full max-w-lg mx-auto lg:max-w-none">
+                <Image
+                src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1000"
+                alt="Crypto Blockchain"
+                width={1000}
+                height={800}
+                className="rounded-xl shadow-2xl object-cover"
+                data-ai-hint="blockchain technology"
+                />
+            </div>
         </div>
       </section>
 
@@ -485,5 +487,4 @@ export default function Home() {
 
     </div>
   );
-
-    
+}
