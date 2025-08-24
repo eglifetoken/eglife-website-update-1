@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 // This should be the address of your deployed EGLIFEStaking contract
-const EGLIFE_STAKING_CONTRACT = '0xYourNewStakingContractAddressHere'; 
+const EGLIFE_STAKING_CONTRACT = '0xC1921f78609Bd6C683940E3d43455b41ecE28e11'; 
 
 const stakingContractAbi = [
   {
@@ -558,5 +558,7 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    
 
     
