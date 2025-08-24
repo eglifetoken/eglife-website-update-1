@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import Image from "next/image";
 
 const TwitterIcon = () => (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -11,9 +12,7 @@ const TwitterIcon = () => (
 );
 
 const Logo = () => (
-    <div className="flex items-center justify-center h-10 w-10 bg-primary text-primary-foreground rounded-full font-bold text-xl">
-       E
-    </div>
+    <Image src="/logo.png" alt="EGLIFE Logo" width={40} height={40} />
 );
 
 
