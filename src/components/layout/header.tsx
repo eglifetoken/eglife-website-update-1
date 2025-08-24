@@ -21,8 +21,7 @@ const navLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-       <Image src="/logo.png" alt="EGLIFE Logo" width={32} height={32} />
-        <span className="font-bold text-xl hidden sm:inline-block">EGLIFE</span>
+       <Image src="/logo.png" alt="EGLIFE Logo" width={28} height={28} />
     </div>
 );
 

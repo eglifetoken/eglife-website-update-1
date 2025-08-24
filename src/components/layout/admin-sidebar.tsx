@@ -21,7 +21,7 @@ const adminNavLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-2">
-        <Image src="/logo.png" alt="EGLIFE Admin Logo" width={30} height={30} />
+        <Image src="/logo.png" alt="EGLIFE Admin Logo" width={28} height={28} />
         <span className="text-xl font-headline font-bold">Admin</span>
     </div>
 );
