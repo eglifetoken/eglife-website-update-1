@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogIn, UserPlus } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -20,8 +19,8 @@ const navLinks = [
 ];
 
 const Logo = () => (
-    <div className="flex items-center gap-2">
-       <Image src="/logo.png" alt="EGLIFE Logo" width={14} height={14} />
+    <div className="flex items-center justify-center h-8 w-8 bg-primary text-primary-foreground rounded-full font-bold text-lg">
+       E
     </div>
 );
 
