@@ -1,14 +1,15 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DollarSign, Gift, Users, BarChart2, TrendingUp, CheckCircle, Percent } from "lucide-react";
+import { Users, TrendingUp, CheckCircle, Percent, PiggyBank } from "lucide-react";
 
-const dailyProfitTiers = [
-    { package: "Starter", amount: "$10 - $1,000" },
-    { package: "Silver", amount: "$1,001 - $5,000" },
-    { package: "Gold", amount: "$5,001 - $10,000" },
-    { package: "Platinum", amount: "$10,001 - $25,000" },
-    { package: "Diamond", amount: "$25,001 - $100,000" },
+const stakingTiers = [
+    { name: "Starter", amount: "10 - 100 EGLIFE", apy: "12%" },
+    { name: "Bronze", amount: "101 - 500 EGLIFE", apy: "18%" },
+    { name: "Silver", amount: "501 - 1,000 EGLIFE", apy: "20%" },
+    { name: "Gold", amount: "1,001 - 5,000 EGLIFE", apy: "22%" },
+    { name: "Platinum", amount: "5,001 - 10,000 EGLIFE", apy: "24%" },
+    { name: "Diamond", amount: "10,001+ EGLIFE", apy: "26%" },
 ];
 
 const referralTiers = [
@@ -35,36 +36,37 @@ export default function BusinessPlanPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Daily Profit */}
+                {/* Staking Rewards */}
                 <Card className="border-accent">
                     <CardHeader>
                          <div className="p-3 bg-accent/10 rounded-md w-fit mb-4">
-                            <TrendingUp className="h-8 w-8 text-accent" />
+                            <PiggyBank className="h-8 w-8 text-accent" />
                         </div>
-                        <CardTitle className="font-headline text-3xl">Daily Profit</CardTitle>
-                        <CardDescription className="text-lg">Earn a consistent daily return on your investment for a fixed period.</CardDescription>
+                        <CardTitle className="font-headline text-3xl">Staking Rewards (APY)</CardTitle>
+                        <CardDescription className="text-lg">Earn a variable annual yield by staking your EGLIFE tokens. Higher tiers reward more.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Package</TableHead>
-                                    <TableHead>Amount (USD)</TableHead>
-                                    <TableHead className="text-right">Daily Profit</TableHead>
+                                    <TableHead>Staking Amount</TableHead>
+                                    <TableHead className="text-right">Annual Yield (APY)</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dailyProfitTiers.map((tier) => (
-                                    <TableRow key={tier.package}>
-                                        <TableCell className="font-medium">{tier.package}</TableCell>
+                                {stakingTiers.map((tier) => (
+                                    <TableRow key={tier.name}>
+                                        <TableCell className="font-medium">{tier.name}</TableCell>
                                         <TableCell>{tier.amount}</TableCell>
-                                        <TableCell className="text-right font-semibold text-accent">1%</TableCell>
+                                        <TableCell className="text-right font-semibold text-accent">{tier.apy}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                         <div className="mt-6 text-center bg-muted/50 p-4 rounded-lg">
-                            <p className="text-lg font-bold text-accent">1% Daily For 200 Days</p>
+                         <div className="mt-6 text-left bg-muted/50 p-4 rounded-lg space-y-2">
+                             <p className="text-sm text-foreground/80"><strong className="text-accent">Lock Period:</strong> 365 Days. Principal is locked but rewards can be claimed any time.</p>
+                             <p className="text-sm text-foreground/80"><strong className="text-accent">Early Unstake Penalty:</strong> A 5% penalty on principal is applied for unstaking before 365 days.</p>
                         </div>
                     </CardContent>
                 </Card>
