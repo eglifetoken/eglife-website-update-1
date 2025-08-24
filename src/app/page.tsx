@@ -152,16 +152,16 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-16 md:py-20 bg-background/80">
-        <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center">
             <h2 className="text-2xl md:text-4xl font-bold text-primary mb-2">Welcome to EGLIFE</h2>
             <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
               Empowering Your Financial Future
             </h1>
-            <p className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-foreground/80 mb-8">
+            <p className="max-w-xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
               EGLIFE provides the tools for a new generation of financial independence through a decentralized, utility-driven ecosystem on the BNB Smart Chain.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link href="/whitepaper">Read Whitepaper</Link>
               </Button>
@@ -170,16 +170,6 @@ export default function Home() {
               </Button>
             </div>
           </div>
-           <div className="w-full max-w-lg mx-auto lg:max-w-none">
-                <Image
-                src="https://images.unsplash.com/photo-1535320903710-d973d3fb76f7?q=80&w=1000"
-                alt="Digital Financial Network"
-                width={1000}
-                height={800}
-                className="rounded-xl shadow-2xl object-cover"
-                data-ai-hint="digital network"
-                />
-            </div>
         </div>
       </section>
 
