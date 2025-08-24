@@ -6,303 +6,78 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, ChevronsRight, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
-import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { parseEther } from "viem"
+import { parseEther, formatEther } from "viem"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
-// This should be the address of your deployed EGLIFEStaking contract
 const EGLIFE_STAKING_CONTRACT = '0xC1921f78609Bd6C683940E3d43455b41ecE28e11'; 
 
-const stakingContractAbi = [
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Staked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "reward",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "penalty",
-        "type": "bool"
-      }
-    ],
-    "name": "Unstaked",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "apy",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "calculateReward",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "contractTokenBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "earlyUnstakePenalty",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "emergencyWithdrawTokens",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "lockPeriod",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_apy",
-        "type": "uint256"
-      }
-    ],
-    "name": "setAPY",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_lockPeriod",
-        "type": "uint256"
-      }
-    ],
-    "name": "setLockPeriod",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_penalty",
-        "type": "uint256"
-      }
-    ],
-    "name": "setPenalty",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "stake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "stakes",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "withdrawn",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "token",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "unstake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+const stakingContractAbi = [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"},{"internalType":"address","name":"_treasury","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"EnforcedPause","type":"error"},{"inputs":[],"name":"ExpectedPause","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"currentAllowance","type":"uint256"},{"internalType":"uint256","name":"requestedDecrease","type":"uint256"}],"name":"SafeERC20FailedDecreaseAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Claimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"newPenaltyBps","type":"uint16"}],"name":"EarlyUnstakePenaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newLockPeriod","type":"uint256"}],"name":"LockPeriodUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"maxPayoutBps","type":"uint16"}],"name":"MaxReferralPayoutUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"minStake","type":"uint256"}],"name":"MinActiveStakeForReferralUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referral","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"ReferralBonusesUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"royaltyBps","type":"uint16"}],"name":"RoyaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"SponsorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"grossAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"netStaked","type":"uint256"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"indexed":false,"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"TiersUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"TreasuryUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"unstakeAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[],"name":"BPS_DENOMINATOR","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCK_PERIOD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REF_BONUS_BPS","outputs":[{"internalType":"uint16[10]","name":"","type":"uint16[10]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"earlyUnstakePenaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTierCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTiers","outputs":[{"internalType":"uint128[]","name":"mins","type":"uint128[]"},{"internalType":"uint16[]","name":"apys","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxReferralPayoutBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"minActiveStakeForReferral","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"erc20","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"recoverERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"royaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"setReferralBonuses","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"level","type":"uint256"},{"internalType":"uint16","name":"bps","type":"uint16"}],"name":"setReferralBonusForLevel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newLock","type":"uint256"}],"name":"setLockPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_max","type":"uint16"}],"name":"setMaxReferralPayoutBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_min","type":"uint256"}],"name":"setMinActiveStakeForReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_royaltyBps","type":"uint16"}],"name":"setRoyaltyBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"setTiers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"sponsors","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sponsor","type":"address"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"principal","type":"uint256"},{"internalType":"uint128","name":"lastClaim","type":"uint128"},{"internalType":"uint128","name":"accRewards","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierApyBps","outputs":[{"internalType":"uint16[]","name":"","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierMinAmount","outputs":[{"internalType":"uint128[]","name":"","type":"uint128[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+
+const stakingTiers = [
+    { name: "Starter Stake", amount: "10 - 100", apy: "12%" },
+    { name: "Bronze Stake", amount: "101 - 500", apy: "18%" },
+    { name: "Silver Stake", amount: "501 - 1,000", apy: "20%" },
+    { name: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
+    { name: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
+    { name: "Diamond Stake", amount: "10,001+", apy: "26%" },
 ];
 
 
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
   const router = useRouter();
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
+  const { toast } = useToast();
 
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
+  
   const { data: balance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
   })
 
+  const { data: stakedData, refetch: refetchStakedBalance } = useReadContract({
+    abi: stakingContractAbi,
+    address: EGLIFE_STAKING_CONTRACT,
+    functionName: 'stakedOf',
+    args: [address],
+    query: {
+        enabled: !!address,
+    }
+  });
+
+  const { data: earnedData, refetch: refetchEarned } = useReadContract({
+    abi: stakingContractAbi,
+    address: EGLIFE_STAKING_CONTRACT,
+    functionName: 'earned',
+    args: [address],
+     query: {
+        enabled: !!address,
+        refetchInterval: 5000, // Refetch every 5 seconds
+    }
+  });
+
+
   const [stakeAmount, setStakeAmount] = useState("");
-  const [unstakeAmount, setUnstakeAmount] = useState(""); // For unstake input
-  const [totalStaked, setTotalStaked] = useState(0.00); // Placeholder
-  const { toast } = useToast();
+  const [unstakeAmount, setUnstakeAmount] = useState("");
   const { writeContract, isPending } = useWriteContract();
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  const totalStaked = stakedData ? parseFloat(formatEther(stakedData as bigint)) : 0.00;
+  const totalEarned = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
 
   const handleStake = async () => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
@@ -314,20 +89,21 @@ export default function StakingPage() {
       return;
     }
 
+    const referrerAddress = "0x0000000000000000000000000000000000000000";
+
     writeContract({
         address: EGLIFE_STAKING_CONTRACT,
         abi: stakingContractAbi,
         functionName: 'stake',
-        args: [parseEther(stakeAmount)],
+        args: [parseEther(stakeAmount), referrerAddress],
     }, {
         onSuccess: () => {
             toast({
                 title: "Staking Successful!",
                 description: `You have successfully staked ${stakeAmount} EGLIFE.`,
             });
-            // In a real app, you would refetch the staked balance from the contract
-            setTotalStaked(prevStaked => prevStaked + parseFloat(stakeAmount));
             refetchBalance();
+            refetchStakedBalance();
             setStakeAmount("");
         },
         onError: (error) => {
@@ -341,25 +117,60 @@ export default function StakingPage() {
   };
 
   const handleUnstake = async () => {
+      const amountToUnstake = unstakeAmount ? parseFloat(unstakeAmount) : totalStaked;
+      if (amountToUnstake <= 0) {
+          toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake." });
+          return;
+      }
+      if (amountToUnstake > totalStaked) {
+          toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot unstake more than you have staked." });
+          return;
+      }
+
      writeContract({
         address: EGLIFE_STAKING_CONTRACT,
         abi: stakingContractAbi,
         functionName: 'unstake',
-        args: [],
+        args: [parseEther(amountToUnstake.toString())],
     }, {
         onSuccess: () => {
             toast({
                 title: "Unstaking Successful!",
-                description: `Your staked tokens and rewards have been sent to your wallet.`,
+                description: `Your transaction to unstake ${amountToUnstake} EGLIFE has been submitted.`,
             });
-             // In a real app, you would refetch the staked balance from the contract
-            setTotalStaked(0);
             refetchBalance();
+            refetchStakedBalance();
+            setUnstakeAmount("");
         },
         onError: (error) => {
              toast({
                 variant: "destructive",
                 title: "Unstaking Failed",
+                description: error.shortMessage || "An unknown error occurred.",
+            });
+        }
+    })
+  }
+
+  const handleClaim = () => {
+       writeContract({
+        address: EGLIFE_STAKING_CONTRACT,
+        abi: stakingContractAbi,
+        functionName: 'claim',
+        args: [],
+    }, {
+        onSuccess: () => {
+            toast({
+                title: "Claim Successful!",
+                description: `Your rewards have been sent to your wallet.`,
+            });
+            refetchEarned();
+            refetchBalance();
+        },
+        onError: (error) => {
+             toast({
+                variant: "destructive",
+                title: "Claim Failed",
                 description: error.shortMessage || "An unknown error occurred.",
             });
         }
@@ -428,12 +239,14 @@ export default function StakingPage() {
             </Card>
             <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium font-headline">Total Rewards Earned</CardTitle>
+                <CardTitle className="text-sm font-medium font-headline">Rewards Earned</CardTitle>
                 <PiggyBank className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">0.00</div>
-                <p className="text-xs text-muted-foreground">Rewards calculated in real-time</p>
+                <div className="text-2xl font-bold">{totalEarned.toFixed(4)}</div>
+                <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleClaim} disabled={isPending || totalEarned <= 0}>
+                    Claim Rewards
+                </Button>
             </CardContent>
             </Card>
         </div>
@@ -443,28 +256,42 @@ export default function StakingPage() {
         <div className="lg:col-span-2">
              <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline text-2xl">Core Staking Rules</CardTitle>
+                    <CardTitle className="font-headline text-2xl">Staking Tiers & Packages</CardTitle>
+                    <CardDescription>Rewards are calculated based on your staked amount. Higher tiers earn a better APY.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4 text-foreground/80">
-                    <div className="flex items-start gap-3">
-                        <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
-                        <div>
-                            <h4 className="font-semibold text-foreground">Annual Reward (APY): 12%</h4>
-                            <p>Rewards are calculated based on your staked amount and the time staked. The APY is configurable by the admin.</p>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Package Name</TableHead>
+                                <TableHead>Staking Amount (EGLIFE)</TableHead>
+                                <TableHead className="text-right">APY</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {stakingTiers.map(tier => (
+                                <TableRow key={tier.name}>
+                                    <TableCell className="font-medium">{tier.name}</TableCell>
+                                    <TableCell>{tier.amount}</TableCell>
+                                    <TableCell className="text-right font-semibold text-primary">{tier.apy}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <div className="mt-6 p-4 bg-muted/50 rounded-lg space-y-2">
+                         <div className="flex items-start gap-3">
+                            <Landmark className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                            <div>
+                                <h4 className="font-semibold text-foreground">Lock Period: 365 Days</h4>
+                                <p className="text-sm text-foreground/80">Principal is locked, but rewards can be claimed at any time.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <ChevronsRight className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
-                         <div>
-                            <h4 className="font-semibold text-foreground">Lock Period: 365 Days</h4>
-                            <p>Your principal staked amount is intended to be locked for 365 days to maximize rewards.</p>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
-                         <div>
-                            <h4 className="font-semibold text-foreground">Early Unstake Penalty: 5%</h4>
-                            <p>If you unstake before the 365-day lock period ends, a 5% penalty will be applied to your total return (principal + rewards).</p>
+                         <div className="flex items-start gap-3">
+                            <AlertTriangle className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
+                            <div>
+                                <h4 className="font-semibold text-foreground">Early Unstake Penalty: 5%</h4>
+                                <p className="text-sm text-foreground/80">A 5% penalty on the principal is applied if you unstake before 365 days. You will also forfeit any unclaimed rewards.</p>
+                            </div>
                         </div>
                     </div>
                 </CardContent>
@@ -494,7 +321,7 @@ export default function StakingPage() {
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
                     </div>
-                    <p className="text-sm text-muted-foreground">You can only stake once. To add more, you must unstake first.</p>
+                    <p className="text-sm text-muted-foreground">The contract will automatically select the best APY tier for your amount.</p>
                     </CardContent>
                     <CardFooter>
                     <Button 
@@ -509,17 +336,39 @@ export default function StakingPage() {
                 <TabsContent value="unstake">
                     <CardContent className="space-y-4">
                      <p className="text-sm text-muted-foreground">
-                        Click the button below to withdraw all your staked tokens and your earned rewards. An early unstake penalty may apply.
+                        Withdraw a portion or all of your staked tokens. An early unstake penalty may apply.
                      </p>
+                      <div className="space-y-2">
+                        <Label htmlFor="unstake-amount">Amount to Unstake</Label>
+                        <Input 
+                           id="unstake-amount" 
+                           type="number" 
+                           placeholder={`Max: ${totalStaked.toFixed(2)}`}
+                           disabled={!isConnected || isPending || totalStaked <= 0}
+                           value={unstakeAmount}
+                           onChange={(e) => setUnstakeAmount(e.target.value)}
+                        />
+                    </div>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="flex-col gap-2">
                     <Button 
                       className="w-full" 
-                      variant="outline" 
-                      disabled={!isConnected || isPending}
+                      variant="destructive" 
+                      disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount}
                       onClick={handleUnstake}
                     >
-                      {isPending ? "Unstaking..." : "Unstake All Tokens"}
+                      {isPending ? "Unstaking..." : "Unstake Amount"}
+                    </Button>
+                     <Button 
+                      className="w-full" 
+                      variant="outline" 
+                      disabled={!isConnected || isPending || totalStaked <= 0}
+                      onClick={() => {
+                          setUnstakeAmount(totalStaked.toString());
+                          handleUnstake();
+                      }}
+                    >
+                      {isPending ? "..." : "Unstake All"}
                     </Button>
                     </CardFooter>
                 </TabsContent>
@@ -558,7 +407,5 @@ export default function StakingPage() {
     </div>
   )
 }
-
-    
 
     
