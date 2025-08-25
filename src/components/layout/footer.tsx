@@ -1,8 +1,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
-import Image from "next/image";
+import { Send, Leaf } from "lucide-react";
 
 const TwitterIcon = () => (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -17,8 +16,9 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start md:col-span-1">
-             <Link href="/" className="flex items-center gap-2">
-                <Image src="/logo.png" alt="EGLIFE TOKEN Logo" width={120} height={40} />
+             <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+                <Leaf className="h-7 w-7 text-primary" />
+                <span className="font-headline">EGLIFE</span>
             </Link>
             <p className="text-foreground/70 mt-4">Empowering your financial future through decentralized solutions.</p>
           </div>
