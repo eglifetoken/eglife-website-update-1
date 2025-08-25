@@ -33,12 +33,16 @@ const getTokenDataFlow = ai.defineFlow(
   },
   async () => {
     try {
-        const response = await fetch(GECKO_API_URL);
+        const response = await fetch(GECKO_API_URL, { next: { revalidate: 60 } }); // Cache for 60 seconds
         if (!response.ok) {
             throw new Error(`Failed to fetch data from GeckoTerminal: ${response.statusText}`);
         }
         const data = await response.json();
         
+        if (!data?.data?.attributes) {
+             throw new Error('Invalid data structure from GeckoTerminal API.');
+        }
+
         const attributes = data.data.attributes;
 
         // The pool API does not reliably return all token-specific data like market cap or circulating supply.
