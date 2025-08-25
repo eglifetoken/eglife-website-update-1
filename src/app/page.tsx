@@ -54,42 +54,6 @@ const ecosystemComponents = [
   },
 ];
 
-const teamMembers = [
-  {
-    name: "Alex Johnson",
-    role: "Founder & CEO",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400",
-    bio: "Visionary leader with a passion for sustainable technology and community empowerment.",
-    social: {
-      twitter: "#",
-      linkedin: "#",
-    },
-    aiHint: "man portrait"
-  },
-  {
-    name: "Samantha Carter",
-    role: "Lead Developer",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400",
-    bio: "Expert blockchain developer driving the technical innovation behind the Eglife ecosystem.",
-    social: {
-      twitter: "#",
-      linkedin: "#",
-    },
-    aiHint: "woman portrait"
-  },
-  {
-    name: "Ben Richards",
-    role: "Community Manager",
-    avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?q=80&w=400",
-    bio: "Dedicated to building a vibrant and inclusive community around the Eglife mission.",
-    social: {
-      twitter: "#",
-      linkedin: "#",
-    },
-    aiHint: "man smiling"
-  },
-];
-
 const roadmapData = [
    {
     date: "Q2 2025",
@@ -433,38 +397,6 @@ export default function Home() {
         </div>
       </section>
 
-       <section className="w-full py-16 md:py-20">
-        <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">Meet the Team</h2>
-            <p className="text-lg text-foreground/80 mt-2">The passionate individuals driving the Eglife vision forward.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member) => (
-                <Card key={member.name} className="text-center p-6">
-                    <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.aiHint} />
-                    <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <h3 className="text-xl font-headline font-semibold">{member.name}</h3>
-                    <p className="text-primary font-medium mb-2">{member.role}</p>
-                    <CardContent>
-                        <p className="text-foreground/80 mb-4">{member.bio}</p>
-                        <div className="flex justify-center gap-4">
-                        <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                            <Twitter className="w-5 h-5" />
-                        </a>
-                        <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                            <Linkedin className="w-5 h-5" />
-                        </a>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
-            </div>
-        </div>
-      </section>
-
       <section className="w-full py-12 border-t">
         <div className="container mx-auto px-4 md:px-6 flex justify-end">
             <Button asChild>
@@ -478,5 +410,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
