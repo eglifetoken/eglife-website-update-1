@@ -37,15 +37,27 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center md:gap-10">
-            <Link href="/" className="flex items-center gap-2">
-                <span className="text-xl font-bold font-headline text-primary">EGLIFE TOKEN</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
-              ))}
-            </nav>
+        <Link href="/" className="flex items-center gap-2">
+           <Image src="/logo.png" alt="EGLIFE TOKEN Logo" width={120} height={40} />
+        </Link>
+        <nav className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
+          ))}
+        </nav>
+        <div className="hidden md:flex items-center gap-2">
+             <Button asChild variant="ghost">
+                <Link href="/dapp">
+                    <LogIn className="mr-2 h-5 w-5" />
+                    Login
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/register">
+                    <UserPlus className="mr-2 h-5 w-5" />
+                    Register
+                </Link>
+            </Button>
         </div>
 
 
@@ -60,7 +72,7 @@ export default function Header() {
               <div className="flex flex-col gap-6 p-6">
                 <div className="mb-4">
                   <Link href="/" className="flex items-center gap-2">
-                     <span className="text-xl font-bold font-headline text-primary">EGLIFE TOKEN</span>
+                     <Image src="/logo.png" alt="EGLIFE TOKEN Logo" width={120} height={40} />
                   </Link>
                 </div>
                 {navLinks.map((link) => (
@@ -92,21 +104,6 @@ export default function Header() {
               </div>
             </SheetContent>
           </Sheet>
-        </div>
-        
-        <div className="hidden md:flex items-center gap-2">
-             <Button asChild variant="ghost">
-                <Link href="/dapp">
-                    <LogIn className="mr-2 h-5 w-5" />
-                    Login
-                </Link>
-            </Button>
-            <Button asChild>
-                <Link href="/register">
-                    <UserPlus className="mr-2 h-5 w-5" />
-                    Register
-                </Link>
-            </Button>
         </div>
       </div>
     </header>
