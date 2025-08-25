@@ -18,13 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col items-start md:col-span-1">
              <Link href="/" className="flex items-center gap-2">
-                <Image 
-                    src="https://placehold.co/120x40.png"
-                    alt="EGLIFE TOKEN Logo"
-                    width={120}
-                    height={40}
-                    data-ai-hint="logo"
-                />
+                <span className="text-xl font-bold font-headline text-primary">EGLIFE TOKEN</span>
             </Link>
             <p className="text-foreground/70 mt-4">Empowering your financial future through decentralized solutions.</p>
           </div>
