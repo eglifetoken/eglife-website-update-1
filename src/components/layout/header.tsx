@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -48,15 +47,13 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
-        {/* Logo for both desktop and mobile */}
-        <div className="flex items-center">
-            <Link href="/">
-                <Logo />
-            </Link>
-        </div>
+        {/* Logo */}
+        <Link href="/">
+            <Logo />
+        </Link>
 
         {/* Desktop: Centered navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6">
           {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
           ))}
