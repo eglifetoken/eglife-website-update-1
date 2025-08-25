@@ -166,29 +166,37 @@ export default function StakingPage() {
     }
   };
 
-  const handleUnstake = async (isUnstakeAll = false) => {
-      const amountToUnstake = isUnstakeAll ? totalStaked : (unstakeAmount ? parseFloat(unstakeAmount) : 0);
-      
-      if (amountToUnstake <= 0) {
-          toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake or have a staked balance > 0." });
-          return;
-      }
-      if (!isUnstakeAll && amountToUnstake > totalStaked) {
-          toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot unstake more than you have staked." });
-          return;
-      }
+ const handleUnstake = async (isUnstakeAll = false) => {
+    const amountToUnstake = isUnstakeAll ? totalStaked : (unstakeAmount ? parseFloat(unstakeAmount) : 0);
     
+    if (amountToUnstake <= 0) {
+        toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake or have a staked balance > 0." });
+        return;
+    }
+    if (!isUnstakeAll && amountToUnstake > totalStaked) {
+        toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot unstake more than you have staked." });
+        return;
+    }
+
+    // Convert amount to BigInt for contract interaction
+    const unstakeAmountBigInt = isUnstakeAll ? stakedData : parseEther(amountToUnstake.toString());
+
+    if (!unstakeAmountBigInt || unstakeAmountBigInt <= 0n) {
+        toast({ variant: "destructive", title: "Invalid Amount", description: "Unstake amount must be greater than zero." });
+        return;
+    }
+
     setIsUnstaking(true);
     try {
         await writeContractAsync({
             address: EGLIFE_STAKING_CONTRACT,
             abi: stakingContractAbi,
             functionName: 'unstake',
-            args: [parseEther(amountToUnstake.toString())],
+            args: [unstakeAmountBigInt],
         });
         toast({
             title: "Unstaking Successful!",
-            description: `Your transaction to unstake ${amountToUnstake} EGLIFE has been submitted.`,
+            description: `Your transaction to unstake ${amountToUnstake.toFixed(2)} EGLIFE has been submitted.`,
         });
         refetchBalance();
         refetchStakedBalance();
@@ -197,9 +205,10 @@ export default function StakingPage() {
     } catch(error) {
         handleError(error, "Unstaking Failed");
     } finally {
-      setIsUnstaking(false);
+        setIsUnstaking(false);
     }
-  }
+}
+
 
   const handleClaim = async () => {
        setIsClaiming(true);
@@ -484,7 +493,7 @@ export default function StakingPage() {
             </Button>
             <Button asChild>
                 <Link href="/dapp">
-                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                    Next Page <ArrowRight className="mr-2 h-4 w-4" />
                 </Link>
             </Button>
         </div>
