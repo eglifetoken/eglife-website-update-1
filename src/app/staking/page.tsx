@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -165,10 +164,11 @@ export default function StakingPage() {
     }
   };
 
-  const handleUnstake = async () => {
-      const amountToUnstake = unstakeAmount ? parseFloat(unstakeAmount) : totalStaked;
+  const handleUnstake = async (isUnstakeAll = false) => {
+      const amountToUnstake = isUnstakeAll ? totalStaked : (unstakeAmount ? parseFloat(unstakeAmount) : 0);
+      
       if (amountToUnstake <= 0) {
-          toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake." });
+          toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake or have a staked balance > 0." });
           return;
       }
       if (amountToUnstake > totalStaked) {
@@ -420,7 +420,7 @@ export default function StakingPage() {
                       className="w-full" 
                       variant="destructive" 
                       disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount || isWrongNetwork}
-                      onClick={handleUnstake}
+                      onClick={() => handleUnstake(false)}
                     >
                       {isPending ? "Unstaking..." : "Unstake Amount"}
                     </Button>
@@ -428,10 +428,7 @@ export default function StakingPage() {
                       className="w-full" 
                       variant="outline" 
                       disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
-                      onClick={() => {
-                          setUnstakeAmount(totalStaked.toString());
-                          handleUnstake();
-                      }}
+                      onClick={() => handleUnstake(true)}
                     >
                       {isPending ? "..." : "Unstake All"}
                     </Button>
@@ -472,5 +469,3 @@ export default function StakingPage() {
     </div>
   )
 }
-
-    
