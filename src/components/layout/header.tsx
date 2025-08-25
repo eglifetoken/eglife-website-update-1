@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogIn, UserPlus } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -35,52 +37,67 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center">
-            <div className="md:hidden">
-                <Sheet>
-                    <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <Menu className="h-6 w-6" />
-                    </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left">
-                    <div className="flex flex-col gap-6 p-6">
-                        <div className="mb-4">
-                            <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
-                        </div>
-                        {navLinks.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            className={cn(
-                                "text-lg font-medium transition-colors hover:text-primary",
-                                pathname === link.href ? "text-primary" : "text-foreground/80"
-                            )}
-                            >
-                            {link.label}
-                          </Link>
-                        ))}
-                        <div className="flex flex-col gap-4 pt-4 border-t">
-                            <Button asChild>
-                                <Link href="/register">
-                                <UserPlus className="mr-2 h-5 w-5" />
-                                Register
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline">
-                                <Link href="/dapp">
-                                <LogIn className="mr-2 h-5 w-5" />
-                                Login
-                                </Link>
-                            </Button>
-                        </div>
-                    </div>
-                    </SheetContent>
-                </Sheet>
-            </div>
-            <Link href="/" className="hidden md:flex text-xl font-bold text-primary mr-6">EGLIFE TOKEN</Link>
-        </div>
+        <Link href="/" className="flex items-center gap-2">
+            <Image 
+                src="https://placehold.co/120x40.png"
+                alt="EGLIFE TOKEN Logo"
+                width={120}
+                height={40}
+                data-ai-hint="logo"
+            />
+        </Link>
 
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <div className="flex flex-col gap-6 p-6">
+                <div className="mb-4">
+                  <Link href="/" className="flex items-center gap-2">
+                     <Image 
+                        src="https://placehold.co/120x40.png"
+                        alt="EGLIFE TOKEN Logo"
+                        width={120}
+                        height={40}
+                        data-ai-hint="logo"
+                    />
+                  </Link>
+                </div>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                        "text-lg font-medium transition-colors hover:text-primary",
+                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                    )}
+                    >
+                    {link.label}
+                  </Link>
+                ))}
+                <div className="flex flex-col gap-4 pt-4 border-t">
+                    <Button asChild>
+                        <Link href="/register">
+                        <UserPlus className="mr-2 h-5 w-5" />
+                        Register
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/dapp">
+                        <LogIn className="mr-2 h-5 w-5" />
+                        Login
+                        </Link>
+                    </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+        
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
