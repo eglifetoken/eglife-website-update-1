@@ -6,9 +6,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
-import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract } from 'wagmi'
+import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
@@ -17,6 +17,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { bsc } from "wagmi/chains"
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 const EGLIFE_STAKING_CONTRACT = '0xC1921f78609Bd6C683940E3d43455b41ecE28e11'; 
@@ -42,6 +43,8 @@ export default function StakingPage() {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect()
   const { disconnect } = useDisconnect()
+  const { switchChain } = useSwitchChain()
+  const chainId = useChainId()
   
   const { data: balance, refetch: refetchBalance } = useBalance({
     address,
@@ -94,6 +97,7 @@ export default function StakingPage() {
   const totalEarned = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
   const parsedStakeAmount = stakeAmount ? parseEther(stakeAmount) : 0n;
   const needsApproval = allowance !== undefined && parsedStakeAmount > 0 && allowance < parsedStakeAmount;
+  const isWrongNetwork = chainId !== bsc.id;
   
   const handleError = (error: any, title: string) => {
     const baseError = error as BaseError;
@@ -241,10 +245,17 @@ export default function StakingPage() {
                 <CardDescription>Your wallet is connected. You can now stake or unstake your tokens.</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button onClick={() => disconnect()} variant="outline">
-                    <Link2Off className="mr-2 h-5 w-5" />
-                    Disconnect Wallet
-                </Button>
+                 {isWrongNetwork ? (
+                     <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg">
+                        <RefreshCw className="mr-2 h-5 w-5" />
+                        Switch to BSC Network
+                    </Button>
+                 ) : (
+                    <Button onClick={() => disconnect()} variant="outline">
+                        <Link2Off className="mr-2 h-5 w-5" />
+                        Disconnect Wallet
+                    </Button>
+                )}
             </CardContent>
          </Card>
       )}
@@ -279,7 +290,7 @@ export default function StakingPage() {
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">{totalEarned.toFixed(4)}</div>
-                <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleClaim} disabled={isPending || totalEarned <= 0}>
+                <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleClaim} disabled={isPending || totalEarned <= 0 || isWrongNetwork}>
                     Claim Rewards
                 </Button>
             </CardContent>
@@ -351,7 +362,7 @@ export default function StakingPage() {
                            id="stake-amount" 
                            type="number" 
                            placeholder="Enter EGLIFE amount" 
-                           disabled={!isConnected || isPending}
+                           disabled={!isConnected || isPending || isWrongNetwork}
                            value={stakeAmount}
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
@@ -371,7 +382,7 @@ export default function StakingPage() {
                     {needsApproval ? (
                         <Button 
                             className="w-full"
-                            disabled={!isConnected || isApproving || !stakeAmount}
+                            disabled={!isConnected || isApproving || !stakeAmount || isWrongNetwork}
                             onClick={handleApprove}
                         >
                             {isApproving ? <><Loader2 className="animate-spin" /> Approving...</> : "Approve"}
@@ -379,7 +390,7 @@ export default function StakingPage() {
                     ) : (
                         <Button 
                             className="w-full" 
-                            disabled={!isConnected || isStaking || !stakeAmount}
+                            disabled={!isConnected || isStaking || !stakeAmount || isWrongNetwork}
                             onClick={handleStake}
                         >
                             {isStaking ? <><Loader2 className="animate-spin" /> Staking...</> : "Stake Now"}
@@ -398,7 +409,7 @@ export default function StakingPage() {
                            id="unstake-amount" 
                            type="number" 
                            placeholder={`Max: ${totalStaked.toFixed(2)}`}
-                           disabled={!isConnected || isPending || totalStaked <= 0}
+                           disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
                            value={unstakeAmount}
                            onChange={(e) => setUnstakeAmount(e.target.value)}
                         />
@@ -408,7 +419,7 @@ export default function StakingPage() {
                     <Button 
                       className="w-full" 
                       variant="destructive" 
-                      disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount}
+                      disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount || isWrongNetwork}
                       onClick={handleUnstake}
                     >
                       {isPending ? "Unstaking..." : "Unstake Amount"}
@@ -416,7 +427,7 @@ export default function StakingPage() {
                      <Button 
                       className="w-full" 
                       variant="outline" 
-                      disabled={!isConnected || isPending || totalStaked <= 0}
+                      disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
                       onClick={() => {
                           setUnstakeAmount(totalStaked.toString());
                           handleUnstake();
