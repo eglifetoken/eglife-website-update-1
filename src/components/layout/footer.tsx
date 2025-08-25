@@ -12,10 +12,10 @@ const TwitterIcon = () => (
 
 const Logo = () => (
     <div className="flex items-center gap-2 font-bold text-xl" aria-label="EGLIFE TOKEN">
-        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="8" fill="hsl(var(--primary))"/>
-            <path d="M14.48 24.8H12V15.2H20.16C21.6267 15.2 22.84 15.68 23.8 16.64C24.76 17.5867 25.24 18.7467 25.24 20.12C25.24 21.4933 24.76 22.6533 23.8 23.6C22.84 24.5333 21.6267 25 20.16 25H16.8V29H14.48V24.8ZM16.8 22.8H20.16C20.8 22.8 21.32 22.6133 21.72 22.24C22.12 21.8533 22.32 21.0933 22.32 20.12C22.32 19.1467 22.12 18.3867 21.72 18C21.32 17.6 20.8 17.4 20.16 17.4H16.8V22.8Z" fill="hsl(var(--primary-foreground))"/>
-            <text x="48" y="27" fontFamily="Lexend, sans-serif" fontSize="20" fontWeight="bold" fill="hsl(var(--foreground))" className="tracking-tighter">GLIFE</text>
+        <svg width="124" height="40" viewBox="0 0 124 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="hsl(var(--primary))"/>
+          <text x="8" y="28" fontFamily="Lexend, sans-serif" fontSize="20" fontWeight="bold" fill="hsl(var(--primary-foreground))">EG</text>
+          <text x="50" y="28" fontFamily="Lexend, sans-serif" fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" className="tracking-tight">LIFE</text>
         </svg>
     </div>
 );
