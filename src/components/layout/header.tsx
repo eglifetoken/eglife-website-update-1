@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -48,9 +49,11 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
         {/* Logo */}
-        <Link href="/">
-            <Logo />
-        </Link>
+        <div className="flex items-center">
+            <Link href="/">
+                <Logo />
+            </Link>
+        </div>
 
         {/* Desktop: Centered navigation */}
         <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6">
