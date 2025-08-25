@@ -35,8 +35,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-4">
-            <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
+        <div className="flex items-center">
             <div className="md:hidden">
                 <Sheet>
                     <SheetTrigger asChild>
@@ -49,7 +48,7 @@ export default function Header() {
                         <div className="mb-4">
                             <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
                         </div>
-                        {navLinks.map(link => (
+                        {navLinks.map((link) => (
                           <Link
                             key={link.href}
                             href={link.href}
@@ -79,10 +78,11 @@ export default function Header() {
                     </SheetContent>
                 </Sheet>
             </div>
+            <Link href="/" className="hidden md:flex text-xl font-bold text-primary mr-6">EGLIFE TOKEN</Link>
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map(link => (
+          {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
           ))}
         </nav>
