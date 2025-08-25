@@ -86,6 +86,8 @@ export default function StakingPage() {
   const [unstakeAmount, setUnstakeAmount] = useState("");
   const [isApproving, setIsApproving] = useState(false);
   const [isStaking, setIsStaking] = useState(false);
+  const [isUnstaking, setIsUnstaking] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
   const { writeContractAsync } = useWriteContract();
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function StakingPage() {
   const totalEarned = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
   const parsedStakeAmount = stakeAmount ? parseEther(stakeAmount) : 0n;
   const needsApproval = allowance !== undefined && parsedStakeAmount > 0 && allowance < parsedStakeAmount;
-  const isWrongNetwork = chainId !== bsc.id;
+  const isWrongNetwork = isConnected && chainId !== bsc.id;
   
   const handleError = (error: any, title: string) => {
     const baseError = error as BaseError;
@@ -171,11 +173,12 @@ export default function StakingPage() {
           toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount to unstake or have a staked balance > 0." });
           return;
       }
-      if (amountToUnstake > totalStaked) {
+      if (!isUnstakeAll && amountToUnstake > totalStaked) {
           toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot unstake more than you have staked." });
           return;
       }
-
+    
+    setIsUnstaking(true);
     try {
         await writeContractAsync({
             address: EGLIFE_STAKING_CONTRACT,
@@ -189,13 +192,17 @@ export default function StakingPage() {
         });
         refetchBalance();
         refetchStakedBalance();
+        refetchEarned();
         setUnstakeAmount("");
     } catch(error) {
         handleError(error, "Unstaking Failed");
+    } finally {
+      setIsUnstaking(false);
     }
   }
 
   const handleClaim = async () => {
+       setIsClaiming(true);
        try {
         await writeContractAsync({
             address: EGLIFE_STAKING_CONTRACT,
@@ -211,10 +218,12 @@ export default function StakingPage() {
         refetchBalance();
        } catch (error) {
            handleError(error, "Claim Failed");
+       } finally {
+           setIsClaiming(false);
        }
   }
 
-  const isPending = isApproving || isStaking;
+  const isPending = isApproving || isStaking || isUnstaking || isClaiming;
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -222,6 +231,19 @@ export default function StakingPage() {
         <h1 className="text-3xl md:text-4xl font-headline font-bold mb-2">EGLIFE Staking</h1>
         <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn rewards and support the ecosystem's growth.</p>
       </div>
+
+       {isClient && isWrongNetwork && (
+            <Alert variant="destructive" className="mb-8">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>Wrong Network</AlertTitle>
+              <AlertDescription>
+                Your wallet is connected to the wrong network. Please switch to the BNB Smart Chain to continue.
+                 <Button onClick={() => switchChain({ chainId: bsc.id })} variant="link" className="p-0 h-auto ml-2 text-white">
+                    Switch to BSC
+                </Button>
+              </AlertDescription>
+            </Alert>
+        )}
       
        {isClient && !isConnected && (
          <Card className="mb-8 text-center">
@@ -242,12 +264,12 @@ export default function StakingPage() {
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
-                <CardDescription>Your wallet is connected. You can now stake or unstake your tokens.</CardDescription>
+                 <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
             </CardHeader>
             <CardContent>
                  {isWrongNetwork ? (
-                     <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg">
-                        <RefreshCw className="mr-2 h-5 w-5" />
+                     <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg" variant="destructive">
+                        <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
                         Switch to BSC Network
                     </Button>
                  ) : (
@@ -291,6 +313,7 @@ export default function StakingPage() {
             <CardContent>
                 <div className="text-2xl font-bold">{totalEarned.toFixed(4)}</div>
                 <Button variant="link" size="sm" className="p-0 h-auto" onClick={handleClaim} disabled={isPending || totalEarned <= 0 || isWrongNetwork}>
+                    {isClaiming ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
                     Claim Rewards
                 </Button>
             </CardContent>
@@ -422,7 +445,7 @@ export default function StakingPage() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount || isWrongNetwork}
                       onClick={() => handleUnstake(false)}
                     >
-                      {isPending ? "Unstaking..." : "Unstake Amount"}
+                      {isUnstaking ? <><Loader2 className="animate-spin" />Unstaking...</> : "Unstake Amount"}
                     </Button>
                      <Button 
                       className="w-full" 
@@ -430,7 +453,7 @@ export default function StakingPage() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
                       onClick={() => handleUnstake(true)}
                     >
-                      {isPending ? "..." : "Unstake All"}
+                      {isUnstaking ? <><Loader2 className="animate-spin" />Unstaking...</> : "Unstake All"}
                     </Button>
                     </CardFooter>
                 </TabsContent>
@@ -469,3 +492,5 @@ export default function StakingPage() {
     </div>
   )
 }
+
+    
