@@ -24,7 +24,7 @@ export default function Header() {
     <Link
       href={href}
       className={cn(
-        "text-lg font-medium transition-colors hover:text-primary",
+        "text-sm font-medium transition-colors hover:text-primary",
         pathname === href ? "text-primary" : "text-foreground/80"
       )}
     >
@@ -35,48 +35,58 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center md:hidden">
-           <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <div className="flex flex-col gap-6 p-6">
-                <div className="mb-4">
-                    <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
-                </div>
-                {navLinks.map(link => (
-                  <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
-                ))}
-                <div className="flex flex-col gap-4 pt-4 border-t">
-                    <Button asChild>
-                        <Link href="/register">
-                           <UserPlus className="mr-2 h-5 w-5" />
-                           Register
-                        </Link>
+        <div className="flex items-center gap-4">
+            <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
+            <div className="md:hidden">
+                <Sheet>
+                    <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <Menu className="h-6 w-6" />
                     </Button>
-                    <Button asChild variant="outline">
-                        <Link href="/dapp">
-                           <LogIn className="mr-2 h-5 w-5" />
-                           Login
-                        </Link>
-                    </Button>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                    <div className="flex flex-col gap-6 p-6">
+                        <div className="mb-4">
+                            <Link href="/" className="text-xl font-bold text-primary">EGLIFE TOKEN</Link>
+                        </div>
+                        {navLinks.map(link => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            className={cn(
+                                "text-lg font-medium transition-colors hover:text-primary",
+                                pathname === link.href ? "text-primary" : "text-foreground/80"
+                            )}
+                            >
+                            {link.label}
+                          </Link>
+                        ))}
+                        <div className="flex flex-col gap-4 pt-4 border-t">
+                            <Button asChild>
+                                <Link href="/register">
+                                <UserPlus className="mr-2 h-5 w-5" />
+                                Register
+                                </Link>
+                            </Button>
+                            <Button asChild variant="outline">
+                                <Link href="/dapp">
+                                <LogIn className="mr-2 h-5 w-5" />
+                                Login
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
         </div>
-        <div className="flex items-center justify-center flex-1 md:flex-none">
-             <Link href="/" className="text-xl font-bold text-primary hidden md:block">EGLIFE TOKEN</Link>
-             <Link href="/" className="text-xl font-bold text-primary md:hidden">EGLIFE</Link>
-        </div>
+
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
             <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
           ))}
         </nav>
+
         <div className="hidden md:flex items-center gap-2">
              <Button asChild variant="ghost">
                 <Link href="/dapp">
