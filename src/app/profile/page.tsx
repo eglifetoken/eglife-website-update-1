@@ -21,7 +21,7 @@ export default function ProfilePage() {
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
     const [accounts, setAccounts] = useState(mockAccounts);
-    const [upiId, setUpiId] = useState("");
+    const [upiId, setUpiId] = useState("user@egpay");
     const [qrValue, setQrValue] = useState<string | null>(null);
 
     // State for the "Add Account" dialog
@@ -33,12 +33,15 @@ export default function ProfilePage() {
 
     useEffect(() => {
         setIsClient(true);
+    }, []);
+
+    useEffect(() => {
         if (isConnected && address) {
             setUpiId(`${address.slice(0,8)}@egpay`);
         } else {
             setUpiId("user@egpay");
         }
-    }, [isConnected, address]);
+    }, [isConnected, address, isClient]);
 
 
     const handleGenerateUpi = () => {
@@ -150,12 +153,12 @@ export default function ProfilePage() {
                              <div className="space-y-2">
                                 <Label htmlFor="upi-id">Your UPI ID</Label>
                                 <div className="flex items-center space-x-2">
-                                    <Input id="upi-id" value={upiId} readOnly />
+                                    <Input id="upi-id" value={isClient ? upiId : ""} readOnly />
                                 </div>
                             </div>
                         </CardContent>
                         <CardFooter>
-                             <Button onClick={handleGenerateUpi} variant="outline" disabled={!isConnected}>Generate New UPI ID</Button>
+                             <Button onClick={handleGenerateUpi} variant="outline" disabled={!isClient || !isConnected}>Generate New UPI ID</Button>
                         </CardFooter>
                     </Card>
 
@@ -212,7 +215,7 @@ export default function ProfilePage() {
                                         <div className="flex items-center gap-2">
                                            <Dialog onOpenChange={(open) => !open && setQrValue(null)}>
                                                 <DialogTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={() => generateQrCode(account)}>
+                                                    <Button variant="ghost" size="icon" onClick={() => generateQrCode(account)} disabled={!isClient}>
                                                         <QrCode className="h-5 w-5" />
                                                     </Button>
                                                 </DialogTrigger>
@@ -226,7 +229,7 @@ export default function ProfilePage() {
                                                     <div className="flex items-center justify-center p-4">
                                                         {qrValue && <QRCode value={qrValue} size={256} />}
                                                     </div>
-                                                    <p className="text-center text-sm font-mono break-all">{upiId}</p>
+                                                    <p className="text-center text-sm font-mono break-all">{isClient ? upiId : ""}</p>
                                                 </DialogContent>
                                             </Dialog>
 
