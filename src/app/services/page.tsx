@@ -318,9 +318,10 @@ export default function ServicesPage() {
                     </CardHeader>
                     <CardContent>
                         <Tabs defaultValue="mobile" className="w-full">
-                            <TabsList className="grid w-full grid-cols-3">
+                            <TabsList className="grid w-full grid-cols-4">
                                 <TabsTrigger value="mobile"><Wallet className="mr-2 h-4 w-4"/>Mobile</TabsTrigger>
-                                <TabsTrigger value="account"><BankIcon className="mr-2 h-4 w-4"/>Account & UPI</TabsTrigger>
+                                <TabsTrigger value="account"><BankIcon className="mr-2 h-4 w-4"/>Account</TabsTrigger>
+                                <TabsTrigger value="upi"><IndianRupee className="mr-2 h-4 w-4"/>UPI</TabsTrigger>
                                 <TabsTrigger value="qr"><QrCode className="mr-2 h-4 w-4"/>Scan & Pay</TabsTrigger>
                             </TabsList>
                              <TabsContent value="mobile" className="pt-4 space-y-4">
@@ -363,6 +364,19 @@ export default function ServicesPage() {
                                         onChange={(e) => setIfscCode(e.target.value)}
                                     />
                                 </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="bank-amount">Enter Amount</Label>
+                                    <Input 
+                                        id="bank-amount" 
+                                        type="number" 
+                                        placeholder="₹0.00"
+                                        value={transferAmount}
+                                        onChange={(e) => setTransferAmount(e.target.value)}
+                                    />
+                                </div>
+                                 <Button className="w-full">Proceed to Pay</Button>
+                            </TabsContent>
+                             <TabsContent value="upi" className="pt-4 space-y-4">
                                  <div className="space-y-2">
                                     <Label htmlFor="upi-id">Enter UPI ID</Label>
                                     <Input 
@@ -374,9 +388,9 @@ export default function ServicesPage() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="bank-amount">Enter Amount</Label>
+                                    <Label htmlFor="upi-amount">Enter Amount</Label>
                                     <Input 
-                                        id="bank-amount" 
+                                        id="upi-amount" 
                                         type="number" 
                                         placeholder="₹0.00"
                                         value={transferAmount}
@@ -512,4 +526,5 @@ export default function ServicesPage() {
   );
 }
 
+    
     
