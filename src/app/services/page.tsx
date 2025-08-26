@@ -148,6 +148,7 @@ export default function ServicesPage() {
   // State for Money Transfer
   const [accountNumber, setAccountNumber] = useState("");
   const [ifscCode, setIfscCode] = useState("");
+  const [upiId, setUpiId] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
 
 
@@ -316,12 +317,31 @@ export default function ServicesPage() {
                         <CardDescription>Select a method to send money to a recipient.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Tabs defaultValue="account" className="w-full">
+                        <Tabs defaultValue="mobile" className="w-full">
                             <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="account"><BankIcon className="mr-2 h-4 w-4"/>Account</TabsTrigger>
                                 <TabsTrigger value="mobile"><Wallet className="mr-2 h-4 w-4"/>Mobile</TabsTrigger>
+                                <TabsTrigger value="account"><BankIcon className="mr-2 h-4 w-4"/>Account & UPI</TabsTrigger>
                                 <TabsTrigger value="qr"><QrCode className="mr-2 h-4 w-4"/>Scan & Pay</TabsTrigger>
                             </TabsList>
+                             <TabsContent value="mobile" className="pt-4 space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="transfer-mobile-number">Enter Mobile Number</Label>
+                                    <Input
+                                        id="transfer-mobile-number"
+                                        type="tel"
+                                        placeholder="10-digit mobile number"
+                                    />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="transfer-mobile-amount">Enter Amount</Label>
+                                    <Input 
+                                        id="transfer-mobile-amount" 
+                                        type="number" 
+                                        placeholder="₹0.00"
+                                    />
+                                </div>
+                                <Button className="w-full">Proceed to Pay</Button>
+                            </TabsContent>
                             <TabsContent value="account" className="pt-4 space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="account-number">Enter Account Number</Label>
@@ -343,6 +363,16 @@ export default function ServicesPage() {
                                         onChange={(e) => setIfscCode(e.target.value)}
                                     />
                                 </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="upi-id">Enter UPI ID</Label>
+                                    <Input 
+                                        id="upi-id" 
+                                        type="text" 
+                                        placeholder="recipient@upi"
+                                        value={upiId}
+                                        onChange={(e) => setUpiId(e.target.value)}
+                                    />
+                                </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="bank-amount">Enter Amount</Label>
                                     <Input 
@@ -354,25 +384,6 @@ export default function ServicesPage() {
                                     />
                                 </div>
                                  <Button className="w-full">Proceed to Pay</Button>
-                            </TabsContent>
-                             <TabsContent value="mobile" className="pt-4 space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="transfer-mobile-number">Enter Mobile Number</Label>
-                                    <Input
-                                        id="transfer-mobile-number"
-                                        type="tel"
-                                        placeholder="10-digit mobile number"
-                                    />
-                                </div>
-                                 <div className="space-y-2">
-                                    <Label htmlFor="transfer-mobile-amount">Enter Amount</Label>
-                                    <Input 
-                                        id="transfer-mobile-amount" 
-                                        type="number" 
-                                        placeholder="₹0.00"
-                                    />
-                                </div>
-                                <Button className="w-full">Proceed to Pay</Button>
                             </TabsContent>
                              <TabsContent value="qr" className="pt-4 text-center">
                                 <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg">
@@ -500,3 +511,5 @@ export default function ServicesPage() {
     </>
   );
 }
+
+    
