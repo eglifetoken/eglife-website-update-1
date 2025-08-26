@@ -16,6 +16,9 @@ import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { mobileRecharge } from "@/ai/flows/recharge";
+import { getRechargePlans, RechargePlan } from "@/ai/flows/getRechargePlans";
+import { RechargePlansDialog } from "@/components/recharge-plans-dialog";
+
 
 const services = [
   {
@@ -187,6 +190,10 @@ export default function ServicesPage() {
   const [operator, setOperator] = useState("");
   const [isRecharging, setIsRecharging] = useState(false);
 
+  const [isPlansDialogOpen, setIsPlansDialogOpen] = useState(false);
+  const [rechargePlans, setRechargePlans] = useState<RechargePlan[]>([]);
+  const [isLoadingPlans, setIsLoadingPlans] = useState(false);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -197,6 +204,46 @@ export default function ServicesPage() {
     }
     return transactionHistory.filter(tx => tx.type === filter);
   }, [filter]);
+
+  const handleFetchPlans = async () => {
+    if (!operator) {
+      toast({
+        variant: "destructive",
+        title: "Operator Required",
+        description: "Please select a mobile operator to view plans.",
+      });
+      return;
+    }
+    setIsLoadingPlans(true);
+    setIsPlansDialogOpen(true);
+    try {
+      const result = await getRechargePlans({ operatorCode: operator, circleCode: "20" }); // Hardcoding Pan India for now
+      if (result.success && result.plans) {
+        setRechargePlans(result.plans);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Could Not Fetch Plans",
+          description: result.message,
+        });
+        setRechargePlans([]);
+      }
+    } catch (error: any) {
+       toast({
+        variant: "destructive",
+        title: "Error Fetching Plans",
+        description: error.message || "An unexpected error occurred.",
+      });
+       setRechargePlans([]);
+    } finally {
+      setIsLoadingPlans(false);
+    }
+  };
+
+  const handleSelectPlan = (amount: string) => {
+    setRechargeAmount(amount);
+    setIsPlansDialogOpen(false);
+  };
 
   const handleRecharge = async () => {
     if (!mobileNumber || !rechargeAmount || !operator) {
@@ -245,6 +292,15 @@ export default function ServicesPage() {
   }
 
   return (
+    <>
+    <RechargePlansDialog
+      isOpen={isPlansDialogOpen}
+      onOpenChange={setIsPlansDialogOpen}
+      plans={rechargePlans}
+      isLoading={isLoadingPlans}
+      onSelectPlan={handleSelectPlan}
+      operatorName={mobileOperators.find(op => op.code === operator)?.name || 'Selected'}
+    />
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-headline font-bold">EGPAY: Powered by EGLIFE</h1>
@@ -303,14 +359,17 @@ export default function ServicesPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="mobile-amount">Enter Amount</Label>
-                                        <Input 
-                                            id="mobile-amount" 
-                                            type="number" 
-                                            placeholder="₹"
-                                            value={rechargeAmount}
-                                            onChange={(e) => setRechargeAmount(e.target.value)}
-                                            disabled={isRecharging}
-                                        />
+                                        <div className="flex gap-2">
+                                          <Input 
+                                              id="mobile-amount" 
+                                              type="number" 
+                                              placeholder="₹"
+                                              value={rechargeAmount}
+                                              onChange={(e) => setRechargeAmount(e.target.value)}
+                                              disabled={isRecharging}
+                                          />
+                                          <Button variant="outline" onClick={handleFetchPlans} disabled={!operator || isRecharging}>View Plans</Button>
+                                        </div>
                                     </div>
                                 </div>
                             </CardContent>
@@ -363,7 +422,7 @@ export default function ServicesPage() {
                     </TabsContent>
 
                     <TabsContent value="balance" className="mt-6">
-                        <Card className="text-center p-8 min-h-[300px] flex flex-col justify-center">
+                        <Card className="text-center p-8 min-h-26 flex flex-col justify-center">
                             <Wallet className="w-16 h-16 text-primary mx-auto mb-4"/>
                             <h3 className="text-xl font-semibold mb-2">Check Your EGLIFE Balance</h3>
                             <p className="text-muted-foreground mb-6">Click the button below to see your current balance.</p>
@@ -503,5 +562,6 @@ export default function ServicesPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

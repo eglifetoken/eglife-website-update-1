@@ -46,7 +46,7 @@ async function createJwtToken(): Promise<string> {
 
     const token = await new jose.SignJWT({
         "timestamp": now.toString(),
-        "partnerId": "PS002091",
+        "partnerId": process.env.PAYSPRINT_PARTNER_ID || "PS002091",
         "reqid": uuidv4() // Unique request ID
     })
     .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
