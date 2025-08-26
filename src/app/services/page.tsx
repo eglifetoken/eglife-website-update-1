@@ -4,7 +4,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { mobileRecharge } from "@/ai/flows/recharge";
 
 const services = [
   {
@@ -164,11 +167,25 @@ const transactionHistory: Transaction[] = [
   }
 ];
 
+// NOTE: In a real application, this list would be fetched from the Paysprint API
+const mobileOperators = [
+  { code: "1", name: "Airtel" },
+  { code: "2", name: "Jio" },
+  { code: "3", name: "Vi (Vodafone Idea)" },
+  { code: "4", name: "BSNL Special" },
+];
+
 
 export default function ServicesPage() {
   const [isClient, setIsClient] = useState(false);
   const [filter, setFilter] = useState<"all" | TransactionType>("all");
   const router = useRouter();
+  const { toast } = useToast();
+
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [rechargeAmount, setRechargeAmount] = useState("");
+  const [operator, setOperator] = useState("");
+  const [isRecharging, setIsRecharging] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -181,6 +198,52 @@ export default function ServicesPage() {
     return transactionHistory.filter(tx => tx.type === filter);
   }, [filter]);
 
+  const handleRecharge = async () => {
+    if (!mobileNumber || !rechargeAmount || !operator) {
+        toast({
+            variant: "destructive",
+            title: "Missing Information",
+            description: "Please fill in all the fields for the recharge.",
+        });
+        return;
+    }
+    
+    setIsRecharging(true);
+    try {
+        const result = await mobileRecharge({
+            mobileNumber,
+            operatorCode: operator,
+            amount: parseFloat(rechargeAmount)
+        });
+
+        if (result.success) {
+            toast({
+                title: "Recharge Successful!",
+                description: result.message,
+            });
+            // Reset form
+            setMobileNumber("");
+            setRechargeAmount("");
+            setOperator("");
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Recharge Failed",
+                description: result.message,
+            });
+        }
+
+    } catch (error: any) {
+         toast({
+            variant: "destructive",
+            title: "Recharge Error",
+            description: error.message || "An unexpected error occurred.",
+        });
+    } finally {
+        setIsRecharging(false);
+    }
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center mb-12">
@@ -192,38 +255,73 @@ export default function ServicesPage() {
       
       <Card className="mb-12">
         <CardHeader>
-            <CardTitle className="font-headline text-2xl">Transfer Money</CardTitle>
-            <CardDescription>Send money, scan QR codes, and manage your finances with ease.</CardDescription>
+            <CardTitle className="font-headline text-2xl">Transfer Money & Pay Bills</CardTitle>
+            <CardDescription>Send money, pay bills, and manage your finances with ease.</CardDescription>
         </CardHeader>
         <CardContent>
              {isClient && (
-                <Tabs defaultValue="mobile" className="w-full">
+                <Tabs defaultValue="recharge" className="w-full">
                     <TabsList className="grid w-full grid-cols-5">
-                        <TabsTrigger value="mobile"><User className="mr-2 h-4 w-4" />To Mobile</TabsTrigger>
+                        <TabsTrigger value="recharge"><Smartphone className="mr-2 h-4 w-4" />Recharge</TabsTrigger>
                         <TabsTrigger value="bank"><BankIcon className="mr-2 h-4 w-4" />To Bank</TabsTrigger>
                         <TabsTrigger value="scan"><QrCode className="mr-2 h-4 w-4" />Scan QR</TabsTrigger>
                         <TabsTrigger value="balance"><Wallet className="mr-2 h-4 w-4" />Check Balance</TabsTrigger>
                         <TabsTrigger value="history"><History className="mr-2 h-4 w-4" />History</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="mobile" className="mt-6">
+                    <TabsContent value="recharge" className="mt-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Send to Mobile Number</CardTitle>
-                                <CardDescription>Enter the recipient's mobile number and the amount to send.</CardDescription>
+                                <CardTitle>Mobile Recharge</CardTitle>
+                                <CardDescription>Enter the recipient's mobile number, select operator, and enter the amount.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
-                                    <div className="space-y-2">
-                                    <Label htmlFor="mobile-number">Enter Mobile Number</Label>
-                                    <Input id="mobile-number" type="tel" placeholder="10-digit mobile number" />
-                                </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="mobile-amount">Enter Amount</Label>
-                                    <Input id="mobile-amount" type="number" placeholder="₹0.00" />
+                                    <Label htmlFor="mobile-number">Enter Mobile Number</Label>
+                                    <Input 
+                                        id="mobile-number" 
+                                        type="tel" 
+                                        placeholder="10-digit mobile number" 
+                                        value={mobileNumber}
+                                        onChange={(e) => setMobileNumber(e.target.value)}
+                                        disabled={isRecharging}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="operator">Select Operator</Label>
+                                        <Select value={operator} onValueChange={setOperator} disabled={isRecharging}>
+                                            <SelectTrigger id="operator">
+                                                <SelectValue placeholder="Choose an operator" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {mobileOperators.map(op => (
+                                                    <SelectItem key={op.code} value={op.code}>{op.name}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="mobile-amount">Enter Amount</Label>
+                                        <Input 
+                                            id="mobile-amount" 
+                                            type="number" 
+                                            placeholder="₹"
+                                            value={rechargeAmount}
+                                            onChange={(e) => setRechargeAmount(e.target.value)}
+                                            disabled={isRecharging}
+                                        />
+                                    </div>
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button className="w-full">Proceed to Pay</Button>
+                                <Button className="w-full" onClick={handleRecharge} disabled={isRecharging}>
+                                    {isRecharging ? (
+                                        <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Processing...</>
+                                    ) : (
+                                        "Proceed to Recharge"
+                                    )}
+                                </Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>
