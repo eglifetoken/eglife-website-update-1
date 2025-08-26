@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/staking", label: "Staking" },
   { href: "/dapp", label: "DApp" },
   { href: "/referral", label: "Referral" },
+  { href: "/profile", label: "My Profile" },
   { href: "/crypto-education", label: "Education" },
   { href: "/contact", label: "Contact Us" },
 ];
