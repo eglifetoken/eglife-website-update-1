@@ -1,13 +1,13 @@
 
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { useAccount } from "wagmi";
-import { Banknote, QrCode, PlusCircle, Trash2, UserCircle } from "lucide-react";
+import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2 } from "lucide-react";
 import QRCode from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,10 +17,11 @@ const mockAccounts = [
 ];
 
 export default function ProfilePage() {
+    const [isClient, setIsClient] = useState(false);
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
     const [accounts, setAccounts] = useState(mockAccounts);
-    const [upiId, setUpiId] = useState(`${(address || 'user').slice(0,8)}@egpay`);
+    const [upiId, setUpiId] = useState("");
     const [qrValue, setQrValue] = useState<string | null>(null);
 
     // State for the "Add Account" dialog
@@ -29,6 +30,16 @@ export default function ProfilePage() {
     const [newAccountNumber, setNewAccountNumber] = useState("");
     const [newIfsc, setNewIfsc] = useState("");
     const [newBankName, setNewBankName] = useState("");
+
+    useEffect(() => {
+        setIsClient(true);
+        if (isConnected && address) {
+            setUpiId(`${address.slice(0,8)}@egpay`);
+        } else {
+            setUpiId("user@egpay");
+        }
+    }, [isConnected, address]);
+
 
     const handleGenerateUpi = () => {
         const newUpiId = `${(address || 'user').slice(0,8)}${Math.floor(100 + Math.random() * 900)}@egpay`;
@@ -110,7 +121,12 @@ export default function ProfilePage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                           {isConnected ? (
+                           {!isClient ? (
+                                <div className="flex items-center gap-2 text-muted-foreground">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    <span>Loading...</span>
+                                </div>
+                           ) : isConnected ? (
                                 <div>
                                     <Label className="text-xs text-muted-foreground">Wallet Address</Label>
                                     <p className="font-mono text-sm break-all">{address}</p>
