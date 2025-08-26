@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { mobileRecharge } from "@/ai/flows/recharge";
 import { getRechargePlans, RechargePlan } from "@/ai/flows/getRechargePlans";
 import { RechargePlansDialog } from "@/components/recharge-plans-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 const services = [
@@ -311,44 +312,77 @@ export default function ServicesPage() {
             return (
                  <Card className="relative">
                     <CardHeader>
-                        <CardTitle>Send to Bank Account</CardTitle>
-                        <CardDescription>Enter the recipient's bank details and the amount to send.</CardDescription>
+                        <CardTitle>Money Transfer</CardTitle>
+                        <CardDescription>Select a method to send money to a recipient.</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="account-number">Enter Account Number</Label>
-                            <Input 
-                                id="account-number" 
-                                type="text" 
-                                placeholder="Recipient's account number"
-                                value={accountNumber}
-                                onChange={(e) => setAccountNumber(e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
-                            <Input 
-                                id="ifsc-code" 
-                                type="text" 
-                                placeholder="Bank's IFSC code"
-                                value={ifscCode}
-                                onChange={(e) => setIfscCode(e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="bank-amount">Enter Amount</Label>
-                            <Input 
-                                id="bank-amount" 
-                                type="number" 
-                                placeholder="₹0.00"
-                                value={transferAmount}
-                                onChange={(e) => setTransferAmount(e.target.value)}
-                            />
-                        </div>
+                    <CardContent>
+                        <Tabs defaultValue="account" className="w-full">
+                            <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger value="account"><BankIcon className="mr-2 h-4 w-4"/>Account</TabsTrigger>
+                                <TabsTrigger value="mobile"><Wallet className="mr-2 h-4 w-4"/>Mobile</TabsTrigger>
+                                <TabsTrigger value="qr"><QrCode className="mr-2 h-4 w-4"/>Scan & Pay</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="account" className="pt-4 space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="account-number">Enter Account Number</Label>
+                                    <Input 
+                                        id="account-number" 
+                                        type="text" 
+                                        placeholder="Recipient's account number"
+                                        value={accountNumber}
+                                        onChange={(e) => setAccountNumber(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
+                                    <Input 
+                                        id="ifsc-code" 
+                                        type="text" 
+                                        placeholder="Bank's IFSC code"
+                                        value={ifscCode}
+                                        onChange={(e) => setIfscCode(e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="bank-amount">Enter Amount</Label>
+                                    <Input 
+                                        id="bank-amount" 
+                                        type="number" 
+                                        placeholder="₹0.00"
+                                        value={transferAmount}
+                                        onChange={(e) => setTransferAmount(e.target.value)}
+                                    />
+                                </div>
+                                 <Button className="w-full">Proceed to Pay</Button>
+                            </TabsContent>
+                             <TabsContent value="mobile" className="pt-4 space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="transfer-mobile-number">Enter Mobile Number</Label>
+                                    <Input
+                                        id="transfer-mobile-number"
+                                        type="tel"
+                                        placeholder="10-digit mobile number"
+                                    />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="transfer-mobile-amount">Enter Amount</Label>
+                                    <Input 
+                                        id="transfer-mobile-amount" 
+                                        type="number" 
+                                        placeholder="₹0.00"
+                                    />
+                                </div>
+                                <Button className="w-full">Proceed to Pay</Button>
+                            </TabsContent>
+                             <TabsContent value="qr" className="pt-4 text-center">
+                                <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg">
+                                    <QrCode className="h-16 w-16 text-muted-foreground mb-4" />
+                                    <p className="text-muted-foreground mb-4">Scan & Pay functionality is coming soon.</p>
+                                    <Button disabled>Scan QR Code</Button>
+                                </div>
+                            </TabsContent>
+                        </Tabs>
                     </CardContent>
-                    <CardFooter>
-                        <Button className="w-full">Proceed to Pay</Button>
-                    </CardFooter>
                      <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setSelectedService(null)}>
                         <X className="h-5 w-5" />
                     </Button>
@@ -466,5 +500,3 @@ export default function ServicesPage() {
     </>
   );
 }
-
-    
