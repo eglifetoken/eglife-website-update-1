@@ -1,11 +1,7 @@
 {
-  "name": "EGLIFE TOKEN",
-  "short_name": "EGLIFE",
+  "name": "Egli Hub",
+  "short_name": "EgliHub",
   "description": "The central hub for the Eglife Token project.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0c0a09",
-  "theme_color": "#262626",
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -17,5 +13,10 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#F5F5DC",
+  "background_color": "#F5F5DC",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
 }
