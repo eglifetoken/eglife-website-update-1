@@ -5,12 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { useAccount } from "wagmi";
 import { Banknote, QrCode, PlusCircle, Trash2, UserCircle } from "lucide-react";
 import QRCode from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
-
 
 const mockAccounts = [
     { id: 1, holderName: "Satoshi Nakamoto", bankName: "Bank of Blockchain", accountNumber: "XXXX XXXX XXXX 1234", ifsc: "BTC0000001" },
@@ -23,7 +22,14 @@ export default function ProfilePage() {
     const [accounts, setAccounts] = useState(mockAccounts);
     const [upiId, setUpiId] = useState(`${(address || 'user').slice(0,8)}@egpay`);
     const [qrValue, setQrValue] = useState<string | null>(null);
-    
+
+    // State for the "Add Account" dialog
+    const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false);
+    const [newHolderName, setNewHolderName] = useState("");
+    const [newAccountNumber, setNewAccountNumber] = useState("");
+    const [newIfsc, setNewIfsc] = useState("");
+    const [newBankName, setNewBankName] = useState("");
+
     const handleGenerateUpi = () => {
         const newUpiId = `${(address || 'user').slice(0,8)}${Math.floor(100 + Math.random() * 900)}@egpay`;
         setUpiId(newUpiId);
@@ -37,6 +43,49 @@ export default function ProfilePage() {
         const upiString = `upi://pay?pa=${upiId}&pn=${account.holderName}&am=&cu=INR&tn=Payment for EGLIFE`;
         setQrValue(upiString);
     }
+    
+    const handleAddAccount = () => {
+        if (!newHolderName || !newAccountNumber || !newIfsc || !newBankName) {
+            toast({
+                variant: "destructive",
+                title: "Missing Information",
+                description: "Please fill out all the fields to add a new account.",
+            });
+            return;
+        }
+
+        const newAccount = {
+            id: Date.now(), // Use a simple unique ID for client-side state
+            holderName: newHolderName,
+            accountNumber: newAccountNumber,
+            ifsc: newIfsc,
+            bankName: newBankName,
+        };
+
+        setAccounts([...accounts, newAccount]);
+        
+        toast({
+            title: "Account Added!",
+            description: "The new bank account has been linked successfully.",
+        });
+
+        // Reset form and close dialog
+        setNewHolderName("");
+        setNewAccountNumber("");
+        setNewIfsc("");
+        setNewBankName("");
+        setIsAddAccountDialogOpen(false);
+    };
+
+    const handleDeleteAccount = (id: number) => {
+        setAccounts(accounts.filter(acc => acc.id !== id));
+        toast({
+            variant: "destructive",
+            title: "Account Removed",
+            description: "The selected bank account has been unlinked.",
+        });
+    };
+
 
     return (
         <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -102,7 +151,7 @@ export default function ProfilePage() {
                                 <CardTitle className="font-headline">Linked Bank Accounts</CardTitle>
                                 <CardDescription>These accounts can be used to receive payments.</CardDescription>
                             </div>
-                             <Dialog>
+                             <Dialog open={isAddAccountDialogOpen} onOpenChange={setIsAddAccountDialogOpen}>
                                 <DialogTrigger asChild>
                                     <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4" /> Add Account</Button>
                                 </DialogTrigger>
@@ -114,26 +163,30 @@ export default function ProfilePage() {
                                     <div className="grid gap-4 py-4">
                                         <div className="grid grid-cols-4 items-center gap-4">
                                             <Label htmlFor="holder-name" className="text-right">Holder Name</Label>
-                                            <Input id="holder-name" className="col-span-3" />
+                                            <Input id="holder-name" className="col-span-3" value={newHolderName} onChange={(e) => setNewHolderName(e.target.value)} />
+                                        </div>
+                                         <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="bank-name" className="text-right">Bank Name</Label>
+                                            <Input id="bank-name" className="col-span-3" value={newBankName} onChange={(e) => setNewBankName(e.target.value)} />
                                         </div>
                                          <div className="grid grid-cols-4 items-center gap-4">
                                             <Label htmlFor="account-number" className="text-right">Account Number</Label>
-                                            <Input id="account-number" className="col-span-3" />
+                                            <Input id="account-number" className="col-span-3" value={newAccountNumber} onChange={(e) => setNewAccountNumber(e.target.value)} />
                                         </div>
                                          <div className="grid grid-cols-4 items-center gap-4">
                                             <Label htmlFor="ifsc" className="text-right">IFSC Code</Label>
-                                            <Input id="ifsc" className="col-span-3" />
+                                            <Input id="ifsc" className="col-span-3" value={newIfsc} onChange={(e) => setNewIfsc(e.target.value)} />
                                         </div>
                                     </div>
                                     <DialogFooter>
-                                        <Button type="submit">Save Account</Button>
+                                        <Button type="button" onClick={handleAddAccount}>Save Account</Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
-                                {accounts.map(account => (
+                                {accounts.length > 0 ? accounts.map(account => (
                                     <div key={account.id} className="flex justify-between items-center p-4 border rounded-lg bg-muted/20">
                                         <div>
                                             <p className="font-semibold">{account.holderName}</p>
@@ -161,12 +214,17 @@ export default function ProfilePage() {
                                                 </DialogContent>
                                             </Dialog>
 
-                                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDeleteAccount(account.id)}>
                                                 <Trash2 className="h-5 w-5" />
                                             </Button>
                                         </div>
                                     </div>
-                                ))}
+                                )) : (
+                                     <div className="text-center py-8 text-muted-foreground">
+                                        <p>No bank accounts linked yet.</p>
+                                        <p className="text-sm">Click "Add Account" to get started.</p>
+                                    </div>
+                                )}
                             </div>
                         </CardContent>
                     </Card>
@@ -175,4 +233,3 @@ export default function ProfilePage() {
         </div>
     );
 }
-
