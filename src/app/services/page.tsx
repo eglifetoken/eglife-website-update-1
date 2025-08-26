@@ -5,14 +5,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel, Loader2, X } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { mobileRecharge } from "@/ai/flows/recharge";
@@ -142,10 +138,17 @@ export default function ServicesPage() {
   const { toast } = useToast();
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
+  // State for Mobile Recharge
   const [mobileNumber, setMobileNumber] = useState("");
   const [rechargeAmount, setRechargeAmount] = useState("");
   const [operator, setOperator] = useState("");
   const [isRecharging, setIsRecharging] = useState(false);
+  
+  // State for Money Transfer
+  const [accountNumber, setAccountNumber] = useState("");
+  const [ifscCode, setIfscCode] = useState("");
+  const [transferAmount, setTransferAmount] = useState("");
+
 
   const [isPlansDialogOpen, setIsPlansDialogOpen] = useState(false);
   const [rechargePlans, setRechargePlans] = useState<RechargePlan[]>([]);
@@ -312,17 +315,35 @@ export default function ServicesPage() {
                         <CardDescription>Enter the recipient's bank details and the amount to send.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                            <div className="space-y-2">
+                        <div className="space-y-2">
                             <Label htmlFor="account-number">Enter Account Number</Label>
-                            <Input id="account-number" type="text" placeholder="Recipient's account number" />
+                            <Input 
+                                id="account-number" 
+                                type="text" 
+                                placeholder="Recipient's account number"
+                                value={accountNumber}
+                                onChange={(e) => setAccountNumber(e.target.value)}
+                            />
                         </div>
-                            <div className="space-y-2">
+                        <div className="space-y-2">
                             <Label htmlFor="ifsc-code">Enter IFSC Code</Label>
-                            <Input id="ifsc-code" type="text" placeholder="Bank's IFSC code" />
+                            <Input 
+                                id="ifsc-code" 
+                                type="text" 
+                                placeholder="Bank's IFSC code"
+                                value={ifscCode}
+                                onChange={(e) => setIfscCode(e.target.value)}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="bank-amount">Enter Amount</Label>
-                            <Input id="bank-amount" type="number" placeholder="₹0.00" />
+                            <Input 
+                                id="bank-amount" 
+                                type="number" 
+                                placeholder="₹0.00"
+                                value={transferAmount}
+                                onChange={(e) => setTransferAmount(e.target.value)}
+                            />
                         </div>
                     </CardContent>
                     <CardFooter>
