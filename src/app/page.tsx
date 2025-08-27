@@ -363,18 +363,8 @@ export default function Home() {
       </section>
 
        <section className="w-full py-16 md:py-20 container mx-auto px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-                <Image 
-                    src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=1000&auto=format&fit=crop"
-                    alt="A visual representation of a secure blockchain network"
-                    width={1000}
-                    height={800}
-                    className="rounded-lg shadow-lg"
-                    data-ai-hint="blockchain security"
-                />
-            </div>
-            <div className="order-1 md:order-2">
+        <div className="grid md:grid-cols-1 gap-12 items-center justify-center">
+            <div className="max-w-3xl mx-auto">
                 <Card className="border-accent">
                     <CardHeader>
                         <div className="p-3 bg-accent/10 rounded-md w-fit mb-4">
