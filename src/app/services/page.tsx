@@ -511,7 +511,7 @@ export default function ServicesPage() {
                                 <div className="space-y-2">
                                     <Label htmlFor="upi-amount">Enter Amount</Label>
                                     <Input 
-                                        id="upi-amount" 2
+                                        id="upi-amount"
                                         type="number" 
                                         placeholder="₹0.00"
                                         value={transferAmount}
@@ -648,5 +648,7 @@ export default function ServicesPage() {
     </>
   );
 }
+
+    
 
     
