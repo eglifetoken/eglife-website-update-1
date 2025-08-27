@@ -366,7 +366,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
                 <Image 
-                    src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=1000"
+                    src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=1000&auto=format&fit=crop"
                     alt="Abstract blockchain network"
                     width={1000}
                     height={800}
