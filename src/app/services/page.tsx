@@ -4,10 +4,10 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel, Loader2, X } from "lucide-react";
+import { ArrowRight, ArrowLeft, Smartphone, Globe, Lightbulb, Droplets, Flame, Wifi, Tv, School, Building, HandCoins, QrCode, Wallet, Banknote, IndianRupee, User, Landmark as BankIcon, History, Store, Network, ShieldCheck, Ticket, Plane, ShoppingCart, Fuel, Loader2, X, Link as LinkIcon, Link2Off, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
@@ -15,7 +15,16 @@ import { mobileRecharge } from "@/ai/flows/recharge";
 import { getRechargePlans, RechargePlan } from "@/ai/flows/getRechargePlans";
 import { RechargePlansDialog } from "@/components/recharge-plans-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getTokenData, TokenData } from "@/ai/flows/getTokenData";
+import { useAccount, useConnect, useBalance, useDisconnect, useSwitchChain, useChainId } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import { formatEther } from "viem";
+import { bsc } from "wagmi/chains";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+
+const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
 
 const services = [
   {
@@ -138,6 +147,37 @@ export default function ServicesPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  // Wallet and chain state
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { switchChain } = useSwitchChain();
+  const chainId = useChainId();
+  const isWrongNetwork = isConnected && chainId !== bsc.id;
+
+  const { data: eglifeBalance, refetch: refetchBalance } = useBalance({
+    address,
+    token: EGLIFE_TOKEN_CONTRACT,
+    query: { enabled: !!address }
+  });
+
+  // Token price state
+  const [tokenData, setTokenData] = useState<TokenData | null>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    const fetchData = async () => {
+        try {
+            const data = await getTokenData();
+            setTokenData(data);
+        } catch (error) {
+            console.error("Failed to fetch token data:", error);
+        }
+    };
+    fetchData();
+  }, []);
 
   // State for Mobile Recharge
   const [mobileNumber, setMobileNumber] = useState("");
@@ -198,17 +238,12 @@ export default function ServicesPage() {
   };
 
   const handleRecharge = async () => {
-    if (!mobileNumber || !rechargeAmount || !operator) {
-        toast({
-            variant: "destructive",
-            title: "Missing Information",
-            description: "Please fill in all the fields for the recharge.",
-        });
-        return;
-    }
-    
     setIsRecharging(true);
     try {
+        // Here, you would typically have a writeContract call to deduct tokens.
+        // For this demo, we'll just simulate a delay.
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         const result = await mobileRecharge({
             mobileNumber,
             operatorCode: operator,
@@ -220,6 +255,7 @@ export default function ServicesPage() {
                 title: "Recharge Successful!",
                 description: result.message,
             });
+            refetchBalance(); // Refetch balance after successful payment
             // Reset form
             setMobileNumber("");
             setRechargeAmount("");
@@ -245,6 +281,50 @@ export default function ServicesPage() {
   }
 
   const renderServiceForm = () => {
+    const rechargeCostInEg = (tokenData && rechargeAmount) ? (parseFloat(rechargeAmount) / tokenData.priceUsd) : 0;
+    const hasSufficientBalance = eglifeBalance ? parseFloat(formatEther(eglifeBalance.value)) >= rechargeCostInEg : false;
+
+    if (!isClient) return <div className="flex items-center justify-center p-8"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+
+    if (!isConnected) {
+        return (
+             <Card className="relative text-center">
+                <CardHeader>
+                    <CardTitle>Wallet Not Connected</CardTitle>
+                    <CardDescription>Please connect your wallet to use EGPAY services.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button onClick={() => connect({ connector: injected() })}>
+                        <LinkIcon className="mr-2 h-4 w-4" /> Connect Wallet
+                    </Button>
+                </CardContent>
+                <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setSelectedService(null)}>
+                    <X className="h-5 w-5" />
+                </Button>
+            </Card>
+        )
+    }
+
+    if (isWrongNetwork) {
+         return (
+             <Card className="relative text-center">
+                <CardHeader>
+                    <CardTitle>Wrong Network</CardTitle>
+                    <CardDescription>Please switch to the BNB Smart Chain to use our services.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button onClick={() => switchChain({ chainId: bsc.id })} variant="destructive">
+                        Switch to BSC
+                    </Button>
+                </CardContent>
+                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setSelectedService(null)}>
+                    <X className="h-5 w-5" />
+                </Button>
+            </Card>
+        )
+    }
+
+
     switch (selectedService) {
         case 'recharge':
             return (
@@ -296,13 +376,54 @@ export default function ServicesPage() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button className="w-full" onClick={handleRecharge} disabled={isRecharging}>
-                            {isRecharging ? (
-                                <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Processing...</>
-                            ) : (
-                                "Proceed to Recharge"
-                            )}
-                        </Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button className="w-full" disabled={isRecharging || !mobileNumber || !rechargeAmount || !operator}>
+                                    Proceed to Pay
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Confirm Payment</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    You are about to pay for a recharge of ₹{rechargeAmount}.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                {tokenData && eglifeBalance ? (
+                                    <div className="space-y-4">
+                                        <div className="p-4 rounded-lg border bg-muted/50">
+                                            <p className="text-sm text-muted-foreground">You will pay (approx.)</p>
+                                            <p className="text-xl font-bold">{rechargeCostInEg.toFixed(4)} EGLIFE</p>
+                                        </div>
+                                         <div className="p-4 rounded-lg border">
+                                            <p className="text-sm text-muted-foreground">Your current balance</p>
+                                            <p className="text-xl font-bold">{parseFloat(formatEther(eglifeBalance.value)).toFixed(4)} EGLIFE</p>
+                                        </div>
+                                        {!hasSufficientBalance && (
+                                            <Alert variant="destructive">
+                                                <AlertTriangle className="h-4 w-4" />
+                                                <AlertTitle>Insufficient Balance</AlertTitle>
+                                                <AlertDescription>
+                                                    You do not have enough EGLIFE tokens to complete this transaction.
+                                                </AlertDescription>
+                                            </Alert>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-center p-8"><Loader2 className="h-8 w-8 animate-spin"/></div>
+                                )}
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleRecharge} disabled={isRecharging || !hasSufficientBalance}>
+                                     {isRecharging ? (
+                                        <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</>
+                                    ) : (
+                                        "Confirm Payment"
+                                    )}
+                                </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </CardFooter>
                     <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setSelectedService(null)}>
                         <X className="h-5 w-5" />
@@ -390,7 +511,7 @@ export default function ServicesPage() {
                                 <div className="space-y-2">
                                     <Label htmlFor="upi-amount">Enter Amount</Label>
                                     <Input 
-                                        id="upi-amount" 
+                                        id="upi-amount" 2
                                         type="number" 
                                         placeholder="₹0.00"
                                         value={transferAmount}
@@ -450,23 +571,25 @@ export default function ServicesPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {services.map((service) => {
             const Icon = service.icon;
+            const isComingSoon = !['recharge', 'transfer'].includes(service.id);
             return (
-          <Card 
-            key={service.id} 
-            className="flex flex-col hover:shadow-lg transition-shadow cursor-pointer hover:border-primary"
-            onClick={() => setSelectedService(service.id)}
-          >
-            <CardHeader className="flex-grow">
-                <div className="p-3 bg-primary/10 rounded-md w-fit mb-4">
-                    <Icon className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle className="font-headline text-xl mb-1">{service.title}</CardTitle>
-            </CardHeader>
-             <CardContent>
-                <p className="text-sm text-foreground/80">{service.description}</p>
-            </CardContent>
-          </Card>
-        )})}
+              <Card 
+                key={service.id} 
+                className={`flex flex-col hover:shadow-lg transition-shadow ${isComingSoon ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-primary'}`}
+                onClick={() => !isComingSoon && setSelectedService(service.id)}
+              >
+                <CardHeader className="flex-grow relative">
+                    {isComingSoon && <span className="absolute top-2 right-2 text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">Soon</span>}
+                    <div className="p-3 bg-primary/10 rounded-md w-fit mb-4">
+                        <Icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <CardTitle className="font-headline text-xl mb-1">{service.title}</CardTitle>
+                </CardHeader>
+                 <CardContent>
+                    <p className="text-sm text-foreground/80">{service.description}</p>
+                </CardContent>
+              </Card>
+            )})}
       </div>
 
        <div className="mt-20">
@@ -526,5 +649,4 @@ export default function ServicesPage() {
   );
 }
 
-    
     
