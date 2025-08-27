@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote, Award } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote, Award, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -362,6 +362,47 @@ export default function Home() {
         </Card>
       </section>
 
+       <section className="w-full py-16 md:py-20 container mx-auto px-4 md:px-6">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+                <Image 
+                    src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=1000"
+                    alt="Abstract blockchain network"
+                    width={1000}
+                    height={800}
+                    className="rounded-lg shadow-lg"
+                    data-ai-hint="blockchain security"
+                />
+            </div>
+            <div className="order-1 md:order-2">
+                <Card className="border-accent">
+                    <CardHeader>
+                        <div className="p-3 bg-accent/10 rounded-md w-fit mb-4">
+                            <ShieldCheck className="h-8 w-8 text-accent" />
+                        </div>
+                        <CardTitle className="font-headline text-3xl">Trust & Security: Liquidity Locked</CardTitle>
+                        <CardDescription className="text-lg">Your investment is secured through a transparent and verifiable liquidity lock.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-foreground/80 mb-6">
+                            To ensure the long-term stability and security of the EGLIFE project, a significant portion of the initial liquidity has been permanently locked. This means that the developers cannot remove the base liquidity from the market, which helps prevent a "rug pull" and builds a strong foundation of trust with our community.
+                        </p>
+                        <p className="text-foreground/80">
+                            This lock is verifiable on the blockchain, providing full transparency to all our holders.
+                        </p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button asChild size="lg" className="w-full">
+                            <Link href={`https://www.geckoterminal.com/bsc/pools/0xca326a5e15b9451efc1a6bddad6fb098a4d09113`} target="_blank" rel="noopener noreferrer">
+                                View Proof on GeckoTerminal
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
+        </div>
+      </section>
+
       <section className="w-full py-16 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
@@ -410,6 +451,8 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
 
