@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote, Award } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -43,14 +43,14 @@ const ecosystemComponents = [
     statusVariant: "default",
     aiHint: "people network"
   },
-  {
-    icon: Vote,
-    title: "Community Governance",
-    description: "Participate in key project decisions by voting with your staked EGLIFE.",
-    link: "#",
-    status: "Upcoming",
-    statusVariant: "secondary",
-    aiHint: "voting box"
+   {
+    icon: Award,
+    title: "LP Lock Certificate",
+    description: "View your staking certificate of achievement for supporting the ecosystem.",
+    link: "/certificate",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "certificate award"
   },
 ];
 
