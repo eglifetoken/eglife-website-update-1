@@ -69,7 +69,7 @@ export default function Footer() {
                 </a>
               </Button>
               <Button asChild variant="ghost" size="icon">
-                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on Telegram">
+                <a href="https://t.me/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on Telegram">
                   <Send className="h-5 w-5" />
                 </a>
               </Button>
