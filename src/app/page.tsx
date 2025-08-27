@@ -381,20 +381,20 @@ export default function Home() {
                             <ShieldCheck className="h-8 w-8 text-accent" />
                         </div>
                         <CardTitle className="font-headline text-3xl">Trust & Security: Liquidity Locked</CardTitle>
-                        <CardDescription className="text-lg">Your investment is secured through a transparent and verifiable liquidity lock.</CardDescription>
+                        <CardDescription className="text-lg">Our USDT/EGLIFE liquidity pool is secured with Mudra.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <p className="text-foreground/80 mb-6">
-                            To ensure the long-term stability and security of the EGLIFE project, a significant portion of the initial liquidity has been permanently locked. This means that the developers cannot remove the base liquidity from the market, which helps prevent a "rug pull" and builds a strong foundation of trust with our community.
+                           To ensure the long-term stability and security of the EGLIFE project, **99.41%** of the LP tokens have been locked with Mudra for one year. This means the developers cannot remove the base liquidity from the market, which prevents a "rug pull" and builds a strong foundation of trust with our community.
                         </p>
                         <p className="text-foreground/80">
                             This lock is verifiable on the blockchain, providing full transparency to all our holders.
                         </p>
                     </CardContent>
                     <CardFooter>
-                        <Button asChild size="lg" className="w-full">
-                            <Link href={`https://www.geckoterminal.com/bsc/pools/0xca326a5e15b9451efc1a6bddad6fb098a4d09113`} target="_blank" rel="noopener noreferrer">
-                                View Proof on GeckoTerminal
+                         <Button asChild size="lg" className="w-full">
+                            <Link href="https://mudra.website/?certificate=yes&type=0&lp=0xa75f11504a5f171a1b6d4ba8dbf39bf44010fabc" target="_blank" rel="noopener noreferrer">
+                                View Proof on Mudra
                             </Link>
                         </Button>
                     </CardFooter>
