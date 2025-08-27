@@ -386,42 +386,72 @@ export default function ServicesPage() {
                                 <AlertDialogHeader>
                                 <AlertDialogTitle>Confirm Payment</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    You are about to pay for a recharge of ₹{rechargeAmount}.
+                                    You are about to pay for a recharge of ₹{rechargeAmount}. Choose your payment method.
                                 </AlertDialogDescription>
                                 </AlertDialogHeader>
-                                {tokenData && eglifeBalance ? (
-                                    <div className="space-y-4">
-                                        <div className="p-4 rounded-lg border bg-muted/50">
-                                            <p className="text-sm text-muted-foreground">You will pay (approx.)</p>
-                                            <p className="text-xl font-bold">{rechargeCostInEg.toFixed(4)} EGLIFE</p>
-                                        </div>
-                                         <div className="p-4 rounded-lg border">
-                                            <p className="text-sm text-muted-foreground">Your current balance</p>
-                                            <p className="text-xl font-bold">{parseFloat(formatEther(eglifeBalance.value)).toFixed(4)} EGLIFE</p>
-                                        </div>
-                                        {!hasSufficientBalance && (
-                                            <Alert variant="destructive">
+                               
+                                <Tabs defaultValue="token" className="w-full">
+                                    <TabsList className="grid w-full grid-cols-2">
+                                        <TabsTrigger value="token"><Wallet className="mr-2 h-4 w-4" /> EGLIFE Token</TabsTrigger>
+                                        <TabsTrigger value="upi"><IndianRupee className="mr-2 h-4 w-4" /> UPI</TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent value="token" className="pt-4">
+                                        {tokenData && eglifeBalance ? (
+                                            <div className="space-y-4">
+                                                <div className="p-4 rounded-lg border bg-muted/50">
+                                                    <p className="text-sm text-muted-foreground">You will pay (approx.)</p>
+                                                    <p className="text-xl font-bold">{rechargeCostInEg.toFixed(4)} EGLIFE</p>
+                                                </div>
+                                                 <div className="p-4 rounded-lg border">
+                                                    <p className="text-sm text-muted-foreground">Your current balance</p>
+                                                    <p className="text-xl font-bold">{parseFloat(formatEther(eglifeBalance.value)).toFixed(4)} EGLIFE</p>
+                                                </div>
+                                                {!hasSufficientBalance && (
+                                                    <Alert variant="destructive">
+                                                        <AlertTriangle className="h-4 w-4" />
+                                                        <AlertTitle>Insufficient Balance</AlertTitle>
+                                                        <AlertDescription>
+                                                            You do not have enough EGLIFE tokens to complete this transaction.
+                                                        </AlertDescription>
+                                                    </Alert>
+                                                )}
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={handleRecharge} disabled={isRecharging || !hasSufficientBalance}>
+                                                         {isRecharging ? (
+                                                            <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</>
+                                                        ) : (
+                                                            "Confirm Payment"
+                                                        )}
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-center p-8"><Loader2 className="h-8 w-8 animate-spin"/></div>
+                                        )}
+                                    </TabsContent>
+                                     <TabsContent value="upi" className="pt-4">
+                                         <div className="space-y-4">
+                                            <div className="p-4 rounded-lg border bg-muted/50">
+                                                <p className="text-sm text-muted-foreground">You will pay</p>
+                                                <p className="text-xl font-bold">₹{rechargeAmount}</p>
+                                            </div>
+                                            <Alert>
                                                 <AlertTriangle className="h-4 w-4" />
-                                                <AlertTitle>Insufficient Balance</AlertTitle>
+                                                <AlertTitle>Coming Soon</AlertTitle>
                                                 <AlertDescription>
-                                                    You do not have enough EGLIFE tokens to complete this transaction.
+                                                   UPI payment gateway integration is currently in development. This feature will be available shortly.
                                                 </AlertDescription>
                                             </Alert>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-center p-8"><Loader2 className="h-8 w-8 animate-spin"/></div>
-                                )}
-                                <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleRecharge} disabled={isRecharging || !hasSufficientBalance}>
-                                     {isRecharging ? (
-                                        <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</>
-                                    ) : (
-                                        "Confirm Payment"
-                                    )}
-                                </AlertDialogAction>
-                                </AlertDialogFooter>
+                                             <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction disabled>
+                                                    Pay with UPI
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                         </div>
+                                     </TabsContent>
+                                </Tabs>
                             </AlertDialogContent>
                         </AlertDialog>
                     </CardFooter>
