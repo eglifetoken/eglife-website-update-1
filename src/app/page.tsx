@@ -367,7 +367,7 @@ export default function Home() {
             <div className="order-2 md:order-1">
                 <Image 
                     src="https://images.unsplash.com/photo-1639762681057-408e52192e50?q=80&w=1000&auto=format&fit=crop"
-                    alt="Abstract blockchain network"
+                    alt="A visual representation of a secure blockchain network"
                     width={1000}
                     height={800}
                     className="rounded-lg shadow-lg"
