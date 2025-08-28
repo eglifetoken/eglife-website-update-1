@@ -1,79 +1,49 @@
-# EGLIFE WEBSITE - Deployment Guide
+# EGLIFE Token (EGLIFE)
 
-This guide will walk you through the final steps to publish your website online. The process involves getting the code from Firebase Studio onto your computer and then pushing it to GitHub using a simple script.
+**Contract Address:** `0xca326a5e15b9451efC1A6BddaD6fB098a4D09113`  
+**Network:** BNB Smart Chain (BSC)  
+**Website:** https://eglifetoken.xyz  
+**Tagline:** *Empowering Every Generation with Crypto Finance*
 
----
+## Overview
+EGLIFE is a BEP‑20 token designed for real‑world utility payments, staking rewards, and referral incentives within the EGLIFE ecosystem.
 
-## **Part 1: Get Your Project Files**
+## Key Features
+- BEP‑20 compliant on BSC
+- Staking & claimable rewards (UI planned/active per roadmap)
+- Referral incentive program (admin‑configurable)
+- Utility payments & integrations roadmap
 
-Before you can deploy, you need all the project files on your local computer.
+## Official Links
+- Website: https://eglifetoken.xyz
+- Live Price (GeckoTerminal pool): https://geckoterminal.com/bsc/pools/0xa75f11504a5f171a1b6d4ba8dbf39bf44010fabc
+- Contract (BscScan): https://bscscan.com/token/0xca326a5e15b9451efc1a6bddad6fb098a4d09113
 
-**Since there is no "Download ZIP" button in Firebase Studio, you will need to manually copy your files.** This can be tedious, but it is a necessary step.
+## Repositories
+This package is intended to bootstrap the public repo.
+Suggested repo name: `eglifetoken/eglife` or `eglifetoken/eglife-website`.
 
-1.  **Create a Folder:** On your computer's Desktop, create a new folder. Let's name it `eglife-website`.
-2.  **Re-create the Files:**
-    *   Look at the file list on the left side of the Firebase Studio editor.
-    *   For each file and folder, re-create it inside your `eglife-website` folder.
-    *   **Carefully copy the entire content** of each file from the Firebase Studio editor and paste it into the corresponding file on your computer.
-    *   **It is critical that the folder structure and file contents match exactly.**
-
----
-
-## **Part 2: Deploy to GitHub from Your Computer**
-
-Once all the files are on your computer inside the `eglife-website` folder, you can push them to GitHub by running a single script.
-
-**Requirements:**
-*   You must have [Git](https://git-scm.com/downloads) installed on your computer.
-
-### Deployment Steps
-
-Open a terminal (like `Command Prompt`, `PowerShell`, or `Terminal` on a Mac) and follow these steps exactly.
-
-**1. Navigate into Your Project Folder:**
-
-Use the `cd` (change directory) command to move into the folder you created.
-
-```bash
-# Example: Replace with the actual path to your folder
-cd Desktop/eglife-website
+```
+eglife/
+├─ README.md
+├─ LICENSE
+├─ logo/
+│  └─ eglife_logo_32x32.svg
+├─ contracts/
+│  ├─ EGLIFE.sol (to be added after verification/export)
+│  └─ README_contracts.md
+└─ docs/
+   └─ whitepaper/
+      └─ EGLIFE_Whitepaper_Placeholder.pdf
 ```
 
-**2. Make the Script Executable (for Mac/Linux users):**
+## Token Update / Listings
+Use these links when updating token metadata:
+- BscScan Token Update: https://bscscan.com/tokenupdate
+- CoinGecko Listing/Update: https://www.coingecko.com/en/coins/new
+- CoinMarketCap Request: https://coinmarketcap.com/request/
 
-If you are on a Mac or Linux, you need to give the script permission to run. Skip this step if you are on Windows.
+> **Note:** Always use an official domain email (e.g., `info@eglifetoken.xyz`) in listing/update forms.
 
-```bash
-chmod +x deploy.sh
-```
-
-**3. Run the Deployment Script:**
-
-Now, run the script. This will handle all the git commands for you.
-
-*   On Mac or Linux:
-    ```bash
-    ./deploy.sh
-    ```
-*   On Windows:
-    ```bash
-    sh deploy.sh
-    ```
-
-The script will initialize Git, save your files, connect to your GitHub repository, and push all the code.
-
----
-
-## **Part 3: Go Live with Netlify**
-
-After the script finishes and your code is successfully pushed to GitHub, your website is ready to be deployed live.
-
-1.  Go to [https://www.netlify.com/](https://www.netlify.com/) and sign up or log in.
-2.  Click **"Add new site"** or **"Import an existing project"**.
-3.  Choose to deploy from **GitHub**.
-4.  Authorize Netlify to access your GitHub account and select your **`EGLIFE-WEBSITE`** repository.
-5.  Netlify will automatically detect your settings from the `netlify.toml` file. The build command (`npm run build`) and publish directory (`.next`) should already be filled in.
-6.  Click **"Deploy site"**.
-
-Netlify will now build your project and deploy it. Once it's finished, you will have a live URL where you can see your website!
-deploy.sh
+## Attribution
+(c) 2025 EGLIFE Team. See LICENSE for terms.
