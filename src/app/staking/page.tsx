@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
@@ -32,6 +32,12 @@ const stakingTiers = [
     { name: "Gold Stake", amount: "1,001 - 5,000", apy: "22%" },
     { name: "Platinum Stake", amount: "5,001 - 10,000", apy: "24%" },
     { name: "Diamond Stake", amount: "10,001+", apy: "26%" },
+];
+
+const mockClaimHistory = [
+    { date: "2024-07-28", amount: 15.234, tx: "0x123...abc" },
+    { date: "2024-07-21", amount: 12.876, tx: "0x456...def" },
+    { date: "2024-07-14", amount: 14.005, tx: "0x789...ghi" },
 ];
 
 
@@ -332,7 +338,7 @@ export default function StakingPage() {
       )}
 
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-8">
              <Card>
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl">Staking Tiers & Packages</CardTitle>
@@ -375,6 +381,50 @@ export default function StakingPage() {
                     </div>
                 </CardContent>
             </Card>
+
+            {isClient && isConnected && !isWrongNetwork && (
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2">
+                           <History className="h-6 w-6 text-primary" />
+                           Rewards Claim History
+                        </CardTitle>
+                        <CardDescription>A record of all the staking rewards you have claimed.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                       <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead>Amount (EGLIFE)</TableHead>
+                                    <TableHead className="text-right">Transaction</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {mockClaimHistory.length > 0 ? (
+                                    mockClaimHistory.map((claim, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{claim.date}</TableCell>
+                                            <TableCell className="font-medium text-green-500">+{claim.amount.toFixed(4)}</TableCell>
+                                            <TableCell className="text-right">
+                                                <Button variant="link" size="sm" asChild>
+                                                    <a href={`https://bscscan.com/tx/${claim.tx}`} target="_blank" rel="noopener noreferrer">View</a>
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={3} className="text-center h-24">
+                                            You have not claimed any rewards yet.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            )}
         </div>
 
         <div>
