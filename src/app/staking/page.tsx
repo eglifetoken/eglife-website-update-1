@@ -36,18 +36,8 @@ const stakingTiers = [
     { name: "Diamond Stake", amount: "10,001+", apy: "26%" },
 ];
 
-const mockClaimHistory = [
-    { date: "2024-07-28", amount: 15.234, tx: "0x123...abc" },
-    { date: "2024-07-21", amount: 12.876, tx: "0x456...def" },
-    { date: "2024-07-14", amount: 14.005, tx: "0x789...ghi" },
-];
-
-const mockDailyRewards = [
-    { date: "2024-07-29", reward: 2.15 },
-    { date: "2024-07-28", reward: 2.14 },
-    { date: "2024-07-27", reward: 2.16 },
-    { date: "2024-07-26", reward: 2.13 },
-];
+const mockClaimHistory: any[] = [];
+const mockDailyRewards: any[] = [];
 
 
 export default function StakingPage() {
@@ -105,7 +95,7 @@ export default function StakingPage() {
   const [isUnstaking, setIsUnstaking] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [totalClaimed, setTotalClaimed] = useState(28.115); // Mock data
+  const [totalClaimed, setTotalClaimed] = useState(0); 
 
   const { writeContractAsync } = useWriteContract();
 
@@ -623,5 +613,3 @@ export default function StakingPage() {
     </>
   )
 }
-
-    
