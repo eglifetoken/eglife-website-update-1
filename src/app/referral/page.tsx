@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, Gift, Users, BarChart2, Loader2, ArrowLeft, ArrowRight, Share2 } from "lucide-react";
+import { Copy, Gift, Users, BarChart2, Loader2, ArrowLeft, ArrowRight, Share2, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -50,7 +50,7 @@ export default function ReferralPage() {
     }, [isConnected, address, isClient]);
 
     const handleCopy = () => {
-        if(!isConnected || !referralLink) {
+        if(!isConnected || !referralLink.includes(address || '')) {
              toast({
                 variant: "destructive",
                 title: "Wallet Not Connected",
@@ -114,13 +114,29 @@ export default function ReferralPage() {
                     <CardContent>
                         <div className="flex items-center space-x-2">
                             <Input value={referralLink} readOnly className="font-mono text-center text-xs" />
-                            <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected}>
+                            <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected || !address}>
                                 <Copy className="h-4 w-4" />
                             </Button>
                         </div>
                     </CardContent>
                 </Card>
             </div>
+
+            <Card className="mb-8 border-accent">
+                <CardHeader className="flex-row items-center gap-4">
+                    <Info className="h-8 w-8 text-accent"/>
+                    <div>
+                        <CardTitle>How Referral Bonuses Work</CardTitle>
+                        <CardDescription>Understanding your rewards.</CardDescription>
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-accent-foreground/80">
+                        Referral bonuses are paid out **instantly and automatically** to your wallet. When a user you referred stakes their EGLIFE tokens, the smart contract immediately sends the bonus directly to you. There is no need to claim them manually.
+                    </p>
+                </CardContent>
+            </Card>
+
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card>
@@ -179,7 +195,7 @@ export default function ReferralPage() {
                                 )) : (
                                     <TableRow>
                                         <TableCell colSpan={3} className="h-24 text-center">
-                                            Referral history will be available soon.
+                                            Referral history data is not yet available.
                                         </TableCell>
                                     </TableRow>
                                 )}
