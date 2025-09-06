@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote, Award, ShieldCheck } from "lucide-react";
+import { Users, Eye, CheckCircle, DollarSign, LineChart, PieChart, TrendingUp, TrendingDown, Twitter, Linkedin, GitCommit, Lightbulb, Rocket, Target, Leaf, ArrowRight, Loader2, UserPlus, LogIn, ArrowLeft, Landmark, Briefcase, Vote, Award, ShieldCheck, IndianRupee } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -177,7 +177,13 @@ export default function Home() {
             <h3 className="text-xl font-semibold">
                 Ready to join the EGLIFE community?
             </h3>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild size="lg">
+                    <Link href="#">
+                        <IndianRupee className="mr-2 h-5 w-5" />
+                        Buy with INR
+                    </Link>
+                </Button>
                 <Button asChild size="lg">
                     <Link href="/register">
                         <UserPlus className="mr-2 h-5 w-5" />
@@ -447,3 +453,4 @@ export default function Home() {
     
 
     
+
