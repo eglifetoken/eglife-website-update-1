@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, LogIn, UserPlus } from "lucide-react";
+import { Menu, LogIn, UserPlus, IndianRupee } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/staking", label: "Staking" },
   { href: "/dapp", label: "DApp" },
+  { href: "/buy-with-inr", label: "Buy with INR"},
   { href: "/referral", label: "Referral" },
   { href: "/profile", label: "My Profile" },
   { href: "/crypto-education", label: "Education" },
@@ -57,14 +58,14 @@ export default function Header() {
         </div>
 
         {/* Desktop: Centered navigation */}
-        <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6">
+        <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6">
           {navLinks.map((link) => (
             <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
           ))}
         </nav>
 
         {/* Desktop: Buttons on the right */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
              <Button asChild variant="ghost">
                 <Link href="/dapp">
                     <LogIn className="mr-2 h-5 w-5" />
@@ -79,8 +80,8 @@ export default function Header() {
             </Button>
         </div>
 
-        {/* Mobile: Hamburger menu on the right */}
-        <div className="flex items-center md:hidden">
+        {/* Mobile & Tablet: Hamburger menu on the right */}
+        <div className="flex items-center lg:hidden">
            <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">

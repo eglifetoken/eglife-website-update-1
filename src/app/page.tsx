@@ -179,7 +179,7 @@ export default function Home() {
             </h3>
             <div className="flex flex-wrap justify-center gap-4">
                 <Button asChild size="lg">
-                    <Link href="#">
+                    <Link href="/buy-with-inr">
                         <IndianRupee className="mr-2 h-5 w-5" />
                         Buy with INR
                     </Link>
@@ -447,10 +447,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
-
-    
-

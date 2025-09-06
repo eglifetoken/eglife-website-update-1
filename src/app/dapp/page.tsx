@@ -166,7 +166,7 @@ export default function DappPage() {
                     </Link>
                   </Button>
                   <Button asChild className="w-full" size="lg" variant="outline">
-                    <Link href="#">
+                    <Link href="/buy-with-inr">
                         <IndianRupee className="mr-2 h-5 w-5" />
                         Buy with INR
                     </Link>

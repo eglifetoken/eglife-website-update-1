@@ -50,6 +50,7 @@ export default function Footer() {
                   <li><Link href="/staking" className="text-foreground/80 hover:text-primary">Staking</Link></li>
                    <li><Link href="/referral" className="text-foreground/80 hover:text-primary">Referrals</Link></li>
                   <li><Link href="/services" className="text-foreground/80 hover:text-primary">Services</Link></li>
+                  <li><Link href="/buy-with-inr" className="text-foreground/80 hover:text-primary">Buy with INR</Link></li>
                 </ul>
               </div>
               <div>
