@@ -26,7 +26,7 @@ const referralTiers = [
 ];
 
 const referralHistory: any[] = [
-    // Data will be populated once the system is live
+    // Data will be populated once the system is live and connected to an indexer.
 ];
 
 
@@ -40,15 +40,24 @@ export default function ReferralPage() {
     useEffect(() => {
         setIsClient(true);
         if (isConnected && address) {
+            // Ensure the link is generated correctly with the connected address.
             const link = `${window.location.origin}/staking?ref=${address}`;
             setReferralLink(link);
         } else {
+            // Provide a non-functional link if wallet is not connected.
             setReferralLink(`${window.location.origin}/staking`);
         }
     }, [isConnected, address, isClient]);
 
     const handleCopy = () => {
-        if(!referralLink) return;
+        if(!isConnected || !referralLink) {
+             toast({
+                variant: "destructive",
+                title: "Wallet Not Connected",
+                description: "Please connect your wallet to get your referral link.",
+            });
+            return;
+        };
         navigator.clipboard.writeText(referralLink);
         toast({
             title: "Copied!",
@@ -80,8 +89,8 @@ export default function ReferralPage() {
                         <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">0</div>
-                        <p className="text-xs text-muted-foreground">No users have joined via referral yet.</p>
+                        <div className="text-2xl font-bold">--</div>
+                        <p className="text-xs text-muted-foreground">Live data coming soon</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -90,8 +99,8 @@ export default function ReferralPage() {
                         <Gift className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">0 EGLIFE</div>
-                        <p className="text-xs text-muted-foreground">No referral bonuses paid out yet.</p>
+                        <div className="text-2xl font-bold">-- EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">Live data coming soon</p>
                     </CardContent>
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
@@ -170,7 +179,7 @@ export default function ReferralPage() {
                                 )) : (
                                     <TableRow>
                                         <TableCell colSpan={3} className="h-24 text-center">
-                                            No referral history yet.
+                                            Referral history will be available soon.
                                         </TableCell>
                                     </TableRow>
                                 )}
