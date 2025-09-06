@@ -4,7 +4,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off } from "lucide-react";
+import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off, IndianRupee } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
@@ -158,11 +158,17 @@ export default function DappPage() {
                     )
                 )}
             </CardContent>
-             <CardFooter>
+             <CardFooter className="flex flex-col sm:flex-row gap-4">
                   <Button asChild className="w-full" size="lg">
                     <Link href={PANCAKESWAP_SWAP_URL} target="_blank" rel="noopener noreferrer">
                         <Repeat className="mr-2 h-5 w-5" />
                         Swap on PancakeSwap
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full" size="lg" variant="outline">
+                    <Link href="#">
+                        <IndianRupee className="mr-2 h-5 w-5" />
+                        Buy with INR
                     </Link>
                   </Button>
               </CardFooter>
