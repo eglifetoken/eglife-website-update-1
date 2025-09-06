@@ -281,10 +281,8 @@ export default function ServicesPage() {
   }
 
   const renderServiceForm = () => {
-    const rechargeCostInEg = (tokenData && rechargeAmount) ? (parseFloat(rechargeAmount) / tokenData.priceUsd) : 0;
+    const rechargeCostInEg = (tokenData && rechargeAmount) ? (parseFloat(rechargeAmount) / 83) / tokenData.priceUsd : 0;
     const hasSufficientBalance = eglifeBalance ? parseFloat(formatEther(eglifeBalance.value)) >= rechargeCostInEg : false;
-
-    if (!isClient) return <div className="flex items-center justify-center p-8"><Loader2 className="h-8 w-8 animate-spin" /></div>;
 
     if (!isConnected) {
         return (
@@ -569,6 +567,13 @@ export default function ServicesPage() {
     }
   }
 
+  if (!isClient) {
+    return (
+        <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+    );
+  }
 
   return (
     <>
@@ -678,7 +683,3 @@ export default function ServicesPage() {
     </>
   );
 }
-
-    
-
-    

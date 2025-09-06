@@ -250,6 +250,14 @@ export default function StakingPage() {
 
   const isPending = isApproving || isStaking || isUnstaking || isClaiming;
 
+  if (!isClient) {
+    return (
+        <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+    );
+  }
+
   return (
     <>
     <RewardsHistoryDialog 
@@ -264,7 +272,7 @@ export default function StakingPage() {
         <p className="text-lg text-foreground/80">Stake your EGLIFE tokens to earn rewards and support the ecosystem's growth.</p>
       </div>
 
-       {isClient && isWrongNetwork && (
+       {isWrongNetwork && (
             <Alert variant="destructive" className="mb-8">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>Wrong Network</AlertTitle>
@@ -277,7 +285,7 @@ export default function StakingPage() {
             </Alert>
         )}
       
-       {isClient && !isConnected && (
+       {!isConnected && (
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-2xl">Connect Your Wallet</CardTitle>
@@ -292,7 +300,7 @@ export default function StakingPage() {
          </Card>
       )}
       
-       {isClient && isConnected && (
+       {isConnected && (
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
@@ -315,7 +323,7 @@ export default function StakingPage() {
       )}
 
 
-      {isClient && isConnected && (
+      {isConnected && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -360,7 +368,7 @@ export default function StakingPage() {
         </div>
       )}
       
-      {isClient && isConnected && (
+      {isConnected && (
          <Card className="mb-8 bg-primary/10 border-primary">
             <CardHeader className="text-center">
                 <CardTitle className="font-headline text-2xl">Available to Claim</CardTitle>
@@ -425,7 +433,7 @@ export default function StakingPage() {
                 </CardContent>
             </Card>
 
-            {isClient && isConnected && !isWrongNetwork && (
+            {isConnected && !isWrongNetwork && (
                 <Card>
                     <CardHeader>
                         <CardTitle className="font-headline flex items-center gap-2">
@@ -471,7 +479,7 @@ export default function StakingPage() {
         </div>
 
         <div>
-           {isClient && (
+           {isConnected && (
             <Card>
                 <Tabs defaultValue="stake" className="w-full">
                 <CardHeader>
@@ -576,7 +584,7 @@ export default function StakingPage() {
                 </CardContent>
             </Card>
 
-            {isClient && isConnected && totalStaked > 0 && !isWrongNetwork && (
+            {isConnected && totalStaked > 0 && !isWrongNetwork && (
                 <Card className="mt-8">
                     <CardHeader>
                         <CardTitle className="font-headline flex items-center gap-2">

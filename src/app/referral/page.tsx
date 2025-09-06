@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const referralTiers = [
     { level: 1, bonus: "10%" },
@@ -47,10 +48,10 @@ export default function ReferralPage() {
             // Provide a non-functional link if wallet is not connected.
             setReferralLink(`${window.location.origin}/staking`);
         }
-    }, [isConnected, address, isClient]);
+    }, [isConnected, address]);
 
     const handleCopy = () => {
-        if(!isConnected || !referralLink.includes(address || '')) {
+        if(!isConnected || !address) {
              toast({
                 variant: "destructive",
                 title: "Wallet Not Connected",
@@ -122,20 +123,13 @@ export default function ReferralPage() {
                 </Card>
             </div>
 
-            <Card className="mb-8 border-accent">
-                <CardHeader className="flex-row items-center gap-4">
-                    <Info className="h-8 w-8 text-accent"/>
-                    <div>
-                        <CardTitle>How Referral Bonuses Work</CardTitle>
-                        <CardDescription>Understanding your rewards.</CardDescription>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-accent-foreground/80">
-                        Referral bonuses are paid out **instantly and automatically** to your wallet. When a user you referred stakes their EGLIFE tokens, the smart contract immediately sends the bonus directly to you. There is no need to claim them manually.
-                    </p>
-                </CardContent>
-            </Card>
+             <Alert className="mb-8 border-accent">
+                <Info className="h-4 w-4 text-accent"/>
+                <AlertTitle className="font-headline">How Referral Bonuses Work</AlertTitle>
+                <AlertDescription>
+                    Referral bonuses are paid out **instantly and automatically** to your wallet. When a user you referred stakes their EGLIFE tokens, the smart contract immediately sends the bonus directly to you. There is no need to claim them manually.
+                </AlertDescription>
+            </Alert>
 
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -206,22 +200,22 @@ export default function ReferralPage() {
                 </Card>
             </div>
 
-            {isClient && (
-                <section className="w-full mt-16 pt-8 border-t">
-                    <div className="container mx-auto px-4 md:px-6 flex justify-between">
-                        <Button asChild variant="outline" onClick={() => router.back()}>
-                            <Link href="#">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                            </Link>
-                        </Button>
-                        <Button asChild>
-                            <Link href="/crypto-education">
-                                Next Page <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                    </div>
-                </section>
-            )}
+            
+            <section className="w-full mt-16 pt-8 border-t">
+                <div className="container mx-auto px-4 md:px-6 flex justify-between">
+                    <Button asChild variant="outline" onClick={() => router.back()}>
+                        <Link href="#">
+                            <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                        </Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href="/crypto-education">
+                            Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+            </section>
+            
         </div>
     );
 }

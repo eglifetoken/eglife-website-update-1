@@ -41,7 +41,7 @@ export default function ProfilePage() {
         } else {
             setUpiId("user@egpay");
         }
-    }, [isConnected, address, isClient]);
+    }, [isConnected, address]);
 
 
     const handleGenerateUpi = () => {
@@ -100,6 +100,13 @@ export default function ProfilePage() {
         });
     };
 
+    if (!isClient) {
+      return (
+          <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </div>
+      );
+    }
 
     return (
         <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -124,12 +131,7 @@ export default function ProfilePage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                           {!isClient ? (
-                                <div className="flex items-center gap-2 text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    <span>Loading...</span>
-                                </div>
-                           ) : isConnected ? (
+                           {isConnected ? (
                                 <div>
                                     <Label className="text-xs text-muted-foreground">Wallet Address</Label>
                                     <p className="font-mono text-sm break-all">{address}</p>
@@ -153,12 +155,12 @@ export default function ProfilePage() {
                              <div className="space-y-2">
                                 <Label htmlFor="upi-id">Your UPI ID</Label>
                                 <div className="flex items-center space-x-2">
-                                    <Input id="upi-id" value={isClient ? upiId : ""} readOnly />
+                                    <Input id="upi-id" value={upiId} readOnly />
                                 </div>
                             </div>
                         </CardContent>
                         <CardFooter>
-                             <Button onClick={handleGenerateUpi} variant="outline" disabled={!isClient || !isConnected}>Generate New UPI ID</Button>
+                             <Button onClick={handleGenerateUpi} variant="outline" disabled={!isConnected}>Generate New UPI ID</Button>
                         </CardFooter>
                     </Card>
 
@@ -215,7 +217,7 @@ export default function ProfilePage() {
                                         <div className="flex items-center gap-2">
                                            <Dialog onOpenChange={(open) => !open && setQrValue(null)}>
                                                 <DialogTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={() => generateQrCode(account)} disabled={!isClient}>
+                                                    <Button variant="ghost" size="icon" onClick={() => generateQrCode(account)}>
                                                         <QrCode className="h-5 w-5" />
                                                     </Button>
                                                 </DialogTrigger>
@@ -229,7 +231,7 @@ export default function ProfilePage() {
                                                     <div className="flex items-center justify-center p-4">
                                                         {qrValue && <QRCode value={qrValue} size={256} />}
                                                     </div>
-                                                    <p className="text-center text-sm font-mono break-all">{isClient ? upiId : ""}</p>
+                                                    <p className="text-center text-sm font-mono break-all">{upiId}</p>
                                                 </DialogContent>
                                             </Dialog>
 

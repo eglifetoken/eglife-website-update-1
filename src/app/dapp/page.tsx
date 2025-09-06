@@ -4,7 +4,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off, IndianRupee } from "lucide-react";
+import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users, Vote, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
@@ -81,6 +81,14 @@ export default function DappPage() {
     setIsClient(true);
   }, []);
 
+  if (!isClient) {
+    return (
+        <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
        <div className="text-center mb-12">
@@ -104,7 +112,7 @@ export default function DappPage() {
                 </div>
             </CardHeader>
             <CardContent className="space-y-6">
-                {isClient && !isConnected ? (
+                {!isConnected ? (
                     <div className="text-center">
                         <p className="mb-4">Connect your wallet to get started.</p>
                         <Button onClick={() => connect({ connector: injected() })}>
@@ -113,7 +121,7 @@ export default function DappPage() {
                         </Button>
                     </div>
                 ) : (
-                    isClient && address && (
+                    address && (
                          <div>
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg bg-muted/50 border mb-6">
                                 <div>
@@ -199,22 +207,22 @@ export default function DappPage() {
           );
         })}
       </div>
-      {isClient && (
-        <section className="w-full mt-16 pt-8 border-t">
-          <div className="container mx-auto px-4 md:px-6 flex justify-between">
-              <Button asChild variant="outline" onClick={() => router.back()}>
-                  <Link href="#">
-                      <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                  </Link>
-              </Button>
-              <Button asChild>
-                  <Link href="/referral">
-                      Next Page <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-              </Button>
-          </div>
-        </section>
-      )}
+      
+      <section className="w-full mt-16 pt-8 border-t">
+        <div className="container mx-auto px-4 md:px-6 flex justify-between">
+            <Button asChild variant="outline" onClick={() => router.back()}>
+                <Link href="#">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/referral">
+                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
+        </div>
+      </section>
+      
     </div>
   );
 }
