@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, Gift, Users, BarChart2, Loader2, ArrowLeft, ArrowRight } from "lucide-react";
+import { Copy, Gift, Users, BarChart2, Loader2, ArrowLeft, ArrowRight, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -29,25 +29,30 @@ const referralHistory: any[] = [
     // Data will be populated once the system is live
 ];
 
-const defaultReferralAddress = "0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d";
 
 export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     const router = useRouter();
     const { address, isConnected } = useAccount();
+    const [referralLink, setReferralLink] = useState("");
 
     useEffect(() => {
         setIsClient(true);
-    }, []);
-
-    const referralCode = isConnected && address ? address : defaultReferralAddress;
+        if (isConnected && address) {
+            const link = `${window.location.origin}/staking?ref=${address}`;
+            setReferralLink(link);
+        } else {
+            setReferralLink(`${window.location.origin}/staking`);
+        }
+    }, [isConnected, address, isClient]);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(referralCode);
+        if(!referralLink) return;
+        navigator.clipboard.writeText(referralLink);
         toast({
             title: "Copied!",
-            description: "Your referral address has been copied to the clipboard.",
+            description: "Your referral link has been copied to the clipboard.",
         });
     };
     
@@ -91,13 +96,16 @@ export default function ReferralPage() {
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
                     <CardHeader>
-                        <CardTitle className="font-headline text-xl">Your Referral Address</CardTitle>
-                         <CardDescription>{isConnected ? "This is your wallet address." : "This is the default address."}</CardDescription>
+                        <CardTitle className="font-headline text-xl flex items-center justify-center gap-2">
+                            <Share2 className="h-5 w-5"/>
+                            Your Referral Link
+                        </CardTitle>
+                         <CardDescription>{isConnected ? "Share this link to earn bonuses." : "Connect your wallet to get your link."}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-center space-x-2">
-                            <Input value={referralCode} readOnly className="font-mono text-center text-xs" />
-                            <Button variant="outline" size="icon" onClick={handleCopy}>
+                            <Input value={referralLink} readOnly className="font-mono text-center text-xs" />
+                            <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected}>
                                 <Copy className="h-4 w-4" />
                             </Button>
                         </div>

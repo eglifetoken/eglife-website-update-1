@@ -14,7 +14,7 @@ import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { parseEther, formatEther, type BaseError } from "viem"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { bsc } from "wagmi/chains"
@@ -43,6 +43,7 @@ const mockDailyRewards: any[] = [];
 export default function StakingPage() {
   const [isClient, setIsClient] = useState(false)
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
 
   const { address, isConnected } = useAccount()
@@ -154,7 +155,8 @@ export default function StakingPage() {
     }
 
     setIsStaking(true);
-    const referrerAddress = "0x0000000000000000000000000000000000000000";
+    const sponsor = searchParams.get("ref");
+    const referrerAddress = sponsor || "0x0000000000000000000000000000000000000000";
 
     try {
         await writeContractAsync({
