@@ -14,12 +14,12 @@ const faqItems = [
     answer: "There is no official minimum, but you must have enough EGLIFE to cover the transaction fees. The contract requires an amount greater than zero."
   },
   {
-    question: "How long is my principal amount locked for?",
-    answer: "Your stake is locked for 365 days to earn the full reward. You can unstake earlier, but you will incur a penalty."
+    question: "How are rewards calculated and when do I receive them?",
+    answer: "The smart contract calculates your rewards continuously, every second, based on your staked amount and APY. Your rewards are not sent to your wallet automatically. They accumulate in the contract, and you can see your earnings grow in real-time on the staking page. You can then use the 'Claim Rewards' button to transfer your accrued rewards to your wallet at any time."
   },
   {
-    question: "How are staking rewards calculated?",
-    answer: "Rewards are calculated based on the 12% APY and the duration of your stake. The longer you stake, the more rewards you accrue."
+    question: "How long is my principal amount locked for?",
+    answer: "Your stake is locked for 365 days to earn the full reward. You can unstake earlier, but you will incur a penalty."
   },
   {
     question: "Can I unstake my tokens early?",
