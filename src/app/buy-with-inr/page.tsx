@@ -17,9 +17,11 @@ export default function BuyWithInrPage() {
     const [inrAmount, setInrAmount] = useState("1000");
     const [eglifeAmount, setEglifeAmount] = useState("");
     const [loading, setLoading] = useState(true);
+    const [isClient, setIsClient] = useState(false);
     const router = useRouter();
-    
+
     useEffect(() => {
+        setIsClient(true);
         const fetchData = async () => {
             try {
                 const data = await getTokenData();
@@ -105,11 +107,13 @@ export default function BuyWithInrPage() {
                     <Button className="w-full" size="lg" disabled>
                         Proceed to Buy
                     </Button>
-                     <Button asChild variant="outline" className="w-full" onClick={() => router.back()}>
-                        <Link href="#">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
-                        </Link>
-                    </Button>
+                    {isClient && (
+                         <Button asChild variant="outline" className="w-full" onClick={() => router.back()}>
+                            <Link href="#">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+                            </Link>
+                        </Button>
+                    )}
                 </CardFooter>
             </Card>
         </div>
