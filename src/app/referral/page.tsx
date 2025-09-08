@@ -65,6 +65,45 @@ export default function ReferralPage() {
             description: "Your referral link has been copied to the clipboard.",
         });
     };
+
+    const handleShare = async () => {
+        if (!isConnected || !address) {
+            toast({
+                variant: "destructive",
+                title: "Wallet Not Connected",
+                description: "Please connect your wallet to get your referral link.",
+            });
+            return;
+        }
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Join EGLIFE!',
+                    text: 'Join me on EGLIFE and earn crypto rewards. Use my link to register:',
+                    url: referralLink,
+                });
+                 toast({
+                    title: "Link Shared!",
+                    description: "Thank you for sharing!",
+                });
+            } catch (error) {
+                console.error("Error sharing:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Sharing Failed",
+                    description: "Could not share the link. Please try copying it instead.",
+                });
+            }
+        } else {
+            // Fallback for browsers that don't support the Web Share API
+            handleCopy();
+            toast({
+                title: "Link Copied!",
+                description: "Sharing is not supported on this browser. Your referral link has been copied instead.",
+            });
+        }
+    };
     
     if (!isClient) {
         return (
@@ -115,6 +154,9 @@ export default function ReferralPage() {
                     <CardContent>
                         <div className="flex items-center space-x-2">
                             <Input value={referralLink} readOnly className="font-mono text-center text-xs" />
+                             <Button variant="outline" size="icon" onClick={handleShare} disabled={!isConnected || !address}>
+                                <Share2 className="h-4 w-4" />
+                            </Button>
                             <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected || !address}>
                                 <Copy className="h-4 w-4" />
                             </Button>
