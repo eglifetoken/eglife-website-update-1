@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, LogIn, UserPlus, IndianRupee } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
@@ -89,6 +89,9 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
+                <SheetHeader>
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                </SheetHeader>
               <div className="flex flex-col gap-6 p-6">
                 <div className="mb-4">
                   <Link href="/">
