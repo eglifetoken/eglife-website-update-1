@@ -86,7 +86,7 @@ export default function ReferralPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Platform Referrals</CardTitle>
+                        <CardTitle className="text-sm font-medium">Your Direct Referrals</CardTitle>
                         <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -96,7 +96,7 @@ export default function ReferralPage() {
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Referral Bonuses Paid</CardTitle>
+                        <CardTitle className="text-sm font-medium">Your Bonus Earnings</CardTitle>
                         <Gift className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
