@@ -78,7 +78,7 @@ export default function BusinessPlanPage() {
                             <Users className="h-8 w-8 text-primary" />
                         </div>
                         <CardTitle className="font-headline text-3xl">Level Income</CardTitle>
-                        <CardDescription className="text-lg">Grow your income by introducing new users. Earn a commission from their investment across 10 levels.</CardDescription>
+                        <CardDescription className="text-lg">Grow your income by introducing new users. Earn a commission from their investment across 10 levels and beyond.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <Table>
@@ -95,9 +95,13 @@ export default function BusinessPlanPage() {
                                         <TableCell className="text-right font-semibold text-primary">{tier.bonus}</TableCell>
                                     </TableRow>
                                 ))}
+                                 <TableRow className="border-t-2 border-primary/20">
+                                    <TableCell className="font-medium">Royalty (Beyond Lvl 10)</TableCell>
+                                    <TableCell className="text-right font-semibold text-primary">0.1%</TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
-                        <p className="text-sm text-muted-foreground mt-4 text-center">A royalty of 0.1% is paid for referrals beyond 10 levels.</p>
+                        <p className="text-sm text-muted-foreground mt-4 text-center">Royalty is paid to unlimited depth on your entire referral network.</p>
                          <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
                             <li className="flex items-start gap-2">
                                 <CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />

@@ -294,9 +294,10 @@ export default function WhitepaperPage() {
                         <TableRow><TableCell>Level 8</TableCell><TableCell className="text-right font-semibold text-primary">0.5%</TableCell></TableRow>
                         <TableRow><TableCell>Level 9</TableCell><TableCell className="text-right font-semibold text-primary">0.25%</TableCell></TableRow>
                         <TableRow><TableCell>Level 10</TableCell><TableCell className="text-right font-semibold text-primary">0.25%</TableCell></TableRow>
-                        <TableRow><TableCell>Beyond 10 Levels (Royalty)</TableCell><TableCell className="text-right font-semibold text-primary">0.1%</TableCell></TableRow>
+                        <TableRow className="border-t-2 border-primary/20"><TableCell className="font-medium">Royalty Income</TableCell><TableCell className="text-right font-semibold text-primary">0.1%</TableCell></TableRow>
                      </TableBody>
                  </Table>
+                 <p className="text-sm text-muted-foreground mt-4">A royalty of 0.1% is paid to unlimited depth on your entire referral network beyond 10 levels.</p>
             </SectionCard>
 
             <SectionCard icon={<FileJson className="h-8 w-8 text-primary" />} title="10. Tokenomics">
@@ -357,5 +358,3 @@ export default function WhitepaperPage() {
       </div>
     );
   }
-
-
