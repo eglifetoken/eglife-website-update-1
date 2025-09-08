@@ -42,11 +42,11 @@ export default function ReferralPage() {
         setIsClient(true);
         if (isConnected && address) {
             // Ensure the link is generated correctly with the connected address.
-            const link = `${window.location.origin}/staking?ref=${address}`;
+            const link = `${window.location.origin}/register?ref=${address}`;
             setReferralLink(link);
         } else {
             // Provide a non-functional link if wallet is not connected.
-            setReferralLink(`${window.location.origin}/staking`);
+            setReferralLink(`${window.location.origin}/register`);
         }
     }, [isConnected, address]);
 

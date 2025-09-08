@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { UserPlus, Wallet, Link2Off, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RegisterPage() {
     const { address, isConnected } = useAccount();
@@ -19,8 +19,17 @@ export default function RegisterPage() {
     const { disconnect } = useDisconnect();
     const { toast } = useToast();
     const router = useRouter();
-    const [sponsorAddress, setSponsorAddress] = useState("0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d");
+    const searchParams = useSearchParams();
+    
+    const [sponsorAddress, setSponsorAddress] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
+
+    useEffect(() => {
+        const refFromUrl = searchParams.get('ref');
+        const defaultSponsor = "0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d";
+        setSponsorAddress(refFromUrl || defaultSponsor);
+    }, [searchParams]);
+
 
     const handleRegister = async () => {
         if (!sponsorAddress) {
@@ -34,8 +43,9 @@ export default function RegisterPage() {
 
         setIsRegistering(true);
 
-        // TODO: Implement actual on-chain registration logic
-        // For now, we will simulate a successful transaction.
+        // This is a placeholder for the actual registration logic.
+        // In a real scenario, you might save the sponsor relationship off-chain
+        // or have it as part of a contract interaction.
         console.log("Registering:", { user: address, sponsor: sponsorAddress });
         
         // Simulate a delay for the transaction
@@ -48,8 +58,8 @@ export default function RegisterPage() {
         });
         
         setIsRegistering(false);
-        // Redirect to a different page after success, e.g., the DApp page
-        router.push("/dapp");
+        // Redirect to staking page, preserving the sponsor address in the URL
+        router.push(`/staking?ref=${sponsorAddress}`);
     };
 
     return (
@@ -103,7 +113,7 @@ export default function RegisterPage() {
                         </div>
                     )}
                      <div className="mt-4 text-center text-sm">
-                        Already registered?{" "}
+                        Already have an account?{" "}
                         <Link href="/dapp" className="underline text-accent">
                             Go to DApp
                         </Link>
