@@ -49,12 +49,12 @@ export default function RegisterPage() {
         console.log("Registering:", { user: address, sponsor: sponsorAddress });
         
         // Simulate a delay for the transaction
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
         // On successful registration:
         toast({
             title: "Registration Successful!",
-            description: "You have successfully joined the EGLIFE ecosystem. Welcome!",
+            description: "Welcome! You will now be redirected to the staking page.",
         });
         
         setIsRegistering(false);
