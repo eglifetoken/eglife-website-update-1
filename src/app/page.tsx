@@ -17,6 +17,15 @@ const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${E
 
 const ecosystemComponents = [
   {
+    icon: Users,
+    title: "Refer and get",
+    description: "Share your referral link and earn rewards when new users join and stake.",
+    link: "/referral",
+    status: "Live",
+    statusVariant: "default",
+    aiHint: "people network"
+  },
+  {
     icon: Landmark,
     title: "Token Staking",
     description: "Stake your EGLIFE tokens to earn competitive rewards and help secure the network.",
@@ -33,15 +42,6 @@ const ecosystemComponents = [
     status: "Live",
     statusVariant: "default",
     aiHint: "briefcase"
-  },
-  {
-    icon: Users,
-    title: "Referral Program",
-    description: "Earn bonuses by inviting new users to join the EGLIFE staking platform.",
-    link: "/referral",
-    status: "Live",
-    statusVariant: "default",
-    aiHint: "people network"
   },
    {
     icon: Award,
