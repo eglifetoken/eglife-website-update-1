@@ -18,8 +18,8 @@ const PANCAKESWAP_SELL_URL = `https://pancakeswap.finance/swap?inputCurrency=${E
 const ecosystemComponents = [
   {
     icon: Users,
-    title: "Refer and get",
-    description: "Share your referral link and earn rewards when new users join and stake.",
+    title: "Refer & Earn",
+    description: "Share your referral link to earn instant rewards when new users join and stake.",
     link: "/referral",
     status: "Live",
     statusVariant: "default",
