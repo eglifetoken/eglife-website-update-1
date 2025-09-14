@@ -191,7 +191,7 @@ export default function Home() {
                     </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                    <Link href="/login">
+                    <Link href="/dapp">
                         <LogIn className="mr-2 h-5 w-5" />
                         Login
                     </Link>
@@ -447,3 +447,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
