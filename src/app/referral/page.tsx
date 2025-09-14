@@ -10,8 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
+import { useAccount, useWatchContractEvent } from "wagmi";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { formatEther } from "viem";
+
+const EGLIFE_STAKING_CONTRACT = '0xC1921f78609Bd6C683940E3d43455b41ecE28e11'; 
+const stakingContractAbi = [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"},{"internalType":"address","name":"_treasury","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"EnforcedPause","type":"error"},{"inputs":[],"name":"ExpectedPause","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"currentAllowance","type":"uint256"},{"internalType":"uint256","name":"requestedDecrease","type":"uint256"}],"name":"SafeERC20FailedDecreaseAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Claimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"newPenaltyBps","type":"uint16"}],"name":"EarlyUnstakePenaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newLockPeriod","type":"uint256"}],"name":"LockPeriodUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"maxPayoutBps","type":"uint16"}],"name":"MaxReferralPayoutUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"minStake","type":"uint256"}],"name":"MinActiveStakeForReferralUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referral","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"ReferralBonusesUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"royaltyBps","type":"uint16"}],"name":"RoyaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"SponsorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"grossAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"netStaked","type":"uint256"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"indexed":false,"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"TiersUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"TreasuryUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"unstakeAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[],"name":"BPS_DENOMINATOR","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCK_PERIOD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REF_BONUS_BPS","outputs":[{"internalType":"uint16[10]","name":"","type":"uint16[10]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"earlyUnstakePenaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTierCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTiers","outputs":[{"internalType":"uint128[]","name":"mins","type":"uint128[]"},{"internalType":"uint16[]","name":"apys","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxReferralPayoutBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"minActiveStakeForReferral","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"erc20","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"recoverERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"royaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"setReferralBonuses","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"level","type":"uint16","name":"bps","type":"uint16"}],"name":"setReferralBonusForLevel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newLock","type":"uint256"}],"name":"setLockPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_max","type":"uint16"}],"name":"setMaxReferralPayoutBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_min","type":"uint256"}],"name":"setMinActiveStakeForReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_royaltyBps","type":"uint16"}],"name":"setRoyaltyBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"setTiers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"sponsors","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sponsor","type":"address"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"principal","type":"uint256"},{"internalType":"uint128","name":"lastClaim","type":"uint128"},{"internalType":"uint128","name":"accRewards","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierApyBps","outputs":[{"internalType":"uint16[]","name":"","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierMinAmount","outputs":[{"internalType":"uint128[]","name":"","type":"uint128[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 const referralTiers = [
     { level: 1, bonus: "10%" },
@@ -26,10 +30,13 @@ const referralTiers = [
     { level: 10, bonus: "0.25%" },
 ];
 
-const referralHistory: any[] = [
-    // Data will be populated once the system is live and connected to an indexer.
-];
-
+interface ReferralEvent {
+    referrer: string;
+    referral: string;
+    level: bigint;
+    bonusAmount: bigint;
+    date: string;
+}
 
 export default function ReferralPage() {
     const { toast } = useToast();
@@ -37,18 +44,61 @@ export default function ReferralPage() {
     const router = useRouter();
     const { address, isConnected } = useAccount();
     const [referralLink, setReferralLink] = useState("");
+    const [referralHistory, setReferralHistory] = useState<ReferralEvent[]>([]);
+    const [totalBonus, setTotalBonus] = useState(0);
 
     useEffect(() => {
         setIsClient(true);
         if (isConnected && address) {
-            // Ensure the link is generated correctly with the connected address.
             const link = `${window.location.origin}/register?ref=${address}`;
             setReferralLink(link);
         } else {
-            // Provide a non-functional link if wallet is not connected.
             setReferralLink(`${window.location.origin}/register`);
         }
     }, [isConnected, address]);
+
+    useWatchContractEvent({
+        address: EGLIFE_STAKING_CONTRACT,
+        abi: stakingContractAbi,
+        eventName: 'ReferralBonusPaid',
+        onLogs(logs) {
+            if (!address) return;
+
+            const newBonuses: ReferralEvent[] = [];
+            let sessionBonus = 0;
+
+            logs.forEach(log => {
+                const { referrer, referral, level, bonusAmount } = log.args;
+                
+                // Check if the current user is the sponsor in this event
+                if (referrer && referrer.toLowerCase() === address.toLowerCase()) {
+                    const bonus = parseFloat(formatEther(bonusAmount!));
+                    
+                    const newEntry: ReferralEvent = {
+                        referrer: referrer,
+                        referral: referral!,
+                        level: level!,
+                        bonusAmount: bonusAmount!,
+                        date: new Date().toLocaleString(),
+                    };
+                    
+                    newBonuses.push(newEntry);
+                    sessionBonus += bonus;
+
+                    toast({
+                        title: "Referral Bonus Received!",
+                        description: `You earned ${bonus.toFixed(4)} EGLIFE from a Level ${level} referral.`,
+                    });
+                }
+            });
+
+            if (newBonuses.length > 0) {
+                setReferralHistory(prev => [...newBonuses, ...prev]);
+                setTotalBonus(prev => prev + sessionBonus);
+            }
+        },
+    });
+
 
     const handleCopy = () => {
         if(!isConnected || !address) {
@@ -96,7 +146,6 @@ export default function ReferralPage() {
                 });
             }
         } else {
-            // Fallback for browsers that don't support the Web Share API
             handleCopy();
             toast({
                 title: "Link Copied!",
@@ -130,7 +179,7 @@ export default function ReferralPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">--</div>
-                        <p className="text-xs text-muted-foreground">Live data coming soon</p>
+                        <p className="text-xs text-muted-foreground">Full history coming soon</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -139,8 +188,8 @@ export default function ReferralPage() {
                         <Gift className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">-- EGLIFE</div>
-                        <p className="text-xs text-muted-foreground">Live data coming soon</p>
+                        <div className="text-2xl font-bold">{totalBonus.toFixed(4)} EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">Live data from this session</p>
                     </CardContent>
                 </Card>
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
@@ -211,14 +260,14 @@ export default function ReferralPage() {
                  <Card>
                     <CardHeader>
                         <CardTitle className="font-headline">Your Referral History</CardTitle>
-                        <CardDescription>Track the activity and earnings from your referrals.</CardDescription>
+                        <CardDescription>A live feed of your referral bonuses from this session.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>User</TableHead>
-                                    <TableHead>Stake</TableHead>
+                                    <TableHead>Referred User</TableHead>
+                                    <TableHead>Level</TableHead>
                                     <TableHead className="text-right">Bonus</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -226,22 +275,22 @@ export default function ReferralPage() {
                                  {referralHistory.length > 0 ? referralHistory.map((ref, index) => (
                                     <TableRow key={index}>
                                         <TableCell>
-                                            <div className="font-medium truncate">{ref.referredUser}</div>
+                                            <div className="font-medium truncate" title={ref.referral}>{ref.referral.slice(0, 6)}...{ref.referral.slice(-4)}</div>
                                             <div className="text-xs text-muted-foreground">{ref.date}</div>
                                         </TableCell>
-                                        <TableCell>{ref.stakedAmount}</TableCell>
-                                        <TableCell className="text-right font-semibold text-green-500">+{ref.bonus}</TableCell>
+                                        <TableCell>Level {ref.level.toString()}</TableCell>
+                                        <TableCell className="text-right font-semibold text-green-500">+{parseFloat(formatEther(ref.bonusAmount)).toFixed(4)}</TableCell>
                                     </TableRow>
                                 )) : (
                                     <TableRow>
                                         <TableCell colSpan={3} className="h-24 text-center">
-                                            Referral history data is not yet available.
+                                            Listening for new referral bonuses...
                                         </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
                         </Table>
-                         <Button variant="outline" className="w-full mt-4" disabled>Load More</Button>
+                         <p className="text-xs text-muted-foreground mt-4 text-center">Full historical data is not yet available. This feed shows live data for your current session only and will reset on refresh.</p>
                     </CardContent>
                 </Card>
             </div>
@@ -265,3 +314,4 @@ export default function ReferralPage() {
         </div>
     );
 }
+
