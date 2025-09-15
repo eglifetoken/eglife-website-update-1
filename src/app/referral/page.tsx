@@ -44,8 +44,12 @@ export default function ReferralPage() {
     const router = useRouter();
     const { address, isConnected } = useAccount();
     const [referralLink, setReferralLink] = useState("");
+    
+    // Live data states
     const [referralHistory, setReferralHistory] = useState<ReferralEvent[]>([]);
     const [totalBonus, setTotalBonus] = useState(0);
+    const [directReferralCount, setDirectReferralCount] = useState(0);
+    const [recentReferrals, setRecentReferrals] = useState<string[]>([]);
 
     useEffect(() => {
         setIsClient(true);
@@ -70,7 +74,6 @@ export default function ReferralPage() {
             logs.forEach(log => {
                 const { referrer, referral, level, bonusAmount } = log.args;
                 
-                // Check if the current user is the sponsor in this event
                 if (referrer && referrer.toLowerCase() === address.toLowerCase()) {
                     const bonus = parseFloat(formatEther(bonusAmount!));
                     
@@ -96,6 +99,28 @@ export default function ReferralPage() {
                 setReferralHistory(prev => [...newBonuses, ...prev]);
                 setTotalBonus(prev => prev + sessionBonus);
             }
+        },
+    });
+
+    useWatchContractEvent({
+        address: EGLIFE_STAKING_CONTRACT,
+        abi: stakingContractAbi,
+        eventName: 'Staked',
+        onLogs(logs) {
+            if (!address) return;
+
+            logs.forEach(log => {
+                const { user, sponsor } = log.args;
+                
+                if (sponsor && sponsor.toLowerCase() === address.toLowerCase()) {
+                    setDirectReferralCount(prev => prev + 1);
+                    setRecentReferrals(prev => [user!, ...prev].slice(0, 5)); // Keep last 5
+                     toast({
+                        title: "New Referral!",
+                        description: `A new user has staked using your referral link.`,
+                    });
+                }
+            });
         },
     });
 
@@ -178,8 +203,16 @@ export default function ReferralPage() {
                         <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">--</div>
-                        <p className="text-xs text-muted-foreground">Full history coming soon</p>
+                        <div className="text-2xl font-bold">{directReferralCount}</div>
+                        <p className="text-xs text-muted-foreground">Live count for this session</p>
+                        {recentReferrals.length > 0 && (
+                            <div className="mt-2 text-left">
+                                <p className="text-xs font-semibold">Recent:</p>
+                                <ul className="text-xs text-muted-foreground font-mono list-disc list-inside">
+                                    {recentReferrals.map((ref, i) => <li key={i} className="truncate" title={ref}>{ref}</li>)}
+                                </ul>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
                  <Card>
@@ -315,5 +348,7 @@ export default function ReferralPage() {
     );
 }
 
+
+    
 
     
