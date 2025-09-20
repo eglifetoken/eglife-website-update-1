@@ -233,7 +233,7 @@ export default function WhitepaperPage() {
                         <TableRow><TableCell>Library</TableCell><TableCell>OpenZeppelin v4.9.0 (Audit-grade)</TableCell></TableRow>
                         <TableRow><TableCell>Standard</TableCell><TableCell>BEP-20 (compatible with ERC-20)</TableCell></TableRow>
                         <TableRow><TableCell>Verification</TableCell><TableCell>Fully verified on BscScan with source code</TableCell></TableRow>
-                        <TableRow><TableCell>Deployment Address</TableCell><TableCell className="font-mono text-xs">0xca326a5e15b9451efC1A6BddaD6fB098a4D09113</TableCell></TableRow>
+                        <TableRow><TableCell>Deployment Address</TableCell><TableCell className="font-mono text-xs">0xaee80bd1eC193446bf86319f8bd36135DDff5EBc</TableCell></TableRow>
                      </TableBody>
                  </Table>
             </SectionCard>
@@ -259,12 +259,13 @@ export default function WhitepaperPage() {
                          </TableRow>
                      </TableHeader>
                      <TableBody>
-                        <TableRow><TableCell>Starter Stake</TableCell><TableCell>10 - 100</TableCell><TableCell className="text-right font-semibold text-primary">12%</TableCell></TableRow>
-                        <TableRow><TableCell>Bronze Stake</TableCell><TableCell>101 - 500</TableCell><TableCell className="text-right font-semibold text-primary">18%</TableCell></TableRow>
-                        <TableRow><TableCell>Silver Stake</TableCell><TableCell>501 - 1,000</TableCell><TableCell className="text-right font-semibold text-primary">20%</TableCell></TableRow>
-                        <TableRow><TableCell>Gold Stake</TableCell><TableCell>1,001 - 5,000</TableCell><TableCell className="text-right font-semibold text-primary">22%</TableCell></TableRow>
-                        <TableRow><TableCell>Platinum Stake</TableCell><TableCell>5,001 - 10,000</TableCell><TableCell className="text-right font-semibold text-primary">24%</TableCell></TableRow>
-                        <TableRow><TableCell>Diamond Stake</TableCell><TableCell>10,001 - ∞</TableCell><TableCell className="text-right font-semibold text-primary">26%</TableCell></TableRow>
+                        <TableRow><TableCell>Starter</TableCell><TableCell>10 - 100</TableCell><TableCell className="text-right font-semibold text-primary">12%</TableCell></TableRow>
+                        <TableRow><TableCell>Bronze</TableCell><TableCell>101 - 500</TableCell><TableCell className="text-right font-semibold text-primary">18%</TableCell></TableRow>
+                        <TableRow><TableCell>Silver</TableCell><TableCell>501 - 1,000</TableCell><TableCell className="text-right font-semibold text-primary">20%</TableCell></TableRow>
+                        <TableRow><TableCell>Gold</TableCell><TableCell>1,001 - 5,000</TableCell><TableCell className="text-right font-semibold text-primary">22%</TableCell></TableRow>
+                        <TableRow><TableCell>Platinum</TableCell><TableCell>5,001 - 10,000</TableCell><TableCell className="text-right font-semibold text-primary">24%</TableCell></TableRow>
+                        <TableRow><TableCell>Diamond</TableCell><TableCell>10,001 - 25,000</TableCell><TableCell className="text-right font-semibold text-primary">26%</TableCell></TableRow>
+                        <TableRow><TableCell>Diamond Stake</TableCell><TableCell>25,001 - ∞</TableCell><TableCell className="text-right font-semibold text-primary">30%</TableCell></TableRow>
                      </TableBody>
                  </Table>
                   <ul className="mt-6 space-y-4 text-sm">

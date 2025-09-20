@@ -9,7 +9,8 @@ const stakingTiers = [
     { name: "Silver", amount: "501 - 1,000 EGLIFE", apy: "20%" },
     { name: "Gold", amount: "1,001 - 5,000 EGLIFE", apy: "22%" },
     { name: "Platinum", amount: "5,001 - 10,000 EGLIFE", apy: "24%" },
-    { name: "Diamond", amount: "10,001+ EGLIFE", apy: "26%" },
+    { name: "Diamond", amount: "10,001 - 25,000 EGLIFE", apy: "26%" },
+    { name: "Diamond Stake", amount: "25,001+ EGLIFE", apy: "30%" },
 ];
 
 const referralTiers = [
