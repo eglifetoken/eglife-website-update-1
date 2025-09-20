@@ -72,9 +72,9 @@ export default function DappPage() {
   const { disconnect } = useDisconnect()
   const router = useRouter();
 
-  const { data: egldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
-  const { data: bnbBalance } = useBalance({ address, })
-  const { data: usdtBalance } = useBalance({ address, token: USDT_CONTRACT_ADDRESS })
+  const { data: egldBalance, isLoading: isLoadingEgld } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
+  const { data: bnbBalance, isLoading: isLoadingBnb } = useBalance({ address, })
+  const { data: usdtBalance, isLoading: isLoadingUsdt } = useBalance({ address, token: USDT_CONTRACT_ADDRESS })
 
 
   useEffect(() => {
@@ -139,8 +139,12 @@ export default function DappPage() {
                                         <CardTitle className="text-sm font-medium">EGLIFE Balance</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-xl font-bold">{egldBalance ? parseFloat(formatUnits(egldBalance.value, egldBalance.decimals)).toFixed(2) : '0.00'}</p>
-                                        <p className="text-xs text-muted-foreground">{egldBalance?.symbol}</p>
+                                        {isLoadingEgld ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                                            <>
+                                                <p className="text-xl font-bold">{egldBalance ? parseFloat(formatUnits(egldBalance.value, egldBalance.decimals)).toFixed(2) : '0.00'}</p>
+                                                <p className="text-xs text-muted-foreground">{egldBalance?.symbol}</p>
+                                            </>
+                                        )}
                                     </CardContent>
                                 </Card>
                                  <Card>
@@ -148,8 +152,12 @@ export default function DappPage() {
                                         <CardTitle className="text-sm font-medium">BNB Balance</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-xl font-bold">{bnbBalance ? parseFloat(formatUnits(bnbBalance.value, bnbBalance.decimals)).toFixed(4) : '0.00'}</p>
-                                        <p className="text-xs text-muted-foreground">{bnbBalance?.symbol}</p>
+                                        {isLoadingBnb ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                                            <>
+                                                <p className="text-xl font-bold">{bnbBalance ? parseFloat(formatUnits(bnbBalance.value, bnbBalance.decimals)).toFixed(4) : '0.00'}</p>
+                                                <p className="text-xs text-muted-foreground">{bnbBalance?.symbol}</p>
+                                            </>
+                                        )}
                                     </CardContent>
                                 </Card>
                                  <Card>
@@ -157,8 +165,12 @@ export default function DappPage() {
                                         <CardTitle className="text-sm font-medium">USDT Balance</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-xl font-bold">{usdtBalance ? parseFloat(formatUnits(usdtBalance.value, usdtBalance.decimals)).toFixed(2) : '0.00'}</p>
-                                        <p className="text-xs text-muted-foreground">{usdtBalance?.symbol}</p>
+                                        {isLoadingUsdt ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                                            <>
+                                                <p className="text-xl font-bold">{usdtBalance ? parseFloat(formatUnits(usdtBalance.value, usdtBalance.decimals)).toFixed(2) : '0.00'}</p>
+                                                <p className="text-xs text-muted-foreground">{usdtBalance?.symbol}</p>
+                                            </>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </div>
