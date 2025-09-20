@@ -72,9 +72,9 @@ export default function DappPage() {
   const { disconnect } = useDisconnect()
   const router = useRouter();
 
-  const { data: egldBalance, isLoading: isLoadingEgld } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS })
+  const { data: egldBalance, isLoading: isLoadingEgld } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS as `0x${string}` })
   const { data: bnbBalance, isLoading: isLoadingBnb } = useBalance({ address, })
-  const { data: usdtBalance, isLoading: isLoadingUsdt } = useBalance({ address, token: USDT_CONTRACT_ADDRESS })
+  const { data: usdtBalance, isLoading: isLoadingUsdt } = useBalance({ address, token: USDT_CONTRACT_ADDRESS as `0x${string}` })
 
 
   useEffect(() => {
@@ -238,3 +238,5 @@ export default function DappPage() {
     </div>
   );
 }
+
+    
