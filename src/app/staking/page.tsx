@@ -51,39 +51,33 @@ export default function StakingPage() {
   const { disconnect } = useDisconnect()
   const { switchChain } = useSwitchChain()
   const chainId = useChainId()
+  const isWrongNetwork = isConnected && chainId !== bsc.id;
   
-  const { data: balance, refetch: refetchBalance } = useBalance({
+  const { data: balance, isLoading: isLoadingBalance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
   })
 
-  const { data: allowance, refetch: refetchAllowance } = useReadContract({
+  const { data: allowance, isLoading: isLoadingAllowance, refetch: refetchAllowance } = useReadContract({
     abi: tokenContractAbi,
     address: EGLIFE_TOKEN_CONTRACT,
     functionName: 'allowance',
     args: [address!, EGLIFE_STAKING_CONTRACT],
-    query: {
-        enabled: !!address,
-    }
   });
 
-  const { data: stakedData, refetch: refetchStakedBalance } = useReadContract({
+  const { data: stakedData, isLoading: isLoadingStaked, refetch: refetchStakedBalance } = useReadContract({
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'stakedOf',
     args: [address!],
-    query: {
-        enabled: !!address,
-    }
   });
 
-  const { data: earnedData, refetch: refetchEarned } = useReadContract({
+  const { data: earnedData, isLoading: isLoadingEarned, refetch: refetchEarned } = useReadContract({
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'earned',
     args: [address!],
      query: {
-        enabled: !!address,
         refetchInterval: 5000, // Refetch every 5 seconds
     }
   });
@@ -110,7 +104,6 @@ export default function StakingPage() {
   
   const parsedStakeAmount = stakeAmount ? parseEther(stakeAmount) : 0n;
   const needsApproval = allowance !== undefined && parsedStakeAmount > 0 && allowance < parsedStakeAmount;
-  const isWrongNetwork = isConnected && chainId !== bsc.id;
   
   const handleError = (error: any, title: string) => {
     const baseError = error as BaseError;
@@ -331,8 +324,12 @@ export default function StakingPage() {
                     <Wallet className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{balance ? parseFloat(balance.formatted).toFixed(2) : '0.00'}</div>
-                    <p className="text-xs text-muted-foreground">{balance?.symbol}</p>
+                    {isLoadingBalance ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                        <>
+                            <div className="text-2xl font-bold">{balance ? parseFloat(balance.formatted).toFixed(2) : '0.00'}</div>
+                            <p className="text-xs text-muted-foreground">{balance?.symbol}</p>
+                        </>
+                    )}
                 </CardContent>
             </Card>
             <Card>
@@ -341,8 +338,12 @@ export default function StakingPage() {
                     <Landmark className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{totalStaked.toFixed(2)}</div>
-                    <p className="text-xs text-muted-foreground">Staked in contract</p>
+                    {isLoadingStaked ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                        <>
+                            <div className="text-2xl font-bold">{totalStaked.toFixed(2)}</div>
+                            <p className="text-xs text-muted-foreground">Staked in contract</p>
+                        </>
+                    )}
                 </CardContent>
             </Card>
             <Card className="cursor-pointer hover:bg-muted/50" onClick={() => setIsHistoryOpen(true)}>
@@ -351,8 +352,12 @@ export default function StakingPage() {
                     <LineChart className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{totalEarned.toFixed(4)}</div>
-                    <p className="text-xs text-muted-foreground">Click to view daily history</p>
+                    {isLoadingEarned ? <Loader2 className="h-6 w-6 animate-spin"/> : (
+                        <>
+                            <div className="text-2xl font-bold">{totalEarned.toFixed(4)}</div>
+                            <p className="text-xs text-muted-foreground">Click to view daily history</p>
+                        </>
+                    )}
                 </CardContent>
             </Card>
             <Card>
@@ -375,8 +380,12 @@ export default function StakingPage() {
                 <CardDescription>This is the amount of rewards you can claim right now.</CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-                <div className="text-4xl font-bold mb-2">{availableToClaim.toFixed(4)}</div>
-                <p className="text-sm text-primary/80">EGLIFE</p>
+                 {isLoadingEarned ? <Loader2 className="h-8 w-8 animate-spin mx-auto"/> : (
+                    <>
+                        <div className="text-4xl font-bold mb-2">{availableToClaim.toFixed(4)}</div>
+                        <p className="text-sm text-primary/80">EGLIFE</p>
+                    </>
+                 )}
             </CardContent>
             <CardFooter className="justify-center">
                  <Button size="lg" onClick={handleClaim} disabled={isPending || availableToClaim <= 0 || isWrongNetwork}>
@@ -519,7 +528,7 @@ export default function StakingPage() {
                             disabled={!isConnected || isApproving || !stakeAmount || isWrongNetwork}
                             onClick={handleApprove}
                         >
-                            {isApproving ? <><Loader2 className="animate-spin" /> Approving...</> : "Approve"}
+                            {isApproving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Approving...</> : "Approve"}
                         </Button>
                     ) : (
                         <Button 
@@ -527,7 +536,7 @@ export default function StakingPage() {
                             disabled={!isConnected || isStaking || !stakeAmount || isWrongNetwork}
                             onClick={handleStake}
                         >
-                            {isStaking ? <><Loader2 className="animate-spin" /> Staking...</> : "Stake Now"}
+                            {isStaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Staking...</> : "Stake Now"}
                         </Button>
                     )}
                     </CardFooter>
@@ -556,7 +565,7 @@ export default function StakingPage() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount || isWrongNetwork}
                       onClick={() => handleUnstake(false)}
                     >
-                      {isUnstaking ? <><Loader2 className="animate-spin" />Unstaking...</> : "Unstake Amount"}
+                      {isUnstaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake Amount"}
                     </Button>
                      <Button 
                       className="w-full" 
@@ -564,7 +573,7 @@ export default function StakingPage() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
                       onClick={() => handleUnstake(true)}
                     >
-                      {isUnstaking ? <><Loader2 className="animate-spin" />Unstaking...</> : "Unstake All"}
+                      {isUnstaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake All"}
                     </Button>
                     </CardFooter>
                 </TabsContent>
@@ -623,5 +632,6 @@ export default function StakingPage() {
     </>
   )
 }
+
 
     
