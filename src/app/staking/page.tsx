@@ -6,13 +6,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2 } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { useState, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { parseEther, formatEther, type BaseError } from "viem"
+import { parseEther, formatEther, type BaseError, zeroAddress } from "viem"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -33,7 +33,8 @@ const stakingTiers = [
     { name: "Silver", amount: "501 - 1,000", apy: "20%" },
     { name: "Gold", amount: "1,001 - 5,000", apy: "22%" },
     { name: "Platinum", amount: "5,001 - 10,000", apy: "24%" },
-    { name: "Diamond", amount: "10,001+ EGLIFE", apy: "26%" },
+    { name: "Diamond", amount: "10,001 - 25,000", apy: "26%" },
+    { name: "Diamond Stake", amount: "25,001+", apy: "30%" },
 ];
 
 const mockClaimHistory: any[] = [];
@@ -80,6 +81,13 @@ export default function StakingPage() {
      query: {
         refetchInterval: 5000, // Refetch every 5 seconds
     }
+  });
+  
+  const { data: sponsorAddress, isLoading: isLoadingSponsor } = useReadContract({
+    abi: stakingContractAbi,
+    address: EGLIFE_STAKING_CONTRACT,
+    functionName: 'sponsors',
+    args: [address!],
   });
 
 
@@ -278,7 +286,7 @@ export default function StakingPage() {
             </Alert>
         )}
       
-       {!isConnected && (
+       {!isConnected ? (
          <Card className="mb-8 text-center">
             <CardHeader>
                 <CardTitle className="font-headline text-2xl">Connect Your Wallet</CardTitle>
@@ -291,15 +299,23 @@ export default function StakingPage() {
                 </Button>
             </CardContent>
          </Card>
-      )}
-      
-       {isConnected && (
-         <Card className="mb-8 text-center">
-            <CardHeader>
+      ) : (
+        <Card className="mb-8">
+            <CardHeader className="text-center">
                 <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
-                 <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
+                <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="text-center space-y-4">
+                 <div className="p-3 rounded-lg bg-muted border text-center">
+                    <Label className="flex items-center justify-center gap-2 text-xs text-muted-foreground"><UserCheck className="h-4 w-4" /> Your Sponsor</Label>
+                    {isLoadingSponsor ? (
+                        <Loader2 className="h-4 w-4 animate-spin mx-auto mt-1" />
+                    ) : (
+                        <p className="font-mono text-sm truncate mt-1">
+                            {sponsorAddress && sponsorAddress !== zeroAddress ? sponsorAddress : 'None'}
+                        </p>
+                    )}
+                </div>
                  {isWrongNetwork ? (
                      <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg" variant="destructive">
                         <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
@@ -312,7 +328,7 @@ export default function StakingPage() {
                     </Button>
                 )}
             </CardContent>
-         </Card>
+        </Card>
       )}
 
 
@@ -373,7 +389,7 @@ export default function StakingPage() {
         </div>
       )}
       
-      {isConnected && (
+       {isConnected && (
          <Card className="mb-8 bg-primary/10 border-primary">
             <CardHeader className="text-center">
                 <CardTitle className="font-headline text-2xl">Available to Claim</CardTitle>
@@ -632,3 +648,4 @@ export default function StakingPage() {
     </>
   )
 }
+
