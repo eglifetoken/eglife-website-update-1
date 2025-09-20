@@ -233,7 +233,7 @@ export default function WhitepaperPage() {
                         <TableRow><TableCell>Library</TableCell><TableCell>OpenZeppelin v4.9.0 (Audit-grade)</TableCell></TableRow>
                         <TableRow><TableCell>Standard</TableCell><TableCell>BEP-20 (compatible with ERC-20)</TableCell></TableRow>
                         <TableRow><TableCell>Verification</TableCell><TableCell>Fully verified on BscScan with source code</TableCell></TableRow>
-                        <TableRow><TableCell>Deployment Address</TableCell><TableCell className="font-mono text-xs">0xaee80bd1eC193446bf86319f8bd36135DDff5EBc</TableCell></TableRow>
+                        <TableRow><TableCell>Deployment Address</TableCell><TableCell className="font-mono text-xs">0xC1921f78609Bd6C683940E3d43455b41ecE28e11</TableCell></TableRow>
                      </TableBody>
                  </Table>
             </SectionCard>
@@ -265,7 +265,7 @@ export default function WhitepaperPage() {
                         <TableRow><TableCell>Gold</TableCell><TableCell>1,001 - 5,000</TableCell><TableCell className="text-right font-semibold text-primary">22%</TableCell></TableRow>
                         <TableRow><TableCell>Platinum</TableCell><TableCell>5,001 - 10,000</TableCell><TableCell className="text-right font-semibold text-primary">24%</TableCell></TableRow>
                         <TableRow><TableCell>Diamond</TableCell><TableCell>10,001 - 25,000</TableCell><TableCell className="text-right font-semibold text-primary">26%</TableCell></TableRow>
-                        <TableRow><TableCell>Diamond Stake</TableCell><TableCell>25,001 - ∞</TableCell><TableCell className="text-right font-semibold text-primary">30%</TableCell></TableRow>
+                        <TableRow><TableCell>Diamond Stake</TableCell><TableCell>25,001+</TableCell><TableCell className="text-right font-semibold text-primary">30%</TableCell></TableRow>
                      </TableBody>
                  </Table>
                   <ul className="mt-6 space-y-4 text-sm">
@@ -359,3 +359,5 @@ export default function WhitepaperPage() {
       </div>
     );
   }
+
+    
