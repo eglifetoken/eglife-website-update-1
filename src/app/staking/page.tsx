@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
@@ -34,6 +34,15 @@ const stakingTiers = [
     { level: "LV 4", range: "5,000 – 9,999", daily: "0.48%", monthly: "14.58%", yearly: "175%" },
     { level: "LV 5", range: "10,000 – 29,999", daily: "0.55%", monthly: "16.67%", yearly: "200%" },
     { level: "LV 6", range: "30,000 – 50,000", daily: "0.68%", monthly: "20.83%", yearly: "250%" },
+];
+
+const levelUpgradeRules = [
+    { from: "LV0", to: "LV1", selfStaking: "50 – 499", groupA: 0, groupBC: 0, total: 0 },
+    { from: "LV1", to: "LV2", selfStaking: "500 – 1,999", groupA: 3, groupBC: 5, total: 8 },
+    { from: "LV2", to: "LV3", selfStaking: "2,000 – 4,999", groupA: 6, groupBC: 20, total: 26 },
+    { from: "LV3", to: "LV4", selfStaking: "5,000 – 9,999", groupA: 15, groupBC: 35, total: 50 },
+    { from: "LV4", to: "LV5", selfStaking: "10,000 – 29,999", groupA: 25, groupBC: 70, total: 95 },
+    { from: "LV5", to: "LV6", selfStaking: "30,000 – 50,000", groupA: 35, groupBC: 180, total: 215 },
 ];
 
 const mockClaimHistory: any[] = [];
@@ -451,6 +460,40 @@ export default function StakingPage() {
                             </div>
                         </div>
                     </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-3">
+                        <ArrowUp className="h-7 w-7 text-primary"/>
+                        <CardTitle className="font-headline text-2xl">Level Upgrade Rules</CardTitle>
+                    </div>
+                    <CardDescription>Advance through the levels by meeting self-staking and team member requirements.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Upgrade</TableHead>
+                                <TableHead>Self-Staking (EGLIFE)</TableHead>
+                                <TableHead>Group A (Directs)</TableHead>
+                                <TableHead>Group B + C</TableHead>
+                                <TableHead>Total</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {levelUpgradeRules.map((rule) => (
+                                <TableRow key={rule.from}>
+                                    <TableCell className="font-medium">{rule.from} &rarr; {rule.to}</TableCell>
+                                    <TableCell>{rule.selfStaking}</TableCell>
+                                    <TableCell>{rule.groupA}</TableCell>
+                                    <TableCell>{rule.groupBC}</TableCell>
+                                    <TableCell>{rule.total}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </CardContent>
             </Card>
 
