@@ -249,56 +249,56 @@ export default function WhitepaperPage() {
             </SectionCard>
 
             <SectionCard icon={<GanttChartSquare className="h-8 w-8 text-primary" />} title="8. Staking Plan">
-                 <p className="mb-6 text-foreground/80">The EGLIFE tiered staking plan is designed to reward community members based on their commitment level. The APY and tier ranges are configurable by the admin to adapt to market conditions.</p>
-                 <Table>
-                     <TableHeader>
-                         <TableRow>
-                             <TableHead>Package Name</TableHead>
-                             <TableHead>Staking Amount (EGLIFE)</TableHead>
-                             <TableHead className="text-right">APY</TableHead>
-                         </TableRow>
-                     </TableHeader>
-                     <TableBody>
-                        <TableRow><TableCell>Starter</TableCell><TableCell>10 - 100</TableCell><TableCell className="text-right font-semibold text-primary">12%</TableCell></TableRow>
-                        <TableRow><TableCell>Bronze</TableCell><TableCell>101 - 500</TableCell><TableCell className="text-right font-semibold text-primary">18%</TableCell></TableRow>
-                        <TableRow><TableCell>Silver</TableCell><TableCell>501 - 1,000</TableCell><TableCell className="text-right font-semibold text-primary">20%</TableCell></TableRow>
-                        <TableRow><TableCell>Gold</TableCell><TableCell>1,001 - 5,000</TableCell><TableCell className="text-right font-semibold text-primary">22%</TableCell></TableRow>
-                        <TableRow><TableCell>Platinum</TableCell><TableCell>5,001 - 10,000</TableCell><TableCell className="text-right font-semibold text-primary">24%</TableCell></TableRow>
-                        <TableRow><TableCell>Diamond</TableCell><TableCell>10,001 - 25,000</TableCell><TableCell className="text-right font-semibold text-primary">26%</TableCell></TableRow>
-                        <TableRow><TableCell>Diamond Stake</TableCell><TableCell>25,001+</TableCell><TableCell className="text-right font-semibold text-primary">30%</TableCell></TableRow>
-                     </TableBody>
-                 </Table>
-                  <ul className="mt-6 space-y-4 text-sm">
-                    <li className="flex items-start gap-3"><CheckCircle className="h-4 w-4 text-accent mt-1 flex-shrink-0" /><div><strong>Lock Period:</strong> 365 Days (principal locked; rewards claimable anytime)</div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-4 w-4 text-accent mt-1 flex-shrink-0" /><div><strong>Early Unstake Penalty:</strong> 5% of staked amount + loss of unclaimed rewards</div></li>
-                    <li className="flex items-start gap-3"><CheckCircle className="h-4 w-4 text-accent mt-1 flex-shrink-0" /><div><strong>Reward Claim:</strong> Anytime after accumulated rewards reach at least 1 EGLIFE.</div></li>
-                </ul>
-            </SectionCard>
-
-            <SectionCard icon={<BookOpen className="h-8 w-8 text-primary" />} title="9. Referral Plan">
-                 <p className="mb-6 text-foreground/80">Our multi-level referral plan is designed to incentivize community growth. Referrers must have an active stake to be eligible for bonuses, which are paid instantly from the staking deposits of their referred users.</p>
+                 <p className="mb-6 text-foreground/80">The EGLIFE tiered staking plan is designed to reward community members based on their commitment level. The returns are calculated per-second and can be claimed at any time.</p>
                  <Table>
                      <TableHeader>
                          <TableRow>
                              <TableHead>Level</TableHead>
-                             <TableHead className="text-right">Bonus % of Staked Amount</TableHead>
+                             <TableHead>Stake Range (EGLIFE)</TableHead>
+                             <TableHead>Daily Income</TableHead>
+                             <TableHead>Monthly Income</TableHead>
+                             <TableHead className="text-right">Yearly Income</TableHead>
                          </TableRow>
                      </TableHeader>
                      <TableBody>
-                        <TableRow><TableCell>Level 1</TableCell><TableCell className="text-right font-semibold text-primary">10%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 2</TableCell><TableCell className="text-right font-semibold text-primary">5%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 3</TableCell><TableCell className="text-right font-semibold text-primary">3%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 4</TableCell><TableCell className="text-right font-semibold text-primary">2%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 5</TableCell><TableCell className="text-right font-semibold text-primary">1%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 6</TableCell><TableCell className="text-right font-semibold text-primary">1%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 7</TableCell><TableCell className="text-right font-semibold text-primary">0.5%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 8</TableCell><TableCell className="text-right font-semibold text-primary">0.5%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 9</TableCell><TableCell className="text-right font-semibold text-primary">0.25%</TableCell></TableRow>
-                        <TableRow><TableCell>Level 10</TableCell><TableCell className="text-right font-semibold text-primary">0.25%</TableCell></TableRow>
-                        <TableRow className="border-t-2 border-primary/20"><TableCell className="font-medium">Royalty Income</TableCell><TableCell className="text-right font-semibold text-primary">0.1%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 1</TableCell><TableCell>50 – 499</TableCell><TableCell>0.27%</TableCell><TableCell>8.33%</TableCell><TableCell className="text-right font-semibold text-primary">100%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 2</TableCell><TableCell>500 – 1,999</TableCell><TableCell>0.34%</TableCell><TableCell>10.42%</TableCell><TableCell className="text-right font-semibold text-primary">125%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 3</TableCell><TableCell>2,000 – 4,999</TableCell><TableCell>0.41%</TableCell><TableCell>12.50%</TableCell><TableCell className="text-right font-semibold text-primary">150%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 4</TableCell><TableCell>5,000 – 9,999</TableCell><TableCell>0.48%</TableCell><TableCell>14.58%</TableCell><TableCell className="text-right font-semibold text-primary">175%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 5</TableCell><TableCell>10,000 – 29,999</TableCell><TableCell>0.55%</TableCell><TableCell>16.67%</TableCell><TableCell className="text-right font-semibold text-primary">200%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 6</TableCell><TableCell>30,000 – 50,000</TableCell><TableCell>0.68%</TableCell><TableCell>20.83%</TableCell><TableCell className="text-right font-semibold text-primary">250%</TableCell></TableRow>
                      </TableBody>
                  </Table>
-                 <p className="text-sm text-muted-foreground mt-4">A royalty of 0.1% is paid to unlimited depth on your entire referral network beyond 10 levels.</p>
+                  <ul className="mt-6 space-y-4 text-sm">
+                    <li className="flex items-start gap-3"><CheckCircle className="h-4 w-4 text-accent mt-1 flex-shrink-0" /><div><strong>Lock Period:</strong> 365 Days per deposit.</div></li>
+                    <li className="flex items-start gap-3"><CheckCircle className="h-4 w-4 text-accent mt-1 flex-shrink-0" /><div><strong>Earnings:</strong> Accrue per-second and are claimable anytime.</div></li>
+                </ul>
+            </SectionCard>
+
+            <SectionCard icon={<BookOpen className="h-8 w-8 text-primary" />} title="9. Referral & Team Income Plan">
+                 <p className="mb-6 text-foreground/80">Our income plan rewards community building through two primary mechanisms: a one-time direct referral bonus and ongoing team income from the staking rewards of your downline.</p>
+                 <h3 className="font-semibold text-lg mb-2">One-Time Referral Bonus</h3>
+                 <p className="mb-4 text-foreground/80">A one-time bonus of <strong>10 EGLIFE</strong> is paid to a direct sponsor upon a new user's successful purchase and another <strong>10 EGLIFE</strong> upon their first successful stake. This bonus is variable and can be updated by the admin.</p>
+                
+                 <h3 className="font-semibold text-lg mb-2 mt-6">Team Income (on Downline Staking Rewards)</h3>
+                 <p className="mb-4 text-foreground/80">Earn a percentage of the staking rewards generated by your downline. This income is gated by your achieved staking level (LV 2 and above).</p>
+                 <Table>
+                     <TableHeader>
+                         <TableRow>
+                             <TableHead>Your Achieved Level</TableHead>
+                             <TableHead>Group A (Depth-1)</TableHead>
+                             <TableHead>Group B (Depth-2)</TableHead>
+                             <TableHead className="text-right">Group C (Depth-3)</TableHead>
+                         </TableRow>
+                     </TableHeader>
+                     <TableBody>
+                        <TableRow><TableCell>LV 2</TableCell><TableCell className="font-semibold text-primary">10%</TableCell><TableCell>2%</TableCell><TableCell className="text-right">0.50%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 3</TableCell><TableCell className="font-semibold text-primary">12%</TableCell><TableCell>3%</TableCell><TableCell className="text-right">1.00%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 4</TableCell><TableCell className="font-semibold text-primary">14%</TableCell><TableCell>4%</TableCell><TableCell className="text-right">1.50%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 5</TableCell><TableCell className="font-semibold text-primary">16%</TableCell><TableCell>5%</TableCell><TableCell className="text-right">2.00%</TableCell></TableRow>
+                        <TableRow><TableCell>LV 6</TableCell><TableCell className="font-semibold text-primary">18%</TableCell><TableCell>6%</TableCell><TableCell className="text-right">2.50%</TableCell></TableRow>
+                     </TableBody>
+                 </Table>
             </SectionCard>
 
             <SectionCard icon={<FileJson className="h-8 w-8 text-primary" />} title="10. Tokenomics">
