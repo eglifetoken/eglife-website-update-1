@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Menu, LogIn, UserPlus, IndianRupee } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -33,6 +34,7 @@ const Logo = () => (
 
 export default function Header() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
     <Link
@@ -88,7 +90,7 @@ export default function Header() {
 
         {/* Mobile & Tablet: Hamburger menu on the right */}
         <div className="flex items-center lg:hidden">
-           <Sheet>
+           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
@@ -100,7 +102,7 @@ export default function Header() {
                 </SheetHeader>
               <div className="flex flex-col gap-6 p-6">
                 <div className="mb-4">
-                  <Link href="/">
+                  <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                      <Logo />
                   </Link>
                 </div>
@@ -108,6 +110,7 @@ export default function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
                         "text-lg font-medium transition-colors hover:text-primary",
                         pathname === link.href ? "text-primary" : "text-foreground/80"
@@ -118,13 +121,13 @@ export default function Header() {
                 ))}
                 <div className="flex flex-col gap-4 pt-4 border-t">
                     <Button asChild>
-                        <Link href="/register">
+                        <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
                         <UserPlus className="mr-2 h-5 w-5" />
                         Register
                         </Link>
                     </Button>
                     <Button asChild variant="outline">
-                        <Link href="/dapp">
+                        <Link href="/dapp" onClick={() => setIsMobileMenuOpen(false)}>
                         <LogIn className="mr-2 h-5 w-5" />
                         Login
                         </Link>
