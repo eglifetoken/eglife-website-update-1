@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, TrendingUp, CheckCircle, Percent, PiggyBank } from "lucide-react";
+import { Users, TrendingUp, CheckCircle, Percent, PiggyBank, AlertTriangle } from "lucide-react";
 
 const stakingTiers = [
     { name: "Starter", amount: "10 - 100 EGLIFE", apy: "12%" },
@@ -116,6 +116,25 @@ export default function BusinessPlanPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            <div className="mt-16">
+                <Card className="border-destructive/50">
+                    <CardHeader className="flex-row items-center gap-4">
+                         <AlertTriangle className="h-8 w-8 text-destructive flex-shrink-0" />
+                        <CardTitle className="font-headline text-2xl text-destructive">Disclaimer</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="list-disc pl-5 space-y-2 text-foreground/80">
+                            <li>This plan is prepared for <strong>educational and informational purposes only</strong> and does not constitute financial or investment advice.</li>
+                            <li>Actual returns, bonuses, and referral structures are <strong>subject to change</strong> by the company at any time without prior notice.</li>
+                            <li>Participation in staking and referral programs involves <strong>risk</strong>, and users are advised to conduct their own research and seek professional advice before making any investment decisions.</li>
+                            <li>The company reserves the right to <strong>modify, suspend, or terminate</strong> the plan in part or full to comply with legal, technical, or regulatory requirements.</li>
+                        </ul>
+                        <p className="text-sm text-muted-foreground mt-6">Prepared for EGPAY / EGLIFE Token.</p>
+                    </CardContent>
+                </Card>
+            </div>
+
         </div>
     );
 }
