@@ -71,7 +71,7 @@ After the script finishes and your code is successfully pushed to GitHub, your w
 1.  Go to [https://www.netlify.com/](https://www.netlify.com/) and sign up or log in.
 2.  Click **"Add new site"** or **"Import an existing project"**.
 3.  Choose to deploy from **GitHub**.
-4.  Authorize Netlify to access your GitHub account and select your **`EGLIFE-WEBSITE`** repository.
+4.  Authorize Netlify to access your GitHub account and select your **`eglife-website-update-1`** repository.
 5.  Netlify will automatically detect your settings from the `netlify.toml` file. The build command (`npm run build`) and publish directory (`.next`) should already be filled in.
 6.  Click **"Deploy site"**.
 
