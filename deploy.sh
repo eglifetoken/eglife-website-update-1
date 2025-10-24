@@ -26,7 +26,8 @@ git branch -M main
 
 # Step 4: Push the code to GitHub
 echo "Pushing code to GitHub... This may take a moment."
-git push -u origin main --force
+# Using --force-with-lease is safer than a standard --force push.
+git push --force-with-lease origin main
 
 echo ""
 echo ">>> SCRIPT FINISHED <<<"
