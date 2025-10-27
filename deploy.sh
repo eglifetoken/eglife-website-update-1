@@ -11,12 +11,12 @@ git add .
 git commit -m "Pushing project files to GitHub"
 
 # Step 2: Ensure the remote is correctly set
-# This removes any old remote and adds the correct one to prevent conflicts.
+# This removes any old remote and adds the correct one, forcing authentication as 'eglifetoken'.
 echo "Verifying and setting remote 'origin'..."
 if git remote | grep -q "origin"; then
   git remote remove origin
 fi
-git remote add origin https://github.com/eglifetoken/eglife-website-update-1.git
+git remote add origin https://eglifetoken@github.com/eglifetoken/eglife-website-update-1.git
 
 echo "Remote 'origin' is set to:"
 git remote -v
