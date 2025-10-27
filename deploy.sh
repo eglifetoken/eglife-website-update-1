@@ -27,8 +27,8 @@ git branch -M main
 
 # Step 4: Push the code to GitHub
 echo "Pushing code to GitHub... This may take a moment."
-# Using --force-with-lease is safer than a standard --force push.
-git push --force-with-lease origin main
+# Using --force to overwrite the remote history.
+git push --force origin main
 
 echo ""
 echo ">>> SCRIPT FINISHED <<<"
