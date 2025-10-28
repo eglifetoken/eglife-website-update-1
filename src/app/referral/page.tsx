@@ -25,11 +25,23 @@ interface ReferralEvent {
     date: string;
 }
 
+interface StakedEventLogArgs {
+  user?: `0x${string}`;
+  sponsor?: `0x${string}`;
+}
+
+interface ReferralBonusPaidLogArgs {
+    referrer?: `0x${string}`;
+    referral?: `0x${string}`;
+    level?: bigint;
+    bonusAmount?: bigint;
+}
+
 export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     const router = useRouter();
-    const { address, isConnected } = useAccount();
+    const { address, isConnected } } from useAccount();
     const [referralLink, setReferralLink] = useState("");
     
     // Live data states
@@ -59,7 +71,7 @@ export default function ReferralPage() {
             let sessionBonus = 0;
 
             logs.forEach(log => {
-                const { referrer, referral, level, bonusAmount } = log.args as any;
+                const { referrer, referral, level, bonusAmount } = log.args as ReferralBonusPaidLogArgs;
                 
                 if (referrer && referrer.toLowerCase() === address.toLowerCase()) {
                     const bonus = parseFloat(formatEther(bonusAmount!));
@@ -97,7 +109,7 @@ export default function ReferralPage() {
             if (!address) return;
 
             logs.forEach(log => {
-                const { user, sponsor } = log.args as any;
+                const { user, sponsor } = log.args as StakedEventLogArgs;
                 
                 if (sponsor && sponsor.toLowerCase() === address.toLowerCase()) {
                     setDirectReferralCount(prev => prev + 1);
@@ -223,10 +235,10 @@ export default function ReferralPage() {
                     <CardContent>
                         <div className="flex items-center space-x-2">
                             <Input value={referralLink} readOnly className="font-mono text-center text-xs" />
-                             <Button variant="outline" size="icon" onClick={handleShare} disabled={!isConnected || !address}>
+                             <Button variant="outline" size="icon" onClick={handleShare} disabled={!isConnected || !address)}>
                                 <Share2 className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected || !address}>
+                            <Button variant="outline" size="icon" onClick={handleCopy} disabled={!isConnected || !address)}>
                                 <Copy className="h-4 w-4" />
                             </Button>
                         </div>
@@ -312,8 +324,5 @@ export default function ReferralPage() {
             
         </div>
     );
-}
-
-    
 
     
