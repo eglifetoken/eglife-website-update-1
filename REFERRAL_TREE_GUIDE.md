@@ -17,7 +17,7 @@ The frontend is already built. This project is **exclusively for the backend dat
 
 ## **2. The Core Technical Challenge**
 
-Blockchain smart contracts are not databases. While the EGLIFE staking contract (`0xC1921f78609Bd6C683940E3d43455b41ecE28e11`) emits an event every time a user stakes with a sponsor, it does not store a queryable list of all referral relationships.
+Blockchain smart contracts are not databases. While the EGLIFE staking contract (`0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76`) emits an event every time a user stakes with a sponsor, it does not store a queryable list of all referral relationships.
 
 It is **not possible** to build this tree by querying the blockchain directly from the user's web browser. It would be too slow and would crash the application.
 
@@ -41,7 +41,7 @@ By doing this, the indexer builds a complete and easily searchable map of the en
 The developer needs to build and deploy a service that performs the following:
 
 1.  **Connect to the BNB Smart Chain (BSC)**: The service must connect to a BSC node (e.g., using a provider like Infura, Alchemy, or a public RPC).
-2.  **Listen for `Staked` Events**: It must continuously monitor the EGLIFE Staking Contract at address `0xC1921f78609Bd6C683940E3d43455b41ecE28e11` for the `Staked` event.
+2.  **Listen for `Staked` Events**: It must continuously monitor the EGLIFE Staking Contract at address `0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76` for the `Staked` event.
     *   The event signature is: `event Staked(address indexed user, uint256 grossAmount, uint256 netStaked, address indexed sponsor);`
 3.  **Process Historical Events**: On its first run, the indexer must process all `Staked` events from the block the contract was created up to the present.
 4.  **Store the Data**: For each event, it must store the relationship between the `user` and their `sponsor` in a database. The database schema should be optimized for hierarchical queries (e.g., using recursive queries in SQL or graph features in NoSQL).
@@ -106,3 +106,5 @@ Once the data is indexed, the developer must create a simple API that the websit
 4.  **Timeline:** An experienced developer should be able to complete the indexer and API within **1-3 weeks**.
 
 By providing this guide, you ensure the developer understands exactly what is needed, which will lead to a faster and more successful project delivery. Once this backend is complete, I can help you integrate it into the frontend website.
+
+    
