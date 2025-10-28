@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
     useEffect(() => {
         const refFromUrl = searchParams.get('ref');
-        const defaultSponsor = "0xe2eCCd5e1CAe5c6D0B1d9e0d53aeC58b0FE7d31d";
+        const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
         setSponsorAddress(refFromUrl || defaultSponsor);
     }, [searchParams]);
 
