@@ -23,12 +23,19 @@ export default function RegisterPage() {
     
     const [sponsorAddress, setSponsorAddress] = useState("");
     const [isRegistering, setIsRegistering] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
-        const refFromUrl = searchParams.get('ref');
-        const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
-        setSponsorAddress(refFromUrl || defaultSponsor);
-    }, [searchParams]);
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        if (isClient) {
+            const refFromUrl = searchParams.get('ref');
+            const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
+            setSponsorAddress(refFromUrl || defaultSponsor);
+        }
+    }, [searchParams, isClient]);
 
 
     const handleRegister = async () => {
@@ -61,6 +68,14 @@ export default function RegisterPage() {
         // Redirect to staking page, preserving the sponsor address in the URL
         router.push(`/staking?ref=${sponsorAddress}`);
     };
+
+    if (!isClient) {
+        return (
+            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     return (
         <div className="flex items-center justify-center min-h-[calc(100vh-10rem)] py-12">
