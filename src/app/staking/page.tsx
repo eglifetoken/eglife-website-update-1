@@ -610,16 +610,23 @@ export default function StakingPage() {
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
                     </div>
-                    {needsApproval && (
+                    {needsApproval ? (
                         <Alert>
                           <Info className="h-4 w-4" />
-                          <AlertTitle>Approval Required</AlertTitle>
+                          <AlertTitle>Approval Required (2-Step Process)</AlertTitle>
                           <AlertDescription>
-                            You must first approve the contract to spend your EGLIFE tokens before you can stake them.
+                            To stake, you must first grant permission by clicking "Approve". After that transaction succeeds, you can click "Stake Now".
+                          </AlertDescription>
+                        </Alert>
+                    ): (
+                         <Alert>
+                          <Info className="h-4 w-4" />
+                          <AlertTitle>Ready to Stake</AlertTitle>
+                          <AlertDescription>
+                            You have already approved the contract. You can now stake your tokens directly.
                           </AlertDescription>
                         </Alert>
                     )}
-                    <p className="text-sm text-muted-foreground">The contract will automatically select the best return tier for your amount.</p>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-2">
                     {needsApproval ? (
@@ -628,7 +635,7 @@ export default function StakingPage() {
                             disabled={!isConnected || isApproving || !stakeAmount || isWrongNetwork}
                             onClick={handleApprove}
                         >
-                            {isApproving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Approving...</> : "Approve"}
+                            {isApproving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Approving...</> : "1. Approve"}
                         </Button>
                     ) : (
                         <Button 
@@ -732,5 +739,3 @@ export default function StakingPage() {
     </>
   )
 }
-
-    
