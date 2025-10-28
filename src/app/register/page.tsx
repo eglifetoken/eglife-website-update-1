@@ -12,6 +12,8 @@ import { useToast } from "@/hooks/use-toast";
 import { UserPlus, Wallet, Link2Off, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 export default function RegisterPage() {
     const { address, isConnected } = useAccount();
@@ -43,7 +45,7 @@ export default function RegisterPage() {
              toast({
                 variant: "destructive",
                 title: "Sponsor Required",
-                description: "Please enter a valid sponsor wallet address.",
+                description: "A valid sponsor wallet address is required.",
             });
             return;
         }
@@ -107,9 +109,15 @@ export default function RegisterPage() {
                                     id="sponsor-address" 
                                     placeholder="0x..." 
                                     value={sponsorAddress}
-                                    onChange={(e) => setSponsorAddress(e.target.value)}
-                                    disabled={isRegistering}
+                                    readOnly
+                                    className="cursor-not-allowed bg-muted/50"
                                 />
+                                 <Alert variant="default" className="mt-2">
+                                    <Info className="h-4 w-4" />
+                                    <AlertDescription>
+                                        A sponsor is required to build the network. This has been pre-filled from a referral link or with the system's default sponsor.
+                                    </AlertDescription>
+                                </Alert>
                             </div>
                             <Button onClick={handleRegister} className="w-full" size="lg" disabled={isRegistering}>
                                 {isRegistering ? (
