@@ -106,5 +106,4 @@ Once the data is indexed, the developer must create a simple API that the websit
 4.  **Timeline:** An experienced developer should be able to complete the indexer and API within **1-3 weeks**.
 
 By providing this guide, you ensure the developer understands exactly what is needed, which will lead to a faster and more successful project delivery. Once this backend is complete, I can help you integrate it into the frontend website.
-
     
