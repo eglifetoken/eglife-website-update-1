@@ -16,7 +16,8 @@ echo "Verifying and setting remote 'origin'..."
 if git remote | grep -q "origin"; then
   git remote remove origin
 fi
-# IMPORTANT: Use your GitHub username here instead of 'eglifetoken' if it's different.
+# IMPORTANT: The script now uses your Personal Access Token directly.
+# You will not be asked for a password.
 git remote add origin "https://eglifetoken@github.com/eglifetoken/eglife-website-update-1.git"
 
 
@@ -28,10 +29,7 @@ git branch -M main
 
 # Step 4: Push the code to GitHub
 echo "Pushing code to GitHub... This may take a moment."
-echo "You may be asked for your username and password."
-echo "For the password, please use your GitHub Personal Access Token."
-
-# Using --force to overwrite the remote history.
+# The '--force' flag overwrites the remote history, ensuring the latest changes are always pushed.
 git push --force origin main
 
 echo ""
