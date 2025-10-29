@@ -76,4 +76,3 @@ After the script finishes and your code is successfully pushed to GitHub, your w
 6.  Click **"Deploy site"**.
 
 Netlify will now build your project and deploy it. Once it's finished, you will have a live URL where you can see your website!
-deploy.sh
