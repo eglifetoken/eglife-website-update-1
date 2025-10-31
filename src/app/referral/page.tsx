@@ -36,7 +36,7 @@ export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     const router = useRouter();
-    const { address, isConnected } } = useAccount();
+    const { address, isConnected } = useAccount();
     const [referralLink, setReferralLink] = useState("");
     
     // Live data states
@@ -297,5 +297,7 @@ export default function ReferralPage() {
             
         </div>
     );
+
+    
 
     
