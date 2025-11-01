@@ -8,7 +8,7 @@ This guide will walk you through the final steps to publish your website online.
 
 Before you can deploy, you need all the project files on your local computer.
 
-**Since there is no "Download ZIP" button in Firebase Studio, you will need to manually copy your files.** This can be tedious, but it is a necessary step.
+**Since there is no "Download ZIP" button in Firebase Studio, you will need to manually copy your files.** This can be tedious, but it is a necessary step that you only need to do once.
 
 1.  **Create a Folder:** On your computer's Desktop, create a new folder. Let's name it `eglife-website`.
 2.  **Re-create the Files:**
@@ -16,15 +16,17 @@ Before you can deploy, you need all the project files on your local computer.
     *   For each file and folder, re-create it inside your `eglife-website` folder.
     *   **Carefully copy the entire content** of each file from the Firebase Studio editor and paste it into the corresponding file on your computer.
     *   **It is critical that the folder structure and file contents match exactly.**
+    *   **IMPORTANT:** Do **NOT** create a `node_modules` folder. It will be created automatically.
 
 ---
 
-## **Part 2: Deploy to GitHub from Your Computer**
+## **Part 2: Prepare and Deploy to GitHub**
 
-Once all the files are on your computer inside the `eglife-website` folder, you can push them to GitHub by running a single script.
+Once all the files are on your computer inside the `eglife-website` folder, you can push them to GitHub.
 
 **Requirements:**
 *   You must have [Git](https://git-scm.com/downloads) installed on your computer.
+*   You must have [Node.js and npm](https://nodejs.org/en/download/) installed.
 
 ### Deployment Steps
 
@@ -39,7 +41,15 @@ Use the `cd` (change directory) command to move into the folder you created.
 cd Desktop/eglife-website
 ```
 
-**2. Make the Script Executable (for Mac/Linux users):**
+**2. Install Dependencies (Crucial Step):**
+
+Run this command to download all the necessary code libraries. This will create the `node_modules` folder for you.
+
+```bash
+npm install
+```
+
+**3. Make the Script Executable (for Mac/Linux users):**
 
 If you are on a Mac or Linux, you need to give the script permission to run. Skip this step if you are on Windows.
 
@@ -47,9 +57,9 @@ If you are on a Mac or Linux, you need to give the script permission to run. Ski
 chmod +x deploy.sh
 ```
 
-**3. Run the Deployment Script:**
+**4. Run the Deployment Script:**
 
-Now, run the script. This will handle all the git commands for you.
+Now, run the script. This will handle all the git commands for you. You will **not** be asked for a password.
 
 *   On Mac or Linux:
     ```bash
