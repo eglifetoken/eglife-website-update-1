@@ -11,12 +11,31 @@ Before you can deploy, you need all the project files on your local computer.
 **Since there is no "Download ZIP" button in Firebase Studio, you will need to manually copy your files.** This can be tedious, but it is a necessary step that you only need to do once.
 
 1.  **Create a Folder:** On your computer's Desktop, create a new folder. Let's name it `eglife-website`.
+
 2.  **Re-create the Files:**
     *   Look at the file list on the left side of the Firebase Studio editor.
-    *   For each file and folder, re-create it inside your `eglife-website` folder.
+    *   For each file and folder listed below, re-create it inside your `eglife-website` folder.
     *   **Carefully copy the entire content** of each file from the Firebase Studio editor and paste it into the corresponding file on your computer.
     *   **It is critical that the folder structure and file contents match exactly.**
-    *   **IMPORTANT:** Do **NOT** create a `node_modules` folder. It will be created automatically.
+
+### **List of Files and Folders to Copy:**
+
+**Root Files (the files in the main directory):**
+- `.env`
+- `README.md`
+- `components.json`
+- `deploy.sh`
+- `netlify.toml`
+- `next.config.ts`
+- `package.json`
+- `tailwind.config.ts`
+- `tsconfig.json`
+
+**Folders:**
+- `src` (and all files and folders inside it)
+
+### **IMPORTANT: Do NOT Create This Folder**
+- **DO NOT** create a `node_modules` folder. It will be created automatically in the next steps.
 
 ---
 
