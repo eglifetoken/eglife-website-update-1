@@ -10,7 +10,7 @@ import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIco
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { parseEther, formatEther, type BaseError, zeroAddress } from "viem"
 import Link from "next/link"
@@ -57,8 +57,7 @@ const mockClaimHistory: any[] = [];
 const mockDailyRewards: any[] = [];
 
 
-export default function StakingPage() {
-  const [isClient, setIsClient] = useState(false)
+function StakingPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -118,10 +117,6 @@ export default function StakingPage() {
 
   const { writeContractAsync } = useWriteContract();
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-  
   const totalStaked = stakedData ? parseFloat(formatEther(stakedData as bigint)) : 0.00;
   const availableToClaim = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
   const totalEarned = availableToClaim + totalClaimed;
@@ -266,14 +261,6 @@ export default function StakingPage() {
   }
 
   const isPending = isApproving || isStaking || isUnstaking || isClaiming;
-
-  if (!isClient) {
-    return (
-        <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        </div>
-    );
-  }
 
   return (
     <>
@@ -738,4 +725,26 @@ export default function StakingPage() {
     </div>
     </>
   )
+}
+
+
+export default function StakingPage() {
+    const [isClient, setIsClient] = useState(false)
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
+
+    if (!isClient) {
+        return (
+            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+        );
+    }
+    
+    return (
+        <Suspense fallback={<div className="flex h-[calc(100vh-10rem)] items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>}>
+            <StakingPageContent />
+        </Suspense>
+    )
 }
