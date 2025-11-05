@@ -3,7 +3,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { metaMask } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -77,7 +77,7 @@ function RegisterForm() {
             </CardHeader>
             <CardContent className="space-y-6">
                 {!isConnected ? (
-                     <Button onClick={() => connect({ connector: injected() })} className="w-full" size="lg">
+                     <Button onClick={() => connect({ connector: metaMask() })} className="w-full" size="lg">
                         <Wallet className="mr-2 h-5 w-5" />
                         Connect Wallet
                     </Button>

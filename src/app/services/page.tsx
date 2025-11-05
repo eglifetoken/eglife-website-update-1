@@ -17,7 +17,7 @@ import { RechargePlansDialog } from "@/components/recharge-plans-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getTokenData, TokenData } from "@/ai/flows/getTokenData";
 import { useAccount, useConnect, useBalance, useDisconnect, useSwitchChain, useChainId } from 'wagmi';
-import { injected } from 'wagmi/connectors';
+import { metaMask } from 'wagmi/connectors';
 import { formatEther } from "viem";
 import { bsc } from "wagmi/chains";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -292,7 +292,7 @@ export default function ServicesPage() {
                     <CardDescription>Please connect your wallet to use EGPAY services.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button onClick={() => connect({ connector: injected() })}>
+                    <Button onClick={() => connect({ connector: metaMask() })}>
                         <LinkIcon className="mr-2 h-4 w-4" /> Connect Wallet
                     </Button>
                 </CardContent>
