@@ -98,7 +98,7 @@ function StakingPageContent() {
     }
   });
   
-  const { data: sponsorAddress, isLoading: isLoadingSponsor } = useReadContract({
+  const { data: sponsorData, isLoading: isLoadingSponsor } = useReadContract({
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'sponsors',
@@ -125,8 +125,14 @@ function StakingPageContent() {
   const needsApproval = allowance !== undefined && parsedStakeAmount > 0 && allowance < parsedStakeAmount;
   
   const handleError = (error: any, title: string) => {
-    const baseError = error as BaseError;
-    const message = baseError.shortMessage || error.message || "An unknown error occurred.";
+    let message = "An unknown error occurred.";
+    if (typeof error === 'object' && error !== null) {
+        if ('shortMessage' in error) {
+            message = (error as BaseError).shortMessage;
+        } else if ('message' in error) {
+            message = error.message;
+        }
+    }
     toast({
         variant: "destructive",
         title: title,
@@ -167,8 +173,12 @@ function StakingPageContent() {
     }
 
     setIsStaking(true);
-    const sponsor = searchParams.get("ref");
-    const referrerAddress = sponsor || "0x0000000000000000000000000000000000000000";
+    // Prioritize on-chain sponsor. If not present (zeroAddress), use URL ref. If neither, use default.
+    const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
+    const urlSponsor = searchParams.get("ref");
+    const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
+    
+    const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
 
     try {
         await writeContractAsync({
@@ -315,7 +325,7 @@ function StakingPageContent() {
                         <Loader2 className="h-4 w-4 animate-spin mx-auto mt-1" />
                     ) : (
                         <p className="font-mono text-sm truncate mt-1">
-                            {sponsorAddress && sponsorAddress !== zeroAddress ? sponsorAddress : 'None'}
+                            {sponsorData && sponsorData !== zeroAddress ? sponsorData : 'None'}
                         </p>
                     )}
                 </div>
@@ -748,3 +758,5 @@ export default function StakingPage() {
         </Suspense>
     )
 }
+
+    
