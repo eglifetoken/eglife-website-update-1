@@ -25,11 +25,14 @@ interface ReferralEvent {
     date: string;
 }
 
-interface ReferralBonusPaidLogArgs {
-    referrer?: `0x${string}`;
-    referral?: `0x${string}`;
-    level?: bigint;
-    bonusAmount?: bigint;
+interface ReferralBonusPaidLog {
+    eventName: 'ReferralBonusPaid',
+    args: {
+        referrer?: `0x${string}`;
+        referral?: `0x${string}`;
+        level?: bigint;
+        bonusAmount?: bigint;
+    }
 }
 
 export default function ReferralPage() {
@@ -43,7 +46,6 @@ export default function ReferralPage() {
     const [referralHistory, setReferralHistory] = useState<ReferralEvent[]>([]);
     const [totalBonus, setTotalBonus] = useState(0);
     const [directReferralCount, setDirectReferralCount] = useState(0);
-    const [recentReferrals, setRecentReferrals] = useState<string[]>([]);
 
     useEffect(() => {
         setIsClient(true);
@@ -59,28 +61,32 @@ export default function ReferralPage() {
         address: EGLIFE_STAKING_CONTRACT,
         abi: stakingContractAbi,
         eventName: 'ReferralBonusPaid',
-        onLogs(logs: any[]) {
+        onLogs(logs: ReferralBonusPaidLog[]) {
             if (!address) return;
 
-            const newBonuses: ReferralEvent[] = [];
+            const myNewBonuses: ReferralEvent[] = [];
             let sessionBonus = 0;
+            let newReferrals = 0;
 
             logs.forEach(log => {
-                const { referrer, referral, level, bonusAmount } = log.args as ReferralBonusPaidLogArgs;
+                const { referrer, referral, level, bonusAmount } = log.args;
                 
-                if (referrer && referrer.toLowerCase() === address.toLowerCase()) {
-                    const bonus = parseFloat(formatEther(bonusAmount!));
+                if (referrer && bonusAmount && referrer.toLowerCase() === address.toLowerCase()) {
+                    const bonus = parseFloat(formatEther(bonusAmount));
                     
                     const newEntry: ReferralEvent = {
                         referrer: referrer,
                         referral: referral!,
                         level: level!,
-                        bonusAmount: bonusAmount!,
+                        bonusAmount: bonusAmount,
                         date: new Date().toLocaleString(),
                     };
                     
-                    newBonuses.push(newEntry);
+                    myNewBonuses.push(newEntry);
                     sessionBonus += bonus;
+                    if(level === 1n) {
+                       newReferrals++;
+                    }
 
                     toast({
                         title: "Referral Bonus Received!",
@@ -89,9 +95,10 @@ export default function ReferralPage() {
                 }
             });
 
-            if (newBonuses.length > 0) {
-                setReferralHistory(prev => [...newBonuses, ...prev]);
+            if (myNewBonuses.length > 0) {
+                setReferralHistory(prev => [...myNewBonuses, ...prev]);
                 setTotalBonus(prev => prev + sessionBonus);
+                setDirectReferralCount(prev => prev + newReferrals);
             }
         },
     });
@@ -177,14 +184,6 @@ export default function ReferralPage() {
                     <CardContent>
                         <div className="text-2xl font-bold">{directReferralCount}</div>
                         <p className="text-xs text-muted-foreground">Live count for this session. Full history coming soon.</p>
-                        {recentReferrals.length > 0 && (
-                            <div className="mt-2 text-left">
-                                <p className="text-xs font-semibold">Recent:</p>
-                                <ul className="text-xs text-muted-foreground font-mono list-disc list-inside">
-                                    {recentReferrals.map((ref, i) => <li key={i} className="truncate" title={ref}>{ref}</li>)}
-                                </ul>
-                            </div>
-                        )}
                     </CardContent>
                 </Card>
                  <Card>
@@ -298,3 +297,4 @@ export default function ReferralPage() {
         </div>
     );
 }
+    
