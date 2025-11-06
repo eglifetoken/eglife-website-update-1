@@ -35,7 +35,6 @@ Before you can deploy, you need all the project files on your local computer.
 
 ### **IMPORTANT: Do NOT Create This Folder**
 - **DO NOT** create a `node_modules` folder. It will be created automatically in the next steps.
-- **DO NOT** create the `netlify.toml` file. It is not needed.
 
 ---
 
@@ -104,3 +103,16 @@ After the script finishes and your code is pushed to GitHub, your website is rea
 5.  Click **"Deploy"**.
 
 That's it! Vercel will now build your project and deploy it. Once it's finished, you will have a live URL where you can see your website!
+
+### **Adding Environment Variables (Important for EGPAY Services)**
+
+To make sure the EGPAY services (like mobile recharge) work on the live website, you need to add your secret keys to Vercel.
+
+1.  In your Vercel project dashboard, go to **Settings > Environment Variables**.
+2.  Add the following variables one by one:
+    - `PAYSPRINT_JWT_SECRET`
+    - `PAYSPRINT_PARTNER_ID`
+    - `PAYSPRINT_UAT_BASE_URL`
+    - `PAYSPRINT_AUTHORISED_KEY`
+3.  Copy the value for each from your local `.env` file and paste it into Vercel.
+4.  After adding all variables, **redeploy** your project from the "Deployments" tab in Vercel to apply the changes.
