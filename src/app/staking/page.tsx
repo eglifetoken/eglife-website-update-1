@@ -110,6 +110,11 @@ function StakingPageContent() {
     query: { enabled: isConnected && !isWrongNetwork && !!address }
   });
 
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
 
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
@@ -274,6 +279,10 @@ function StakingPageContent() {
   }
 
   const isPending = isApproving || isStaking || isUnstaking || isClaiming;
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <>
@@ -750,3 +759,4 @@ export default function StakingPage() {
 }
 
     
+
