@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -72,13 +71,15 @@ function StakingPageContent() {
   const { data: balance, isLoading: isLoadingBalance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
+    query: { enabled: isConnected && !isWrongNetwork }
   })
 
-  const { data: allowance, isLoading: isLoadingAllowance, refetch: refetchAllowance } = useReadContract({
+  const { data: allowance, refetch: refetchAllowance } = useReadContract({
     abi: tokenContractAbi,
     address: EGLIFE_TOKEN_CONTRACT,
     functionName: 'allowance',
     args: [address!, EGLIFE_STAKING_CONTRACT],
+    query: { enabled: isConnected && !isWrongNetwork }
   });
 
   const { data: stakedData, isLoading: isLoadingStaked, refetch: refetchStakedBalance } = useReadContract({
@@ -86,6 +87,7 @@ function StakingPageContent() {
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'stakedOf',
     args: [address!],
+    query: { enabled: isConnected && !isWrongNetwork }
   });
 
   const { data: earnedData, isLoading: isLoadingEarned, refetch: refetchEarned } = useReadContract({
@@ -94,6 +96,7 @@ function StakingPageContent() {
     functionName: 'earned',
     args: [address!],
      query: {
+        enabled: isConnected && !isWrongNetwork,
         refetchInterval: 5000, // Refetch every 5 seconds
     }
   });
@@ -103,6 +106,7 @@ function StakingPageContent() {
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'sponsors',
     args: [address!],
+    query: { enabled: isConnected && !isWrongNetwork }
   });
 
 
@@ -173,7 +177,6 @@ function StakingPageContent() {
     }
 
     setIsStaking(true);
-    // Prioritize on-chain sponsor. If not present (zeroAddress), use URL ref. If neither, use default.
     const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
     const urlSponsor = searchParams.get("ref");
     const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
@@ -213,8 +216,7 @@ function StakingPageContent() {
         return;
     }
 
-    // Convert amount to BigInt for contract interaction
-    const unstakeAmountBigInt = isUnstakeAll ? stakedData : parseEther(amountToUnstake.toString());
+    const unstakeAmountBigInt = isUnstakeAll ? (stakedData ?? 0n) : parseEther(amountToUnstake.toString());
 
     if (!unstakeAmountBigInt || unstakeAmountBigInt <= 0n) {
         toast({ variant: "destructive", title: "Invalid Amount", description: "Unstake amount must be greater than zero." });
@@ -727,7 +729,7 @@ function StakingPageContent() {
             </Button>
             <Button asChild>
                 <Link href="/dapp">
-                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                    Next Page <ArrowRight className="mr-2 h-4 w-4" />
                 </Link>
             </Button>
         </div>
@@ -739,19 +741,6 @@ function StakingPageContent() {
 
 
 export default function StakingPage() {
-    const [isClient, setIsClient] = useState(false)
-    useEffect(() => {
-        setIsClient(true)
-    }, [])
-
-    if (!isClient) {
-        return (
-            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-        );
-    }
-    
     return (
         <Suspense fallback={<div className="flex h-[calc(100vh-10rem)] items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>}>
             <StakingPageContent />
