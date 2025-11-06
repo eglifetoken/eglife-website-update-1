@@ -25,7 +25,6 @@ Before you can deploy, you need all the project files on your local computer.
 - `README.md`
 - `components.json`
 - `deploy.sh`
-- `netlify.toml`
 - `next.config.ts`
 - `package.json`
 - `tailwind.config.ts`
@@ -36,6 +35,7 @@ Before you can deploy, you need all the project files on your local computer.
 
 ### **IMPORTANT: Do NOT Create This Folder**
 - **DO NOT** create a `node_modules` folder. It will be created automatically in the next steps.
+- **DO NOT** create the `netlify.toml` file. It is not needed.
 
 ---
 
@@ -93,15 +93,14 @@ The script will initialize Git, save your files, connect to your GitHub reposito
 
 ---
 
-## **Part 3: Go Live with Netlify**
+## **Part 3: Go Live with Vercel**
 
-After the script finishes and your code is successfully pushed to GitHub, your website is ready to be deployed live.
+After the script finishes and your code is pushed to GitHub, your website is ready to be deployed live on Vercel.
 
-1.  Go to [https://www.netlify.com/](https://www.netlify.com/) and sign up or log in.
-2.  Click **"Add new site"** or **"Import an existing project"**.
-3.  Choose to deploy from **GitHub**.
-4.  Authorize Netlify to access your GitHub account and select your **`eglife-website-update-1`** repository.
-5.  Netlify will automatically detect your settings from the `netlify.toml` file. The build command (`npm run build`) and publish directory (`.next`) should already be filled in.
-6.  Click **"Deploy site"**.
+1.  Go to [https://vercel.com](https://vercel.com) and sign up or log in (you can use your GitHub account).
+2.  After logging in, click **"Add New..."** and then select **"Project"**.
+3.  On the "Import Git Repository" screen, find your **`eglife-website-update-1`** repository and click the **"Import"** button next to it.
+4.  Vercel will automatically detect that it's a Next.js project. You don't need to change any settings.
+5.  Click **"Deploy"**.
 
-Netlify will now build your project and deploy it. Once it's finished, you will have a live URL where you can see your website!
+That's it! Vercel will now build your project and deploy it. Once it's finished, you will have a live URL where you can see your website!
