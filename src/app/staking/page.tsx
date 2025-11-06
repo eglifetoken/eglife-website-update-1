@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -78,25 +79,25 @@ function StakingPageContent() {
     abi: tokenContractAbi,
     address: EGLIFE_TOKEN_CONTRACT,
     functionName: 'allowance',
-    args: [address!, EGLIFE_STAKING_CONTRACT],
-    query: { enabled: isConnected && !isWrongNetwork }
+    args: address ? [address, EGLIFE_STAKING_CONTRACT] : undefined,
+    query: { enabled: isConnected && !isWrongNetwork && !!address }
   });
 
   const { data: stakedData, isLoading: isLoadingStaked, refetch: refetchStakedBalance } = useReadContract({
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'stakedOf',
-    args: [address!],
-    query: { enabled: isConnected && !isWrongNetwork }
+    args: address ? [address] : undefined,
+    query: { enabled: isConnected && !isWrongNetwork && !!address }
   });
 
   const { data: earnedData, isLoading: isLoadingEarned, refetch: refetchEarned } = useReadContract({
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'earned',
-    args: [address!],
+    args: address ? [address] : undefined,
      query: {
-        enabled: isConnected && !isWrongNetwork,
+        enabled: isConnected && !isWrongNetwork && !!address,
         refetchInterval: 5000, // Refetch every 5 seconds
     }
   });
@@ -105,8 +106,8 @@ function StakingPageContent() {
     abi: stakingContractAbi,
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'sponsors',
-    args: [address!],
-    query: { enabled: isConnected && !isWrongNetwork }
+    args: address ? [address] : undefined,
+    query: { enabled: isConnected && !isWrongNetwork && !!address }
   });
 
 
@@ -729,7 +730,7 @@ function StakingPageContent() {
             </Button>
             <Button asChild>
                 <Link href="/dapp">
-                    Next Page <ArrowRight className="mr-2 h-4 w-4" />
+                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
             </Button>
         </div>
@@ -747,3 +748,5 @@ export default function StakingPage() {
         </Suspense>
     )
 }
+
+    
