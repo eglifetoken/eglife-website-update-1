@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp, Users, ShieldCheck } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
-import { metaMask } from 'wagmi/connectors'
+import { injected } from 'wagmi/connectors'
 import { useState, useEffect, Suspense } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { parseEther, formatEther, type BaseError, zeroAddress } from "viem"
@@ -322,7 +322,7 @@ function StakingPageContent() {
                 <CardDescription>To view your balances and start staking, connect your BEP-20 compatible wallet.</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button onClick={() => connect({ connector: metaMask() })} size="lg">
+                <Button onClick={() => connect({ connector: injected() })} size="lg">
                     <LinkIcon className="mr-2 h-5 w-5" />
                     Connect Wallet
                 </Button>
@@ -785,5 +785,3 @@ export default function StakingPage() {
         </Suspense>
     )
 }
-
-    
