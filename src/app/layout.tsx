@@ -9,12 +9,12 @@ import Footer from '@/components/layout/footer';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { bsc } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { metaMask } from 'wagmi/connectors';
+import { injected } from 'wagmi/connectors';
 
 
 const config = createConfig({
   chains: [bsc],
-  connectors: [metaMask()],
+  connectors: [injected()],
   transports: {
     [bsc.id]: http(),
   },
