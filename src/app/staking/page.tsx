@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp, Users } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp, Users, ShieldCheck } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { metaMask } from 'wagmi/connectors'
@@ -281,7 +281,11 @@ function StakingPageContent() {
   const isPending = isApproving || isStaking || isUnstaking || isClaiming;
 
   if (!isClient) {
-    return null;
+    return (
+        <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+    );
   }
 
   return (
@@ -326,9 +330,9 @@ function StakingPageContent() {
          </Card>
       ) : (
         <Card className="mb-8">
-            <CardHeader className="text-center">
-                <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
-                <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
+            <CardHeader>
+                <CardTitle className="font-headline text-xl text-center">Wallet Connected</CardTitle>
+                <CardDescription className="font-mono text-xs truncate mt-1 text-center">{address}</CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4">
                  <div className="p-3 rounded-lg bg-muted border text-center">
@@ -355,7 +359,6 @@ function StakingPageContent() {
             </CardContent>
         </Card>
       )}
-
 
       {isConnected && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -436,6 +439,31 @@ function StakingPageContent() {
             </CardFooter>
         </Card>
       )}
+
+      <Card className="mb-8 border-destructive">
+          <CardHeader className="flex-row items-center gap-4">
+              <div className="p-3 bg-destructive/10 rounded-md w-fit">
+                  <AlertTriangle className="h-8 w-8 text-destructive" />
+              </div>
+              <div>
+                  <CardTitle className="font-headline text-2xl text-destructive">Security Warning & Approval Check</CardTitle>
+                  <CardDescription>If your wallet is performing unauthorized actions, check your approvals immediately.</CardDescription>
+              </div>
+          </CardHeader>
+          <CardContent>
+              <p className="text-destructive/90 mb-4">
+                  If tokens are being transferred or swapped from your wallet without your permission, it's possible you've accidentally approved a malicious smart contract. Use a trusted tool like the BscScan "Token Approval Checker" to review and revoke any suspicious approvals for your EGLIFE or other tokens.
+              </p>
+          </CardContent>
+          <CardFooter>
+              <Button asChild variant="destructive" className="w-full">
+                  <a href={`https://bscscan.com/tokenapprovalchecker?search=${address || ''}`} target="_blank" rel="noopener noreferrer">
+                      <ShieldCheck className="mr-2 h-5 w-5" />
+                      Check & Revoke Permissions on BscScan
+                  </a>
+              </Button>
+          </CardFooter>
+      </Card>
 
 
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -759,4 +787,3 @@ export default function StakingPage() {
 }
 
     
-
