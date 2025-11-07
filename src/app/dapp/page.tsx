@@ -8,7 +8,7 @@ import { ArrowRight, ArrowLeft, Briefcase, Landmark, Repeat, ShoppingCart, Users
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
-import { metaMask } from 'wagmi/connectors'
+import { injected } from 'wagmi/connectors'
 import { formatUnits } from "viem";
 import { useRouter } from "next/navigation";
 
@@ -115,7 +115,7 @@ export default function DappPage() {
                 {!isConnected ? (
                     <div className="text-center">
                         <p className="mb-4">Connect your wallet to get started.</p>
-                        <Button onClick={() => connect({ connector: metaMask() })}>
+                        <Button onClick={() => connect({ connector: injected() })}>
                             <LinkIcon className="mr-2 h-5 w-5" />
                             Connect Wallet
                         </Button>
@@ -238,3 +238,5 @@ export default function DappPage() {
     </div>
   );
 }
+
+    
