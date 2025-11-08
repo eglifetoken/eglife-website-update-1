@@ -72,7 +72,7 @@ function StakingPageContent() {
   const { data: balance, isLoading: isLoadingBalance, refetch: refetchBalance } = useBalance({
     address,
     token: EGLIFE_TOKEN_CONTRACT,
-    query: { enabled: isConnected && !isWrongNetwork }
+    query: { enabled: !!address && !isWrongNetwork }
   })
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
@@ -80,7 +80,7 @@ function StakingPageContent() {
     address: EGLIFE_TOKEN_CONTRACT,
     functionName: 'allowance',
     args: address ? [address, EGLIFE_STAKING_CONTRACT] : undefined,
-    query: { enabled: isConnected && !isWrongNetwork && !!address }
+    query: { enabled: !!address && !isWrongNetwork }
   });
 
   const { data: stakedData, isLoading: isLoadingStaked, refetch: refetchStakedBalance } = useReadContract({
@@ -88,7 +88,7 @@ function StakingPageContent() {
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'stakedOf',
     args: address ? [address] : undefined,
-    query: { enabled: isConnected && !isWrongNetwork && !!address }
+    query: { enabled: !!address && !isWrongNetwork }
   });
 
   const { data: earnedData, isLoading: isLoadingEarned, refetch: refetchEarned } = useReadContract({
@@ -97,7 +97,7 @@ function StakingPageContent() {
     functionName: 'earned',
     args: address ? [address] : undefined,
      query: {
-        enabled: isConnected && !isWrongNetwork && !!address,
+        enabled: !!address && !isWrongNetwork,
         refetchInterval: 5000, // Refetch every 5 seconds
     }
   });
@@ -107,7 +107,7 @@ function StakingPageContent() {
     address: EGLIFE_STAKING_CONTRACT,
     functionName: 'sponsors',
     args: address ? [address] : undefined,
-    query: { enabled: isConnected && !isWrongNetwork && !!address }
+    query: { enabled: !!address && !isWrongNetwork }
   });
 
   const [isClient, setIsClient] = useState(false);
@@ -155,52 +155,45 @@ function StakingPageContent() {
     }
     setIsProcessing(true);
 
-    // Step 1: Approve if needed
-    if (needsApproval) {
-      try {
-        await writeContractAsync({
-            address: EGLIFE_TOKEN_CONTRACT,
-            abi: tokenContractAbi,
-            functionName: 'approve',
-            args: [EGLIFE_STAKING_CONTRACT, parseEther(stakeAmount)],
-        });
-        toast({
-            title: "Approval Successful!",
-            description: `You can now proceed to stake your tokens.`,
-        });
-        refetchAllowance();
-        setIsProcessing(false); // Allow user to click stake now
-        return; // Stop here, user will click again to stake
-      } catch (error) {
-        handleError(error, "Approval Failed");
-        setIsProcessing(false);
-        return;
-      }
-    }
-
-    // Step 2: Stake
-    const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
-    const urlSponsor = searchParams.get("ref");
-    const defaultSponsor = "0xf2f000C78519015B91220c7bE3EF26241bEc686f";
-    
-    const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
-
     try {
+        if (needsApproval) {
+            toast({ title: "Approval Required", description: "Please approve the token spending in your wallet." });
+            await writeContractAsync({
+                address: EGLIFE_TOKEN_CONTRACT,
+                abi: tokenContractAbi,
+                functionName: 'approve',
+                args: [EGLIFE_STAKING_CONTRACT, parseEther(stakeAmount)],
+            });
+            toast({ title: "Approval Successful!", description: "You can now proceed to stake." });
+            await refetchAllowance();
+             // Since approval is done, we can proceed to stake in the same flow
+        }
+        
+        toast({ title: "Staking Initialized", description: "Please confirm the staking transaction in your wallet." });
+
+        const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
+        const urlSponsor = searchParams.get("ref");
+        const defaultSponsor = "0xf2f000C78519015B91220c7bE3EF26241bEc686f";
+        
+        const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
+
         await writeContractAsync({
             address: EGLIFE_STAKING_CONTRACT,
             abi: stakingContractAbi,
             functionName: 'stake',
             args: [parseEther(stakeAmount), referrerAddress as `0x${string}`],
         });
+
         toast({
             title: "Staking Successful!",
             description: `You have successfully staked ${stakeAmount} EGLIFE.`,
         });
+
         refetchBalance();
         refetchStakedBalance();
         setStakeAmount("");
     } catch (error) {
-        handleError(error, "Staking Failed");
+        handleError(error, "Staking Process Failed");
     } finally {
         setIsProcessing(false);
     }
@@ -276,6 +269,11 @@ function StakingPageContent() {
 
   const isPending = isProcessing || isClaiming;
   const sponsorToDisplay = sponsorData && sponsorData !== zeroAddress ? sponsorData : "None";
+  const buttonText = isProcessing
+    ? "Processing..."
+    : needsApproval
+    ? "Approve & Stake"
+    : "Stake Now";
 
   if (!isClient) {
     return (
@@ -664,7 +662,7 @@ function StakingPageContent() {
                             {isProcessing ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</>
                             ) : (
-                                needsApproval ? "Approve & Stake" : "Stake Now"
+                                buttonText
                             )}
                         </Button>
                     </CardFooter>
@@ -769,3 +767,5 @@ export default function StakingPage() {
         </Suspense>
     )
 }
+
+    
