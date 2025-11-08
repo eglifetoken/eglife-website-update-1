@@ -160,12 +160,12 @@ export default function ReferralPage() {
                     description: "Thank you for sharing!",
                 });
             } catch (error) {
-                console.error("Error sharing:", error);
-                // The toast for failure is not strictly necessary as users usually cancel the share dialog.
+                // If user cancels share, do nothing.
+                console.log("Share cancelled or failed:", error);
             }
         } else {
             // If share is not supported, fall back to copying the link.
-            await handleCopy();
+            handleCopy();
         }
     };
     
@@ -186,27 +186,7 @@ export default function ReferralPage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Your Direct Referrals</CardTitle>
-                        <Users className="h-5 w-5 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{directReferralCount}</div>
-                        <p className="text-xs text-muted-foreground">Live count for this session. Full history coming soon.</p>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Your Bonus Earnings</CardTitle>
-                        <Gift className="h-5 w-5 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{totalBonus.toFixed(4)} EGLIFE</div>
-                        <p className="text-xs text-muted-foreground">Live data from this session</p>
-                    </CardContent>
-                </Card>
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                 <Card className="lg:col-span-1 bg-primary/10 border-primary text-center flex flex-col justify-center">
                     <CardHeader>
                         <CardTitle className="font-headline text-xl flex items-center justify-center gap-2">
@@ -227,9 +207,6 @@ export default function ReferralPage() {
                         </div>
                     </CardContent>
                 </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card>
                     <CardHeader>
                         <CardTitle className="font-headline flex items-center gap-2">
@@ -250,44 +227,68 @@ export default function ReferralPage() {
                         <p className="text-sm text-muted-foreground pt-4"><strong className="text-primary">Note:</strong> This bonus is variable over time and paid only to the Direct Sponsor for each new referee.</p>
                     </CardContent>
                 </Card>
+            </div>
 
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                  <Card>
-                    <CardHeader>
-                        <CardTitle className="font-headline">Your Referral History</CardTitle>
-                        <CardDescription>A live feed of your referral bonuses from this session.</CardDescription>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Your Direct Referrals</CardTitle>
+                        <Users className="h-5 w-5 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Referred User</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead className="text-right">Bonus</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                 {referralHistory.length > 0 ? referralHistory.map((ref, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>
-                                            <div className="font-medium truncate" title={ref.referral}>{ref.referral.slice(0, 6)}...{ref.referral.slice(-4)}</div>
-                                            <div className="text-xs text-muted-foreground">{ref.date}</div>
-                                        </TableCell>
-                                        <TableCell>Staking</TableCell>
-                                        <TableCell className="text-right font-semibold text-green-500">+{parseFloat(formatEther(ref.bonusAmount)).toFixed(2)}</TableCell>
-                                    </TableRow>
-                                )) : (
-                                    <TableRow>
-                                        <TableCell colSpan={3} className="h-24 text-center">
-                                            Listening for new referral bonuses...
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                         <p className="text-xs text-muted-foreground mt-4 text-center">Full historical data is not yet available. This feed shows live data for your current session only and will reset on refresh.</p>
+                        <div className="text-2xl font-bold">{directReferralCount}</div>
+                        <p className="text-xs text-muted-foreground">Live count for this session. Full history coming soon.</p>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Your Bonus Earnings</CardTitle>
+                        <Gift className="h-5 w-5 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalBonus.toFixed(4)} EGLIFE</div>
+                        <p className="text-xs text-muted-foreground">Live data from this session</p>
                     </CardContent>
                 </Card>
             </div>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Your Referral History</CardTitle>
+                    <CardDescription>A live feed of your referral bonuses from this session.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Referred User</TableHead>
+                                <TableHead>Type</TableHead>
+                                <TableHead className="text-right">Bonus</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                                {referralHistory.length > 0 ? referralHistory.map((ref, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>
+                                        <div className="font-medium truncate" title={ref.referral}>{ref.referral.slice(0, 6)}...{ref.referral.slice(-4)}</div>
+                                        <div className="text-xs text-muted-foreground">{ref.date}</div>
+                                    </TableCell>
+                                    <TableCell>Staking</TableCell>
+                                    <TableCell className="text-right font-semibold text-green-500">+{parseFloat(formatEther(ref.bonusAmount)).toFixed(2)}</TableCell>
+                                </TableRow>
+                            )) : (
+                                <TableRow>
+                                    <TableCell colSpan={3} className="h-24 text-center">
+                                        Listening for new referral bonuses...
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                        <p className="text-xs text-muted-foreground mt-4 text-center">Full historical data is not yet available. This feed shows live data for your current session only and will reset on refresh.</p>
+                </CardContent>
+            </Card>
 
             
             <section className="w-full mt-16 pt-8 border-t">

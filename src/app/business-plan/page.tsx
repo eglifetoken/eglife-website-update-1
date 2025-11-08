@@ -199,7 +199,3 @@ export default function BusinessPlanPage() {
         </div>
     );
 }
-
-    
-
-    

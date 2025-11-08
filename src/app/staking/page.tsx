@@ -118,9 +118,7 @@ function StakingPageContent() {
 
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
-  const [isApproving, setIsApproving] = useState(false);
-  const [isStaking, setIsStaking] = useState(false);
-  const [isUnstaking, setIsUnstaking] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [totalClaimed, setTotalClaimed] = useState(0); 
@@ -150,14 +148,16 @@ function StakingPageContent() {
     });
   }
 
-  const handleApprove = async () => {
-    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
-      toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount." });
+  const handleStakeAction = async () => {
+     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+      handleError(new Error("Please enter a valid amount to stake."), "Invalid Amount");
       return;
     }
+    setIsProcessing(true);
 
-    setIsApproving(true);
-    try {
+    // Step 1: Approve if needed
+    if (needsApproval) {
+      try {
         await writeContractAsync({
             address: EGLIFE_TOKEN_CONTRACT,
             abi: tokenContractAbi,
@@ -166,28 +166,23 @@ function StakingPageContent() {
         });
         toast({
             title: "Approval Successful!",
-            description: `You have approved the contract to spend ${stakeAmount} EGLIFE. You can now stake your tokens.`,
+            description: `You can now proceed to stake your tokens.`,
         });
         refetchAllowance();
-    } catch (error) {
+        setIsProcessing(false); // Allow user to click stake now
+        return; // Stop here, user will click again to stake
+      } catch (error) {
         handleError(error, "Approval Failed");
-    } finally {
-        setIsApproving(false);
-    }
-  };
-
-  const handleStake = async () => {
-    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
-      handleError(new Error("Please enter a valid amount to stake."), "Invalid Amount");
-      return;
+        setIsProcessing(false);
+        return;
+      }
     }
 
-    setIsStaking(true);
+    // Step 2: Stake
     const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
     const urlSponsor = searchParams.get("ref");
     const defaultSponsor = "0xf2f000C78519015B91220c7bE3EF26241bEc686f";
     
-    // Logic: 1. Use on-chain sponsor if exists. 2. Else, use URL sponsor. 3. Else, use default.
     const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
 
     try {
@@ -207,9 +202,9 @@ function StakingPageContent() {
     } catch (error) {
         handleError(error, "Staking Failed");
     } finally {
-        setIsStaking(false);
+        setIsProcessing(false);
     }
-  };
+  }
 
  const handleUnstake = async (isUnstakeAll = false) => {
     const amountToUnstake = isUnstakeAll ? totalStaked : (unstakeAmount ? parseFloat(unstakeAmount) : 0);
@@ -230,7 +225,7 @@ function StakingPageContent() {
         return;
     }
 
-    setIsUnstaking(true);
+    setIsProcessing(true);
     try {
         await writeContractAsync({
             address: EGLIFE_STAKING_CONTRACT,
@@ -249,7 +244,7 @@ function StakingPageContent() {
     } catch(error) {
         handleError(error, "Unstaking Failed");
     } finally {
-        setIsUnstaking(false);
+        setIsProcessing(false);
     }
 }
 
@@ -279,7 +274,7 @@ function StakingPageContent() {
        }
   }
 
-  const isPending = isApproving || isStaking || isUnstaking || isClaiming;
+  const isPending = isProcessing || isClaiming;
   const sponsorToDisplay = sponsorData && sponsorData !== zeroAddress ? sponsorData : "None";
 
   if (!isClient) {
@@ -649,42 +644,29 @@ function StakingPageContent() {
                            onChange={(e) => setStakeAmount(e.target.value)}
                         />
                     </div>
-                    {needsApproval ? (
-                        <Alert>
-                          <Info className="h-4 w-4" />
-                          <AlertTitle>Approval Required (2-Step Process)</AlertTitle>
-                          <AlertDescription>
-                            To stake, you must first grant permission by clicking "Approve". After that transaction succeeds, you can click "Stake Now".
-                          </AlertDescription>
-                        </Alert>
-                    ): (
-                         <Alert>
-                          <Info className="h-4 w-4" />
-                          <AlertTitle>Ready to Stake</AlertTitle>
-                          <AlertDescription>
-                            You have already approved the contract. You can now stake your tokens directly.
-                          </AlertDescription>
-                        </Alert>
-                    )}
+                     <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertTitle>{needsApproval ? "Approval Required" : "Ready to Stake"}</AlertTitle>
+                        <AlertDescription>
+                            {needsApproval ? 
+                                "To stake, you must first grant permission by clicking 'Approve & Stake'. This is a required security step." : 
+                                "You can stake your tokens directly. The contract already has permission."
+                            }
+                        </AlertDescription>
+                    </Alert>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-2">
-                    {needsApproval ? (
-                        <Button 
-                            className="w-full"
-                            disabled={!isConnected || isApproving || !stakeAmount || isWrongNetwork}
-                            onClick={handleApprove}
-                        >
-                            {isApproving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Approving...</> : "1. Approve"}
-                        </Button>
-                    ) : (
-                        <Button 
+                         <Button 
                             className="w-full" 
-                            disabled={!isConnected || isStaking || !stakeAmount || isWrongNetwork}
-                            onClick={handleStake}
+                            disabled={!isConnected || isProcessing || !stakeAmount || isWrongNetwork}
+                            onClick={handleStakeAction}
                         >
-                            {isStaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Staking...</> : "Stake Now"}
+                            {isProcessing ? (
+                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</>
+                            ) : (
+                                needsApproval ? "Approve & Stake" : "Stake Now"
+                            )}
                         </Button>
-                    )}
                     </CardFooter>
                 </TabsContent>
                 <TabsContent value="unstake">
@@ -711,7 +693,7 @@ function StakingPageContent() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || !unstakeAmount || isWrongNetwork}
                       onClick={() => handleUnstake(false)}
                     >
-                      {isUnstaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake Amount"}
+                      {isProcessing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake Amount"}
                     </Button>
                      <Button 
                       className="w-full" 
@@ -719,7 +701,7 @@ function StakingPageContent() {
                       disabled={!isConnected || isPending || totalStaked <= 0 || isWrongNetwork}
                       onClick={() => handleUnstake(true)}
                     >
-                      {isUnstaking ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake All"}
+                      {isProcessing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Unstaking...</> : "Unstake All"}
                     </Button>
                     </CardFooter>
                 </TabsContent>
@@ -787,5 +769,3 @@ export default function StakingPage() {
         </Suspense>
     )
 }
-
-    
