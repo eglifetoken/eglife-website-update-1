@@ -1,8 +1,11 @@
+
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import { useAccount } from 'wagmi';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
 
 // ========= CONFIG =========
 const STAKING_ADDRESS = '0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76';
@@ -171,4 +174,3 @@ export default function LiveIncomeTicker() {
     </Card>
   );
 }
-
