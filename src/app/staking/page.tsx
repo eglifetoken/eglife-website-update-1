@@ -187,6 +187,7 @@ function StakingPageContent() {
     const urlSponsor = searchParams.get("ref");
     const defaultSponsor = "0xf2f000C78519015B91220c7bE3EF26241bEc686f";
     
+    // Logic: 1. Use on-chain sponsor if exists. 2. Else, use URL sponsor. 3. Else, use default.
     const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
 
     try {
@@ -279,6 +280,7 @@ function StakingPageContent() {
   }
 
   const isPending = isApproving || isStaking || isUnstaking || isClaiming;
+  const sponsorToDisplay = sponsorData && sponsorData !== zeroAddress ? sponsorData : "None";
 
   if (!isClient) {
     return (
@@ -330,28 +332,28 @@ function StakingPageContent() {
          </Card>
       ) : (
         <Card className="mb-8">
-            <CardHeader className="text-center">
-                <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
-                <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
+            <CardHeader>
+                 <CardTitle className="font-headline text-xl text-center">Wallet Connected</CardTitle>
+                 <CardDescription className="font-mono text-xs truncate mt-1 text-center">{address}</CardDescription>
             </CardHeader>
-            <CardContent className="text-center space-y-4">
+            <CardContent className="space-y-4">
                  <div className="p-3 rounded-lg bg-muted border text-center">
                     <Label className="flex items-center justify-center gap-2 text-xs text-muted-foreground"><UserCheck className="h-4 w-4" /> Your Sponsor</Label>
                     {isLoadingSponsor ? (
                         <Loader2 className="h-4 w-4 animate-spin mx-auto mt-1" />
                     ) : (
-                        <p className="font-mono text-sm truncate mt-1">
-                            {sponsorData && sponsorData !== zeroAddress ? sponsorData : 'None'}
+                        <p className="font-mono text-sm truncate mt-1" title={sponsorToDisplay}>
+                            {sponsorToDisplay}
                         </p>
                     )}
                 </div>
                  {isWrongNetwork ? (
-                     <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg" variant="destructive">
+                     <Button onClick={() => switchChain({ chainId: bsc.id })} size="lg" variant="destructive" className="w-full">
                         <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
                         Switch to BSC Network
                     </Button>
                  ) : (
-                    <Button onClick={() => disconnect()} variant="outline">
+                    <Button onClick={() => disconnect()} variant="outline" className="w-full">
                         <Link2Off className="mr-2 h-5 w-5" />
                         Disconnect Wallet
                     </Button>
@@ -785,3 +787,5 @@ export default function StakingPage() {
         </Suspense>
     )
 }
+
+    
