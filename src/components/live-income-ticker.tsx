@@ -2,160 +2,56 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ethers } from 'ethers';
-import { useAccount, useChainId } from 'wagmi';
-import { bsc } from 'wagmi/chains';
+import { useAccount, useReadContract, useChainId } from 'wagmi';
+import { formatEther } from 'viem';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
+import { bsc } from 'wagmi/chains';
 
 // ========= CONFIG =========
 const STAKING_ADDRESS = '0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76';
 const DECIMALS = 18n;
 const SECONDS_PER_YEAR = 31536000n; // 365*24*3600
 
-// Minimal ABI: सिर्फ read के लिए
-const STAKING_ABI = [
-  'function stakedOf(address) view returns (uint256)',
-  'function earned(address) view returns (uint256)',
-  'function stakes(address) view returns (uint256 principal, uint128 lastClaim, uint128 accRewards)',
-  'function sponsors(address) view returns (address)',
-  'function levelOf(address) view returns (uint8)',
-  'function levelForAmount(uint256) view returns (uint8)',
-  'function tierApyBps(uint256) view returns (uint16)',
-];
+const stakingContractAbi = [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"},{"internalType":"address","name":"_treasury","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"EnforcedPause","type":"error"},{"inputs":[],"name":"ExpectedPause","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"currentAllowance","type":"uint256"},{"internalType":"uint256","name":"requestedDecrease","type":"uint256"}],"name":"SafeERC20FailedDecreaseAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Claimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"newPenaltyBps","type":"uint16"}],"name":"EarlyUnstakePenaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newLockPeriod","type":"uint256"}],"name":"LockPeriodUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"maxPayoutBps","type":"uint16"}],"name":"MaxReferralPayoutUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"minStake","type":"uint256"}],"name":"MinActiveStakeForReferralUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referral","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"ReferralBonusesUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"royaltyBps","type":"uint16"}],"name":"RoyaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"SponsorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"grossAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"netStaked","type":"uint256"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"indexed":false,"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"TiersUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"TreasuryUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"unstakeAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"oldSponsor","type":"address"},{"indexed":true,"internalType":"address","name":"newSponsor","type":"address"},{"indexed":false,"internalType":"address","name":"admin","type":"address"}],"name":"SponsorUpdated","type":"event"},{"inputs":[],"name":"BPS_DENOMINATOR","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"address[]","name":"newSponsors","type":"address[]"}],"name":"batchUpdateSponsor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"earlyUnstakePenaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTierCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTiers","outputs":[{"internalType":"uint128[]","name":"mins","type":"uint128[]"},{"internalType":"uint16[]","name":"apys","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxReferralPayoutBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"minActiveStakeForReferral","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"erc20","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"recoverERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"royaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"setReferralBonuses","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"level","type":"uint16","name":"bps","type":"uint16"}],"name":"setReferralBonusForLevel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newLock","type":"uint256"}],"name":"setLockPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_max","type":"uint16"}],"name":"setMaxReferralPayoutBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_min","type":"uint256"}],"name":"setMinActiveStakeForReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_royaltyBps","type":"uint16"}],"name":"setRoyaltyBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"setTiers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"sponsors","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sponsor","type":"address"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"principal","type":"uint256"},{"internalType":"uint128","name":"lastClaim","type":"uint128"},{"internalType":"uint128","name":"accRewards","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierApyBps","outputs":[{"internalType":"uint16[]","name":"","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierMinAmount","outputs":[{"internalType":"uint128[]","name":"","type":"uint128[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"newSponsor","type":"address"}],"name":"updateSponsor","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+
 
 export default function LiveIncomeTicker() {
   const { address: userAddress } = useAccount();
   const chainId = useChainId();
   const [ready, setReady] = useState(false);
-  const [display, setDisplay] = useState({
-    amountEgl: '0.000000',
-    liveEgl: '0.000000',
-    level: 0,
-    apyBps: '0',
+  const [liveEgl, setLiveEgl] = useState('0.000000');
+
+  const { data: stakeData } = useReadContract({
+    abi: stakingContractAbi,
+    address: STAKING_ADDRESS,
+    functionName: 'stakedOf',
+    args: userAddress ? [userAddress] : undefined,
+    query: { enabled: !!userAddress && chainId === bsc.id }
   });
 
-  // ethers provider + contract
-  const contractRef = useRef<ethers.Contract | null>(null);
-  const snapshotRef = useRef({
-    amount: 0n,
-    accrued: 0n,
-    lastUpdate: 0n,
-    apyBps: 0n,
+  const { data: earnedData } = useReadContract({
+    abi: stakingContractAbi,
+    address: STAKING_ADDRESS,
+    functionName: 'earned',
+    args: userAddress ? [userAddress] : undefined,
+    query: { 
+        enabled: !!userAddress && chainId === bsc.id,
+        refetchInterval: 5000, // Keep fetching on-chain earned data
+    }
   });
-
-  // helper: format 18-dec to string
-  function format18(x: bigint) {
-    const s = x.toString().padStart(19, '0');
-    const whole = s.slice(0, -18) || '0';
-    const frac = s.slice(-18);
-    // limit to 6 decimals for UI
-    return `${whole}.${frac.slice(0, 6)}`;
-  }
-
-  // local fallback for level (केवल तब जब levelOf/levelForAmount उपलब्‍ध नहीं)
-  function localLevelForAmount(amount: bigint) {
-    // amount is wei (18 decimals)
-    const tok = Number(amount / 10n ** DECIMALS); // rough conversion
-    // आपकी default slab ranges (ज़रूरत अनुसार बदल सकते हैं)
-    if (tok >= 30000) return 6;
-    if (tok >= 10000) return 5;
-    if (tok >= 5000) return 4;
-    if (tok >= 2000) return 3;
-    if (tok >= 500) return 2;
-    if (tok >= 50) return 1;
-    return 0; // <50 means not valid tier (no APY)
-  }
-
-  useEffect(() => {
-    (async () => {
-      if (!(window as any).ethereum || !userAddress || chainId !== bsc.id) {
-        setReady(false);
-        return;
-      }
-
-      try {
-        const provider = new ethers.BrowserProvider((window as any).ethereum);
-        const contract = new ethers.Contract(
-          STAKING_ADDRESS,
-          STAKING_ABI,
-          provider
-        );
-        contractRef.current = contract;
-
-        // 1) read users(user) -> renamed to stakes(user)
-        // principal, lastClaim, accRewards
-        const u = await contract.stakes(userAddress);
-        const amount = BigInt(u.principal.toString());
-        const accrued = BigInt(u.accRewards.toString());
-        const lastUpdate = BigInt(u.lastClaim.toString());
-
-        // 2) resolve level
-        let level = 0;
-        try {
-          // prefer direct
-          level = Number(await contract.levelOf(userAddress));
-        } catch {}
-        if (!level) {
-          try {
-            level = Number(await contract.levelForAmount(amount));
-          } catch {}
-        }
-        if (!level) {
-          level = localLevelForAmount(amount);
-        }
-
-        // 3) read apy bps for that level
-        let apyBps = 0n;
-        if (level > 0) {
-          try {
-            // Assuming tierApyBps uses index from 0, level from 1
-            apyBps = BigInt((await contract.tierApyBps(level -1)).toString());
-          } catch(e) {
-            console.error("Could not fetch APY", e)
-            apyBps = 0n;
-          }
-        }
-
-        snapshotRef.current = { amount, accrued, lastUpdate, apyBps };
-
-        setDisplay({
-          amountEgl: format18(amount),
-          liveEgl: format18(accrued), // start with stored
-          level,
-          apyBps: apyBps.toString(),
-        });
-        setReady(true);
-      } catch (error) {
-          console.error("Error fetching staking data in Live Ticker:", error);
-          setReady(false);
-      }
-    })();
-  }, [userAddress, chainId]);
-
-  // ticker – हर 1 सेकंड में live income बढ़ाएँ (off-chain calc)
-  useEffect(() => {
-    if (!ready || !userAddress) return;
-    const t = setInterval(() => {
-      const now = BigInt(Math.floor(Date.now() / 1000));
-      const { amount, accrued, lastUpdate, apyBps } = snapshotRef.current;
-      
-      let live = accrued;
-      if (apyBps > 0n && amount > 0n && now > lastUpdate && lastUpdate > 0n) {
-        const dt = now - lastUpdate; // seconds
-        // earned = amount * apyBps * dt / (10000 * secondsPerYear)
-        const num = amount * apyBps * dt;
-        const den = 10000n * SECONDS_PER_YEAR;
-        live = accrued + num / den;
-      }
-
-      setDisplay((prev) => ({ ...prev, liveEgl: format18(live) }));
-    }, 1000);
-
-    return () => clearInterval(t);
-  }, [ready, userAddress]);
   
-  if (!userAddress) {
+  const stakedAmount = stakeData ? parseFloat(formatEther(stakeData as bigint)) : 0;
+  const earnedAmount = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0;
+
+  useEffect(() => {
+    // This effect simply updates the UI whenever the on-chain data changes.
+    // The real-time ticker logic has been removed as it was complex and potentially inaccurate.
+    // Wagmi's refetchInterval provides a good balance of liveness and simplicity.
+    setLiveEgl(earnedAmount.toFixed(6));
+  }, [earnedAmount]);
+
+  if (!userAddress || !stakeData) {
       return null;
   }
 
@@ -163,13 +59,13 @@ export default function LiveIncomeTicker() {
     <Card className="bg-primary/10 border-primary">
        <CardHeader className="text-center">
         <CardTitle className="font-headline text-2xl">Available to Claim</CardTitle>
-        <CardDescription>This is the amount of rewards you can claim right now, updated live.</CardDescription>
+        <CardDescription>This is the amount of rewards you can claim right now, updated periodically.</CardDescription>
        </CardHeader>
        <CardContent className="text-center">
-            <div className="text-4xl font-bold mb-2">{display.liveEgl}</div>
+            <div className="text-4xl font-bold mb-2">{liveEgl}</div>
             <p className="text-sm text-primary/80">EGLIFE</p>
             <div className="text-xs text-muted-foreground mt-2">
-                Staked: {display.amountEgl} | Level: {display.level} | APY (bps): {display.apyBps}
+                Staked: {stakedAmount.toFixed(2)} EGLIFE
             </div>
        </CardContent>
        <CardFooter className="flex-col gap-2">
@@ -181,3 +77,5 @@ export default function LiveIncomeTicker() {
     </Card>
   );
 }
+
+    
