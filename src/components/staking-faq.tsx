@@ -11,7 +11,7 @@ import {
 const faqItems = [
   {
     question: "What is the minimum amount I can stake?",
-    answer: "There is no official minimum, but you must have enough EGLIFE to cover the transaction fees. The contract requires an amount greater than zero."
+    answer: "While there is no technical minimum to stake, a stake of at least 50 EGLIFE is required for your sponsor to be eligible for a referral bonus. You must have enough EGLIFE to cover the amount you wish to stake plus any associated network transaction fees."
   },
   {
     question: "How are rewards calculated and when do I receive them?",
