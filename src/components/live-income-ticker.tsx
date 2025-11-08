@@ -3,7 +3,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
+import { bsc } from 'wagmi/chains';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 
@@ -25,6 +26,7 @@ const STAKING_ABI = [
 
 export default function LiveIncomeTicker() {
   const { address: userAddress } = useAccount();
+  const chainId = useChainId();
   const [ready, setReady] = useState(false);
   const [display, setDisplay] = useState({
     amountEgl: '0.000000',
@@ -67,64 +69,69 @@ export default function LiveIncomeTicker() {
 
   useEffect(() => {
     (async () => {
-      if (!(window as any).ethereum || !userAddress) {
+      if (!(window as any).ethereum || !userAddress || chainId !== bsc.id) {
         setReady(false);
         return;
       }
 
-      const provider = new ethers.BrowserProvider((window as any).ethereum);
-      const contract = new ethers.Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI,
-        provider
-      );
-      contractRef.current = contract;
-
-      // 1) read users(user) -> renamed to stakes(user)
-      // principal, lastClaim, accRewards
-      const u = await contract.stakes(userAddress);
-      const amount = BigInt(u.principal.toString());
-      const accrued = BigInt(u.accRewards.toString());
-      const lastUpdate = BigInt(u.lastClaim.toString());
-
-      // 2) resolve level
-      let level = 0;
       try {
-        // prefer direct
-        level = Number(await contract.levelOf(userAddress));
-      } catch {}
-      if (!level) {
+        const provider = new ethers.BrowserProvider((window as any).ethereum);
+        const contract = new ethers.Contract(
+          STAKING_ADDRESS,
+          STAKING_ABI,
+          provider
+        );
+        contractRef.current = contract;
+
+        // 1) read users(user) -> renamed to stakes(user)
+        // principal, lastClaim, accRewards
+        const u = await contract.stakes(userAddress);
+        const amount = BigInt(u.principal.toString());
+        const accrued = BigInt(u.accRewards.toString());
+        const lastUpdate = BigInt(u.lastClaim.toString());
+
+        // 2) resolve level
+        let level = 0;
         try {
-          level = Number(await contract.levelForAmount(amount));
+          // prefer direct
+          level = Number(await contract.levelOf(userAddress));
         } catch {}
-      }
-      if (!level) {
-        level = localLevelForAmount(amount);
-      }
-
-      // 3) read apy bps for that level
-      let apyBps = 0n;
-      if (level > 0) {
-        try {
-          // Assuming tierApyBps uses index from 0, level from 1
-          apyBps = BigInt((await contract.tierApyBps(level -1)).toString());
-        } catch(e) {
-          console.error("Could not fetch APY", e)
-          apyBps = 0n;
+        if (!level) {
+          try {
+            level = Number(await contract.levelForAmount(amount));
+          } catch {}
         }
+        if (!level) {
+          level = localLevelForAmount(amount);
+        }
+
+        // 3) read apy bps for that level
+        let apyBps = 0n;
+        if (level > 0) {
+          try {
+            // Assuming tierApyBps uses index from 0, level from 1
+            apyBps = BigInt((await contract.tierApyBps(level -1)).toString());
+          } catch(e) {
+            console.error("Could not fetch APY", e)
+            apyBps = 0n;
+          }
+        }
+
+        snapshotRef.current = { amount, accrued, lastUpdate, apyBps };
+
+        setDisplay({
+          amountEgl: format18(amount),
+          liveEgl: format18(accrued), // start with stored
+          level,
+          apyBps: apyBps.toString(),
+        });
+        setReady(true);
+      } catch (error) {
+          console.error("Error fetching staking data in Live Ticker:", error);
+          setReady(false);
       }
-
-      snapshotRef.current = { amount, accrued, lastUpdate, apyBps };
-
-      setDisplay({
-        amountEgl: format18(amount),
-        liveEgl: format18(accrued), // start with stored
-        level,
-        apyBps: apyBps.toString(),
-      });
-      setReady(true);
     })();
-  }, [userAddress]);
+  }, [userAddress, chainId]);
 
   // ticker – हर 1 सेकंड में live income बढ़ाएँ (off-chain calc)
   useEffect(() => {
