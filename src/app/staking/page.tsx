@@ -185,7 +185,7 @@ function StakingPageContent() {
     setIsStaking(true);
     const onChainSponsor = sponsorData && sponsorData !== zeroAddress ? sponsorData : null;
     const urlSponsor = searchParams.get("ref");
-    const defaultSponsor = "0x5326e0Cd06d26eB9dac76fE2722eA8ca3b8dEC8f";
+    const defaultSponsor = "0xf2f000C78519015B91220c7bE3EF26241bEc686f";
     
     const referrerAddress = onChainSponsor || urlSponsor || defaultSponsor;
 
@@ -330,9 +330,9 @@ function StakingPageContent() {
          </Card>
       ) : (
         <Card className="mb-8">
-            <CardHeader>
-                <CardTitle className="font-headline text-xl text-center">Wallet Connected</CardTitle>
-                <CardDescription className="font-mono text-xs truncate mt-1 text-center">{address}</CardDescription>
+            <CardHeader className="text-center">
+                <CardTitle className="font-headline text-xl">Wallet Connected</CardTitle>
+                <CardDescription className="font-mono text-xs truncate mt-1">{address}</CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4">
                  <div className="p-3 rounded-lg bg-muted border text-center">
