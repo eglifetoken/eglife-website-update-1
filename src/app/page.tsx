@@ -103,14 +103,14 @@ export default function Home() {
                                 <TableRow key={tier.level}>
                                     <TableCell className="font-medium">{tier.level}</TableCell>
                                     <TableCell>{tier.range}</TableCell>
-                                    <TableCell className="text-right font-semibold text-accent">{tier.yearly}</TableCell>
+                                    <TableCell className="text-right font-semibold text-primary">{tier.yearly}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                     <div className="mt-6 text-left bg-muted/50 p-4 rounded-lg space-y-2">
-                        <p className="text-sm text-foreground/80"><strong className="text-accent">Lock Period:</strong> 365 Days per deposit. Principal is locked but earnings accrue per-second and can be claimed anytime.</p>
-                        <p className="text-sm text-foreground/80"><strong className="text-accent">Note:</strong> Staking is in EGLIFE and staking bonus is paid in EGLIFE only.</p>
+                        <p className="text-sm text-foreground/80"><strong className="text-primary">Lock Period:</strong> 365 Days per deposit. Principal is locked but earnings accrue per-second and can be claimed anytime.</p>
+                        <p className="text-sm text-foreground/80"><strong className="text-primary">Note:</strong> Staking is in EGLIFE and staking bonus is paid in EGLIFE only.</p>
                    </div>
                 </CardContent>
             </Card>
@@ -233,5 +233,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
