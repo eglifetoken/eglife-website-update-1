@@ -3,12 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Users, Landmark, Briefcase, Award, Zap, Gift, ShieldCheck, TrendingUp, DollarSign, Package, BarChart, FileText } from "lucide-react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getTokenData, TokenData } from "@/ai/flows/getTokenData";
-import { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
