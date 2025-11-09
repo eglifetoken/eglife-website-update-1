@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle } from "lucide-react";
+import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance, useReadContract, useChainId, useWriteContract, useSwitchChain } from 'wagmi'
@@ -211,7 +211,6 @@ function DappPageContent() {
   const buttonText = isProcessing ? "Processing..." : needsApproval ? "Approve & Stake" : "Stake Now";
   const totalStakedNum = stakedData ? parseFloat(formatEther(stakedData)) : 0;
   const availableToClaimNum = earnedData ? parseFloat(formatEther(earnedData)) : 0;
-
 
   return (
     <div className="min-h-screen bg-background text-white p-4 space-y-6">
