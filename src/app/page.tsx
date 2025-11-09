@@ -38,7 +38,7 @@ export default function Home() {
                 <Button asChild size="lg" className="font-bold text-base">
                   <Link href="/dapp">Login</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="font-bold text-base border-primary text-primary hover:bg-primary/10 hover:text-primary">
+                <Button asChild size="lg" className="font-bold text-base">
                   <Link href="/register">Registration</Link>
                 </Button>
               </div>
