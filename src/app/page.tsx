@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24">
+      <div className="container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-16">
         {/* About Section */}
         <section>
              <div className="text-center max-w-3xl mx-auto">
@@ -233,5 +233,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
