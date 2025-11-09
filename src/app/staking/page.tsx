@@ -409,31 +409,6 @@ function StakingPageContent() {
          </div>
       )}
 
-      <Card className="mb-8 border-destructive">
-          <CardHeader className="flex-row items-center gap-4">
-              <div className="p-3 bg-destructive/10 rounded-md w-fit">
-                  <AlertTriangle className="h-8 w-8 text-destructive" />
-              </div>
-              <div>
-                  <CardTitle className="font-headline text-2xl text-destructive">Security Warning & Approval Check</CardTitle>
-                  <CardDescription>If your wallet is performing unauthorized actions, check your approvals immediately.</CardDescription>
-              </div>
-          </CardHeader>
-          <CardContent>
-              <p className="text-destructive/90 mb-4">
-                  If tokens are being transferred or swapped from your wallet without your permission, it's possible you've accidentally approved a malicious smart contract. Use a trusted tool like the BscScan "Token Approval Checker" to review and revoke any suspicious approvals for your EGLIFE or other tokens.
-              </p>
-          </CardContent>
-          <CardFooter>
-              <Button asChild variant="destructive" className="w-full">
-                  <a href={`https://bscscan.com/tokenapprovalchecker?search=${address || ''}`} target="_blank" rel="noopener noreferrer">
-                      <ShieldCheck className="mr-2 h-5 w-5" />
-                      Check & Revoke Permissions on BscScan
-                  </a>
-              </Button>
-          </CardFooter>
-      </Card>
-
 
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
@@ -686,7 +661,7 @@ function StakingPageContent() {
             </Button>
             <Button asChild>
                 <Link href="/dapp">
-                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                    Next Page <ArrowRight className="mr-2 h-4 w-4" />
                 </Link>
             </Button>
         </div>

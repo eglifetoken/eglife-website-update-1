@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle, AlertTriangle } from "lucide-react";
+import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle, AlertTriangle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance, useReadContract, useChainId, useWriteContract, useSwitchChain } from 'wagmi'
@@ -252,6 +252,29 @@ function DappPageContent() {
               <CardHeader><CardTitle className="text-sm font-normal text-muted-foreground text-center">Available to Claim</CardTitle></CardHeader>
               <CardContent className="text-center"><p className="font-bold text-4xl">{isLoadingEarned || isWrongNetwork ? <Loader2 className="h-8 w-8 mx-auto animate-spin"/> : `${availableToClaimNum.toFixed(4)}`}</p></CardContent>
               <CardFooter><Button className="w-full" onClick={handleClaim} disabled={isPending || isWrongNetwork || availableToClaimNum <= 0}>{isClaiming ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Now'}</Button></CardFooter>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/20 border-destructive">
+              <CardHeader className="flex-row items-center gap-4">
+                  <AlertTriangle className="h-8 w-8 text-destructive" />
+                  <div>
+                      <CardTitle className="font-headline text-xl text-destructive">Security Warning & Approval Check</CardTitle>
+                      <CardDescription>If your wallet is performing unauthorized actions, check your approvals immediately.</CardDescription>
+                  </div>
+              </CardHeader>
+              <CardContent>
+                  <p className="text-destructive/90 mb-4 text-sm">
+                      If tokens are being transferred or swapped from your wallet without your permission, it's possible you've accidentally approved a malicious smart contract. Use a trusted tool like the BscScan "Token Approval Checker" to review and revoke any suspicious approvals for your EGLIFE or other tokens.
+                  </p>
+              </CardContent>
+              <CardFooter>
+                  <Button asChild variant="destructive" className="w-full">
+                      <a href={`https://bscscan.com/tokenapprovalchecker?search=${address || ''}`} target="_blank" rel="noopener noreferrer">
+                          <ShieldCheck className="mr-2 h-5 w-5" />
+                          Check Approvals on BscScan
+                      </a>
+                  </Button>
+              </CardFooter>
             </Card>
             
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
