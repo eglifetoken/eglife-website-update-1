@@ -22,7 +22,6 @@ const navLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-3">
-        <Image src="https://placehold.co/40x40/1A110A/FFC94A?text=ET&font=lexend" width={40} height={40} alt="EGLIFE TOKEN Logo" className="rounded-full" />
         <span className="font-headline text-xl font-bold text-white">EGLIFE TOKEN</span>
     </div>
 );

@@ -23,10 +23,10 @@ export default function Home() {
         />
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-6 text-white leading-tight">
-              Creative of <span className="text-primary">EGLIFE TOKEN</span>
+              EGLIFE Utility Token
             </h1>
             <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-             EGLIFE TOKEN empowers global traders with secure, fast, and decentralized digital finance—driving innovation, growth, and trust worldwide.
+             The BEP-20 utility token on the BNB Smart Chain, built for everyday use. Now available on PancakeSwap.
             </p>
             <div className="flex flex-col items-center gap-4 w-full max-w-xs">
               <div className="grid grid-cols-2 gap-4 w-full">
