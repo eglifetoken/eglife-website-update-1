@@ -14,7 +14,7 @@ import { injected } from 'wagmi/connectors';
 
 const config = createConfig({
   chains: [bsc],
-  connectors: [injected()],
+  connectors: [injected({ shimDisconnect: true })],
   transports: {
     [bsc.id]: http(),
   },
