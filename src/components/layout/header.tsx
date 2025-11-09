@@ -19,13 +19,6 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-const Logo = () => (
-    <div className="flex items-center gap-3">
-        <span className="font-headline text-xl font-bold text-white">EGLIFE TOKEN</span>
-    </div>
-);
-
-
 export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,8 +33,8 @@ export default function Header() {
     <header className="absolute top-0 z-50 w-full bg-transparent">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
-        <Link href="/">
-            <Logo />
+        <Link href="/" className="font-headline text-xl font-bold text-white">
+            EGLIFE TOKEN
         </Link>
         
         <div className="flex items-center lg:hidden">
