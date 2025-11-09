@@ -30,12 +30,15 @@ const incomeStreams = [
   { icon: Users, title: "Team Income", value: "0.00" },
 ];
 
-const teamDetails = [
-  { title: "Total Team", value: "0", icon: Users },
-  { title: "Group A (Directs)", value: "0", icon: UserIcon },
-  { title: "Group B", value: "0", icon: Users },
-  { title: "Group C", value: "0", icon: Users },
+const levelWiseTeamDetails = [
+  { level: "LV 1", count: 0 },
+  { level: "LV 2", count: 0 },
+  { level: "LV 3", count: 0 },
+  { level: "LV 4", count: 0 },
+  { level: "LV 5", count: 0 },
+  { level: "LV 6", count: 0 },
 ];
+
 
 export default function DappPage() {
   const [isClient, setIsClient] = useState(false);
@@ -88,7 +91,7 @@ export default function DappPage() {
         <div className="flex h-screen items-center justify-center bg-background p-4">
              <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardHeader className="text-center">
-                    <CardTitle className="font-headline text-2xl text-white">Secure Wallet Access</CardTitle>
+                    <CardTitle className="text-2xl font-headline text-white">Secure Wallet Access</CardTitle>
                     <CardDescription className="text-foreground/80">Connect your BEP-20 wallet to access the EGLIFE DApp dashboard.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -158,24 +161,17 @@ export default function DappPage() {
 
              <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardHeader>
-                    <CardTitle className="font-headline text-lg">Team Details</CardTitle>
+                    <CardTitle className="font-headline text-lg">Level Wise Team Details</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                    {teamDetails.map((detail, index) => {
-                         const Icon = detail.icon;
-                         return (
-                            <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                    <Icon className="h-5 w-5 text-primary/80"/>
-                                    <p className="font-medium text-sm">{detail.title}</p>
-                                </div>
-                                <p className="font-bold text-lg">{detail.value}</p>
-                            </div>
-                        )
-                    })}
+                <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {levelWiseTeamDetails.map((detail, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                            <p className="font-medium text-sm">{detail.level}</p>
+                            <p className="font-bold text-lg">{detail.count}</p>
+                        </div>
+                    ))}
                 </CardContent>
             </Card>
-
 
              <div className="space-y-2">
                 {incomeStreams.map((stream, index) => {
@@ -200,4 +196,6 @@ export default function DappPage() {
 }
 
     
+    
+
     
