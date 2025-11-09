@@ -22,11 +22,12 @@ export default function Home() {
           priority
         />
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-6 text-white leading-tight">
-              EGLIFE Utility Token
+            <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white leading-tight">
+              Redefining Utility, Empowering Lives.
             </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-             The BEP-20 utility token on the BNB Smart Chain, built for everyday use. Now available on PancakeSwap.
+            <h2 className="text-3xl md:text-5xl font-headline font-bold text-primary mb-6">EGLIFE TOKEN</h2>
+            <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
+             Welcome to the future of decentralized finance. EGLIFE is a revolutionary BEP-20 utility token on the BNB Smart Chain, meticulously engineered to bridge the gap between digital assets and real-world application. Join a global community building the new standard for financial freedom. Now trading on PancakeSwap.
             </p>
             <div className="flex flex-col items-center gap-4 w-full max-w-xs">
               <div className="grid grid-cols-2 gap-4 w-full">
