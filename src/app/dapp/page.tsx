@@ -212,7 +212,13 @@ function DappPageContent() {
 
   return (
     <div className="min-h-screen bg-background text-white p-4 space-y-6">
-        <header className="flex justify-between items-center"><div/><Button onClick={() => disconnect()} variant="ghost" size="icon" className="text-white"><Link2Off /></Button></header>
+        <header className="flex justify-between items-center">
+            <div/>
+            <Button onClick={() => disconnect()} variant="ghost" className="text-white hover:bg-white/10">
+                <Link2Off className="mr-2"/>
+                Logout
+            </Button>
+        </header>
 
         <main className="space-y-6">
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
@@ -224,7 +230,7 @@ function DappPageContent() {
                 </CardContent>
             </Card>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">EGLIFE Balance</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingEgld || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${parseFloat(egldBalance?.formatted ?? '0').toFixed(2)}`}</p></CardContent></Card>
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">BNB Balance</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingBnb || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${parseFloat(bnbBalance?.formatted ?? '0').toFixed(4)}`}</p></CardContent></Card>
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">Total Staked</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingStaked || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${totalStakedNum.toFixed(2)}`}</p></CardContent></Card>
