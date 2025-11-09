@@ -4,6 +4,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -186,3 +187,5 @@ export default function DappPage() {
     </div>
   );
 }
+
+    
