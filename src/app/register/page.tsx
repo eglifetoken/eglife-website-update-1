@@ -65,13 +65,11 @@ function RegisterForm() {
     };
 
     return (
-        <Card className="mx-auto max-w-md w-full">
+        <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20">
             <CardHeader className="text-center">
-                 <div className="mx-auto bg-primary/10 rounded-full p-3 w-fit mb-4">
-                    <UserPlus className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-2xl font-headline">Create Your Account</CardTitle>
-                <CardDescription>
+                 <img src="/icon-192x192.png" alt="EGLIFE Logo" className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-primary" />
+                <CardTitle className="text-2xl font-headline text-white">Create Your Account</CardTitle>
+                <CardDescription className="text-foreground/80">
                     Connect your BEP-20 wallet to join the EGLIFE ecosystem.
                 </CardDescription>
             </CardHeader>
@@ -84,22 +82,22 @@ function RegisterForm() {
                 ) : (
                     <div className="space-y-4">
                         <div className="p-3 rounded-lg bg-muted border text-center">
-                            <Label>Your Connected Wallet</Label>
+                            <Label className="text-muted-foreground">Your Connected Wallet</Label>
                             <p className="font-mono text-sm truncate mt-1">{address}</p>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="sponsor-address">Sponsor's Wallet Address</Label>
+                            <Label htmlFor="sponsor-address" className="text-muted-foreground">Sponsor's Wallet Address</Label>
                             <Input 
                                 id="sponsor-address" 
                                 placeholder="0x..." 
                                 value={sponsorAddress}
                                 readOnly
-                                className="cursor-not-allowed bg-muted/50"
+                                className="cursor-not-allowed bg-muted/50 font-mono"
                             />
-                             <Alert variant="default" className="mt-2">
-                                <Info className="h-4 w-4" />
-                                <AlertDescription>
-                                    A sponsor is required to build the network. This has been pre-filled from a referral link or with the system's default sponsor.
+                             <Alert variant="default" className="mt-2 bg-muted/50 border-muted-foreground/20">
+                                <Info className="h-4 w-4 text-muted-foreground" />
+                                <AlertDescription className="text-muted-foreground">
+                                    A sponsor is required. This is pre-filled from a referral link or with the system's default sponsor.
                                 </AlertDescription>
                             </Alert>
                         </div>
@@ -119,7 +117,7 @@ function RegisterForm() {
                         </Button>
                     </div>
                 )}
-                 <div className="mt-4 text-center text-sm">
+                 <div className="mt-4 text-center text-sm text-muted-foreground">
                     Already have an account?{" "}
                     <Link href="/dapp" className="underline text-accent">
                         Go to DApp
@@ -138,14 +136,14 @@ export default function RegisterPage() {
 
     if (!isClient) {
         return (
-            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
+            <div className="flex h-screen items-center justify-center bg-background">
                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
             </div>
         );
     }
     
     return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-10rem)] py-12">
+        <div className="flex items-center justify-center min-h-screen p-4 bg-background">
             <Suspense fallback={<Loader2 className="h-12 w-12 animate-spin text-primary" />}>
                 <RegisterForm />
             </Suspense>
