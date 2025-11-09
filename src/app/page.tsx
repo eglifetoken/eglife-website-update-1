@@ -61,7 +61,7 @@ export default function Home() {
               Unlock Real-World Utility with <span className="text-primary">EGLIFE TOKEN</span>
             </h1>
             <p className="max-w-xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-              EGLIFE is a BEP-20 utility token on the BNB Smart Chain, designed for everyday use. Stake your tokens to earn rewards, or use them on the EGPAY platform to pay for mobile recharges and utility bills. Available now on PancakeSwap.
+              The BEP-20 utility token for daily use. Stake for rewards, pay bills on the EGPAY platform, and trade on PancakeSwap.
             </p>
             <div className="flex flex-col items-center gap-4 w-full max-w-sm">
               <div className="grid grid-cols-2 gap-4 w-full">
@@ -109,5 +109,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
