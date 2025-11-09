@@ -186,7 +186,7 @@ export default function DappPage() {
 
              <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardHeader>
-                    <CardTitle className="font-headline text-lg">Level Wise Team Details</CardTitle>
+                    <CardTitle className="font-headline text-lg">Total Team Level Wise</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {levelWiseTeamDetails.map((detail, index) => (
@@ -200,7 +200,7 @@ export default function DappPage() {
 
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardHeader>
-                    <CardTitle className="font-headline text-lg">Group Wise Team Details</CardTitle>
+                    <CardTitle className="font-headline text-lg">Total Team Group Wise</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4">
                     {groupWiseTeamDetails.map((detail, index) => {
@@ -219,10 +219,3 @@ export default function DappPage() {
     </div>
   );
 }
-
-    
-    
-
-    
-
-    
