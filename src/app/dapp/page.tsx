@@ -230,7 +230,12 @@ function DappPageContent() {
             </Button>
         </header>
 
-        <main className="space-y-6">
+        <main className="space-y-8">
+            <div className="text-center">
+                <h1 className="text-4xl md:text-5xl font-headline font-bold">DApp Dashboard</h1>
+                <p className="text-lg text-foreground/80 mt-2">Your central hub for staking, rewards, and team management.</p>
+            </div>
+
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardContent className="p-4 flex items-center gap-4">
                     <div className="space-y-1">
@@ -345,5 +350,3 @@ export default function DappPage() {
         </Suspense>
     )
 }
-
-    
