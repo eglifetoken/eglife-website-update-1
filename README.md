@@ -1,6 +1,6 @@
 # EGLIFE WEBSITE - Deployment Guide
 
-This guide will walk you through the final steps to publish your website online. The process involves getting the code from Firebase Studio onto your computer and then pushing it to GitHub using a simple script.
+This guide will walk you through the final steps to publish your website online. The process involves getting the code from your editor onto your computer and then pushing it to GitHub using a simple script.
 
 ---
 
@@ -8,14 +8,12 @@ This guide will walk you through the final steps to publish your website online.
 
 Before you can deploy, you need all the project files on your local computer.
 
-**Since there is no "Download ZIP" button in Firebase Studio, you will need to manually copy your files.** This can be tedious, but it is a necessary step that you only need to do once.
-
 1.  **Create a Folder:** On your computer's Desktop, create a new folder. Let's name it `eglife-website`.
 
 2.  **Re-create the Files:**
-    *   Look at the file list on the left side of the Firebase Studio editor.
+    *   Look at the file list on the left side of your editor.
     *   For each file and folder listed below, re-create it inside your `eglife-website` folder.
-    *   **Carefully copy the entire content** of each file from the Firebase Studio editor and paste it into the corresponding file on your computer.
+    *   **Carefully copy the entire content** of each file from the editor and paste it into the corresponding file on your computer.
     *   **It is critical that the folder structure and file contents match exactly.**
 
 ### **List of Files and Folders to Copy:**

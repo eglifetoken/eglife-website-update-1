@@ -35,4 +35,4 @@ git push --force origin main
 echo ""
 echo ">>> SCRIPT FINISHED <<<"
 echo "Your code has been pushed to your GitHub repository."
-echo "You can now go to Netlify to deploy your site."
+echo "You can now go to Vercel to deploy your site."
