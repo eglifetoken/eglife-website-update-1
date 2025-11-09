@@ -25,6 +25,7 @@ export default function Footer() {
                 <Link href="/whitepaper" className="text-sm text-foreground/80 hover:text-primary">Whitepaper</Link>
                 <Link href="/roadmap" className="text-sm text-foreground/80 hover:text-primary">Roadmap</Link>
                 <Link href="/contact" className="text-sm text-foreground/80 hover:text-primary">Contact</Link>
+                <Link href="/admin" className="text-sm text-foreground/80 hover:text-primary">Admin</Link>
             </div>
             <div className="flex space-x-4">
               <Button asChild variant="ghost" size="icon">
