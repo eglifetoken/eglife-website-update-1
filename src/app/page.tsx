@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full flex items-center justify-center text-center px-4 overflow-hidden pt-32 pb-20">
+      <section className="relative w-full flex items-center justify-center text-center px-4 overflow-hidden pt-32 pb-8">
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10" />
         <Image
           src="/background.png"
@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16 space-y-12">
+      <div className="container mx-auto px-4 pt-12 md:px-6 space-y-12">
         {/* About Section */}
         <section>
              <div className="text-center max-w-3xl mx-auto">
@@ -215,7 +215,7 @@ export default function Home() {
         </section>
 
         {/* Get Started Section */}
-         <section className="text-center">
+         <section className="text-center py-12">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">Ready to Get Started?</h2>
             <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
                 Join the EGLIFE ecosystem today. Connect your wallet, stake your tokens, and become part of the new standard for financial freedom.
