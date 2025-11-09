@@ -28,7 +28,7 @@ const todayIncome = [
   { icon: Gift, title: "Today Referral Income", value: "0.00" },
   { icon: BarChart, title: "Today Level Income", value: "0.00" },
   { icon: Users, title: "Today Team Income", value: "0.00" },
-  { icon: HandCoins, title: "Today Service Purchase Income", value: "0.00" },
+  { icon: HandCoins, title: "Today EGPAY Rewards", value: "0.00" },
 ];
 
 const totalIncome = [
@@ -36,7 +36,7 @@ const totalIncome = [
   { icon: Gift, title: "Total Referral Income", value: "0.00" },
   { icon: PieChart, title: "Total Level Income", value: "0.00" },
   { icon: Users, title: "Total Team Income", value: "0.00" },
-  { icon: HandCoins, title: "Total Service Purchase Income", value: "0.00" },
+  { icon: HandCoins, title: "Total EGPAY Rewards", value: "0.00" },
 ];
 
 const levelWiseTeamDetails = [
@@ -253,4 +253,5 @@ export default function DappPage() {
   );
 }
 
+    
     
