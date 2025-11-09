@@ -189,14 +189,24 @@ function DappPageContent() {
   }
 
   if (!isClient) {
-    return <div className="flex h-screen items-center justify-center bg-background"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
+    return <div className="relative flex h-screen items-center justify-center bg-background">
+        <Image src="/background.png" alt="Background" fill className="object-cover opacity-20" />
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+    </div>;
   }
 
   if (!isConnected) {
     return (
-        <div className="flex h-screen items-center justify-center bg-background p-4">
-             <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20">
-                <CardHeader className="text-center"><CardTitle className="text-2xl font-headline text-white">Secure Wallet Access</CardTitle><CardDescription className="text-foreground/80">Connect your BEP-20 wallet to access the EGLIFE DApp dashboard.</CardDescription></CardHeader>
+        <div className="relative flex h-screen items-center justify-center bg-background p-4">
+            <Image src="/background.png" alt="Background" fill className="object-cover opacity-20" />
+             <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20 relative z-10">
+                <CardHeader className="text-center">
+                    <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-4">
+                        <Wallet className="h-8 w-8 text-primary"/>
+                    </div>
+                    <CardTitle className="text-2xl font-headline text-white">Secure Wallet Access</CardTitle>
+                    <CardDescription className="text-foreground/80">Connect your BEP-20 wallet to access the EGLIFE DApp dashboard.</CardDescription>
+                </CardHeader>
                 <CardContent><Button onClick={() => connect({ connector: injected() })} className="w-full" size="lg"><Wallet className="mr-2 h-5 w-5" />Connect Wallet</Button></CardContent>
             </Card>
         </div>
@@ -312,3 +322,5 @@ export default function DappPage() {
         </Suspense>
     )
 }
+
+    
