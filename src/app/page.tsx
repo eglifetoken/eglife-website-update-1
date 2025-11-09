@@ -48,15 +48,12 @@ export default function Home() {
         <div className="absolute inset-0 bg-background/80 z-10" />
         <Image
           src="/background.png"
-          alt="EGLIFE Token on a digital network background"
+          alt="Abstract network background"
           fill
           className="object-cover"
           priority
         />
         <div className="relative z-20 flex flex-col items-center">
-             <div className="mb-6">
-                <Image src="/icon-192x192.png" alt="EGLIFE TOKEN Official Logo" width={128} height={128} className="rounded-full border-4 border-primary/50 shadow-lg" />
-            </div>
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white">
               Unlock Real-World Utility with <span className="text-primary">EGLIFE TOKEN</span>
             </h1>

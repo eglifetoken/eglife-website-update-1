@@ -68,7 +68,6 @@ function RegisterForm() {
     return (
         <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20">
             <CardHeader className="text-center">
-                 <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={80} height={80} className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-primary" />
                 <CardTitle className="text-2xl font-headline text-white">Create Your Account</CardTitle>
                 <CardDescription className="text-foreground/80">
                     Connect your BEP-20 wallet to join the EGLIFE ecosystem.
