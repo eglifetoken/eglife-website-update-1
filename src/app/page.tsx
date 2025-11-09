@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full h-screen flex items-center justify-center text-center px-4 overflow-hidden">
+      <section className="relative w-full flex items-center justify-center text-center px-4 overflow-hidden pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10" />
         <Image
           src="/background.png"
