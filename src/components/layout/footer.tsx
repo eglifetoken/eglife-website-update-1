@@ -23,47 +23,20 @@ const Logo = () => (
 
 export default function Footer() {
   return (
-    <footer className="bg-primary/10">
-      <div className="container mx-auto px-4 py-12 md:px-6">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          <div className="flex flex-col items-start md:col-span-1">
-             <Link href="/">
-                <Logo />
-            </Link>
-            <p className="text-foreground/70 mt-4">Empowering your financial future through decentralized solutions.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:col-span-3">
-              <div>
-                <h3 className="text-lg font-headline font-semibold mb-4">Company</h3>
-                <ul className="space-y-2">
-                  <li><Link href="/whitepaper" className="text-foreground/80 hover:text-primary">Whitepaper</Link></li>
-                  <li><Link href="/roadmap" className="text-foreground/80 hover:text-primary">Roadmap</Link></li>
-                  <li><Link href="/business-plan" className="text-foreground/80 hover:text-primary">Business Plan</Link></li>
-                  <li><Link href="/crypto-education" className="text-foreground/80 hover:text-primary">Education</Link></li>
-                  <li><Link href="/contact" className="text-foreground/80 hover:text-primary">Contact Us</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg font-headline font-semibold mb-4">Ecosystem</h3>
-                <ul className="space-y-2">
-                  <li><Link href="/dapp" className="text-foreground/80 hover:text-primary">DApp</Link></li>
-                  <li><Link href="/staking" className="text-foreground/80 hover:text-primary">Staking</Link></li>
-                   <li><Link href="/referral" className="text-foreground/80 hover:text-primary">Referrals</Link></li>
-                  <li><Link href="/services" className="text-foreground/80 hover:text-primary">Services</Link></li>
-                  <li><Link href="/buy-with-inr" className="text-foreground/80 hover:text-primary">Buy with INR</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg font-headline font-semibold mb-4">Account</h3>
-                <ul className="space-y-2">
-                   <li><Link href="/register" className="text-foreground/80 hover:text-primary">Register</Link></li>
-                   <li><Link href="/profile" className="text-foreground/80 hover:text-primary">My Profile</Link></li>
-                </ul>
-              </div>
-          </div>
-        </div>
-         <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center">
-            <div className="flex space-x-4 mb-4 sm:mb-0">
+    <footer className="bg-background border-t">
+      <div className="container mx-auto px-4 py-8 md:px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+                <Link href="/">
+                    <Logo />
+                </Link>
+            </div>
+            <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                <Link href="/whitepaper" className="text-sm text-foreground/80 hover:text-primary">Whitepaper</Link>
+                <Link href="/roadmap" className="text-sm text-foreground/80 hover:text-primary">Roadmap</Link>
+                <Link href="/contact" className="text-sm text-foreground/80 hover:text-primary">Contact</Link>
+            </div>
+            <div className="flex space-x-4">
               <Button asChild variant="ghost" size="icon">
                 <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on X">
                   <TwitterIcon />
@@ -75,7 +48,9 @@ export default function Footer() {
                 </a>
               </Button>
             </div>
-            <p className="text-center text-foreground/60">&copy; {new Date().getFullYear()} EGLIFE TOKEN. All Rights Reserved.</p>
+        </div>
+         <div className="mt-8 pt-8 border-t text-center">
+            <p className="text-sm text-foreground/60">&copy; {new Date().getFullYear()} EGLIFE TOKEN. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

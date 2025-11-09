@@ -4,30 +4,26 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, LogIn, UserPlus, IndianRupee } from "lucide-react";
+import { Menu } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/staking", label: "Staking" },
   { href: "/dapp", label: "DApp" },
-  { href: "/buy-with-inr", label: "Buy with INR"},
+  { href: "/staking", label: "Staking" },
+  { href: "/services", label: "Services" },
   { href: "/referral", label: "Referral" },
-  { href: "/profile", label: "My Profile" },
-  { href: "/crypto-education", label: "Education" },
-  { href: "/contact", label: "Contact Us" },
+  { href: "/whitepaper", label: "Whitepaper" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const Logo = () => (
-    <div className="flex items-center gap-2 font-bold text-xl" aria-label="EGLIFE TOKEN">
-        <svg width="124" height="40" viewBox="0 0 124 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="40" height="40" rx="8" fill="hsl(var(--primary))"/>
-          <text x="8" y="28" fontFamily="Lexend, sans-serif" fontSize="20" fontWeight="bold" fill="hsl(var(--primary-foreground))">EG</text>
-          <text x="50" y="28" fontFamily="Lexend, sans-serif" fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" className="tracking-tight">LIFE</text>
-        </svg>
+    <div className="flex items-center gap-3">
+        <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={40} height={40} className="rounded-md" />
+        <span className="font-headline text-xl font-bold text-white">EGLIFE Coin</span>
     </div>
 );
 
@@ -36,107 +32,48 @@ export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-    <Link
-      href={href}
-      className={cn(
-        "text-sm font-medium transition-colors hover:text-primary",
-        pathname === href ? "text-primary" : "text-foreground/80"
-      )}
-    >
-      {children}
-    </Link>
-  );
-
-  const isHomePage = pathname === '/';
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="absolute top-0 z-50 w-full bg-transparent">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
-        {/* Logo */}
-        <div className="flex items-center">
-            {isHomePage ? (
-              <Logo />
-            ) : (
-              <Link href="/">
-                <Logo />
-              </Link>
-            )}
-        </div>
-
-        {/* Desktop: Centered navigation */}
-        <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6">
-          {navLinks.map((link) => (
-            <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
-          ))}
-        </nav>
-
-        {/* Desktop: Buttons on the right */}
-        <div className="hidden lg:flex items-center gap-2">
-             <Button asChild variant="ghost">
-                <Link href="/dapp">
-                    <LogIn className="mr-2 h-5 w-5" />
-                    Login
-                </Link>
-            </Button>
-            <Button asChild>
-                <Link href="/register">
-                    <UserPlus className="mr-2 h-5 w-5" />
-                    Register
-                </Link>
-            </Button>
-        </div>
-
-        {/* Mobile & Tablet: Hamburger menu on the right */}
+        <Link href="/">
+            <Logo />
+        </Link>
+        
         <div className="flex items-center lg:hidden">
            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white rounded-full">
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent side="right" className="bg-background/90 backdrop-blur-sm">
                 <SheetHeader>
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 </SheetHeader>
-              <div className="flex flex-col gap-6 p-6">
-                <div className="mb-4">
-                  <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                     <Logo />
-                  </Link>
-                </div>
+              <div className="flex flex-col gap-6 p-6 pt-12">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
-                        "text-lg font-medium transition-colors hover:text-primary",
+                        "text-xl font-medium transition-colors hover:text-primary",
                         pathname === link.href ? "text-primary" : "text-foreground/80"
                     )}
                     >
                     {link.label}
                   </Link>
                 ))}
-                <div className="flex flex-col gap-4 pt-4 border-t">
-                    <Button asChild>
-                        <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                        <UserPlus className="mr-2 h-5 w-5" />
-                        Register
-                        </Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                        <Link href="/dapp" onClick={() => setIsMobileMenuOpen(false)}>
-                        <LogIn className="mr-2 h-5 w-5" />
-                        Login
-                        </Link>
-                    </Button>
-                </div>
               </div>
             </SheetContent>
           </Sheet>
         </div>
+        
+        <div className="hidden lg:flex items-center gap-2">
+            {/* Desktop nav can be added here if needed in the future */}
+        </div>
+
       </div>
     </header>
   );
