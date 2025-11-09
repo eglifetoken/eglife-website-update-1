@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift } from "lucide-react";
+import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance, useReadContract, useChainId } from 'wagmi'
@@ -28,6 +28,13 @@ const incomeStreams = [
   { icon: Gift, title: "Referral Income", value: "0.00" },
   { icon: BarChart, title: "Level Income", value: "0.00" },
   { icon: Users, title: "Team Income", value: "0.00" },
+];
+
+const teamDetails = [
+  { title: "Total Team", value: "0", icon: Users },
+  { title: "Group A (Directs)", value: "0", icon: UserIcon },
+  { title: "Group B", value: "0", icon: Users },
+  { title: "Group C", value: "0", icon: Users },
 ];
 
 export default function DappPage() {
@@ -149,16 +156,26 @@ export default function DappPage() {
                 </CardContent>
             </Card>
 
-            <div className="grid grid-cols-2 gap-4">
-                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center flex flex-col justify-center p-4">
-                    <CardTitle className="text-sm font-normal text-muted-foreground mb-1">Total Team</CardTitle>
-                    <p className="font-bold text-xl">329</p>
-                </Card>
-                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center flex flex-col justify-center p-4">
-                    <CardTitle className="text-sm font-normal text-muted-foreground mb-1">Direct Team</CardTitle>
-                    <p className="font-bold text-xl">4</p>
-                </Card>
-            </div>
+             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+                <CardHeader>
+                    <CardTitle className="font-headline text-lg">Team Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    {teamDetails.map((detail, index) => {
+                         const Icon = detail.icon;
+                         return (
+                            <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                                <div className="flex items-center gap-3">
+                                    <Icon className="h-5 w-5 text-primary/80"/>
+                                    <p className="font-medium text-sm">{detail.title}</p>
+                                </div>
+                                <p className="font-bold text-lg">{detail.value}</p>
+                            </div>
+                        )
+                    })}
+                </CardContent>
+            </Card>
+
 
              <div className="space-y-2">
                 {incomeStreams.map((stream, index) => {
@@ -182,4 +199,5 @@ export default function DappPage() {
   );
 }
 
+    
     
