@@ -50,7 +50,7 @@ export default function Home() {
             <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-foreground/80 mb-8">
              Welcome to the future of decentralized finance. EGLIFE is a revolutionary BEP-20 utility token on the BNB Smart Chain, meticulously engineered to bridge the gap between digital assets and real-world application. Join a global community building the new standard for financial freedom. Now trading on PancakeSwap.
             </p>
-            <div className="flex flex-col items-center gap-4 w-full max-w-xs">
+            <div className="flex flex-col items-center gap-4 w-full max-w-xs sm:max-w-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <Button asChild size="lg" className="font-bold text-base">
                   <Link href="/dapp">Login</Link>
@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-12">
+      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16 space-y-12">
         {/* About Section */}
         <section>
              <div className="text-center max-w-3xl mx-auto">
@@ -233,3 +233,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
