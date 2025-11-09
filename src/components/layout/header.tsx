@@ -22,7 +22,7 @@ const navLinks = [
 
 const Logo = () => (
     <div className="flex items-center gap-3">
-        
+        <Image src="https://placehold.co/40x40/1A110A/FFC94A?text=ET&font=lexend" width={40} height={40} alt="EGLIFE TOKEN Logo" />
         <span className="font-headline text-xl font-bold text-white">EGLIFE TOKEN</span>
     </div>
 );
@@ -43,7 +43,7 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
         <Link href="/">
-            <div />
+            <Logo />
         </Link>
         
         <div className="flex items-center lg:hidden">
@@ -84,5 +84,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
