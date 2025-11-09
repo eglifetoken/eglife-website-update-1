@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart } from "lucide-react";
+import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance, useReadContract, useChainId } from 'wagmi'
@@ -28,6 +28,7 @@ const todayIncome = [
   { icon: Gift, title: "Today Referral Income", value: "0.00" },
   { icon: BarChart, title: "Today Level Income", value: "0.00" },
   { icon: Users, title: "Today Team Income", value: "0.00" },
+  { icon: HandCoins, title: "Today Service Purchase Income", value: "0.00" },
 ];
 
 const totalIncome = [
@@ -35,6 +36,7 @@ const totalIncome = [
   { icon: Gift, title: "Total Referral Income", value: "0.00" },
   { icon: PieChart, title: "Total Level Income", value: "0.00" },
   { icon: Users, title: "Total Team Income", value: "0.00" },
+  { icon: HandCoins, title: "Total Service Purchase Income", value: "0.00" },
 ];
 
 const levelWiseTeamDetails = [
