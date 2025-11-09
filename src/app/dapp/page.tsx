@@ -21,7 +21,6 @@ import Image from "next/image";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const EGLIFE_STAKING_CONTRACT = "0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76"; 
-const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955';
 const PANCAKESWAP_SWAP_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
 
@@ -81,7 +80,6 @@ function DappPageContent() {
 
   const { data: egldBalance, isLoading: isLoadingEgld, refetch: refetchEgldBalance } = useBalance({ address, token: EGLIFE_CONTRACT_ADDRESS, query: { enabled: !isWrongNetwork && !!address } });
   const { data: bnbBalance, isLoading: isLoadingBnb } = useBalance({ address, query: { enabled: !isWrongNetwork && !!address } });
-  const { data: usdtBalance, isLoading: isLoadingUsdt } = useBalance({ address, token: USDT_CONTRACT_ADDRESS, query: { enabled: !isWrongNetwork && !!address } });
   
   const { data: stakedData, isLoading: isLoadingStaked, refetch: refetchStakedBalance } = useReadContract({ abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'stakedOf', args: address ? [address] : undefined, query: { enabled: !isWrongNetwork && !!address } });
   const { data: earnedData, isLoading: isLoadingEarned, refetch: refetchEarned } = useReadContract({ abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'earned', args: address ? [address] : undefined, query: { enabled: !isWrongNetwork && !!address, refetchInterval: 5000 } });
@@ -226,12 +224,11 @@ function DappPageContent() {
                 </CardContent>
             </Card>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">EGLIFE Balance</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingEgld || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${parseFloat(egldBalance?.formatted ?? '0').toFixed(2)}`}</p></CardContent></Card>
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">BNB Balance</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingBnb || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${parseFloat(bnbBalance?.formatted ?? '0').toFixed(4)}`}</p></CardContent></Card>
-                <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">USDT Balance</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingUsdt || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${parseFloat(usdtBalance?.formatted ?? '0').toFixed(2)}`}</p></CardContent></Card>
                 <Card className="bg-card/80 backdrop-blur-sm border-primary/20 text-center"><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">Total Staked</CardTitle></CardHeader><CardContent><p className="font-bold text-lg">{isLoadingStaked || isWrongNetwork ? <Loader2 className="h-5 w-5 mx-auto animate-spin"/> : `${totalStakedNum.toFixed(2)}`}</p></CardContent></Card>
-            </Card>
+            </div>
             
             {isWrongNetwork && <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Wrong Network</AlertTitle><AlertDescription>Please switch to the BNB Smart Chain to use all features. <Button onClick={() => switchChain({ chainId: bsc.id })} variant="link" className="p-0 h-auto text-white">Switch to BSC</Button></AlertDescription></Alert>}
 
@@ -309,5 +306,3 @@ export default function DappPage() {
         </Suspense>
     )
 }
-
-    
