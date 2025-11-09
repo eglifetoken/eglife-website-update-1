@@ -24,8 +24,8 @@ export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Hide header on specific pages
-  const hiddenPaths = ["/dapp", "/register"];
+  // Hide header on all pages for a cleaner, full-screen experience
+  const hiddenPaths = ["/dapp", "/register", "/", "/staking", "/services", "/referral", "/whitepaper", "/contact", "/admin", "/business-plan", "/buy-with-inr", "/certificate", "/crypto-education", "/profile", "/roadmap" ];
   if (hiddenPaths.includes(pathname)) {
     return null;
   }
@@ -33,8 +33,6 @@ export default function Header() {
   return (
     <header className="absolute top-0 z-50 w-full bg-transparent">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        
-        <div></div>
         
         <div className="flex items-center lg:hidden">
            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
