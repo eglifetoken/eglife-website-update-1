@@ -92,14 +92,10 @@ export default function BusinessPlanPage() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                            <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                                <p className="text-sm text-muted-foreground">On Successful Purchase</p>
+                                <p className="text-sm text-muted-foreground">On Successful Staking of 50 EGLIFE or more</p>
                                 <p className="text-2xl font-bold">10 EGLIFE</p>
                             </div>
-                            <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                                <p className="text-sm text-muted-foreground">On Successful Staking</p>
-                                <p className="text-2xl font-bold">10 EGLIFE</p>
-                            </div>
-                            <p className="text-sm text-muted-foreground pt-4"><strong className="text-primary">Note:</strong> This referral bonus is a one-time reward paid only to the Direct Sponsor for each new referee.</p>
+                            <p className="text-sm text-muted-foreground pt-4"><strong className="text-primary">Note:</strong> This referral bonus is a one-time reward paid only to the Direct Sponsor for each new qualifying referee.</p>
                         </CardContent>
                     </Card>
 
@@ -199,5 +195,3 @@ export default function BusinessPlanPage() {
         </div>
     );
 }
-
-    

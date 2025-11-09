@@ -131,12 +131,8 @@ export default function Home() {
                          <CardDescription>Earn an instant bonus for every new user you directly sponsor.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                       <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">On Successful Purchase</p>
-                            <p className="text-2xl font-bold">10 EGLIFE</p>
-                        </div>
                         <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">On Successful Staking</p>
+                            <p className="text-sm text-muted-foreground">On Successful Staking of 50 EGLIFE or more</p>
                             <p className="text-2xl font-bold">10 EGLIFE</p>
                         </div>
                     </CardContent>

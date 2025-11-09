@@ -213,18 +213,14 @@ export default function ReferralPage() {
                            <Gift className="h-6 w-6 text-primary" />
                            One-Time Referral Bonus
                         </CardTitle>
-                        <CardDescription>Earn an instant, one-time bonus when a new user you directly sponsor makes a purchase or stakes EGLIFE.</CardDescription>
+                        <CardDescription>Earn an instant, one-time bonus when a new user you directly sponsor stakes EGLIFE.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">On Successful Purchase</p>
+                            <p className="text-sm text-muted-foreground">On Successful Staking of 50 EGLIFE or more</p>
                             <p className="text-2xl font-bold">10 EGLIFE</p>
                         </div>
-                        <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">On Successful Staking</p>
-                            <p className="text-2xl font-bold">10 EGLIFE</p>
-                        </div>
-                        <p className="text-sm text-muted-foreground pt-4"><strong className="text-primary">Note:</strong> This bonus is variable over time and paid only to the Direct Sponsor for each new referee.</p>
+                        <p className="text-sm text-muted-foreground pt-4"><strong className="text-primary">Note:</strong> This bonus is variable and paid only to the Direct Sponsor for each new qualifying referee.</p>
                     </CardContent>
                 </Card>
             </div>
