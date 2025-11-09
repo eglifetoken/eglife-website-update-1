@@ -48,20 +48,20 @@ export default function Home() {
         <div className="absolute inset-0 bg-background/80 z-10" />
         <Image
           src="/background.png"
-          alt="Abstract network background"
+          alt="EGLIFE Token on a digital network background"
           fill
           className="object-cover"
           priority
         />
         <div className="relative z-20 flex flex-col items-center">
              <div className="mb-6">
-                <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={128} height={128} className="rounded-full border-4 border-primary/50 shadow-lg" />
+                <Image src="/icon-192x192.png" alt="EGLIFE TOKEN Official Logo" width={128} height={128} className="rounded-full border-4 border-primary/50 shadow-lg" />
             </div>
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white">
-              Creative of <span className="text-primary">EGLIFE</span> TOKEN
+              Unlock Real-World Utility with <span className="text-primary">EGLIFE TOKEN</span>
             </h1>
             <p className="max-w-xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-              EGLIFE TOKEN empowers global traders with secure, fast, and decentralized digital finance—driving innovation, growth, and trust worldwide.
+              EGLIFE is a BEP-20 utility token on the BNB Smart Chain, designed for everyday use. Stake your tokens to earn rewards, or use them on the EGPAY platform to pay for mobile recharges and utility bills. Available now on PancakeSwap.
             </p>
             <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
               <Button asChild size="lg" className="font-bold text-base">
