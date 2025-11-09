@@ -58,10 +58,10 @@ export default function Home() {
                 <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={128} height={128} className="rounded-full border-4 border-primary/50 shadow-lg" />
             </div>
             <h1 className="text-4xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white">
-              Creative of <span className="text-primary">EGLIFE</span> Coin
+              Creative of <span className="text-primary">EGLIFE</span> TOKEN
             </h1>
             <p className="max-w-xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
-              EGLIFE Coin empowers global traders with secure, fast, and decentralized digital finance—driving innovation, growth, and trust worldwide.
+              EGLIFE TOKEN empowers global traders with secure, fast, and decentralized digital finance—driving innovation, growth, and trust worldwide.
             </p>
             <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
               <Button asChild size="lg" className="font-bold text-base">
@@ -107,5 +107,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

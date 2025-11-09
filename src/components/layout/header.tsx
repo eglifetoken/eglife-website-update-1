@@ -23,7 +23,7 @@ const navLinks = [
 const Logo = () => (
     <div className="flex items-center gap-3">
         <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={40} height={40} className="rounded-md" />
-        <span className="font-headline text-xl font-bold text-white">EGLIFE Coin</span>
+        <span className="font-headline text-xl font-bold text-white">EGLIFE TOKEN</span>
     </div>
 );
 
@@ -84,5 +84,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
