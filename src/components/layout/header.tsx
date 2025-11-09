@@ -8,7 +8,6 @@ import { Menu } from "lucide-react";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
