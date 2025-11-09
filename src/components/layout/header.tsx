@@ -34,9 +34,7 @@ export default function Header() {
     <header className="absolute top-0 z-50 w-full bg-transparent">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         
-        <Link href="/" className="font-headline text-xl font-bold text-white">
-            EGLIFE TOKEN
-        </Link>
+        <div></div>
         
         <div className="flex items-center lg:hidden">
            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -76,5 +74,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
