@@ -63,14 +63,16 @@ export default function Home() {
             <p className="max-w-xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
               EGLIFE is a BEP-20 utility token on the BNB Smart Chain, designed for everyday use. Stake your tokens to earn rewards, or use them on the EGPAY platform to pay for mobile recharges and utility bills. Available now on PancakeSwap.
             </p>
-            <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-              <Button asChild size="lg" className="font-bold text-base">
-                <Link href="/dapp">Login</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="font-bold text-base border-primary text-primary hover:bg-primary/10 hover:text-primary">
-                <Link href="/register">Registration</Link>
-              </Button>
-               <Button asChild size="lg" className="col-span-2 font-bold text-base">
+            <div className="flex flex-col items-center gap-4 w-full max-w-sm">
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <Button asChild size="lg" className="font-bold text-base">
+                  <Link href="/dapp">Login</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="font-bold text-base border-primary text-primary hover:bg-primary/10 hover:text-primary">
+                  <Link href="/register">Registration</Link>
+                </Button>
+              </div>
+               <Button asChild size="lg" className="w-full font-bold text-base">
                 <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy Coins</Link>
               </Button>
             </div>
@@ -107,3 +109,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

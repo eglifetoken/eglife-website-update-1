@@ -14,6 +14,7 @@ import { formatUnits, zeroAddress } from "viem";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { bsc } from "wagmi/chains";
+import Image from "next/image";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const EGLIFE_STAKING_CONTRACT = "0xb80F123d2E5200F1Cb6dEfd428f5aDa543C94E76"; 
@@ -85,7 +86,7 @@ export default function DappPage() {
         <div className="flex h-screen items-center justify-center bg-background p-4">
              <Card className="w-full max-w-md bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardHeader className="text-center">
-                    <img src="/icon-192x192.png" alt="EGLIFE Logo" className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-primary" />
+                    <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={80} height={80} className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-primary" />
                     <CardTitle className="font-headline text-2xl text-white">Secure Wallet Access</CardTitle>
                     <CardDescription className="text-foreground/80">Connect your BEP-20 wallet to access the EGLIFE DApp dashboard.</CardDescription>
                 </CardHeader>
@@ -103,7 +104,7 @@ export default function DappPage() {
   return (
     <div className="min-h-screen bg-background text-white p-4 space-y-6">
         <header className="flex justify-between items-center">
-            <img src="/icon-192x192.png" alt="EGLIFE Logo" className="w-12 h-12 rounded-full border-2 border-primary"/>
+            <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={48} height={48} className="w-12 h-12 rounded-full border-2 border-primary"/>
             <Button onClick={() => disconnect()} variant="ghost" size="icon" className="text-white">
                 <Link2Off />
             </Button>
@@ -112,7 +113,7 @@ export default function DappPage() {
         <main className="space-y-6">
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
                 <CardContent className="p-4 flex items-center gap-4">
-                    <img src="/icon-192x192.png" alt="EGLIFE Logo" className="w-16 h-16 rounded-full border-2 border-primary" />
+                    <Image src="/icon-192x192.png" alt="EGLIFE Logo" width={64} height={64} className="w-16 h-16 rounded-full border-2 border-primary" />
                     <div className="space-y-1">
                         <p className="text-sm text-muted-foreground">User ID:</p>
                         <p className="text-xs font-mono break-all">{address}</p>

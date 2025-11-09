@@ -53,7 +53,7 @@ export default function Header() {
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-background/90 backdrop-blur-sm">
+            <SheetContent side="left" className="bg-background/90 backdrop-blur-sm">
                 <SheetHeader>
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 </SheetHeader>
@@ -84,3 +84,5 @@ export default function Header() {
     </header>
   );
 }
+
+    
