@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useAccount, useConnect, useReadContract, useWriteContract, useChainId } from "wagmi";
+import { useAccount, useConnect, useReadContract, useWriteContract, useChainId, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { useState, useEffect, Suspense } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Shield, AlertTriangle, Wallet, Settings, Pause, Play } from "lucide-react";
+import { Loader2, Shield, AlertTriangle, Wallet, Settings, Pause, Play, RefreshCw } from "lucide-react";
 import { bsc } from "wagmi/chains";
 import { type BaseError, parseEther, formatEther } from "viem";
 
@@ -23,8 +23,11 @@ function AdminPageContent() {
     const { connect } = useConnect();
     const { writeContractAsync } = useWriteContract();
     const chainId = useChainId();
+    const { switchChain } = useSwitchChain();
     const [isClient, setIsClient] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+
+    const isWrongNetwork = isConnected && chainId !== bsc.id;
 
     // State for inputs
     const [lockPeriodDays, setLockPeriodDays] = useState("");
@@ -35,18 +38,19 @@ function AdminPageContent() {
 
     // Read contract state
     const { data: ownerAddress, isLoading: isLoadingOwner } = useReadContract({
-        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'owner', query: { enabled: isConnected }
+        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'owner', query: { enabled: isConnected && !isWrongNetwork }
     });
 
     const { data: contractStatus, refetch: refetchStatus } = useReadContract({
-        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'paused', query: { enabled: isConnected }
+        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'paused', query: { enabled: isConnected && !isWrongNetwork }
     });
 
     const { data: currentLockPeriod, refetch: refetchLockPeriod } = useReadContract({
-        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'lockPeriod', query: { enabled: isConnected }
+        abi: stakingContractAbi, address: EGLIFE_STAKING_CONTRACT, functionName: 'lockPeriod', query: { enabled: isConnected && !isWrongNetwork }
     });
 
-    const isOwner = isConnected && address && ownerAddress && address.toLowerCase() === ownerAddress.toLowerCase();
+    const isOwner = isConnected && address && ownerAddress && address.toLowerCase() === (ownerAddress as string).toLowerCase();
+
 
     const handleError = (error: any, title: string) => {
         let message = "An unknown error occurred.";
@@ -115,7 +119,7 @@ function AdminPageContent() {
     }
 
 
-    if (!isClient || isLoadingOwner) {
+    if (!isClient) {
         return <div className="flex h-[calc(100vh-10rem)] items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
@@ -136,6 +140,27 @@ function AdminPageContent() {
         );
     }
     
+    if (isWrongNetwork) {
+         return (
+            <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-10rem)]">
+                <Card className="w-full max-w-md text-center border-destructive">
+                    <CardHeader>
+                        <RefreshCw className="h-12 w-12 mx-auto text-destructive animate-spin"/>
+                        <CardTitle className="text-destructive">Wrong Network</CardTitle>
+                        <CardDescription>Please switch to the BNB Smart Chain to manage the contract.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Button onClick={() => switchChain({ chainId: bsc.id })} variant="destructive">Switch to BSC</Button>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    if (isLoadingOwner) {
+        return <div className="flex h-[calc(100vh-10rem)] items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
+    }
+
     if (!isOwner) {
         return (
              <div className="container mx-auto flex items-center justify-center min-h-[calc(100vh-10rem)]">
@@ -174,7 +199,7 @@ function AdminPageContent() {
                         </Alert>
                     </CardContent>
                     <CardFooter>
-                        <Button onClick={togglePause} disabled={isProcessing} variant={contractStatus ? 'default' : 'destructive'} className="w-full">
+                        <Button onClick={togglePause} disabled={isProcessing} variant={contractStatus ? 'destructive' : 'default'} className="w-full">
                            {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : contractStatus ? <Play className="mr-2 h-4 w-4"/> : <Pause className="mr-2 h-4 w-4"/>}
                            {contractStatus ? 'Activate Contract' : 'Pause Contract'}
                         </Button>
@@ -236,6 +261,3 @@ export default function AdminPage() {
         </Suspense>
     )
 }
-
-
-    
