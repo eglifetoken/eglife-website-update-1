@@ -175,7 +175,7 @@ function DappPageContent() {
                     <CardTitle className="text-2xl font-headline text-white">Secure Wallet Access</CardTitle>
                     <CardDescription className="text-foreground/80">Connect your BEP-20 wallet to access the EGLIFE DApp dashboard.</CardDescription>
                 </CardHeader>
-                <CardContent><Button onClick={() => connect({ connector: injected() })} className="w-full" size="lg"><Wallet className="mr-2 h-5 w-5" />Connect Wallet</Button></CardContent>
+                <CardContent><Button onClick={() => connect({ connector: injected({ shimDisconnect: true }) })} className="w-full" size="lg"><Wallet className="mr-2 h-5 w-5" />Connect Wallet</Button></CardContent>
             </Card>
         </div>
     )
