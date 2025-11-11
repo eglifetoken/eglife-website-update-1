@@ -23,7 +23,7 @@ const faqItems = [
   },
   {
     question: "Can I unstake my tokens early?",
-    answer: "Yes, you can unstake at any time. However, if you unstake before the 365-day lock period is complete, a 5% penalty will be deducted from your total return (principal + rewards)."
+    answer: "Yes, you can unstake at any time. However, if you unstake before the 365-day lock period is complete, a 5% penalty will be deducted from your total unstaked amount."
   },
   {
     question: "What happens if I want to stake more tokens?",
@@ -46,5 +46,3 @@ export function StakingFAQ() {
     </Accordion>
   )
 }
-
-    
