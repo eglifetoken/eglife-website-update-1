@@ -9,7 +9,7 @@ import { Button } from './ui/button';
 import { bsc } from 'wagmi/chains';
 
 // ========= CONFIG =========
-const STAKING_ADDRESS = '0xDe9C5F534D13145e965336acf21eE6B36378D7aA';
+const STAKING_ADDRESS = '0x90B374f87726F172504501c0B91eeEbadB5FE230';
 const DECIMALS = 18n;
 const SECONDS_PER_YEAR = 31536000n; // 365*24*3600
 
@@ -77,3 +77,5 @@ export default function LiveIncomeTicker() {
     </Card>
   );
 }
+
+    

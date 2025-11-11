@@ -20,7 +20,7 @@ import { bsc } from "wagmi/chains";
 import Image from "next/image";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
-const EGLIFE_STAKING_CONTRACT = "0xDe9C5F534D13145e965336acf21eE6B36378D7aA"; 
+const EGLIFE_STAKING_CONTRACT = "0x90B374f87726F172504501c0B91eeEbadB5FE230"; 
 const PANCAKESWAP_SWAP_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
 
@@ -350,3 +350,5 @@ export default function DappPage() {
         </Suspense>
     )
 }
+
+    
