@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -443,8 +444,8 @@ export function useApprove(token: Address, spender: Address) {
 
   async function approveExact(amountWei: bigint) {
     if (!walletClient) throw new Error("Connect wallet first");
-    const request = await publicClient.simulateContract({ address: token, abi: ERC20_ABI, functionName: "approve", args: [spender, amountWei], account: walletClient.account! });
-    const hash = await walletClient.writeContract(request.request);
+    const { request } = await publicClient.simulateContract({ account: walletClient.account!, address: token, abi: ERC20_ABI, functionName: "approve", args: [spender, amountWei] });
+    const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
   }
 
@@ -467,15 +468,15 @@ export function useStakeActions(stakingAddress: Address, tokenAddress: Address) 
   async function estimateStakeGas(amountTokens: number, sponsor?: Address) {
     if (!walletClient) throw new Error("Connect wallet first");
     const amountWei = toWei(amountTokens);
-    const request = await publicClient.simulateContract({
+    const { request } = await publicClient.simulateContract({
       address: stakingAddress,
       abi: STAKING_ABI,
       // @ts-ignore
       functionName: "stake",
       args: [amountWei, sponsor ?? ("0x0000000000000000000000000000000000000000" as Address)],
-      account: walletClient.account,
+      account: walletClient.account!,
     });
-    return request.request.gas as bigint | undefined;
+    return request.gas as bigint | undefined;
   }
 
   async function stake(amountTokens: number, sponsor?: Address) {
@@ -489,15 +490,15 @@ export function useStakeActions(stakingAddress: Address, tokenAddress: Address) 
     }
 
     // simulate then write
-    const simulated = await publicClient.simulateContract({
+    const { request } = await publicClient.simulateContract({
       address: stakingAddress,
       abi: STAKING_ABI,
       // @ts-ignore
       functionName: "stake",
       args: [amountWei, sponsor ?? ("0x0000000000000000000000000000000000000000" as Address)],
-      account: walletClient.account,
+      account: walletClient.account!,
     });
-    const hash = await walletClient.writeContract(simulated.request);
+    const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
   }
 
@@ -514,11 +515,11 @@ export function useUnstakeActions(stakingAddress: Address) {
     try {
       if (typeof amountTokens === "number") {
         const amountWei = toWei(amountTokens);
-        const req = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
-        return req.request.gas as bigint | undefined;
+        const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
+        return request.gas as bigint | undefined;
       } else {
-        const req = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [], account: walletClient.account! });
-        return req.request.gas as bigint | undefined;
+        const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", account: walletClient.account! });
+        return request.gas as bigint | undefined;
       }
     } catch (e) {
       console.warn("gas estimate failed – check function signature", e);
@@ -529,15 +530,15 @@ export function useUnstakeActions(stakingAddress: Address) {
   async function unstakeAmount(amountTokens: number) {
     if (!walletClient) throw new Error("Connect wallet first");
     const amountWei = toWei(amountTokens);
-    const simulated = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
-    const hash = await walletClient.writeContract(simulated.request);
+    const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
+    const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
   }
 
   async function unstakeAll() {
     if (!walletClient) throw new Error("Connect wallet first");
-    const simulated = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [], account: walletClient.account! });
-    const hash = await walletClient.writeContract(simulated.request);
+    const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", account: walletClient.account! });
+    const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
   }
 
@@ -749,7 +750,7 @@ export function useClaimActions(stakingAddress: Address) {
         // @ts-ignore
         functionName: "claim",
         args: [],
-        account: walletClient.account
+        account: walletClient.account!
     })
     const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
@@ -764,7 +765,7 @@ export function useClaimActions(stakingAddress: Address) {
       // @ts-ignore
       functionName: "claim", 
       args: [amountWei],
-      account: walletClient.account
+      account: walletClient.account!
     });
     const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
@@ -817,3 +818,4 @@ export function ClaimPanel({ stakingAddress }: { stakingAddress: Address }) {
     </div>
   );
 }
+
