@@ -46,7 +46,7 @@ export default function AdminPage() {
         query: { enabled: !!address && !isWrongNetwork }
     });
 
-    const { data: totalStaked, isLoading: isLoadingTotalStaked } = useReadContract({
+    const { data: totalStakedData, isLoading: isLoadingTotalStaked } = useReadContract({
         abi: stakingContractAbi,
         address: EGLIFE_STAKING_CONTRACT,
         functionName: 'totalStaked',
@@ -59,6 +59,8 @@ export default function AdminPage() {
         functionName: 'treasury',
         query: { enabled: !!address && !isWrongNetwork }
     });
+    
+    const totalStaked = totalStakedData ? parseFloat(formatEther(totalStakedData as bigint)).toLocaleString() : '0';
 
     if (!isClient) {
         return (
@@ -124,7 +126,7 @@ export default function AdminPage() {
                 <CardContent className="space-y-4">
                     <DataCard title="Contract Owner" data={owner} isLoading={isLoadingOwner} />
                     <DataCard title="Treasury Wallet" data={treasury} isLoading={isLoadingTreasury} />
-                    <DataCard title="Total EGLIFE Staked" data={totalStaked ? `${parseFloat(formatEther(totalStaked as bigint)).toLocaleString()} EGLIFE` : '0'} isLoading={isLoadingTotalStaked} />
+                    <DataCard title="Total EGLIFE Staked" data={`${totalStaked} EGLIFE`} isLoading={isLoadingTotalStaked} />
                 </CardContent>
             </Card>
 
