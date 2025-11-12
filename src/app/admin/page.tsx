@@ -1,144 +1,819 @@
-
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useAccount, useConnect, useReadContract, useChainId, useSwitchChain } from 'wagmi';
-import { injected } from 'wagmi/connectors';
-import { bsc } from 'wagmi/chains';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Wallet, Settings, Loader2, Link as LinkIcon, AlertTriangle } from 'lucide-react';
-import { formatEther } from 'viem';
+import React from "react";
+import { useEffect, useState } from "react";
+import { initializeApp, getApps } from "firebase/app";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
+import { createPublicClient, http, formatEther } from "viem";
+import { bsc } from "viem/chains";
+import { useAccount, useWalletClient } from "wagmi";
 
-const EGLIFE_STAKING_CONTRACT = "0x90B374f87726F172504501c0B91eeEbadB5FE230";
+/**
+ * EGLIFE Staking – Dynamic Dashboard (React + Tailwind)
+ * ----------------------------------------------------
+ * How to use:
+ * <EGLifeStakingDashboard data={dashboardData} />
+ *
+ * You can hydrate `dashboardData` from an API/Firebase/JSON file.
+ * Numbers below are already human-readable (token units, not wei).
+ */
 
-const stakingContractAbi = [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"},{"internalType":"address","name":"_treasury","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"EnforcedPause","type":"error"},{"inputs":[],"name":"ExpectedPause","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"currentAllowance","type":"uint256"},{"internalType":"uint256","name":"requestedDecrease","type":"uint256"}],"name":"SafeERC20FailedDecreaseAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Claimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"newPenaltyBps","type":"uint16"}],"name":"EarlyUnstakePenaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newLockPeriod","type":"uint256"}],"name":"LockPeriodUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"maxPayoutBps","type":"uint16"}],"name":"MaxReferralPayoutUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"minStake","type":"uint256"}],"name":"MinActiveStakeForReferralUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referral","type":"address"},{"indexed":false,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"ReferralBonusesUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"royaltyBps","type":"uint16"}],"name":"RoyaltyUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"SponsorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"grossAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"netStaked","type":"uint256"},{"indexed":true,"internalType":"address","name":"sponsor","type":"address"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"indexed":false,"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"TiersUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"TreasuryUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"unstakeAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardsPaid","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"oldSponsor","type":"address"},{"indexed":true,"internalType":"address","name":"newSponsor","type":"address"},{"indexed":false,"internalType":"address","name":"admin","type":"address"}],"name":"SponsorUpdated","type":"event"},{"inputs":[],"name":"BPS_DENOMINATOR","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"address[]","name":"newSponsors","type":"address[]"}],"name":"batchUpdateSponsor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"earlyUnstakePenaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTierCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTiers","outputs":[{"internalType":"uint128[]","name":"mins","type":"uint128[]"},{"internalType":"uint16[]","name":"apys","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxReferralPayoutBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"minActiveStakeForReferral","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"erc20","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"recoverERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"royaltyBps","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint16[10]","name":"levelsBps","type":"uint16[10]"}],"name":"setReferralBonuses","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"level","type":"uint16","name":"bps","type":"uint16"}],"name":"setReferralBonusForLevel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newLock","type":"uint256"}],"name":"setLockPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_max","type":"uint16"}],"name":"setMaxReferralPayoutBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_min","type":"uint256"}],"name":"setMinActiveStakeForReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_royaltyBps","type":"uint16"}],"name":"setRoyaltyBps","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint128[]","name":"minAmounts","type":"uint128[]"},{"internalType":"uint16[]","name":"apyBps","type":"uint16[]"}],"name":"setTiers","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"sponsors","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sponsor","type":"address"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakedOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"principal","type":"uint256"},{"internalType":"uint128","name":"lastClaim","type":"uint128"},{"internalType":"uint128","name":"accRewards","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierApyBps","outputs":[{"internalType":"uint16[]","name":"","type":"uint16[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tierMinAmount","outputs":[{"internalType":"uint128[]","name":"","type":"uint128[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"newSponsor","type":"address"}],"name":"updateSponsor","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+export type Address = `0x${string}`;
 
+export type DashboardData = {
+  network: string;
+  tokenAddress: Address;
+  stakingContract: Address;
+  paused: boolean;
+  lockPeriodSeconds: number; // e.g., 31536000
+  earlyUnstakePenaltyBps: number; // e.g., 1000 => 10%
+  totalStaked: number; // in EGLIFE tokens
+  useTieredAPR: boolean;
+  aprBpsForExampleStake: number; // e.g., 25000 => 25%
+  exampleStakeAmount: number; // in EGLIFE tokens (for which APR BPS above applies)
 
-const DataCard = ({ title, data, isLoading }: { title: string, data: any, isLoading: boolean }) => (
-    <div className="p-4 border rounded-lg bg-muted/20">
-        <p className="text-sm text-muted-foreground">{title}</p>
-        {isLoading ? (
-            <Loader2 className="h-5 w-5 mt-1 animate-spin" />
-        ) : (
-            <p className="font-mono text-sm break-all mt-1">{data}</p>
-        )}
+  // wallets
+  defaultSponsor: Address;
+  referralWallet: Address;
+  rewardsWallet: Address;
+  treasury: Address;
+
+  // referral / sponsor config
+  minActiveStakeForReferral: number; // tokens
+  purchaseSponsorBonusAmount: number; // tokens
+  stakingSponsorBonusAmount: number; // tokens
+
+  // (optional) level rules example
+  levelRules?: {
+    level: number;
+    selfMin: number; // tokens
+    selfMax: number; // tokens
+    minA: number;
+    minB: number;
+    minC: number;
+  };
+
+  // example user block (optional)
+  exampleUser?: {
+    address: Address;
+    activated: boolean;
+    stakedBalance: number; // tokens
+    directCount: number;
+    firstStakeTime?: number; // unix
+    lastAccrual?: number; // unix
+    earned?: number; // tokens
+    sponsor?: Address;
+    sponsorPurchaseBonusPaid?: boolean;
+    sponsorStakeBonusPaid?: boolean;
+  };
+};
+
+function Label({ children }: { children: React.ReactNode }) {
+  return <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{children}</span>;
+}
+
+function Value({ children }: { children: React.ReactNode }) {
+  return <span className="text-sm font-medium text-slate-900 break-all">{children}</span>;
+}
+
+function AddressBadge({ addr }: { addr: Address }) {
+  const short = `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+  return (
+    <a
+      href={`https://bscscan.com/address/${addr}`}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs font-medium hover:shadow-sm"
+      title={addr}
+    >
+      <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
+      {short}
+    </a>
+  );
+}
+
+function Stat({ label, value, hint }: { label: string; value: React.ReactNode; hint?: string }) {
+  return (
+    <div className="rounded-2xl border p-4 shadow-sm bg-white">
+      <div className="flex items-start justify-between">
+        <Label>{label}</Label>
+      </div>
+      <div className="mt-2 text-2xl font-semibold">{value}</div>
+      {hint ? <div className="mt-1 text-xs text-slate-500">{hint}</div> : null}
     </div>
-);
+  );
+}
 
-export default function AdminPage() {
-    const [isClient, setIsClient] = useState(false);
-    const { address, isConnected } = useAccount();
-    const { connect } = useConnect();
-    const chainId = useChainId();
-    const { switchChain } = useSwitchChain();
-    const isWrongNetwork = isConnected && chainId !== bsc.id;
+function Row({ k, v }: { k: string; v: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-5 items-center gap-3 py-2">
+      <div className="col-span-2 text-sm text-slate-600">{k}</div>
+      <div className="col-span-3 text-sm font-medium text-slate-900 break-words">{v}</div>
+    </div>
+  );
+}
 
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
+function secondsToDhms(seconds: number) {
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  return `${d}d ${h}h ${m}m`;
+}
 
-    const { data: owner, isLoading: isLoadingOwner } = useReadContract({
-        abi: stakingContractAbi,
-        address: EGLIFE_STAKING_CONTRACT,
-        functionName: 'owner',
-        query: { enabled: !!address && !isWrongNetwork }
-    });
+function bpsToPct(bps: number) {
+  return (bps / 100).toFixed(2) + "%";
+}
 
-    const { data: totalStakedData, isLoading: isLoadingTotalStaked } = useReadContract({
-        abi: stakingContractAbi,
-        address: EGLIFE_STAKING_CONTRACT,
-        functionName: 'totalStaked',
-        query: { enabled: !!address && !isWrongNetwork, refetchInterval: 10000 }
-    });
-    
-    const { data: treasury, isLoading: isLoadingTreasury } = useReadContract({
-        abi: stakingContractAbi,
-        address: EGLIFE_STAKING_CONTRACT,
-        functionName: 'treasury',
-        query: { enabled: !!address && !isWrongNetwork }
-    });
-    
-    const totalStaked = totalStakedData ? parseFloat(formatEther(totalStakedData as bigint)).toLocaleString() : '0';
+function EGLifeStakingDashboard({ data }: { data: DashboardData }) {
+  const days = Math.round(data.lockPeriodSeconds / 86400);
 
-    if (!isClient) {
-        return (
-            <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-        );
-    }
-    
-    if (!isConnected) {
-        return (
-            <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 flex items-center justify-center min-h-[calc(100vh-10rem)]">
-                <Card className="w-full max-w-md text-center">
-                    <CardHeader>
-                        <Wallet className="h-12 w-12 mx-auto text-primary mb-4" />
-                        <CardTitle>Connect Your Wallet</CardTitle>
-                        <CardDescription>You need to connect your wallet to view the admin dashboard.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button onClick={() => connect({ connector: injected({ shimDisconnect: true }) })}>
-                            <LinkIcon className="mr-2 h-4 w-4" /> Connect Wallet
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
+  return (
+    <div className="mx-auto max-w-6xl p-6">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold">EGLIFE Staking – Contract Dashboard</h1>
+        <p className="text-slate-600">Live, dynamic values suitable for admin or public display.</p>
+      </header>
 
-    const isOwner = isConnected && owner && address === owner;
+      {/* Top stats */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Stat label="Total Staked" value={<>{data.totalStaked.toLocaleString()} <span className="text-base font-normal">EGLIFE</span></>} />
+        <Stat label="Base APR (example)" value={bpsToPct(data.aprBpsForExampleStake)} hint={`Applies at ${data.exampleStakeAmount.toLocaleString()} EGLIFE`} />
+        <Stat label="Lock Period" value={`${days} days`} hint={secondsToDhms(data.lockPeriodSeconds)} />
+      </div>
 
-    return (
-        <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-            <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-5xl font-headline font-bold">Admin Dashboard</h1>
-                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                    Live overview of the EGLIFE staking contract.
-                </p>
-            </div>
-
-            {isWrongNetwork && (
-                <Alert variant="destructive" className="mb-8">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>Wrong Network</AlertTitle>
-                <AlertDescription>
-                    Please switch to the BNB Smart Chain to view contract data.
-                    <Button onClick={() => switchChain({ chainId: bsc.id })} variant="link" className="p-0 h-auto ml-2 text-white">
-                        Switch to BSC
-                    </Button>
-                </AlertDescription>
-                </Alert>
-            )}
-
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-4">
-                        <Settings className="h-6 w-6 text-primary"/>
-                        <CardTitle className="font-headline text-2xl">Contract State</CardTitle>
-                    </div>
-                    <CardDescription>
-                        This data is read directly from the blockchain.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <DataCard title="Contract Owner" data={owner} isLoading={isLoadingOwner} />
-                    <DataCard title="Treasury Wallet" data={treasury} isLoading={isLoadingTreasury} />
-                    <DataCard title="Total EGLIFE Staked" data={`${totalStaked} EGLIFE`} isLoading={isLoadingTotalStaked} />
-                </CardContent>
-            </Card>
-
-            {!isOwner && (
-                 <Alert className="mt-8">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertTitle>Read-Only Access</AlertTitle>
-                    <AlertDescription>
-                       You are viewing this page in read-only mode. Only the contract owner can perform administrative actions.
-                    </AlertDescription>
-                </Alert>
-            )}
+      {/* Addresses */}
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <Label>Contract & Network</Label>
+            <span className={`rounded-full px-2 py-1 text-xs ${data.paused ? "bg-red-100 text-red-700" : "bg-emerald-100 text-emerald-700"}`}>
+              {data.paused ? "Paused" : "Active"}
+            </span>
+          </div>
+          <Row k="Network" v={data.network} />
+          <Row k="Token Address" v={<AddressBadge addr={data.tokenAddress} />} />
+          <Row k="Staking Contract" v={<AddressBadge addr={data.stakingContract} />} />
+          <Row k="Tiered APR" v={data.useTieredAPR ? "Enabled" : "Disabled"} />
+          <Row k="Early Unstake Penalty" v={bpsToPct(data.earlyUnstakePenaltyBps)} />
         </div>
+
+        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="mb-3">
+            <Label>Wallets</Label>
+          </div>
+          <Row k="Default Sponsor" v={<AddressBadge addr={data.defaultSponsor} />} />
+          <Row k="Referral Wallet" v={<AddressBadge addr={data.referralWallet} />} />
+          <Row k="Rewards Wallet" v={<AddressBadge addr={data.rewardsWallet} />} />
+          <Row k="Treasury" v={<AddressBadge addr={data.treasury} />} />
+        </div>
+      </div>
+
+      {/* Referral & Bonus */}
+      <div className="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
+        <div className="mb-3">
+          <Label>Referral & Bonuses</Label>
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          <Stat label="Min Stake for Referral" value={<>{data.minActiveStakeForReferral.toLocaleString()} <span className="text-base font-normal">EGLIFE</span></>} />
+          <Stat label="Purchase Sponsor Bonus" value={<>{data.purchaseSponsorBonusAmount} <span className="text-base font-normal">EGLIFE</span></>} />
+          <Stat label="Staking Sponsor Bonus" value={<>{data.stakingSponsorBonusAmount} <span className="text-base font-normal">EGLIFE</span></>} />
+        </div>
+      </div>
+
+      {/* Level Rules Example */}
+      {data.levelRules && (
+        <div className="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="mb-3">
+            <Label>Level Rules – Example (Level {data.levelRules.level})</Label>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+            <Stat label="Self Min" value={`${data.levelRules.selfMin.toLocaleString()} EGLIFE`} />
+            <Stat label="Self Max" value={`${data.levelRules.selfMax.toLocaleString()} EGLIFE`} />
+            <Stat label="Min A" value={data.levelRules.minA} />
+            <Stat label="Min B" value={data.levelRules.minB} />
+            <Stat label="Min C" value={data.levelRules.minC} />
+          </div>
+        </div>
+      )}
+
+      {/* Example user card (optional) */}
+      {data.exampleUser && (
+        <div className="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <Label>Example User</Label>
+            <span className={`rounded-full px-2 py-1 text-xs ${data.exampleUser.activated ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-700"}`}>
+              {data.exampleUser.activated ? "Activated" : "Not Activated"}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Row k="User Address" v={<AddressBadge addr={data.exampleUser.address} />} />
+            <Row k="Sponsor" v={data.exampleUser.sponsor ? <AddressBadge addr={data.exampleUser.sponsor} /> : "—"} />
+            <Row k="Staked Balance" v={`${data.exampleUser.stakedBalance.toLocaleString()} EGLIFE`} />
+            <Row k="Direct Count" v={data.exampleUser.directCount} />
+            <Row k="Earned (unclaimed)" v={`${(data.exampleUser.earned ?? 0).toLocaleString()} EGLIFE`} />
+            <Row k="First Stake" v={data.exampleUser.firstStakeTime ? new Date(data.exampleUser.firstStakeTime * 1000).toLocaleString() : "—"} />
+            <Row k="Last Accrual" v={data.exampleUser.lastAccrual ? new Date(data.exampleUser.lastAccrual * 1000).toLocaleString() : "—"} />
+            <Row k="Sponsor Bonus – Purchase" v={data.exampleUser.sponsorPurchaseBonusPaid ? "Paid" : "Pending"} />
+            <Row k="Sponsor Bonus – Staking" v={data.exampleUser.sponsorStakeBonusPaid ? "Paid" : "Pending"} />
+          </div>
+        </div>
+      )}
+
+      <footer className="mt-8 text-center text-xs text-slate-500">
+        Tip: Supply this component with fresh data from your backend or directly from chain calls to render a live dashboard.
+      </footer>
+    </div>
+  );
+}
+
+
+// --- Firebase init (frontend-safe; apiKey is OK to expose) ---
+const firebaseConfig = {
+  apiKey: "AIzaSyD7siVG6oM8wOTGL0ZOlzqJsNsFDUF7sl0",
+  authDomain: "eglife-token-1e4c5.firebaseapp.com",
+  projectId: "eglife-token-1e4c5",
+  storageBucket: "eglife-token-1e4c5.firebasestorage.app",
+  messagingSenderId: "321177983654",
+  appId: "1:321177983654:web:fcb2a47126845d22117267",
+  measurementId: "G-Y681N12MWG",
+};
+
+function getDb() {
+  const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
+  return getFirestore(app);
+}
+
+// --- Hook: live Firestore subscription → DashboardData ---
+
+export function useDashboardFromFirestore(docId: string = "eglifestaking") {
+  const [data, setData] = useState<Partial<DashboardData> | null>(null);
+  useEffect(() => {
+    const db = getDb();
+    const ref = doc(db, "dashboard", docId);
+    const unsub = onSnapshot(ref, (snap) => {
+      if (snap.exists()) {
+        setData(snap.data() as Partial<DashboardData>);
+      }
+    });
+    return unsub;
+  }, [docId]);
+  return data;
+}
+
+// --- viem (on-chain) multi-read for core contract values ---
+
+// Minimal ABI: only the read functions we need for the dashboard
+const STAKING_ABI = [
+  { "type": "function", "name": "totalStaked", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "lockPeriod", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "earlyUnstakePenaltyBps", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint16"}] },
+  // { "type": "function", "name": "useTieredAPR", "stateMutability": "view", "inputs": [], "outputs": [{"type":"bool"}] },
+  { "type": "function", "name": "paused", "stateMutability": "view", "inputs": [], "outputs": [{"type":"bool"}] },
+  // { "type": "function", "name": "defaultSponsor", "stateMutability": "view", "inputs": [], "outputs": [{"type":"address"}] },
+  // { "type": "function", "name": "referralWallet", "stateMutability": "view", "inputs": [], "outputs": [{"type":"address"}] },
+  // { "type": "function", "name": "rewardsWallet", "stateMutability": "view", "inputs": [], "outputs": [{"type":"address"}] },
+  { "type": "function", "name": "treasury", "stateMutability": "view", "inputs": [], "outputs": [{"type":"address"}] },
+  { "type": "function", "name": "minActiveStakeForReferral", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint256"}] },
+  // { "type": "function", "name": "purchaseSponsorBonusAmount", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint256"}] },
+  // { "type": "function", "name": "stakingSponsorBonusAmount", "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint256"}] },
+  // { "type": "function", "name": "_aprBpsForStake", "stateMutability": "view", "inputs": [{"type":"uint256","name":"amt"}], "outputs": [{"type":"uint16"}] },
+  // Example user reads
+  { "type": "function", "name": "stakedOf", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "earned", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"type":"uint256"}] },
+  // { "type": "function", "name": "directCount", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "sponsors", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"type":"address"}] },
+  { "type": "function", "name": "stakes", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"name":"principal","type":"uint256"},{"name":"lastClaim","type":"uint128"},{"name":"accRewards","type":"uint128"}] },
+] as const;
+
+export type OnchainOpts = {
+  stakingAddress: Address;
+  exampleStakeAmount?: bigint; // in wei (18 decimals)
+  exampleUser?: Address;
+};
+
+export function useDashboardFromChain(opts: OnchainOpts) {
+  const [data, setData] = useState<Partial<DashboardData> | null>(null);
+
+  useEffect(() => {
+    const client = createPublicClient({ chain: bsc, transport: http() });
+    const contract = { address: opts.stakingAddress as `0x${string}`, abi: STAKING_ABI } as const;
+
+    (async () => {
+      try {
+        const toToken = (wei: bigint) => Number(wei) / 1e18;
+        // Core reads
+        const results = await client.multicall({
+          contracts: [
+            { ...contract, functionName: "totalStaked" },
+            { ...contract, functionName: "lockPeriod" },
+            { ...contract, functionName: "earlyUnstakePenaltyBps" },
+            { ...contract, functionName: "paused" },
+            { ...contract, functionName: "treasury" },
+            { ...contract, functionName: "minActiveStakeForReferral" },
+          ],
+        });
+
+        const [
+          totalStakedWei,
+          lockPeriod,
+          earlyBps,
+          paused,
+          treasury,
+          minActiveRefWei,
+        ] = results.map(r => r.result);
+
+        // APR for example stake (default 300k EGLIFE)
+        const exampleAmtWei = opts.exampleStakeAmount ?? (300_000n * 10n ** 18n);
+        // const aprBps = await client.readContract({
+        //   ...contract,
+        //   functionName: "_aprBpsForStake",
+        //   args: [exampleAmtWei],
+        // });
+
+
+        const partial: Partial<DashboardData> = {
+          totalStaked: toToken(totalStakedWei as bigint),
+          lockPeriodSeconds: Number(lockPeriod as bigint),
+          earlyUnstakePenaltyBps: Number(earlyBps as number),
+          paused: Boolean(paused),
+          treasury: treasury as Address,
+          minActiveStakeForReferral: toToken(minActiveRefWei as bigint),
+          // aprBpsForExampleStake: Number(aprBps),
+          // exampleStakeAmount: Number(exampleAmtWei / 10n ** 18n),
+        };
+
+        // Optional example user
+        if (opts.exampleUser) {
+          const user = opts.exampleUser;
+          const userResults = await client.multicall({
+            contracts: [
+              { ...contract, functionName: "stakedOf", args: [user] },
+              { ...contract, functionName: "earned", args: [user] },
+              { ...contract, functionName: "sponsors", args: [user] },
+              { ...contract, functionName: "stakes", args: [user] },
+            ],
+          });
+          const [stakedWei, earnedWei, sponsor, stakeInfo] = userResults.map(r => r.result);
+
+          partial.exampleUser = {
+            address: user,
+            activated: (stakedWei as bigint) > 0n,
+            stakedBalance: toToken(stakedWei as bigint),
+            directCount: 0, // Not available on contract
+            firstStakeTime: stakeInfo ? Number((stakeInfo as any).lastClaim) : undefined, // Using lastClaim as proxy
+            lastAccrual: stakeInfo ? Number((stakeInfo as any).lastClaim) : undefined,
+            earned: toToken(earnedWei as bigint),
+            sponsor: sponsor as Address,
+          };
+        }
+
+        setData(partial);
+      } catch (e) {
+        console.error("on-chain read failed", e);
+      }
+    })();
+  }, [opts.stakingAddress, opts.exampleStakeAmount, opts.exampleUser]);
+
+  return data;
+}
+
+// --- Glue hook: merge Firestore + On-chain (on-chain wins; Firestore fills gaps) ---
+export function useMergedDashboard(opts: OnchainOpts & { docId?: string }) {
+  const fs = useDashboardFromFirestore(opts?.docId);
+  const oc = useDashboardFromChain(opts);
+  const [merged, setMerged] = useState<DashboardData | null>(null);
+
+  useEffect(() => {
+    const base: Partial<DashboardData> = {
+      network: "BNB Smart Chain (Mainnet)",
+      tokenAddress: "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113",
+      stakingContract: opts.stakingAddress,
+      // Provide default fallbacks for values not on-chain
+      useTieredAPR: true,
+      aprBpsForExampleStake: 25000,
+      exampleStakeAmount: 300000,
+      defaultSponsor: "0x0000000000000000000000000000000000000000",
+      referralWallet: "0x0000000000000000000000000000000000000000",
+      rewardsWallet: "0x0000000000000000000000000000000000000000",
+      purchaseSponsorBonusAmount: 10,
+      stakingSponsorBonusAmount: 10,
+    };
+    const combine = { ...base, ...(fs ?? {}), ...(oc ?? {}) } as DashboardData;
+    setMerged(combine);
+  }, [fs, oc, opts.stakingAddress]);
+
+  return merged;
+}
+
+const ERC20_ABI = [
+  { "type": "function", "name": "allowance", "stateMutability": "view", "inputs": [{"type":"address"},{"type":"address"}], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "approve",   "stateMutability": "nonpayable", "inputs": [{"type":"address"},{"type":"uint256"}], "outputs": [{"type":"bool"}] },
+  { "type": "function", "name": "balanceOf", "stateMutability": "view", "inputs": [{"type":"address"}], "outputs": [{"type":"uint256"}] },
+  { "type": "function", "name": "decimals",  "stateMutability": "view", "inputs": [], "outputs": [{"type":"uint8"}] }
+] as const;
+
+function toWei(amountTokens: number, decimals = 18) {
+  return BigInt(Math.floor(amountTokens * 10 ** Math.min(decimals, 18)));
+}
+
+// --- Allowance helper ---
+export function useTokenAllowance(token: Address, owner?: Address, spender?: Address) {
+  const { address } = useAccount();
+  const [allowance, setAllowance] = useState<bigint | null>(null);
+  const who = owner ?? (address as Address | undefined);
+
+  useEffect(() => {
+    if (!token || !who || !spender) { setAllowance(null); return; }
+    const client = createPublicClient({ chain: bsc, transport: http() });
+    (async () => {
+      try {
+        const a = await client.readContract({ address: token, abi: ERC20_ABI, functionName: "allowance", args: [who, spender] });
+        setAllowance(a as bigint);
+      } catch (e) { console.error("allowance read failed", e); }
+    })();
+  }, [token, who, spender]);
+
+  return allowance; // bigint or null
+}
+
+// --- Approve actions ---
+export function useApprove(token: Address, spender: Address) {
+  const { data: walletClient } = useWalletClient();
+  const publicClient = createPublicClient({ chain: bsc, transport: http() });
+
+  async function approveExact(amountWei: bigint) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const request = await publicClient.simulateContract({ address: token, abi: ERC20_ABI, functionName: "approve", args: [spender, amountWei], account: walletClient.account! });
+    const hash = await walletClient.writeContract(request.request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  async function approveMax() {
+    // Approve max uint256
+    return approveExact(2n ** 256n - 1n);
+  }
+
+  return { approveExact, approveMax };
+}
+
+// --- Stake actions ---
+export function useStakeActions(stakingAddress: Address, tokenAddress: Address) {
+  const { data: walletClient } = useWalletClient();
+  const { address } = useAccount();
+  const publicClient = createPublicClient({ chain: bsc, transport: http() });
+  const allowance = useTokenAllowance(tokenAddress, address as Address, stakingAddress);
+  const { approveExact } = useApprove(tokenAddress, stakingAddress);
+
+  async function estimateStakeGas(amountTokens: number, sponsor?: Address) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const amountWei = toWei(amountTokens);
+    const request = await publicClient.simulateContract({
+      address: stakingAddress,
+      abi: STAKING_ABI,
+      // @ts-ignore
+      functionName: "stake",
+      args: [amountWei, sponsor ?? ("0x0000000000000000000000000000000000000000" as Address)],
+      account: walletClient.account,
+    });
+    return request.request.gas as bigint | undefined;
+  }
+
+  async function stake(amountTokens: number, sponsor?: Address) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    if (!address) throw new Error("Connect wallet first");
+    const amountWei = toWei(amountTokens);
+
+    // ensure allowance
+    if (!allowance || allowance < amountWei) {
+      await approveExact(amountWei);
+    }
+
+    // simulate then write
+    const simulated = await publicClient.simulateContract({
+      address: stakingAddress,
+      abi: STAKING_ABI,
+      // @ts-ignore
+      functionName: "stake",
+      args: [amountWei, sponsor ?? ("0x0000000000000000000000000000000000000000" as Address)],
+      account: walletClient.account,
+    });
+    const hash = await walletClient.writeContract(simulated.request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  return { stake, estimateStakeGas, allowance };
+}
+
+// --- Unstake actions ---
+export function useUnstakeActions(stakingAddress: Address) {
+  const { data: walletClient } = useWalletClient();
+  const publicClient = createPublicClient({ chain: bsc, transport: http() });
+
+  async function estimateUnstakeGas(amountTokens?: number) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    try {
+      if (typeof amountTokens === "number") {
+        const amountWei = toWei(amountTokens);
+        const req = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
+        return req.request.gas as bigint | undefined;
+      } else {
+        const req = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [], account: walletClient.account! });
+        return req.request.gas as bigint | undefined;
+      }
+    } catch (e) {
+      console.warn("gas estimate failed – check function signature", e);
+      return undefined;
+    }
+  }
+
+  async function unstakeAmount(amountTokens: number) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const amountWei = toWei(amountTokens);
+    const simulated = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
+    const hash = await walletClient.writeContract(simulated.request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  async function unstakeAll() {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const simulated = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [], account: walletClient.account! });
+    const hash = await walletClient.writeContract(simulated.request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  return { estimateUnstakeGas, unstakeAmount, unstakeAll };
+}
+
+// --- UI: Stake Panel ---
+export function StakePanel({ stakingAddress, tokenAddress }: { stakingAddress: Address; tokenAddress: Address }) {
+  const { address } = useAccount();
+  const { stake, estimateStakeGas, allowance } = useStakeActions(stakingAddress, tokenAddress);
+  const [amt, setAmt] = useState<string>("");
+  const [sponsor, setSponsor] = useState<string>("");
+  const [busy, setBusy] = useState(false);
+  const [gas, setGas] = useState<bigint | undefined>(undefined);
+  const [status, setStatus] = useState<string>("");
+
+  async function previewGas() {
+    try {
+      const n = Number(amt);
+      if (!n || n <= 0) return setStatus("Enter a valid amount");
+      setStatus("Estimating gas…");
+      const g = await estimateStakeGas(n, sponsor as Address);
+      setGas(g);
+      setStatus(g ? `Estimated gas: ${g.toString()}` : "");
+    } catch (e:any) { setStatus(`❌ ${e?.shortMessage || e?.message || "Estimate failed"}`); }
+  }
+
+  async function doStake() {
+    try {
+      const n = Number(amt);
+      if (!n || n <= 0) return setStatus("Enter a valid amount");
+      setBusy(true); setStatus("Sending stake tx…");
+      const rcpt = await stake(n, sponsor as Address);
+      setStatus(`✅ Staked ${n} EGLIFE. Tx: ${String(rcpt.transactionHash).slice(0,10)}…`);
+    } catch (e:any) {
+      setStatus(`❌ ${e?.shortMessage || e?.message || "Stake failed"}`);
+    } finally { setBusy(false); }
+  }
+
+  const allowanceOk = (() => {
+    const n = Number(amt);
+    if (!allowance || !n) return false;
+    return allowance >= toWei(n);
+  })();
+
+  return (
+    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <Label>Stake</Label>
+        <span className="text-xs text-slate-500">{address ? `Connected: ${address.slice(0,6)}…${address.slice(-4)}` : "Connect wallet"}</span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Amount (EGLIFE)</Label>
+          <input type="number" value={amt} onChange={(e) => setAmt(e.target.value)} placeholder="e.g., 1000" className="mt-2 w-full rounded-xl border px-3 py-2 outline-none" />
+          <div className="mt-2 text-xs text-slate-500">Allowance: {allowance ? (Number(allowance) / 1e18).toLocaleString() : "—"}</div>
+          <button onClick={previewGas} disabled={busy} className="mt-2 w-full rounded-xl bg-slate-900 px-3 py-2 text-white hover:bg-slate-800 disabled:opacity-50">Preview Gas</button>
+        </div>
+
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Sponsor (optional)</Label>
+          <input type="text" value={sponsor} onChange={(e) => setSponsor(e.target.value)} placeholder="0x… or empty for default" className="mt-2 w-full rounded-xl border px-3 py-2 font-mono text-xs outline-none" />
+          <div className="mt-2 text-xs text-slate-500">Leave blank for default sponsor assignment</div>
+        </div>
+
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Action</Label>
+          <button onClick={doStake} disabled={busy} className="mt-2 w-full rounded-xl bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700 disabled:opacity-50">Stake</button>
+          {gas && <div className="mt-2 text-xs text-slate-600">Est. Gas: {gas.toString()}</div>}
+        </div>
+      </div>
+
+      {status && <div className="mt-3 text-sm text-slate-700">{status}</div>}
+    </div>
+  );
+}
+
+// --- UI: Unstake Panel ---
+export function UnstakePanel({ stakingAddress }: { stakingAddress: Address }) {
+  const { estimateUnstakeGas, unstakeAmount, unstakeAll } = useUnstakeActions(stakingAddress);
+  const [amt, setAmt] = useState<string>("");
+  const [busy, setBusy] = useState(false);
+  const [gas, setGas] = useState<bigint | undefined>(undefined);
+  const [status, setStatus] = useState<string>("");
+
+  async function previewGas(partial: boolean) {
+    try {
+      setStatus("Estimating gas…");
+      const g = partial ? await estimateUnstakeGas(Number(amt) || 0) : await estimateUnstakeGas();
+      setGas(g);
+      setStatus(g ? `Estimated gas: ${g.toString()}` : "");
+    } catch (e:any) { setStatus(`❌ ${e?.shortMessage || e?.message || "Estimate failed"}`); }
+  }
+
+  async function doUnstakeAmount() {
+    try {
+      const n = Number(amt);
+      if (!n || n <= 0) return setStatus("Enter a valid amount");
+      setBusy(true); setStatus("Sending unstake tx…");
+      const rcpt = await unstakeAmount(n);
+      setStatus(`✅ Unstaked ${n} EGLIFE. Tx: ${String(rcpt.transactionHash).slice(0,10)}…`);
+    } catch (e:any) {
+      setStatus(`❌ ${e?.shortMessage || e?.message || "Unstake failed"}`);
+    } finally { setBusy(false); }
+  }
+
+  async function doUnstakeAll() {
+    try {
+      setBusy(true); setStatus("Sending unstake tx…");
+      const rcpt = await unstakeAll();
+      setStatus(`✅ Unstaked all. Tx: ${String(rcpt.transactionHash).slice(0,10)}…`);
+    } catch (e:any) {
+      setStatus(`❌ ${e?.shortMessage || e?.message || "Unstake failed"}`);
+    } finally { setBusy(false); }
+  }
+
+  return (
+    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+      <Label>Unstake</Label>
+      <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Amount (EGLIFE)</Label>
+          <input type="number" value={amt} onChange={(e) => setAmt(e.target.value)} placeholder="e.g., 500" className="mt-2 w-full rounded-xl border px-3 py-2 outline-none" />
+          <div className="mt-2 flex gap-2">
+            <button onClick={() => previewGas(true)} className="rounded-xl bg-slate-900 px-3 py-2 text-white hover:bg-slate-800">Preview Gas</button>
+            <button onClick={doUnstakeAmount} disabled={busy} className="rounded-xl bg-amber-600 px-3 py-2 text-white hover:bg-amber-700 disabled:opacity-50">Unstake Amount</button>
+          </div>
+        </div>
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Unstake All</Label>
+          <button onClick={() => previewGas(false)} className="mt-2 w-full rounded-xl bg-slate-900 px-3 py-2 text-white hover:bg-slate-800">Preview Gas</button>
+          <button onClick={doUnstakeAll} disabled={busy} className="mt-2 w-full rounded-xl bg-red-600 px-3 py-2 text-white hover:bg-red-700 disabled:opacity-50">Unstake All</button>
+        </div>
+        <div className="rounded-2xl border p-4 shadow-sm">
+          <Label>Status</Label>
+          <div className="mt-2 text-sm text-slate-700 min-h-10">{status}</div>
+          {gas && <div className="mt-2 text-xs text-slate-600">Est. Gas: {gas.toString()}</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Example usage in a page/component ---
+
+export default function Page() {
+  const data = useMergedDashboard({
+    stakingAddress: "0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address,
+    exampleStakeAmount: 300_000n * 10n ** 18n,
+    exampleUser: "0x8B6e17a657c74beccBD36D712450a02b07DE1B1b" as Address, // Corrected address
+    docId: "eglifestaking",
+  });
+  if (!data) return <div className="p-6">Loading…</div>;
+  return (
+    <>
+        {data ? <EGLifeStakingDashboard data={data} /> : <div className="p-6">Loading…</div>}
+        <div className="mx-auto max-w-6xl p-6">
+            <ClaimPanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
+        </div>
+        <div className="mx-auto max-w-6xl p-6">
+          <StakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} tokenAddress={"0xca326a5e15b9451efC1A6BddaD6fB098a4D09113" as Address} />
+          <div className="mt-4" />
+          <UnstakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
+        </div>
+    </>
+  );
+}
+
+
+export function useSelfOnchain(stakingAddress: Address) {
+  const { address } = useAccount();
+  const [state, setState] = useState<{ earned?: number; staked?: number } | null>(null);
+
+  useEffect(() => {
+    if (!address) { setState(null); return; }
+    const client = createPublicClient({ chain: bsc, transport: http() });
+    const contract = { address: stakingAddress as `0x${string}`, abi: STAKING_ABI } as const;
+    (async () => {
+      try {
+        const [earnedWei, stakedWei] = await client.multicall({
+          contracts: [
+            // @ts-ignore
+            { ...contract, functionName: "earned", args: [address] },
+            // @ts-ignore
+            { ...contract, functionName: "stakedOf", args: [address] },
+          ],
+        });
+        const toToken = (wei: bigint) => Number(wei) / 1e18;
+        setState({ earned: toToken(earnedWei.result as bigint), staked: toToken(stakedWei.result as bigint) });
+      } catch (e) {
+        console.error("self reads failed", e);
+      }
+    })();
+  }, [address, stakingAddress]);
+
+  return { address, ...state };
+}
+
+export function useClaimActions(stakingAddress: Address) {
+  const { data: walletClient } = useWalletClient();
+  const publicClient = createPublicClient({ chain: bsc, transport: http() });
+
+  async function claimAll() {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const { request } = await publicClient.simulateContract({
+        address: stakingAddress,
+        abi: STAKING_ABI,
+        // @ts-ignore
+        functionName: "claim",
+        args: [],
+        account: walletClient.account
+    })
+    const hash = await walletClient.writeContract(request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  async function claimAmount(tokens: number) {
+    if (!walletClient) throw new Error("Connect wallet first");
+    const amountWei = BigInt(Math.floor(tokens * 1e18));
+     const { request } = await publicClient.simulateContract({
+      address: stakingAddress,
+      abi: STAKING_ABI,
+      // @ts-ignore
+      functionName: "claim", 
+      args: [amountWei],
+      account: walletClient.account
+    });
+    const hash = await walletClient.writeContract(request);
+    return await publicClient.waitForTransactionReceipt({ hash });
+  }
+
+  return { claimAll, claimAmount };
+}
+
+export function ClaimPanel({ stakingAddress }: { stakingAddress: Address }) {
+  const self = useSelfOnchain(stakingAddress);
+  const { claimAll } = useClaimActions(stakingAddress);
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string>("");
+
+  if (!self.address) {
+    return (
+      <div className="rounded-2xl border bg-white p-5 shadow-sm">
+        <Label>Claims</Label>
+        <div className="mt-2 text-sm">Connect your wallet to view and claim rewards.</div>
+      </div>
     );
+  }
+
+  async function doClaimAll() {
+    try {
+      setBusy(true); setStatus("Sending transaction…");
+      const rcpt = await claimAll();
+      setStatus(`✅ Claimed all. Tx: ${String(rcpt.transactionHash).slice(0,10)}…`);
+    } catch (e:any) {
+      setStatus(`❌ ${e?.shortMessage || e?.message || "Claim failed"}`);
+    } finally { setBusy(false); }
+  }
+
+  return (
+    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <Label>Claims</Label>
+        <span className="text-xs text-slate-500">Connected: {`${self.address.slice(0,6)}…${self.address.slice(-4)}`}</span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Stat label="Staked" value={<>{(self.staked ?? 0).toLocaleString()} <span className="text-base">EGLIFE</span></>} />
+        <Stat label="Earned" value={<>{(self.earned ?? 0).toLocaleString()} <span className="text-base">EGLIFE</span></>} />
+      </div>
+
+      <div className="mt-4 flex items-center gap-3">
+        <button onClick={doClaimAll} disabled={busy} className="rounded-xl bg-black px-4 py-2 text-white hover:bg-slate-800 disabled:opacity-50">Claim All</button>
+        {status && <div className="text-sm text-slate-600">{status}</div>}
+      </div>
+    </div>
+  );
 }
