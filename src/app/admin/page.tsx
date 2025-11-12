@@ -301,7 +301,8 @@ export function useDashboardFromChain(opts: OnchainOpts) {
 
     (async () => {
       try {
-        const toToken = (wei: bigint) => Number(wei) / 1e18;
+        const toToken = (wei: bigint) => Number(formatEther(wei));
+
         // Core reads
         const results = await client.multicall({
           contracts: [
@@ -312,6 +313,7 @@ export function useDashboardFromChain(opts: OnchainOpts) {
             { ...contract, functionName: "treasury" },
             { ...contract, functionName: "minActiveStakeForReferral" },
           ],
+          allowFailure: false,
         });
 
         const [
@@ -321,16 +323,7 @@ export function useDashboardFromChain(opts: OnchainOpts) {
           paused,
           treasury,
           minActiveRefWei,
-        ] = results.map(r => r.result);
-
-        // APR for example stake (default 300k EGLIFE)
-        const exampleAmtWei = opts.exampleStakeAmount ?? (300_000n * 10n ** 18n);
-        // const aprBps = await client.readContract({
-        //   ...contract,
-        //   functionName: "_aprBpsForStake",
-        //   args: [exampleAmtWei],
-        // });
-
+        ] = results;
 
         const partial: Partial<DashboardData> = {
           totalStaked: toToken(totalStakedWei as bigint),
@@ -339,8 +332,9 @@ export function useDashboardFromChain(opts: OnchainOpts) {
           paused: Boolean(paused),
           treasury: treasury as Address,
           minActiveStakeForReferral: toToken(minActiveRefWei as bigint),
-          // aprBpsForExampleStake: Number(aprBps),
-          // exampleStakeAmount: Number(exampleAmtWei / 10n ** 18n),
+          // Fallback static values, as they are not available on the contract
+          aprBpsForExampleStake: 25000,
+          exampleStakeAmount: 300000,
         };
 
         // Optional example user
@@ -353,15 +347,16 @@ export function useDashboardFromChain(opts: OnchainOpts) {
               { ...contract, functionName: "sponsors", args: [user] },
               { ...contract, functionName: "stakes", args: [user] },
             ],
+            allowFailure: false,
           });
-          const [stakedWei, earnedWei, sponsor, stakeInfo] = userResults.map(r => r.result);
+          const [stakedWei, earnedWei, sponsor, stakeInfo] = userResults;
 
           partial.exampleUser = {
             address: user,
             activated: (stakedWei as bigint) > 0n,
             stakedBalance: toToken(stakedWei as bigint),
             directCount: 0, // Not available on contract
-            firstStakeTime: stakeInfo ? Number((stakeInfo as any).lastClaim) : undefined, // Using lastClaim as proxy
+            firstStakeTime: stakeInfo ? Number((stakeInfo as any).lastClaim) : undefined,
             lastAccrual: stakeInfo ? Number((stakeInfo as any).lastClaim) : undefined,
             earned: toToken(earnedWei as bigint),
             sponsor: sponsor as Address,
@@ -380,8 +375,8 @@ export function useDashboardFromChain(opts: OnchainOpts) {
 
 // --- Glue hook: merge Firestore + On-chain (on-chain wins; Firestore fills gaps) ---
 export function useMergedDashboard(opts: OnchainOpts & { docId?: string }) {
-  const fs = useDashboardFromFirestore(opts?.docId);
-  const oc = useDashboardFromChain(opts);
+  const fsData = useDashboardFromFirestore(opts?.docId);
+  const ocData = useDashboardFromChain(opts);
   const [merged, setMerged] = useState<DashboardData | null>(null);
 
   useEffect(() => {
@@ -391,17 +386,18 @@ export function useMergedDashboard(opts: OnchainOpts & { docId?: string }) {
       stakingContract: opts.stakingAddress,
       // Provide default fallbacks for values not on-chain
       useTieredAPR: true,
-      aprBpsForExampleStake: 25000,
-      exampleStakeAmount: 300000,
       defaultSponsor: "0x0000000000000000000000000000000000000000",
       referralWallet: "0x0000000000000000000000000000000000000000",
       rewardsWallet: "0x0000000000000000000000000000000000000000",
       purchaseSponsorBonusAmount: 10,
       stakingSponsorBonusAmount: 10,
     };
-    const combine = { ...base, ...(fs ?? {}), ...(oc ?? {}) } as DashboardData;
-    setMerged(combine);
-  }, [fs, oc, opts.stakingAddress]);
+    
+    // Prioritize on-chain data (ocData) over Firestore data (fsData)
+    const combined = { ...base, ...fsData, ...ocData } as DashboardData;
+    
+    setMerged(combined);
+  }, [fsData, ocData, opts.stakingAddress]);
 
   return merged;
 }
@@ -518,7 +514,7 @@ export function useUnstakeActions(stakingAddress: Address) {
         const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [amountWei], account: walletClient.account! });
         return request.gas as bigint | undefined;
       } else {
-        const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", account: walletClient.account! });
+        const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args: [], account: walletClient.account! });
         return request.gas as bigint | undefined;
       }
     } catch (e) {
@@ -537,7 +533,7 @@ export function useUnstakeActions(stakingAddress: Address) {
 
   async function unstakeAll() {
     if (!walletClient) throw new Error("Connect wallet first");
-    const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", account: walletClient.account! });
+    const { request } = await publicClient.simulateContract({ address: stakingAddress, abi: STAKING_ABI, functionName: "unstake", args:[], account: walletClient.account! });
     const hash = await walletClient.writeContract(request);
     return await publicClient.waitForTransactionReceipt({ hash });
   }
@@ -683,31 +679,6 @@ export function UnstakePanel({ stakingAddress }: { stakingAddress: Address }) {
   );
 }
 
-// --- Example usage in a page/component ---
-
-export default function Page() {
-  const data = useMergedDashboard({
-    stakingAddress: "0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address,
-    exampleStakeAmount: 300_000n * 10n ** 18n,
-    exampleUser: "0x8B6e17a657c74beccBD36D712450a02b07DE1B1b" as Address, // Corrected address
-    docId: "eglifestaking",
-  });
-  if (!data) return <div className="p-6">Loading…</div>;
-  return (
-    <>
-        {data ? <EGLifeStakingDashboard data={data} /> : <div className="p-6">Loading…</div>}
-        <div className="mx-auto max-w-6xl p-6">
-            <ClaimPanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
-        </div>
-        <div className="mx-auto max-w-6xl p-6">
-          <StakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} tokenAddress={"0xca326a5e15b9451efC1A6BddaD6fB098a4D09113" as Address} />
-          <div className="mt-4" />
-          <UnstakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
-        </div>
-    </>
-  );
-}
-
 
 export function useSelfOnchain(stakingAddress: Address) {
   const { address } = useAccount();
@@ -719,16 +690,17 @@ export function useSelfOnchain(stakingAddress: Address) {
     const contract = { address: stakingAddress as `0x${string}`, abi: STAKING_ABI } as const;
     (async () => {
       try {
-        const [earnedWei, stakedWei] = await client.multicall({
+        const [earnedResult, stakedResult] = await client.multicall({
           contracts: [
             // @ts-ignore
             { ...contract, functionName: "earned", args: [address] },
             // @ts-ignore
             { ...contract, functionName: "stakedOf", args: [address] },
           ],
+          allowFailure: false,
         });
-        const toToken = (wei: bigint) => Number(wei) / 1e18;
-        setState({ earned: toToken(earnedWei.result as bigint), staked: toToken(stakedWei.result as bigint) });
+        const toToken = (wei: bigint) => Number(formatEther(wei));
+        setState({ earned: toToken(earnedResult as bigint), staked: toToken(stakedResult as bigint) });
       } catch (e) {
         console.error("self reads failed", e);
       }
@@ -819,3 +791,30 @@ export function ClaimPanel({ stakingAddress }: { stakingAddress: Address }) {
   );
 }
 
+
+// --- Example usage in a page/component ---
+
+export default function Page() {
+  const data = useMergedDashboard({
+    stakingAddress: "0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address,
+    exampleStakeAmount: 300_000n * 10n ** 18n,
+    exampleUser: "0x8B6e17a657c74beccBD36D712450a02b07DE1B1b" as Address, // Corrected address
+    docId: "eglifestaking",
+  });
+  if (!data) return <div className="p-6">Loading…</div>;
+  return (
+    <>
+        {data ? <EGLifeStakingDashboard data={data} /> : <div className="p-6">Loading…</div>}
+        <div className="mx-auto max-w-6xl p-6">
+            <ClaimPanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
+        </div>
+        <div className="mx-auto max-w-6xl p-6">
+          <StakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} tokenAddress={"0xca326a5e15b9451efC1A6BddaD6fB098a4D09113" as Address} />
+          <div className="mt-4" />
+          <UnstakePanel stakingAddress={"0x90B374f87726F172504501c0B91eeEbadB5FE230" as Address} />
+        </div>
+    </>
+  );
+}
+
+    
