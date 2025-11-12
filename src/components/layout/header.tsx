@@ -17,6 +17,7 @@ const navLinks = [
   { href: "/referral", label: "Referral" },
   { href: "/whitepaper", label: "Whitepaper" },
   { href: "/contact", label: "Contact" },
+  { href: "/admin", label: "Admin" },
 ];
 
 export default function Header() {
