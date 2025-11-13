@@ -288,7 +288,6 @@ export function useDashboardFromChain(opts: OnchainOpts) {
             { ...contract, functionName: "useTieredAPR" },
             { ...contract, functionName: "paused" },
             { ...contract, functionName: "defaultSponsor" },
-            { ...contract, functionName: "referralWallet" },
             { ...contract, functionName: "rewardsWallet" },
             { ...contract, functionName: "treasury" },
             { ...contract, functionName: "minActiveStakeForReferral" },
@@ -305,7 +304,6 @@ export function useDashboardFromChain(opts: OnchainOpts) {
           tiered,
           paused,
           defaultSponsor,
-          referralWallet,
           rewardsWallet,
           treasury,
           minActiveRefWei,
@@ -323,18 +321,18 @@ export function useDashboardFromChain(opts: OnchainOpts) {
         const exampleAmtWei = opts.exampleStakeAmount ?? (300_000n * 10n ** 18n);
 
         const partial: Partial<DashboardData> = {
-          totalStaked: toToken(totalStakedWei as bigint),
-          lockPeriodSeconds: Number(lockPeriod as bigint),
-          earlyUnstakePenaltyBps: Number(earlyBps as number),
-          useTieredAPR: Boolean(tiered),
-          paused: Boolean(paused),
-          defaultSponsor: defaultSponsor as Address,
-          referralWallet: referralWallet as Address,
-          rewardsWallet: rewardsWallet as Address,
-          treasury: treasury as Address,
-          minActiveStakeForReferral: toToken(minActiveRefWei as bigint),
-          purchaseSponsorBonusAmount: toToken(purchaseBonusWei as bigint),
-          stakingSponsorBonusAmount: toToken(stakingBonusWei as bigint),
+          totalStaked: toToken((totalStakedWei as { result: bigint }).result ?? 0n),
+          lockPeriodSeconds: Number(lockPeriod.result as bigint),
+          earlyUnstakePenaltyBps: Number(earlyBps.result as number),
+          useTieredAPR: Boolean(tiered.result),
+          paused: Boolean(paused.result),
+          defaultSponsor: defaultSponsor.result as Address,
+          referralWallet: "0x0000000000000000000000000000000000000000",
+          rewardsWallet: rewardsWallet.result as Address,
+          treasury: treasury.result as Address,
+          minActiveStakeForReferral: toToken(minActiveRefWei.result as bigint),
+          purchaseSponsorBonusAmount: toToken(purchaseBonusWei.result as bigint),
+          stakingSponsorBonusAmount: toToken(stakingBonusWei.result as bigint),
           aprBpsForExampleStake: Number(aprBps),
           exampleStakeAmount: Number(exampleAmtWei / 10n ** 18n),
         };
@@ -358,13 +356,13 @@ export function useDashboardFromChain(opts: OnchainOpts) {
 
           partial.exampleUser = {
             address: user,
-            activated: (stakedWei as bigint) > 0n,
-            stakedBalance: toToken(stakedWei as bigint),
-            directCount: Number(directs as bigint),
-            firstStakeTime: Number(first as bigint),
-            lastAccrual: Number(last as bigint),
-            earned: toToken(earnedWei as bigint),
-            sponsor: sponsor as Address,
+            activated: (stakedWei.result as bigint) > 0n,
+            stakedBalance: toToken(stakedWei.result as bigint),
+            directCount: Number(directs.result as bigint),
+            firstStakeTime: Number(first.result as bigint),
+            lastAccrual: Number(last.result as bigint),
+            earned: toToken(earnedWei.result as bigint),
+            sponsor: sponsor.result as Address,
           };
         }
 
@@ -434,7 +432,7 @@ export function useSelfOnchain(stakingAddress: Address) {
 
         const [earnedWei, stakedWei] = results;
         const toToken = (wei: bigint) => Number(formatEther(wei));
-        setState({ address, earned: toToken(earnedWei as bigint), staked: toToken(stakedWei as bigint) });
+        setState({ address, earned: toToken(earnedWei.result as bigint), staked: toToken(stakedWei.result as bigint) });
       } catch (e) {
         console.error("self reads failed", e);
       }
