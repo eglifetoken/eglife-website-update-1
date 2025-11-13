@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle, AlertTriangle, ShieldCheck, Users2 } from "lucide-react";
+import { ArrowRight, Wallet, Link as LinkIcon, Link2Off, IndianRupee, Loader2, Copy, Users, UserCheck, BarChart, TrendingUp, Landmark, Repeat, DollarSign, PiggyBank, Gift, User as UserIcon, Calendar, PieChart, HandCoins, Info, HelpCircle, AlertTriangle, ShieldCheck, Users2, Clapperboard } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useAccount, useConnect, useDisconnect, useBalance, useReadContract, useChainId, useWriteContract, useSwitchChain, useWatchContractEvent } from 'wagmi'
@@ -49,6 +49,8 @@ function DappPageContent() {
   
   const [totalReferralIncome, setTotalReferralIncome] = useState(0);
   const [totalTeamIncome, setTotalTeamIncome] = useState(0);
+  const [todayReferralIncome, setTodayReferralIncome] = useState(0);
+  const [todayTeamIncome, setTodayTeamIncome] = useState(0);
 
   const { writeContractAsync } = useWriteContract();
 
@@ -87,6 +89,7 @@ function DappPageContent() {
       });
       if (sessionBonus > 0) {
         setTotalReferralIncome(prev => prev + sessionBonus);
+        setTodayReferralIncome(prev => prev + sessionBonus);
       }
     },
   });
@@ -105,6 +108,7 @@ function DappPageContent() {
       });
       if (sessionBonus > 0) {
         setTotalTeamIncome(prev => prev + sessionBonus);
+        setTodayTeamIncome(prev => prev + sessionBonus);
       }
     },
   });
@@ -316,7 +320,7 @@ function DappPageContent() {
                   </div>
                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
                     <div className="flex items-center gap-3">
-                        <Users className="h-5 w-5 text-primary/80" />
+                        <Clapperboard className="h-5 w-5 text-primary/80" />
                         <span className="text-sm">Total Level Income</span>
                     </div>
                     <span className="font-mono text-sm">0.0000</span>
@@ -337,6 +341,46 @@ function DappPageContent() {
                   </div>
               </CardContent>
               <CardFooter><Button className="w-full" onClick={handleClaim} disabled={isPending || isWrongNetwork || availableToClaimNum <= 0}>{isClaiming ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Now'}</Button></CardFooter>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Calendar className="h-6 w-6 text-primary" />
+                        <CardTitle className="font-headline text-xl">Today's Income</CardTitle>
+                    </div>
+                    <CardDescription>Live income for your current session. This will reset on page refresh.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <TrendingUp className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Today's Staking Income</span>
+                        </div>
+                        <span className="font-mono text-sm">0.0000</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Gift className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Today's Referral Income</span>
+                        </div>
+                        <span className="font-mono text-sm">{todayReferralIncome.toFixed(4)}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Clapperboard className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Today's Level Income</span>
+                        </div>
+                        <span className="font-mono text-sm">0.0000</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Users className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Today's Team Income</span>
+                        </div>
+                        <span className="font-mono text-sm">{todayTeamIncome.toFixed(4)}</span>
+                    </div>
+                </CardContent>
             </Card>
 
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
