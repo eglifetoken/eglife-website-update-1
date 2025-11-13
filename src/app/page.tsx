@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowRight, CheckCircle, GitCommit, Gift, HandCoins, Landmark, LineChart, PiggyBank, Users } from "lucide-react";
+import { ArrowRight, CheckCircle, GitCommit, Gift, HandCoins, Landmark, LineChart, PiggyBank, Users, ArrowUp } from "lucide-react";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
@@ -26,6 +25,15 @@ const teamIncomeTiers = [
     { level: "LV 4", groupA: "14%", groupB: "4%", groupC: "1.50%" },
     { level: "LV 5", groupA: "16%", groupB: "5%", groupC: "2.00%" },
     { level: "LV 6", groupA: "18%", groupB: "6%", groupC: "2.50%" },
+];
+
+const levelUpgradeRules = [
+    { from: "LV0", to: "LV1", selfStaking: "50 – 499", groupA: 0, groupBC: 0, total: 0 },
+    { from: "LV1", to: "LV2", selfStaking: "500 – 1,999", groupA: 3, groupBC: 5, total: 8 },
+    { from: "LV2", to: "LV3", selfStaking: "2,000 – 4,999", groupA: 6, groupBC: 20, total: 26 },
+    { from: "LV3", to: "LV4", selfStaking: "5,000 – 9,999", groupA: 15, groupBC: 35, total: 50 },
+    { from: "LV4", to: "LV5", selfStaking: "10,000 – 29,999", groupA: 25, groupBC: 70, total: 95 },
+    { from: "LV5", to: "LV6", selfStaking: "30,000 – 50,000", groupA: 35, groupBC: 180, total: 215 },
 ];
 
 
@@ -80,14 +88,14 @@ export default function Home() {
         {/* Staking Rewards Section */}
         <section>
             <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Staking & Rewards</h2>
+                <h2 className="text-3xl md:text-4xl font-headline font-bold">Staking &amp; Rewards</h2>
                 <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
                     Stake your EGLIFE tokens to earn a powerful, passive yield. Higher staking levels unlock greater yearly returns, rewarding our most committed community members.
                 </p>
             </div>
             <Card className="max-w-4xl mx-auto">
                 <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-3"><PiggyBank className="h-7 w-7 text-primary"/> Staking Tiers & APY</CardTitle>
+                    <CardTitle className="font-headline flex items-center gap-3"><PiggyBank className="h-7 w-7 text-primary"/> Staking Tiers &amp; APY</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Table>
@@ -119,7 +127,7 @@ export default function Home() {
          {/* Referral & Team Income Section */}
         <section>
             <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Referral & Team Income</h2>
+                <h2 className="text-3xl md:text-4xl font-headline font-bold">Referral &amp; Team Income</h2>
                 <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
                    Build your network and earn rewards. Our program is designed to incentivize community growth through direct bonuses and team-based income.
                 </p>
@@ -168,6 +176,45 @@ export default function Home() {
             </div>
         </section>
 
+        {/* Level Upgrade Rules Section */}
+        <section>
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-headline font-bold">Level Upgrade Rules</h2>
+                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
+                    Advance through the levels by meeting both self-staking and team member requirements.
+                </p>
+            </div>
+            <Card className="max-w-5xl mx-auto">
+                <CardHeader>
+                    <CardTitle className="font-headline flex items-center gap-3"><ArrowUp className="h-7 w-7 text-primary"/>How to Level Up</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Upgrade</TableHead>
+                                <TableHead>Self-Staking (EGLIFE)</TableHead>
+                                <TableHead>Group A (Directs)</TableHead>
+                                <TableHead>Group B + C (Combined)</TableHead>
+                                <TableHead>Total Group Members</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {levelUpgradeRules.map((rule) => (
+                                <TableRow key={rule.from}>
+                                    <TableCell className="font-medium">{rule.from} &rarr; {rule.to}</TableCell>
+                                    <TableCell>{rule.selfStaking}</TableCell>
+                                    <TableCell>{rule.groupA}</TableCell>
+                                    <TableCell>{rule.groupBC}</TableCell>
+                                    <TableCell>{rule.total}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </section>
+
         {/* Tokenomics Section */}
         <section>
              <div className="text-center mb-12">
@@ -180,7 +227,7 @@ export default function Home() {
                 <Card className="p-6">
                     <HandCoins className="h-10 w-10 mx-auto text-primary mb-3"/>
                     <p className="text-2xl font-bold">30%</p>
-                    <p className="text-muted-foreground">Ecosystem & Development</p>
+                    <p className="text-muted-foreground">Ecosystem &amp; Development</p>
                 </Card>
                  <Card className="p-6">
                     <LineChart className="h-10 w-10 mx-auto text-primary mb-3"/>
@@ -200,12 +247,12 @@ export default function Home() {
                  <Card className="p-6">
                     <Users className="h-10 w-10 mx-auto text-primary mb-3"/>
                     <p className="text-2xl font-bold">10%</p>
-                    <p className="text-muted-foreground">Team & Advisors</p>
+                    <p className="text-muted-foreground">Team &amp; Advisors</p>
                 </Card>
                  <Card className="p-6">
                     <GitCommit className="h-10 w-10 mx-auto text-primary mb-3"/>
                     <p className="text-2xl font-bold">10%</p>
-                    <p className="text-muted-foreground">Burn & Reserve</p>
+                    <p className="text-muted-foreground">Burn &amp; Reserve</p>
                 </Card>
             </div>
         </section>
