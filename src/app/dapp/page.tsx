@@ -48,6 +48,7 @@ function DappPageContent() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   
+  // State for income tracking
   const [totalReferralIncome, setTotalReferralIncome] = useState(0);
   const [totalTeamIncome, setTotalTeamIncome] = useState(0);
   const [todayReferralIncome, setTodayReferralIncome] = useState(0);
@@ -344,7 +345,7 @@ function DappPageContent() {
             
             {isWrongNetwork && <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Wrong Network</AlertTitle><AlertDescription>Please switch to the BNB Smart Chain to use all features. <Button onClick={() => switchChain({ chainId: bsc.id })} variant="link" className="p-0 h-auto text-white">Switch to BSC</Button></AlertDescription></Alert>}
 
-             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
               <CardHeader>
                 <div className="flex items-center gap-2">
                     <HandCoins className="h-6 w-6 text-primary" />
@@ -362,6 +363,53 @@ function DappPageContent() {
                   <Button className="w-full" onClick={() => handleClaim(false)} disabled={isClaiming || !claimAmount || parseFloat(claimAmount) <= 0 || isWrongNetwork}>{isClaiming && claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Amount'}</Button>
                   <Button className="w-full" variant="outline" onClick={() => handleClaim(true)} disabled={isClaiming || availableToClaimNum <= 0 || isWrongNetwork}>{isClaiming && !claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim All'}</Button>
               </CardFooter>
+            </Card>
+
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <BarChart className="h-6 w-6 text-primary" />
+                        <CardTitle className="font-headline text-xl">Total Income Summary</CardTitle>
+                    </div>
+                    <CardDescription>Your lifetime earnings from all sources in the ecosystem.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <TrendingUp className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Total Staking Income</span>
+                        </div>
+                        <span className="font-mono text-sm">{isLoadingEarned ? '...' : availableToClaimNum.toFixed(4)}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Gift className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Total Referral Income</span>
+                        </div>
+                        <span className="font-mono text-sm">{totalReferralIncome.toFixed(4)}</span>
+                    </div>
+                     <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Clapperboard className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Total Level Income</span>
+                        </div>
+                        <span className="font-mono text-sm">0.0000</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <Users className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Total Team Income</span>
+                        </div>
+                        <span className="font-mono text-sm">{totalTeamIncome.toFixed(4)}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
+                        <div className="flex items-center gap-3">
+                            <DollarSign className="h-5 w-5 text-primary/80" />
+                            <span className="text-sm">Total EGPAY Rewards</span>
+                        </div>
+                        <span className="font-mono text-sm">0.0000</span>
+                    </div>
+                </CardContent>
             </Card>
 
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
@@ -514,3 +562,5 @@ export default function DappPage() {
         </Suspense>
     )
 }
+
+    
