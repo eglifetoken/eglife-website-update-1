@@ -44,6 +44,7 @@ function DappPageContent() {
 
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
+  const [claimAmount, setClaimAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   
@@ -222,24 +223,42 @@ function DappPageContent() {
     }
 }
 
-  const handleClaim = async () => {
+  const handleClaim = async (isClaimAll = false) => {
        setIsClaiming(true);
        try {
-        const amountToClaim = earnedData ?? 0n;
-         if (amountToClaim <= 0n) {
-             toast({ variant: "destructive", title: "No Rewards", description: "You have no rewards to claim." });
-             setIsClaiming(false);
-             return;
-         }
+        const availableToClaimNum = earnedData ? parseFloat(formatEther(earnedData)) : 0;
+        const amountToClaimNum = isClaimAll ? availableToClaimNum : (claimAmount ? parseFloat(claimAmount) : 0);
+
+        if (amountToClaimNum <= 0) {
+            toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter an amount greater than zero to claim." });
+            setIsClaiming(false);
+            return;
+        }
+
+        if (!isClaimAll && amountToClaimNum > availableToClaimNum) {
+            toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot claim more than you have earned." });
+            setIsClaiming(false);
+            return;
+        }
+        
+        const amountToClaim = isClaimAll ? (earnedData ?? 0n) : parseEther(amountToClaimNum.toString());
+
         await writeContractAsync({ address: EGLIFE_STAKING_CONTRACT, abi: stakingContractAbi, functionName: 'claim', args: [amountToClaim] });
+        
         toast({ title: "Claim Successful!", description: `Your rewards have been sent to your wallet.` });
         
         // On successful claim, reset today's staking income tracker in local storage
         if (typeof window !== 'undefined' && address) {
-            localStorage.setItem(`lastKnownEarned_${address}`, '0');
-            setTodayStakingIncome(0);
+            if (isClaimAll) {
+                localStorage.setItem(`lastKnownEarned_${address}`, '0');
+                setTodayStakingIncome(0);
+            } else {
+                const currentEarned = parseFloat(localStorage.getItem(`lastKnownEarned_${address}`) || '0');
+                localStorage.setItem(`lastKnownEarned_${address}`, (currentEarned - amountToClaimNum).toString());
+            }
         }
         
+        setClaimAmount("");
         refetchEarned();
         refetchEgldBalance();
 
@@ -325,52 +344,24 @@ function DappPageContent() {
             
             {isWrongNetwork && <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Wrong Network</AlertTitle><AlertDescription>Please switch to the BNB Smart Chain to use all features. <Button onClick={() => switchChain({ chainId: bsc.id })} variant="link" className="p-0 h-auto text-white">Switch to BSC</Button></AlertDescription></Alert>}
 
-            <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
+             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
               <CardHeader>
                 <div className="flex items-center gap-2">
-                    <BarChart className="h-6 w-6 text-primary" />
-                    <CardTitle className="font-headline text-xl">Total Income</CardTitle>
+                    <HandCoins className="h-6 w-6 text-primary" />
+                    <CardTitle className="font-headline text-xl">Claim Rewards</CardTitle>
                 </div>
-                 <CardDescription>This reflects your all-time earnings from different sources.</CardDescription>
+                 <CardDescription>Available to Claim: <span className="font-bold text-white">{availableToClaimNum.toFixed(4)} EGLIFE</span></CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
-                    <div className="flex items-center gap-3">
-                        <TrendingUp className="h-5 w-5 text-primary/80" />
-                        <span className="text-sm">Total Staking Income</span>
-                    </div>
-                    <span className="font-mono text-sm">{availableToClaimNum.toFixed(4)}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
-                    <div className="flex items-center gap-3">
-                        <Gift className="h-5 w-5 text-primary/80" />
-                        <span className="text-sm">Total Referral Income</span>
-                    </div>
-                    <span className="font-mono text-sm">{totalReferralIncome.toFixed(4)}</span>
-                  </div>
-                   <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
-                    <div className="flex items-center gap-3">
-                        <Clapperboard className="h-5 w-5 text-primary/80" />
-                        <span className="text-sm">Total Level Income</span>
-                    </div>
-                    <span className="font-mono text-sm">0.0000</span>
-                  </div>
-                   <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
-                    <div className="flex items-center gap-3">
-                        <Users className="h-5 w-5 text-primary/80" />
-                        <span className="text-sm">Total Team Income</span>
-                    </div>
-                    <span className="font-mono text-sm">{totalTeamIncome.toFixed(4)}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
-                    <div className="flex items-center gap-3">
-                        <HandCoins className="h-5 w-5 text-primary/80" />
-                        <span className="text-sm">Total EGPAY Rewards</span>
-                    </div>
-                    <span className="font-mono text-sm">0.0000</span>
-                  </div>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="claim-amount">Amount to Claim</Label>
+                    <Input id="claim-amount" type="number" placeholder={`Max: ${availableToClaimNum.toFixed(4)}`} value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} disabled={isClaiming || isWrongNetwork || availableToClaimNum <= 0} />
+                </div>
               </CardContent>
-              <CardFooter><Button className="w-full" onClick={handleClaim} disabled={isPending || isWrongNetwork || availableToClaimNum <= 0}>{isClaiming ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Now'}</Button></CardFooter>
+               <CardFooter className="flex-col sm:flex-row gap-2">
+                  <Button className="w-full" onClick={() => handleClaim(false)} disabled={isClaiming || !claimAmount || parseFloat(claimAmount) <= 0 || isWrongNetwork}>{isClaiming && claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Amount'}</Button>
+                  <Button className="w-full" variant="outline" onClick={() => handleClaim(true)} disabled={isClaiming || availableToClaimNum <= 0 || isWrongNetwork}>{isClaiming && !claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim All'}</Button>
+              </CardFooter>
             </Card>
 
             <Card className="bg-card/80 backdrop-blur-sm border-primary/20">
@@ -523,5 +514,3 @@ export default function DappPage() {
         </Suspense>
     )
 }
-
-    
