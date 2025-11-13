@@ -473,7 +473,7 @@ function StakingPageContent() {
                                 <TableHead>Upgrade</TableHead>
                                 <TableHead>Self-Staking (EGLIFE)</TableHead>
                                 <TableHead>Group A (Directs)</TableHead>
-                                <TableHead>Group B + C</TableHead>
+                                <TableHead>Group B + C (Combined)</TableHead>
                                 <TableHead>Total Members</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -685,6 +685,3 @@ export default function StakingPage() {
         </Suspense>
     )
 }
-
-    
-    

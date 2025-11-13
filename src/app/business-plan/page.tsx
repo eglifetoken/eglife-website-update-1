@@ -154,7 +154,7 @@ export default function BusinessPlanPage() {
                                     <TableHead>Self-Staking (EGLIFE)</TableHead>
                                     <TableHead>Group A (Directs)</TableHead>
                                     <TableHead>Group B + C (Combined)</TableHead>
-                                    <TableHead>Total Members</TableHead>
+                                    <TableHead>Total Group Members</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
