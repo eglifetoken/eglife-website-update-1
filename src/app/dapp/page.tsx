@@ -51,6 +51,7 @@ function DappPageContent() {
   const [totalTeamIncome, setTotalTeamIncome] = useState(0);
   const [todayReferralIncome, setTodayReferralIncome] = useState(0);
   const [todayTeamIncome, setTodayTeamIncome] = useState(0);
+  const [todayStakingIncome, setTodayStakingIncome] = useState(0);
 
   const { writeContractAsync } = useWriteContract();
 
@@ -117,6 +118,27 @@ function DappPageContent() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Effect for calculating today's staking income
+  useEffect(() => {
+    if (typeof window === 'undefined' || !earnedData) return;
+
+    const key = `lastKnownEarned_${address}`;
+    const lastKnownEarnedStr = localStorage.getItem(key);
+    const currentEarned = parseFloat(formatEther(earnedData));
+
+    if (lastKnownEarnedStr) {
+      const lastKnownEarned = parseFloat(lastKnownEarnedStr);
+      if (currentEarned > lastKnownEarned) {
+        const diff = currentEarned - lastKnownEarned;
+        setTodayStakingIncome(prev => prev + diff);
+      }
+    }
+    
+    localStorage.setItem(key, currentEarned.toString());
+
+  }, [earnedData, address]);
+
 
   const handleCopy = async () => {
     try {
@@ -211,8 +233,16 @@ function DappPageContent() {
          }
         await writeContractAsync({ address: EGLIFE_STAKING_CONTRACT, abi: stakingContractAbi, functionName: 'claim', args: [amountToClaim] });
         toast({ title: "Claim Successful!", description: `Your rewards have been sent to your wallet.` });
+        
+        // On successful claim, reset today's staking income tracker in local storage
+        if (typeof window !== 'undefined' && address) {
+            localStorage.setItem(`lastKnownEarned_${address}`, '0');
+            setTodayStakingIncome(0);
+        }
+        
         refetchEarned();
         refetchEgldBalance();
+
        } catch (error) {
            handleError(error, "Claim Failed");
        } finally {
@@ -357,7 +387,7 @@ function DappPageContent() {
                             <TrendingUp className="h-5 w-5 text-primary/80" />
                             <span className="text-sm">Today's Staking Income</span>
                         </div>
-                        <span className="font-mono text-sm">0.0000</span>
+                        <span className="font-mono text-sm">{todayStakingIncome.toFixed(4)}</span>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-black/20">
                         <div className="flex items-center gap-3">
