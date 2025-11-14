@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { IndianRupee, Repeat, Loader2, ArrowLeft, CheckCircle, Info } from "lucide-react";
 import { getTokenData, TokenData } from '@/ai/flows/getTokenData';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import QRCode from "qrcode.react";
 import { useToast } from '@/hooks/use-toast';
@@ -24,17 +23,14 @@ export default function BuyWithUpiPage() {
     const [inrAmount, setInrAmount] = useState("1000");
     const [eglifeAmount, setEglifeAmount] = useState("");
     const [loading, setLoading] = useState(true);
-    const [isClient, setIsClient] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isQrVisible, setIsQrVisible] = useState(false);
     const [txnId, setTxnId] = useState("");
     const [mobileNumber, setMobileNumber] = useState("");
     const [walletAddress, setWalletAddress] = useState("");
-    const router = useRouter();
     const { toast } = useToast();
 
     useEffect(() => {
-        setIsClient(true);
         const fetchData = async () => {
             try {
                 const data = await getTokenData();
@@ -152,13 +148,11 @@ export default function BuyWithUpiPage() {
                         <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0} onClick={() => setIsQrVisible(true)}>
                             Proceed to Pay
                         </Button>
-                        {isClient && (
-                            <Button asChild variant="outline" className="w-full" onClick={() => router.back()}>
+                        <Button asChild variant="outline" className="w-full" onClick={() => window.history.back()}>
                                 <Link href="#">
                                     <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
                                 </Link>
-                            </Button>
-                        )}
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>
@@ -209,5 +203,3 @@ export default function BuyWithUpiPage() {
         </>
     );
 }
-
-    
