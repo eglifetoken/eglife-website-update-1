@@ -2,21 +2,9 @@
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ContactForm } from "@/components/contact-form";
-import { Mail, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-
+import { Mail } from "lucide-react";
 
 export default function ContactPage() {
-  const router = useRouter();
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <div className="text-center mb-12">
@@ -50,17 +38,6 @@ export default function ContactPage() {
           </CardContent>
         </Card>
       </div>
-      {isClient &&
-        <section className="w-full mt-16 pt-8 border-t">
-          <div className="container mx-auto px-4 md:px-6 flex justify-start">
-              <Button asChild variant="outline" onClick={() => router.back()}>
-                  <Link href="#">
-                      <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                  </Link>
-              </Button>
-          </div>
-        </section>
-      }
     </div>
   );
 }

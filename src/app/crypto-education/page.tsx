@@ -1,19 +1,11 @@
 
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, Cpu, History, Globe, TrendingUp, IndianRupee, ArrowLeft, ArrowRight } from "lucide-react";
+import { DollarSign, Cpu, History, Globe, TrendingUp, IndianRupee, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function CryptoEducationPage() {
-    const router = useRouter();
-    const [isClient, setIsClient] = useState(false)
-
-    useEffect(() => {
-      setIsClient(true)
-    }, [])
 
     return (
         <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -138,14 +130,8 @@ export default function CryptoEducationPage() {
                     </CardContent>
                 </Card>
             </div>
-            {isClient &&
               <section className="w-full mt-16 pt-8 border-t">
-                  <div className="container mx-auto px-4 md:px-6 flex justify-between">
-                      <Button asChild variant="outline" onClick={() => router.back()}>
-                          <Link href="#">
-                              <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                          </Link>
-                      </Button>
+                  <div className="container mx-auto px-4 md:px-6 flex justify-end">
                       <Button asChild>
                           <Link href="/contact">
                               Next Page <ArrowRight className="ml-2 h-4 w-4" />
@@ -153,7 +139,6 @@ export default function CryptoEducationPage() {
                       </Button>
                   </div>
               </section>
-            }
         </div>
     );
 }

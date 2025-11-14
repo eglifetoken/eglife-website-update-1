@@ -5,11 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Copy, Gift, Users, Loader2, ArrowLeft, ArrowRight, Share2 } from "lucide-react";
+import { Copy, Gift, Users, Loader2, ArrowRight, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAccount, useWatchContractEvent } from "wagmi";
 import { formatEther } from "viem";
 
@@ -37,7 +36,6 @@ type SponsorBonusPaidLog = {
 export default function ReferralPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
-    const router = useRouter();
     const { address, isConnected } = useAccount();
     const [referralLink, setReferralLink] = useState("");
     
@@ -284,14 +282,8 @@ export default function ReferralPage() {
             </Card>
 
             
-            {isClient &&
               <section className="w-full mt-16 pt-8 border-t">
-                  <div className="container mx-auto px-4 md:px-6 flex justify-between">
-                      <Button asChild variant="outline" onClick={() => router.back()}>
-                          <Link href="#">
-                              <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                          </Link>
-                      </Button>
+                  <div className="container mx-auto px-4 md:px-6 flex justify-end">
                       <Button asChild>
                           <Link href="/crypto-education">
                               Next Page <ArrowRight className="ml-2 h-4 w-4" />
@@ -299,7 +291,6 @@ export default function ReferralPage() {
                       </Button>
                   </div>
               </section>
-            }
             
         </div>
     );
