@@ -27,10 +27,7 @@ const EglifeUpiBuyPage = () => {
     const [usdtPriceInInr] = useState(90); // 1 USDT = ₹90 (Can be made dynamic later)
     
     const [form, setForm] = useState({
-        fullName: "",
-        email: "",
         mobile: "",
-        upiId: "",
         walletAddress: "",
         txnId: "",
     });
@@ -90,7 +87,7 @@ const EglifeUpiBuyPage = () => {
 
             const docRef = await addDoc(collection(db, "upi_buy_requests"), {
                 ...form,
-                amountInInr: Number(amountInInr),
+                amountInInr: Number(amountInr),
                 usdtPriceInInr: Number(usdtPriceInInr),
                 tokensToReceive,
                 screenshotUrl,
@@ -100,11 +97,11 @@ const EglifeUpiBuyPage = () => {
 
             toast({
                 title: "Request Submitted!",
-                description: `Your request (Ref ID: ${docRef.id}) has been sent. Admin will verify and transfer EGLIFE tokens.`
+                description: `Your request (Ref ID: ${docRef.id.slice(0,10)}...) has been sent. Admin will verify and transfer EGLIFE tokens.`
             });
 
             // Reset form
-            setForm({ fullName: "", email: "", mobile: "", upiId: "", walletAddress: "", txnId: "" });
+            setForm({ mobile: "", walletAddress: "", txnId: "" });
             setScreenshotFile(null);
             setAmountInInr("");
 
@@ -159,22 +156,17 @@ const EglifeUpiBuyPage = () => {
                         <CardDescription>After making the payment, fill out this form to submit your request.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                             <div className="space-y-2">
-                                <Label htmlFor="fullName">Full Name</Label>
-                                <Input id="fullName" name="fullName" placeholder="Your Full Name" value={form.fullName} onChange={handleFormChange} required />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="mobile">Mobile Number</Label>
-                                <Input id="mobile" name="mobile" placeholder="Your Mobile Number" value={form.mobile} onChange={handleFormChange} required />
-                            </div>
+                         <div className="space-y-2">
+                            <Label htmlFor="amountInInr">Amount Paid (INR)</Label>
+                            <Input id="amountInInr" type="number" placeholder="e.g., 1000" value={amountInr} onChange={(e) => setAmountInInr(e.target.value)} required />
                         </div>
 
-                         <div className="space-y-2">
-                            <Label htmlFor="upiId">Your UPI ID</Label>
-                            <Input id="upiId" name="upiId" placeholder="e.g. yourname@upi" value={form.upiId} onChange={handleFormChange} required />
+                        <div className="p-4 rounded-lg border bg-muted/50 text-center">
+                            <p className="text-sm text-muted-foreground">You will receive (approx.)</p>
+                            <p className="text-2xl font-bold">{loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto"/> : `${tokensToReceive.toFixed(2)} EGLIFE`}</p>
+                            {tokenData && <p className="text-xs text-muted-foreground mt-1">1 EGLIFE ≈ ₹{(1 / tokenData.priceUsd * usdtPriceInInr).toFixed(3)}</p>}
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="walletAddress">Your BSC Wallet Address</Label>
                             <Input id="walletAddress" name="walletAddress" placeholder="0x... (Your BEP-20 wallet to receive EGLIFE)" value={form.walletAddress} onChange={handleFormChange} required />
@@ -184,19 +176,13 @@ const EglifeUpiBuyPage = () => {
                             <Label htmlFor="txnId">UPI Transaction ID / UTR</Label>
                             <Input id="txnId" name="txnId" placeholder="Enter the 12-digit transaction ID" value={form.txnId} onChange={handleFormChange} required />
                         </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="mobile">Mobile Number (for contact)</Label>
+                            <Input id="mobile" name="mobile" placeholder="Your Mobile Number" value={form.mobile} onChange={handleFormChange} required />
+                        </div>
                         
                         <div className="space-y-2">
-                            <Label htmlFor="amountInInr">Amount Paid (INR)</Label>
-                            <Input id="amountInInr" type="number" placeholder="e.g., 1000" value={amountInInr} onChange={(e) => setAmountInInr(e.target.value)} required />
-                        </div>
-
-                        <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">You will receive (approx.)</p>
-                            <p className="text-2xl font-bold">{loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto"/> : `${tokensToReceive.toFixed(2)} EGLIFE`}</p>
-                            {tokenData && <p className="text-xs text-muted-foreground mt-1">1 EGLIFE ≈ ₹{(1 / tokenData.priceUsd * usdtPriceInInr).toFixed(3)}</p>}
-                        </div>
-
-                         <div className="space-y-2">
                             <Label htmlFor="screenshot">Payment Screenshot (Required)</Label>
                             <Input id="screenshot" type="file" onChange={(e) => setScreenshotFile(e.target.files ? e.target.files[0] : null)} className="pt-2" required/>
                              <p className="text-xs text-muted-foreground">Upload a screenshot of the successful payment for faster verification.</p>
@@ -217,3 +203,5 @@ const EglifeUpiBuyPage = () => {
 };
 
 export default EglifeUpiBuyPage;
+
+    
