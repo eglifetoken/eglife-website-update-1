@@ -277,7 +277,7 @@ export function useDashboardFromChain(opts: OnchainOpts) {
 
     (async () => {
       try {
-        const toToken = (wei: bigint) => Number(formatEther(wei));
+        const toToken = (wei: bigint | undefined) => Number(formatEther(wei || 0n));
 
         // Core reads
         const multicallResult = await client.multicall({
@@ -316,7 +316,7 @@ export function useDashboardFromChain(opts: OnchainOpts) {
         const exampleAmtWei = opts.exampleStakeAmount ?? (300_000n * 10n ** 18n);
 
         const partial: Partial<DashboardData> = {
-          totalStaked: toToken((totalStakedWei as bigint) ?? 0n),
+          totalStaked: toToken(totalStakedWei?.result),
           lockPeriodSeconds: Number(lockPeriod.result as bigint),
           earlyUnstakePenaltyBps: Number(earlyBps.result as number),
           useTieredAPR: Boolean(tiered.result),
@@ -325,9 +325,9 @@ export function useDashboardFromChain(opts: OnchainOpts) {
           referralWallet: "0x0000000000000000000000000000000000000000",
           rewardsWallet: rewardsWallet.result as Address,
           treasury: treasury.result as Address,
-          minActiveStakeForReferral: toToken(minActiveRefWei.result as bigint),
-          purchaseSponsorBonusAmount: toToken(purchaseBonusWei.result as bigint),
-          stakingSponsorBonusAmount: toToken(stakingBonusWei.result as bigint),
+          minActiveStakeForReferral: toToken(minActiveRefWei?.result),
+          purchaseSponsorBonusAmount: toToken(purchaseBonusWei?.result),
+          stakingSponsorBonusAmount: toToken(stakingBonusWei?.result),
           aprBpsForExampleStake: Number(aprBps),
           exampleStakeAmount: Number(exampleAmtWei / 10n ** 18n),
         };
@@ -352,11 +352,11 @@ export function useDashboardFromChain(opts: OnchainOpts) {
           partial.exampleUser = {
             address: user,
             activated: (stakedWei.result as bigint) > 0n,
-            stakedBalance: toToken(stakedWei.result as bigint),
+            stakedBalance: toToken(stakedWei?.result),
             directCount: Number(directs.result as bigint),
             firstStakeTime: Number(first.result as bigint),
             lastAccrual: Number(last.result as bigint),
-            earned: toToken(earnedWei.result as bigint),
+            earned: toToken(earnedWei?.result),
             sponsor: sponsor.result as Address,
           };
         }
@@ -426,8 +426,8 @@ export function useSelfOnchain(stakingAddress: Address) {
         });
 
         const [earnedWei, stakedWei] = results;
-        const toToken = (wei: bigint) => Number(formatEther(wei));
-        setState({ address, earned: toToken(earnedWei.result as bigint), staked: toToken(stakedWei.result as bigint) });
+        const toToken = (wei: bigint | undefined) => Number(formatEther(wei || 0n));
+        setState({ address, earned: toToken(earnedWei?.result), staked: toToken(stakedWei?.result) });
       } catch (e) {
         console.error("self reads failed", e);
       }
