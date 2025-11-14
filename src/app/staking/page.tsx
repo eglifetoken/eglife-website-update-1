@@ -658,20 +658,22 @@ function StakingPageContent() {
         </div>
       </div>
 
-       <section className="w-full mt-8 pt-8 border-t">
-        <div className="container mx-auto px-4 md:px-6 flex justify-between">
-            <Button asChild variant="outline" onClick={() => router.back()}>
-                <Link href="#">
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                </Link>
-            </Button>
-            <Button asChild>
-                <Link href="/dapp">
-                    Next Page <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-            </Button>
-        </div>
-      </section>
+       {isClient &&
+        <section className="w-full mt-8 pt-8 border-t">
+          <div className="container mx-auto px-4 md:px-6 flex justify-between">
+              <Button asChild variant="outline" onClick={() => router.back()}>
+                  <Link href="#">
+                      <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
+                  </Link>
+              </Button>
+              <Button asChild>
+                  <Link href="/dapp">
+                      Next Page <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+              </Button>
+          </div>
+        </section>
+       }
     </div>
     </>
   )
