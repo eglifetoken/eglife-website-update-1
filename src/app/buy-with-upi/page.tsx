@@ -12,11 +12,9 @@ import { getTokenData, TokenData } from '@/ai/flows/getTokenData';
 import Link from 'next/link';
 import QRCode from "qrcode.react";
 import { useToast } from '@/hooks/use-toast';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-
-const UPI_ID = "7545978703@upi";
 
 export default function BuyWithUpiPage() {
     const [tokenData, setTokenData] = useState<TokenData | null>(null);
@@ -29,6 +27,26 @@ export default function BuyWithUpiPage() {
     const [mobileNumber, setMobileNumber] = useState("");
     const [walletAddress, setWalletAddress] = useState("");
     const { toast } = useToast();
+    const [upiId, setUpiId] = useState("loading...");
+
+    useEffect(() => {
+        const fetchUpiId = async () => {
+            try {
+                const docRef = doc(db, "settings", "upi");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().id) {
+                    setUpiId(docSnap.data().id);
+                } else {
+                    setUpiId("default.upi@provider"); // Fallback
+                }
+            } catch (error) {
+                console.error("Error fetching UPI ID:", error);
+                setUpiId("default.upi@provider"); // Fallback
+            }
+        };
+
+        fetchUpiId();
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,7 +75,7 @@ export default function BuyWithUpiPage() {
         }
     }, [inrAmount, tokenData]);
 
-    const qrValue = `upi://pay?pa=${UPI_ID}&pn=EGLIFE TOKEN&am=${inrAmount}&cu=INR`;
+    const qrValue = `upi://pay?pa=${upiId}&pn=EGLIFE TOKEN&am=${inrAmount}&cu=INR`;
 
     const handleSubmitRequest = async () => {
         if (!txnId || !walletAddress || !mobileNumber) {
@@ -162,11 +180,11 @@ export default function BuyWithUpiPage() {
                     <DialogHeader>
                         <DialogTitle className="font-headline text-xl">Step 1: Scan & Pay</DialogTitle>
                         <DialogDescription>
-                            Use any UPI app to scan the QR code below or pay to <strong>{UPI_ID}</strong>.
+                            Use any UPI app to scan the QR code below or pay to <strong>{upiId}</strong>.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex items-center justify-center p-4 bg-white rounded-lg">
-                        <QRCode value={qrValue} size={200} />
+                        {upiId === "loading..." ? <Loader2 className="h-12 w-12 animate-spin"/> : <QRCode value={qrValue} size={200} />}
                     </div>
                     <div className="text-center font-mono text-lg">
                         Amount: <strong>₹{inrAmount}</strong>
