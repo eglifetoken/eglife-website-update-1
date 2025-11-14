@@ -19,7 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const UPI_ID = "7545978703@upi";
 
-export default function BuyWithInrPage() {
+export default function BuyWithUpiPage() {
     const [tokenData, setTokenData] = useState<TokenData | null>(null);
     const [inrAmount, setInrAmount] = useState("1000");
     const [eglifeAmount, setEglifeAmount] = useState("");
@@ -210,3 +210,4 @@ export default function BuyWithInrPage() {
     );
 }
 
+    
