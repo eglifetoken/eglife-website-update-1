@@ -1,11 +1,8 @@
-// This file is intended for server-side Firebase logic.
-// For client-side initialization, see src/firebase/client.ts
-
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAQRIpGu8u0gym566nK4Xfu2LcxSih9XDU",
   authDomain: "egli-hub.firebaseapp.com",
@@ -15,9 +12,8 @@ const firebaseConfig = {
   appId: "1:669798404623:web:a92835d0a1a36ea6e6897a"
 };
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-const auth = getAuth(app);
 
-export { app, db, auth };
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+export const auth = getAuth(app);

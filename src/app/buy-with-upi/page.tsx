@@ -10,7 +10,7 @@ import { IndianRupee, Repeat, Info, ArrowLeft, Loader2, Upload } from "lucide-re
 import { getTokenData, TokenData } from '@/ai/flows/getTokenData';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { db, storage } from "@/lib/firebase";
+import { db, storage } from "@/firebase/client";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useToast } from "@/hooks/use-toast";
@@ -72,6 +72,10 @@ const EglifeUpiBuyPage = () => {
         e.preventDefault();
         if(tokensToReceive <= 0) {
             toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter a valid amount." });
+            return;
+        }
+        if (!screenshotFile) {
+            toast({ variant: "destructive", title: "Screenshot Required", description: "Please upload a payment screenshot." });
             return;
         }
 
@@ -189,12 +193,12 @@ const EglifeUpiBuyPage = () => {
                         <div className="p-4 rounded-lg border bg-muted/50 text-center">
                             <p className="text-sm text-muted-foreground">You will receive (approx.)</p>
                             <p className="text-2xl font-bold">{loading ? <Loader2 className="h-6 w-6 animate-spin mx-auto"/> : `${tokensToReceive.toFixed(2)} EGLIFE`}</p>
-                            {tokenData && <p className="text-xs text-muted-foreground mt-1">1 EGLIFE ≈ ₹{(1 / (1/tokenData.priceUsd) * usdtPriceInInr).toFixed(3)}</p>}
+                            {tokenData && <p className="text-xs text-muted-foreground mt-1">1 EGLIFE ≈ ₹{(1 / tokenData.priceUsd * usdtPriceInInr).toFixed(3)}</p>}
                         </div>
 
                          <div className="space-y-2">
-                            <Label htmlFor="screenshot">Payment Screenshot (Optional)</Label>
-                            <Input id="screenshot" type="file" onChange={(e) => setScreenshotFile(e.target.files ? e.target.files[0] : null)} className="pt-2"/>
+                            <Label htmlFor="screenshot">Payment Screenshot (Required)</Label>
+                            <Input id="screenshot" type="file" onChange={(e) => setScreenshotFile(e.target.files ? e.target.files[0] : null)} className="pt-2" required/>
                              <p className="text-xs text-muted-foreground">Upload a screenshot of the successful payment for faster verification.</p>
                         </div>
                     </CardContent>
