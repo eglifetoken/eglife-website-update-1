@@ -87,7 +87,7 @@ const EglifeUpiBuyPage = () => {
 
             const docRef = await addDoc(collection(db, "upi_buy_requests"), {
                 ...form,
-                amountInInr: Number(amountInr),
+                amountInInr: Number(amountInInr),
                 usdtPriceInInr: Number(usdtPriceInInr),
                 tokensToReceive,
                 screenshotUrl,
@@ -158,7 +158,7 @@ const EglifeUpiBuyPage = () => {
                     <CardContent className="space-y-6">
                          <div className="space-y-2">
                             <Label htmlFor="amountInInr">Amount Paid (INR)</Label>
-                            <Input id="amountInInr" type="number" placeholder="e.g., 1000" value={amountInr} onChange={(e) => setAmountInInr(e.target.value)} required />
+                            <Input id="amountInInr" type="number" placeholder="e.g., 1000" value={amountInInr} onChange={(e) => setAmountInInr(e.target.value)} required />
                         </div>
 
                         <div className="p-4 rounded-lg border bg-muted/50 text-center">
@@ -203,5 +203,3 @@ const EglifeUpiBuyPage = () => {
 };
 
 export default EglifeUpiBuyPage;
-
-    
