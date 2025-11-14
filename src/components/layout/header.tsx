@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/dapp", label: "DApp" },
   { href: "/staking", label: "Staking" },
   { href: "/services", label: "Services" },
+  { href: "/buy-with-upi", label: "Buy with UPI" },
   { href: "/referral", label: "Referral" },
   { href: "/whitepaper", label: "Whitepaper" },
   { href: "/contact", label: "Contact" },
