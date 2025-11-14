@@ -148,8 +148,8 @@ export default function BuyWithUpiPage() {
                         <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0} onClick={() => setIsQrVisible(true)}>
                             Proceed to Pay
                         </Button>
-                        <Button asChild variant="outline" className="w-full" onClick={() => window.history.back()}>
-                                <Link href="#">
+                        <Button asChild variant="outline" className="w-full">
+                                <Link href="/">
                                     <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
                                 </Link>
                         </Button>
