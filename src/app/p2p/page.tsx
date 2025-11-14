@@ -48,7 +48,7 @@ export default function P2PPage() {
     
     // State for buying from an order
     const [buyAmountInr, setBuyAmountInr] = useState('');
-    const [selectedOrder, setSelectedOrder] = useState<typeof mockSellOrders[0] | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<(typeof mockSellOrders)[0] | null>(null);
 
     useEffect(() => {
         setIsClient(true);
@@ -122,14 +122,14 @@ export default function P2PPage() {
                                 {mockSellOrders.map((order) => (
                                     <TableRow key={order.id}>
                                         <TableCell><div className="font-medium">{order.seller}</div></TableCell>
-                                        <TableCell className="font-semibold text-accent">₹{order.price.toFixed(2)}</TableCell>
+                                        <TableCell className="font-semibold text-green-500">₹{order.price.toFixed(2)}</TableCell>
                                         <TableCell>
                                             <div>{order.available.toLocaleString()} EGLIFE</div>
                                             <div className="text-xs text-muted-foreground">₹{order.minLimit} - ₹{order.maxLimit}</div>
                                         </TableCell>
                                         <TableCell><Badge variant="secondary">{order.method}</Badge></TableCell>
                                         <TableCell className="text-right">
-                                            <Dialog>
+                                            <Dialog onOpenChange={() => setBuyAmountInr('')}>
                                                 <DialogTrigger asChild>
                                                     <Button size="sm" onClick={() => setSelectedOrder(order)}>Buy</Button>
                                                 </DialogTrigger>
@@ -145,7 +145,7 @@ export default function P2PPage() {
                                                             <Label>I want to pay (INR)</Label>
                                                             <div className="relative">
                                                                 <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                                                <Input type="number" placeholder="Enter amount" className="pl-8" value={buyAmountInr} onChange={(e) => setBuyAmountInr(e.target.value)} />
+                                                                <Input type="number" placeholder={`Min: ${selectedOrder?.minLimit}, Max: ${selectedOrder?.maxLimit}`} className="pl-8" value={buyAmountInr} onChange={(e) => setBuyAmountInr(e.target.value)} />
                                                             </div>
                                                         </div>
                                                         <div className="space-y-2">
@@ -158,7 +158,7 @@ export default function P2PPage() {
                                                     </div>
                                                     <DialogFooter>
                                                         <Button type="button" variant="outline">Cancel</Button>
-                                                        <Button type="submit" disabled={!buyAmountInr}>Confirm Buy</Button>
+                                                        <Button type="submit" disabled={!buyAmountInr || parseFloat(buyAmountInr) < (selectedOrder?.minLimit ?? 0) || parseFloat(buyAmountInr) > (selectedOrder?.maxLimit ?? Infinity)}>Confirm Buy</Button>
                                                     </DialogFooter>
                                                 </DialogContent>
                                             </Dialog>
