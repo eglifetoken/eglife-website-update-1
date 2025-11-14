@@ -312,16 +312,11 @@ export function useDashboardFromChain(opts: OnchainOpts) {
         ] = multicallResult;
         
         // This function doesn't exist on V3, so we can't call it. We will use a static value or remove it.
-        // const aprBps = await client.readContract({
-        //   ...contract,
-        //   functionName: "_aprBpsForStake",
-        //   args: [exampleAmtWei],
-        // });
         const aprBps = 25000; // Static example value
         const exampleAmtWei = opts.exampleStakeAmount ?? (300_000n * 10n ** 18n);
 
         const partial: Partial<DashboardData> = {
-          totalStaked: toToken((totalStakedWei as { result: bigint }).result ?? 0n),
+          totalStaked: toToken((totalStakedWei as bigint) ?? 0n),
           lockPeriodSeconds: Number(lockPeriod.result as bigint),
           earlyUnstakePenaltyBps: Number(earlyBps.result as number),
           useTieredAPR: Boolean(tiered.result),
