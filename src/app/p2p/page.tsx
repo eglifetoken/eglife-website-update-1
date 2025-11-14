@@ -1,4 +1,3 @@
-
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +25,7 @@ import {
 const mockSellOrders = [
   { id: '1', seller: 'CryptoKing', price: 2.50, available: 5000, minLimit: 500, maxLimit: 5000, method: 'UPI' },
   { id: '2', seller: 'TokenTrader', price: 2.52, available: 10000, minLimit: 1000, maxLimit: 5000, method: 'UPI' },
-  { id: '3', seller: 'EGLifer', price: 2.55, available: 2500, min-limit: 100, maxLimit: 2500, method: 'IMPS' },
+  { id: '3', seller: 'EGLifer', price: 2.55, available: 2500, minLimit: 100, maxLimit: 2500, method: 'IMPS' },
 ];
 
 const mockUserOrders = [
