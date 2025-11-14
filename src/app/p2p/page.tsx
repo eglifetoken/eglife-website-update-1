@@ -1,3 +1,4 @@
+
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { useAccount } from "wagmi";
 import { useToast } from "@/hooks/use-toast";
-import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2 } from "lucide-react";
+import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2, UserPlus, AlertCircle, ShieldCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,10 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
+import { db } from "@/firebase/client";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 // Mock data for P2P orders
@@ -32,13 +36,84 @@ const mockUserOrders = [
     { id: 'S001', type: 'SELL', amount: 2000, price: 2.51, status: 'OPEN' },
     { id: 'B001', type: 'BUY', amount: 1000, price: 2.50, status: 'PENDING_PAYMENT' },
     { id: 'B002', type: 'BUY', amount: 500, price: 2.52, status: 'COMPLETED' },
-]
+];
+
+
+function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void }) {
+    const { address } = useAccount();
+    const { toast } = useToast();
+    const [name, setName] = useState('');
+    const [mobile, setMobile] = useState('');
+    const [email, setEmail] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
+
+    const handleRegistration = async () => {
+        if (!name || !mobile || !email) {
+            toast({ variant: 'destructive', title: 'Missing Information', description: 'Please fill all the fields.' });
+            return;
+        }
+        if (!address) {
+             toast({ variant: 'destructive', title: 'Wallet Not Connected', description: 'Please connect your wallet first.' });
+            return;
+        }
+        setIsRegistering(true);
+        try {
+            const userRef = doc(db, 'p2p_users', address);
+            await setDoc(userRef, {
+                walletAddress: address,
+                name,
+                mobile,
+                email,
+                registeredAt: serverTimestamp()
+            }, { merge: true });
+
+            toast({ title: 'Registration Successful!', description: 'You can now access P2P trading.' });
+            onRegisterSuccess();
+        } catch (error) {
+            console.error("P2P Registration Error: ", error);
+            toast({ variant: 'destructive', title: 'Registration Failed', description: 'Could not complete registration. Please try again.' });
+        } finally {
+            setIsRegistering(false);
+        }
+    };
+
+    return (
+        <Card className="w-full max-w-lg mx-auto">
+            <CardHeader className="text-center">
+                <UserPlus className="mx-auto h-12 w-12 text-primary mb-4" />
+                <CardTitle className="font-headline text-2xl">Register for P2P Trading</CardTitle>
+                <CardDescription>To ensure security, please complete this one-time registration to buy and sell on our P2P platform.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="p2p-name">Full Name</Label>
+                    <Input id="p2p-name" placeholder="Enter your full name" value={name} onChange={e => setName(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="p2p-mobile">Mobile Number</Label>
+                    <Input id="p2p-mobile" type="tel" placeholder="Enter your mobile number" value={mobile} onChange={e => setMobile(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="p2p-email">Email Address</Label>
+                    <Input id="p2p-email" type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} />
+                </div>
+            </CardContent>
+            <CardFooter>
+                <Button className="w-full" onClick={handleRegistration} disabled={isRegistering}>
+                    {isRegistering ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Registering...</> : 'Register & Start Trading'}
+                </Button>
+            </CardFooter>
+        </Card>
+    );
+}
 
 
 export default function P2PPage() {
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
+    const [isRegistered, setIsRegistered] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     // State for creating a sell order
     const [sellAmount, setSellAmount] = useState('');
@@ -50,9 +125,22 @@ export default function P2PPage() {
     const [buyAmountInr, setBuyAmountInr] = useState('');
     const [selectedOrder, setSelectedOrder] = useState<(typeof mockSellOrders)[0] | null>(null);
 
-    useEffect(() => {
+     useEffect(() => {
         setIsClient(true);
-    }, []);
+        if (isConnected && address) {
+            const checkRegistration = async () => {
+                const userRef = doc(db, 'p2p_users', address);
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    setIsRegistered(true);
+                }
+                setIsLoading(false);
+            };
+            checkRegistration();
+        } else {
+            setIsLoading(false);
+        }
+    }, [isConnected, address]);
 
     const handleCreateOrder = () => {
         if (!sellAmount || !sellPrice || !upiId) {
@@ -67,7 +155,7 @@ export default function P2PPage() {
         // Simulate API call
         setTimeout(() => {
             toast({
-                title: 'Order Created!',
+                title: 'Order Placed!',
                 description: `Your sell order for ${sellAmount} EGLIFE at ₹${sellPrice}/token has been posted.`,
             });
             setSellAmount('');
@@ -80,8 +168,30 @@ export default function P2PPage() {
     const calculatedEglifeToReceive = selectedOrder ? (parseFloat(buyAmountInr || '0') / selectedOrder.price).toFixed(2) : '0.00';
 
 
-    if (!isClient) {
+    if (!isClient || isLoading) {
         return <div className="flex h-[calc(100vh-10rem)] items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
+    }
+
+    if (!isConnected) {
+        return (
+             <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 flex items-center justify-center">
+                <Card className="text-center max-w-md">
+                    <CardHeader>
+                        <AlertCircle className="mx-auto h-12 w-12 text-primary" />
+                        <CardTitle className="font-headline text-2xl">Wallet Not Connected</CardTitle>
+                        <CardDescription>Please connect your wallet to use the P2P trading platform.</CardDescription>
+                    </CardHeader>
+                </Card>
+            </div>
+        )
+    }
+
+    if (!isRegistered) {
+        return (
+            <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
+                <P2PRegistration onRegisterSuccess={() => setIsRegistered(true)} />
+            </div>
+        )
     }
 
   return (
@@ -155,6 +265,13 @@ export default function P2PPage() {
                                                                 <Input value={calculatedEglifeToReceive} readOnly className="pl-8 font-bold"/>
                                                             </div>
                                                         </div>
+                                                        <Alert variant="destructive">
+                                                          <AlertCircle className="h-4 w-4" />
+                                                          <AlertTitle>Important</AlertTitle>
+                                                          <AlertDescription>
+                                                            Please transfer funds only to the seller's verified payment method shown on the next screen. Do not trust payment details sent via chat.
+                                                          </AlertDescription>
+                                                        </Alert>
                                                     </div>
                                                     <DialogFooter>
                                                         <Button type="button" variant="outline">Cancel</Button>
@@ -196,11 +313,18 @@ export default function P2PPage() {
                                 <Input id="upi-id" placeholder="your-name@upi" value={upiId} onChange={e => setUpiId(e.target.value)} />
                             </div>
                         </div>
+                         <Alert>
+                            <ShieldCheck className="h-4 w-4" />
+                            <AlertTitle>Token Hold (Escrow) - Coming Soon</AlertTitle>
+                            <AlertDescription>
+                              For your security, when you place a sell order, your tokens will be held in a secure smart contract (escrow). They will be automatically released to the buyer once you confirm payment. This feature is currently under development.
+                            </AlertDescription>
+                        </Alert>
                     </CardContent>
                     <CardFooter>
                         <Button className="w-full" disabled={isCreatingOrder || !isConnected} onClick={handleCreateOrder}>
                             {isCreatingOrder ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Handshake className="mr-2 h-4 w-4" />}
-                            Create Sell Order
+                            Place Sell Order
                         </Button>
                     </CardFooter>
                 </Card>
@@ -237,13 +361,23 @@ export default function P2PPage() {
                                         <TableCell>
                                             <Badge variant="outline">{order.status.replace('_', ' ')}</Badge>
                                         </TableCell>
-                                        <TableCell className="text-right">
+                                        <TableCell className="text-right flex items-center justify-end gap-2">
                                             <Button variant="ghost" size="sm">View</Button>
+                                            <Button variant="outline" size="sm" className="text-destructive border-destructive/50 hover:bg-destructive/10 hover:text-destructive">
+                                                Raise Dispute
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
+                         <Alert className="mt-6">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle>Dispute Resolution - Coming Soon</AlertTitle>
+                            <AlertDescription>
+                              If a buyer has paid but you (the seller) haven't released the tokens, or vice versa, the "Raise Dispute" button will allow an admin to investigate and resolve the issue. This feature is under development.
+                            </AlertDescription>
+                        </Alert>
                     </CardContent>
                 </Card>
             </TabsContent>
