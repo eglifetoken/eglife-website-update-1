@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -660,12 +659,7 @@ function StakingPageContent() {
 
        {isClient &&
         <section className="w-full mt-8 pt-8 border-t">
-          <div className="container mx-auto px-4 md:px-6 flex justify-between">
-              <Button asChild variant="outline" onClick={() => router.back()}>
-                  <Link href="#">
-                      <ArrowLeft className="mr-2 h-4 w-4" /> Previous Page
-                  </Link>
-              </Button>
+          <div className="container mx-auto px-4 md:px-6 flex justify-end">
               <Button asChild>
                   <Link href="/dapp">
                       Next Page <ArrowRight className="ml-2 h-4 w-4" />
@@ -687,3 +681,5 @@ export default function StakingPage() {
         </Suspense>
     )
 }
+
+    
