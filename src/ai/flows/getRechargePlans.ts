@@ -47,10 +47,12 @@ async function createJwtToken(): Promise<string> {
     }
     const secret = new TextEncoder().encode(jwtSecret);
     const now = Math.floor(Date.now() / 1000);
+    const partnerId = process.env.PAYSPRINT_PARTNER_ID || "PS002091";
+
     return new jose.SignJWT({
-        "timestamp": now.toString(),
-        "partnerId": process.env.PAYSPRINT_PARTNER_ID || "PS002091",
-        "reqid": uuidv4()
+        timestamp: now.toString(),
+        partnerId: partnerId,
+        reqid: uuidv4()
     })
     .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
     .setIssuedAt(now)
@@ -111,7 +113,7 @@ const getRechargePlansFlow = ai.defineFlow(
         } else {
              return {
                 success: false,
-                message: data.message || 'Failed to fetch recharge plans.',
+                message: data.message || 'Failed to fetch recharge plans from the provider.',
             };
         }
 

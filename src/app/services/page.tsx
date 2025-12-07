@@ -236,7 +236,7 @@ export default function ServicesPage() {
         toast({
           variant: "destructive",
           title: "Could Not Fetch Plans",
-          description: result.message,
+          description: result.message || "No plans were found for the selected operator.",
         });
         setRechargePlans([]);
       }
@@ -244,7 +244,7 @@ export default function ServicesPage() {
        toast({
         variant: "destructive",
         title: "Error Fetching Plans",
-        description: error.message || "An unexpected error occurred.",
+        description: error.message || "An unexpected error occurred while fetching plans.",
       });
        setRechargePlans([]);
     } finally {
@@ -490,7 +490,7 @@ export default function ServicesPage() {
                                                 <AlertDialogAction onClick={() => handleRecharge("UPI")} disabled={isRecharging || !upiTxnId}>
                                                     {isRecharging ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</> : "Confirm UPI Payment"}
                                                 </AlertDialogAction>
-                                            </AlertDialogFooter>
+                                             </AlertDialogFooter>
                                          </div>
                                      </TabsContent>
                                 </Tabs>
@@ -729,5 +729,3 @@ export default function ServicesPage() {
     </>
   );
 }
-
-    
