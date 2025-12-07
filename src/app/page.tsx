@@ -33,11 +33,11 @@ export default function Home() {
         />
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white leading-tight">
-              The Future of Digital Asset Exchange
+              EGPAYDCX
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">EGLIFE EXCHANGE</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">भारत का पहला Super Fintech-Crypto Hybrid Ecosystem</h2>
             <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-foreground/80 mb-8">
-             A comprehensive platform for spot, futures, and P2P trading, combined with a powerful utility payment system. Built for performance, security, and the future of finance.
+             यह एक One App – One Ecosystem है जहाँ user trading भी कर सकता है, recharge भी कर सकता है, Web3 wallet भी चला सकता है और Digital Rupee भी भेज सकता है।
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
                 <Button asChild size="lg" className="font-bold text-base w-full sm:w-auto flex-1">
@@ -105,3 +105,4 @@ export default function Home() {
     </div>
   );
 }
+
