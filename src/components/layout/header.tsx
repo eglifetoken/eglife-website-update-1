@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -9,8 +10,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/dapp", label: "DApp" },
+  { href: "/home", label: "Home" },
   { href: "/staking", label: "Staking" },
   { href: "/services", label: "Services" },
   { href: "/p2p", label: "P2P" },
@@ -41,7 +41,8 @@ export default function Header() {
                 href={link.href}
                 className={cn(
                     "text-sm font-medium transition-colors hover:text-primary",
-                    pathname === link.href ? "text-primary" : "text-foreground/80"
+                    pathname.startsWith(link.href) && link.href !== "/" ? "text-primary" : "text-foreground/80",
+                    pathname === "/" && link.href === "/" && "text-primary"
                 )}
                 >
                 {link.label}
@@ -68,7 +69,8 @@ export default function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
                         "text-xl font-medium transition-colors hover:text-primary",
-                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                        pathname.startsWith(link.href) && link.href !== "/" ? "text-primary" : "text-foreground/80",
+                        pathname === "/" && link.href === "/" && "text-primary"
                     )}
                     >
                     {link.label}

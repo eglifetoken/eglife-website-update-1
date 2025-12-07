@@ -1,47 +1,28 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowRight, CheckCircle, GitCommit, Gift, HandCoins, Landmark, LineChart, PiggyBank, Users, ArrowUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, DollarSign, BarChart, Users, ShieldCheck, Zap } from "lucide-react";
 
 const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
-const stakingTiers = [
-    { level: "LV 1", range: "50 – 499", yearly: "100%" },
-    { level: "LV 2", range: "500 – 1,999", yearly: "125%" },
-    { level: "LV 3", range: "2,000 – 4,999", yearly: "150%" },
-    { level: "LV 4", range: "5,000 – 9,999", yearly: "175%" },
-    { level: "LV 5", range: "10,000 – 29,999", yearly: "200%" },
-    { level: "LV 6", range: "30,000 – 50,000", yearly: "250%" },
+const features = [
+    { icon: DollarSign, title: "Spot & Futures Trading", description: "Trade a wide range of cryptocurrencies with advanced order types and deep liquidity." },
+    { icon: BarChart, title: "Advanced Charting", description: "Utilize professional-grade charting tools to analyze market trends and make informed decisions." },
+    { icon: Users, title: "P2P Marketplace", description: "Buy and sell crypto directly with other users using your preferred local payment methods." },
+    { icon: ShieldCheck, title: "Secure Wallet", description: "Manage your crypto and INR funds in a secure, multi-currency wallet with robust safety features." },
+    { icon: Zap, title: "Instant Payments", description: "Pay utility bills, recharge your mobile, and more using the integrated EGPAY system." },
 ];
-
-const teamIncomeTiers = [
-    { level: "LV 2", groupA: "10%", groupB: "2%", groupC: "0.50%" },
-    { level: "LV 3", groupA: "12%", groupB: "3%", groupC: "1.00%" },
-    { level: "LV 4", groupA: "14%", groupB: "4%", groupC: "1.50%" },
-    { level: "LV 5", groupA: "16%", groupB: "5%", groupC: "2.00%" },
-    { level: "LV 6", groupA: "18%", groupB: "6%", groupC: "2.50%" },
-];
-
-const levelUpgradeRules = [
-    { from: "LV0", to: "LV1", selfStaking: "50 – 499", groupA: 0, groupBC: 0, total: 0 },
-    { from: "LV1", to: "LV2", selfStaking: "500 – 1,999", groupA: 3, groupBC: 5, total: 8 },
-    { from: "LV2", to: "LV3", selfStaking: "2,000 – 4,999", groupA: 6, groupBC: 20, total: 26 },
-    { from: "LV3", to: "LV4", selfStaking: "5,000 – 9,999", groupA: 15, groupBC: 35, total: 50 },
-    { from: "LV4", to: "LV5", selfStaking: "10,000 – 29,999", groupA: 25, groupBC: 70, total: 95 },
-    { from: "LV5", to: "LV6", selfStaking: "30,000 – 50,000", groupA: 35, groupBC: 180, total: 215 },
-];
-
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full flex items-center justify-center text-center px-4 overflow-hidden pt-32 pb-8">
+      <section className="relative w-full flex items-center justify-center text-center px-4 overflow-hidden pt-32 pb-16">
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-10" />
         <Image
           src="/background.png"
@@ -52,207 +33,55 @@ export default function Home() {
         />
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white leading-tight">
-              Redefining Utility, Empowering Lives.
+              The Future of Digital Asset Exchange
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">EGLIFE TOKEN</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">EGLIFE EXCHANGE</h2>
             <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-foreground/80 mb-8">
-             Welcome to the future of decentralized finance. EGLIFE is a revolutionary BEP-20 utility token on the BNB Smart Chain, meticulously engineered to bridge the gap between digital assets and real-world application. Join a global community building the new standard for financial freedom. Now trading on PancakeSwap.
+             A comprehensive platform for spot, futures, and P2P trading, combined with a powerful utility payment system. Built for performance, security, and the future of finance.
             </p>
-            <div className="flex flex-col items-center gap-4 w-full max-w-xs sm:max-w-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                <Button asChild size="lg" className="font-bold text-base">
-                  <Link href="/dapp">Login</Link>
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
+                <Button asChild size="lg" className="font-bold text-base w-full sm:w-auto flex-1">
+                  <Link href="/home">Go to App</Link>
                 </Button>
-                <Button asChild size="lg" className="font-bold text-base">
-                  <Link href="/register">Registration</Link>
-                </Button>
-              </div>
-               <Button asChild size="lg" variant="secondary" className="w-full font-bold text-base">
-                <Link href={PANCAKESWAP_BUY_URL} target="_blank" rel="noopener noreferrer">Buy Coins</Link>
+                <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto font-bold text-base flex-1">
+                <Link href="/register">Create Account</Link>
               </Button>
             </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pt-12 md:px-6 space-y-12">
-        {/* About Section */}
+      <div className="container mx-auto px-4 pt-12 md:px-6 space-y-20">
+        {/* Features Section */}
         <section>
-             <div className="text-center max-w-3xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">What is EGLIFE?</h2>
+             <div className="text-center max-w-3xl mx-auto mb-12">
+                <h2 className="text-3xl md:text-4xl font-headline font-bold">A Complete Crypto Ecosystem</h2>
                 <p className="text-lg text-foreground/80 mt-4">
-                   The EGLIFE Token is a BEP-20 cryptocurrency on the BNB Smart Chain, designed to solve a core problem in the digital world: the lack of real-world use for crypto. By building an on-chain economy, EGLIFE moves beyond speculation and becomes a tool for daily finance, enabling seamless utility payments and rewarding its community.
+                   From advanced trading tools to everyday utility payments, we provide everything you need in one powerful platform.
                 </p>
             </div>
-        </section>
-
-        {/* Staking Rewards Section */}
-        <section>
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Staking &amp; Rewards</h2>
-                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                    Stake your EGLIFE tokens to earn a powerful, passive yield. Higher staking levels unlock greater yearly returns, rewarding our most committed community members.
-                </p>
-            </div>
-            <Card className="max-w-4xl mx-auto">
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-3"><PiggyBank className="h-7 w-7 text-primary"/> Staking Tiers &amp; APY</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Level</TableHead>
-                                <TableHead>Stake Range (EGLIFE)</TableHead>
-                                <TableHead className="text-right">Yearly Income (APY)</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {stakingTiers.map((tier) => (
-                                <TableRow key={tier.level}>
-                                    <TableCell className="font-medium">{tier.level}</TableCell>
-                                    <TableCell>{tier.range}</TableCell>
-                                    <TableCell className="text-right font-semibold text-primary">{tier.yearly}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <div className="mt-6 text-left bg-muted/50 p-4 rounded-lg space-y-2">
-                        <p className="text-sm text-foreground/80"><strong className="text-primary">Lock Period:</strong> 365 Days per deposit. Principal is locked but earnings accrue per-second and can be claimed anytime.</p>
-                        <p className="text-sm text-foreground/80"><strong className="text-primary">Note:</strong> Staking is in EGLIFE and staking bonus is paid in EGLIFE only.</p>
-                   </div>
-                </CardContent>
-            </Card>
-        </section>
-
-         {/* Referral & Team Income Section */}
-        <section>
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Referral &amp; Team Income</h2>
-                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                   Build your network and earn rewards. Our program is designed to incentivize community growth through direct bonuses and team-based income.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                 <Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {features.map((feature, index) => (
+                    <Card key={index} className="bg-card/50 backdrop-blur-sm border-primary/20">
+                        <CardHeader className="flex flex-row items-center gap-4">
+                            <div className="p-3 bg-primary/10 rounded-md">
+                                <feature.icon className="h-6 w-6 text-primary" />
+                            </div>
+                            <CardTitle className="font-headline text-xl">{feature.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-foreground/80">{feature.description}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+                 <Card className="md:col-span-2 lg:col-span-3 bg-primary/10 border-primary text-center">
                     <CardHeader>
-                        <CardTitle className="font-headline flex items-center gap-3"><Gift className="h-7 w-7 text-primary"/>One-Time Referral Bonus</CardTitle>
-                         <CardDescription>Earn an instant bonus for every new user you directly sponsor.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="p-4 rounded-lg border bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">On Successful Staking of 50 EGLIFE or more</p>
-                            <p className="text-2xl font-bold">10 EGLIFE</p>
-                        </div>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader>
-                        <CardTitle className="font-headline flex items-center gap-3"><Users className="h-7 w-7 text-primary"/>Team Income</CardTitle>
-                        <CardDescription>Earn a percentage of the staking rewards generated by your downline team across three levels.</CardDescription>
+                        <CardTitle className="font-headline text-2xl">And 15+ More Modules</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Your Level</TableHead>
-                                    <TableHead>Group A</TableHead>
-                                    <TableHead>Group B</TableHead>
-                                    <TableHead>Group C</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {teamIncomeTiers.map((tier) => (
-                                    <TableRow key={tier.level}>
-                                        <TableCell className="font-medium">{tier.level}</TableCell>
-                                        <TableCell className="font-semibold text-primary">{tier.groupA}</TableCell>
-                                        <TableCell>{tier.groupB}</TableCell>
-                                        <TableCell>{tier.groupC}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <p className="text-foreground/80 max-w-2xl mx-auto">
+                            Our platform is built on a massive foundation including a full-fledged NFT Marketplace, Staking Pools, a Launchpad for new projects, a Web3 Wallet, and comprehensive security features.
+                        </p>
                     </CardContent>
-                </Card>
-            </div>
-        </section>
-
-        {/* Level Upgrade Rules Section */}
-        <section>
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Level Upgrade Rules</h2>
-                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                    Advance through the levels by meeting both self-staking and team member requirements.
-                </p>
-            </div>
-            <Card className="max-w-5xl mx-auto">
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-3"><ArrowUp className="h-7 w-7 text-primary"/>How to Level Up</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Upgrade</TableHead>
-                                <TableHead>Self-Staking (EGLIFE)</TableHead>
-                                <TableHead>Group A (Directs)</TableHead>
-                                <TableHead>Group B + C (Combined)</TableHead>
-                                <TableHead>Total Group Members</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {levelUpgradeRules.map((rule) => (
-                                <TableRow key={rule.from}>
-                                    <TableCell className="font-medium">{rule.from} &rarr; {rule.to}</TableCell>
-                                    <TableCell>{rule.selfStaking}</TableCell>
-                                    <TableCell>{rule.groupA}</TableCell>
-                                    <TableCell>{rule.groupBC}</TableCell>
-                                    <TableCell>{rule.total}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </section>
-
-        {/* Tokenomics Section */}
-        <section>
-             <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold">Tokenomics</h2>
-                <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                   A fixed total supply of 1,000,000,000 EGLIFE is strategically distributed to ensure a balanced, sustainable, and community-focused ecosystem.
-                </p>
-            </div>
-             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
-                <Card className="p-6">
-                    <HandCoins className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">30%</p>
-                    <p className="text-muted-foreground">Ecosystem &amp; Development</p>
-                </Card>
-                 <Card className="p-6">
-                    <LineChart className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">20%</p>
-                    <p className="text-muted-foreground">Liquidity Pool</p>
-                </Card>
-                 <Card className="p-6">
-                    <Landmark className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">20%</p>
-                    <p className="text-muted-foreground">Staking Rewards</p>
-                </Card>
-                 <Card className="p-6">
-                    <Gift className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">10%</p>
-                    <p className="text-muted-foreground">Public Airdrop</p>
-                </Card>
-                 <Card className="p-6">
-                    <Users className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">10%</p>
-                    <p className="text-muted-foreground">Team &amp; Advisors</p>
-                </Card>
-                 <Card className="p-6">
-                    <GitCommit className="h-10 w-10 mx-auto text-primary mb-3"/>
-                    <p className="text-2xl font-bold">10%</p>
-                    <p className="text-muted-foreground">Burn &amp; Reserve</p>
                 </Card>
             </div>
         </section>
@@ -261,12 +90,12 @@ export default function Home() {
          <section className="text-center py-12">
             <h2 className="text-3xl md:text-4xl font-headline font-bold">Ready to Get Started?</h2>
             <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                Join the EGLIFE ecosystem today. Connect your wallet, stake your tokens, and become part of the new standard for financial freedom.
+                Join the EGLIFE ecosystem today. Create an account, explore the market, and become part of the new standard for financial freedom.
             </p>
             <div className="mt-8">
                 <Button asChild size="lg">
-                    <Link href="/dapp">
-                        Go to DApp <ArrowRight className="ml-2 h-5 w-5" />
+                    <Link href="/home">
+                        Launch App <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                 </Button>
             </div>
