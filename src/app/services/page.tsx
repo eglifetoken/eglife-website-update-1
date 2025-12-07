@@ -22,6 +22,9 @@ import { formatEther } from "viem";
 import { bsc } from "wagmi/chains";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import QRCode from "qrcode.react";
+import { db } from "@/firebase/client";
+import { doc, getDoc } from "firebase/firestore";
 
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
@@ -165,6 +168,7 @@ export default function ServicesPage() {
 
   // Token price state
   const [tokenData, setTokenData] = useState<TokenData | null>(null);
+  const [masterUpiId, setMasterUpiId] = useState("loading...");
 
   useEffect(() => {
     setIsClient(true);
@@ -176,7 +180,22 @@ export default function ServicesPage() {
             console.error("Failed to fetch token data:", error);
         }
     };
+    const fetchUpiId = async () => {
+        try {
+            const docRef = doc(db, "settings", "upi");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists() && docSnap.data().id) {
+                setMasterUpiId(docSnap.data().id);
+            } else {
+                setMasterUpiId("default.upi@provider"); // Fallback
+            }
+        } catch (error) {
+            console.error("Error fetching UPI ID:", error);
+            setMasterUpiId("default.upi@provider"); // Fallback
+        }
+    };
     fetchData();
+    fetchUpiId();
   }, []);
 
   // State for Mobile Recharge
@@ -184,6 +203,7 @@ export default function ServicesPage() {
   const [rechargeAmount, setRechargeAmount] = useState("");
   const [operator, setOperator] = useState("");
   const [isRecharging, setIsRecharging] = useState(false);
+  const [upiTxnId, setUpiTxnId] = useState("");
   
   // State for Money Transfer
   const [accountNumber, setAccountNumber] = useState("");
@@ -237,12 +257,26 @@ export default function ServicesPage() {
     setIsPlansDialogOpen(false);
   };
 
-  const handleRecharge = async () => {
+  const handleRecharge = async (paymentMethod: "TOKEN" | "UPI" = "TOKEN") => {
     setIsRecharging(true);
     try {
-        // Here, you would typically have a writeContract call to deduct tokens.
-        // For this demo, we'll just simulate a delay.
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        if (paymentMethod === "UPI") {
+            // Here, you would add logic to verify the UPI transaction ID with your backend.
+            // For now, we'll just log it and proceed.
+            if(!upiTxnId) {
+                toast({
+                    variant: "destructive",
+                    title: "Transaction ID Required",
+                    description: "Please enter the UPI transaction ID to confirm payment."
+                });
+                setIsRecharging(false);
+                return;
+            }
+            console.log(`Processing recharge via UPI with Txn ID: ${upiTxnId}`);
+        } else {
+            // Token payment logic remains the same
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
 
         const result = await mobileRecharge({
             mobileNumber,
@@ -255,11 +289,14 @@ export default function ServicesPage() {
                 title: "Recharge Successful!",
                 description: result.message,
             });
-            refetchBalance(); // Refetch balance after successful payment
+            if (paymentMethod === "TOKEN") {
+                refetchBalance(); // Refetch balance only for token payments
+            }
             // Reset form
             setMobileNumber("");
             setRechargeAmount("");
             setOperator("");
+            setUpiTxnId("");
             setSelectedService(null);
         } else {
             toast({
@@ -283,6 +320,7 @@ export default function ServicesPage() {
   const renderServiceForm = () => {
     const rechargeCostInEg = (tokenData && rechargeAmount) ? (parseFloat(rechargeAmount) / 83) / tokenData.priceUsd : 0;
     const hasSufficientBalance = eglifeBalance ? parseFloat(formatEther(eglifeBalance.value)) >= rechargeCostInEg : false;
+    const qrValue = `upi://pay?pa=${masterUpiId}&pn=EGLIFE%20Token&am=${rechargeAmount}&cu=INR`;
 
     if (!isConnected) {
         return (
@@ -415,7 +453,7 @@ export default function ServicesPage() {
                                                 )}
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={handleRecharge} disabled={isRecharging || !hasSufficientBalance}>
+                                                    <AlertDialogAction onClick={() => handleRecharge("TOKEN")} disabled={isRecharging || !hasSufficientBalance}>
                                                          {isRecharging ? (
                                                             <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</>
                                                         ) : (
@@ -430,21 +468,27 @@ export default function ServicesPage() {
                                     </TabsContent>
                                      <TabsContent value="upi" className="pt-4">
                                          <div className="space-y-4">
-                                            <div className="p-4 rounded-lg border bg-muted/50">
-                                                <p className="text-sm text-muted-foreground">You will pay</p>
-                                                <p className="text-xl font-bold">₹{rechargeAmount}</p>
-                                            </div>
                                             <Alert>
                                                 <AlertTriangle className="h-4 w-4" />
-                                                <AlertTitle>Coming Soon</AlertTitle>
+                                                <AlertTitle>Action Required</AlertTitle>
                                                 <AlertDescription>
-                                                   UPI payment gateway integration is currently in development. This feature will be available shortly.
+                                                   Scan the QR to pay ₹{rechargeAmount}. After payment, enter the UPI Transaction ID below.
                                                 </AlertDescription>
                                             </Alert>
+                                            <div className="flex items-center justify-center p-4 bg-white rounded-lg">
+                                                {masterUpiId === "loading..." ? <Loader2 className="h-12 w-12 animate-spin"/> : <QRCode value={qrValue} size={180} />}
+                                            </div>
+                                            <div className="text-center font-mono text-sm">
+                                                Pay to: <strong>{masterUpiId}</strong>
+                                            </div>
+                                             <div className="space-y-2">
+                                                <Label htmlFor="upiTxnId">UPI Transaction ID / UTR</Label>
+                                                <Input id="upiTxnId" placeholder="12-digit transaction ID" value={upiTxnId} onChange={(e) => setUpiTxnId(e.target.value)} disabled={isRecharging} />
+                                            </div>
                                              <AlertDialogFooter>
                                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction disabled>
-                                                    Pay with UPI
+                                                <AlertDialogAction onClick={() => handleRecharge("UPI")} disabled={isRecharging || !upiTxnId}>
+                                                    {isRecharging ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Confirming...</> : "Confirm UPI Payment"}
                                                 </AlertDialogAction>
                                             </AlertDialogFooter>
                                          </div>
@@ -685,3 +729,5 @@ export default function ServicesPage() {
     </>
   );
 }
+
+    
