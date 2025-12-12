@@ -50,6 +50,7 @@ export default function BuyWithUpiPage() {
 
     useEffect(() => {
         if (!isClient) return;
+        
         const fetchUpiId = async () => {
             setIsUpiIdLoading(true);
             try {

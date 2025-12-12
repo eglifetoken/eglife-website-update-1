@@ -180,6 +180,12 @@ export default function ServicesPage() {
             console.error("Failed to fetch token data:", error);
         }
     };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
     const fetchUpiId = async () => {
         try {
             const docRef = doc(db, "settings", "upi");
@@ -194,9 +200,8 @@ export default function ServicesPage() {
             setMasterUpiId("7545978703-6@ibl"); // Fallback
         }
     };
-    fetchData();
     fetchUpiId();
-  }, []);
+  }, [isClient]);
 
   // State for Mobile Recharge
   const [mobileNumber, setMobileNumber] = useState("");
