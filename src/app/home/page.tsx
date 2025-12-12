@@ -155,12 +155,6 @@ export default function HomePage() {
                             <CardTitle className="font-headline">Quick Actions</CardTitle>
                         </CardHeader>
                         <CardContent className="grid grid-cols-2 gap-4">
-                            <Button asChild size="lg" className="h-auto py-3 flex flex-col gap-1">
-                                <Link href="/buy-with-upi">
-                                <ShoppingCart className="h-6 w-6" />
-                                <span>Buy</span>
-                                </Link>
-                            </Button>
                              <Button asChild size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
                                 <Link href="/p2p">
                                 <DollarSign className="h-6 w-6" />

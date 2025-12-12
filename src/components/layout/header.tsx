@@ -15,7 +15,6 @@ const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/p2p", label: "P2P" },
   { href: "/profile", label: "Profile" },
-  { href: "/buy-with-upi", label: "Buy with UPI" },
   { href: "/referral", label: "Referral" },
   { href: "/whitepaper", label: "Whitepaper" },
   { href: "/contact", label: "Contact" },
