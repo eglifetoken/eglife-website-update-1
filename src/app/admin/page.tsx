@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, doc, onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, onSnapshot, enableIndexedDbPersistence } from "firebase/firestore";
 import { createPublicClient, http, formatEther, Address, zeroAddress } from "viem";
 import { bsc } from "viem/chains";
 import { useAccount, useWalletClient } from "wagmi";
@@ -237,7 +237,21 @@ const firebaseConfig = {
 
 function getDb() {
   const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
-  return getFirestore(app);
+  const db = getFirestore(app);
+  // Enable offline persistence only on the client-side
+  try {
+    enableIndexedDbPersistence(db)
+      .catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn("Firestore persistence failed: Multiple tabs open? This is a normal occurrence in development environments.");
+        } else if (err.code === 'unimplemented') {
+          console.warn("Firestore persistence failed: Browser does not support it.");
+        }
+      });
+  } catch (error) {
+    console.error("Error enabling Firestore persistence: ", error);
+  }
+  return db;
 }
 
 // --- Hook: live Firestore subscription → DashboardData ---
@@ -733,3 +747,5 @@ export default function Page() {
     </>
   );
 }
+
+    
