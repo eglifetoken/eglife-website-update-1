@@ -10,22 +10,24 @@ import Link from 'next/link';
 import { getTokenData, type TokenData } from '@/ai/flows/getTokenData';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-// Mock data for chart
+// Function to generate chart data based on live price
 const generateChartData = (price: number, change: number) => {
     const data = [];
-    let currentPrice = price / (1 + change / 100);
+    // Calculate the starting price 30 days ago based on the 24h change
+    let currentPrice = price / (1 + (change / 100));
+
     for (let i = 0; i < 30; i++) {
         const date = new Date();
         date.setDate(date.getDate() - (29 - i));
+        // Add some random volatility for a more realistic look
+        currentPrice *= 1 + (Math.random() - 0.48) / 10;
         data.push({
             date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-            price: parseFloat(currentPrice.toFixed(4)),
+            price: parseFloat(currentPrice.toFixed(5)),
         });
-        // Simulate some volatility
-        currentPrice *= 1 + (Math.random() - 0.48) / 100;
     }
-    // Adjust last point to match current price
-    data[data.length - 1].price = price;
+    // Ensure the last point matches the actual current price
+    data[data.length - 1].price = parseFloat(price.toFixed(5));
     return data;
 };
 
@@ -111,12 +113,13 @@ export default function HomePage() {
                                         </linearGradient>
                                     </defs>
                                     <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} domain={['dataMin', 'dataMax']} />
+                                    <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} domain={['dataMin', 'dataMax']} tickFormatter={(value) => `$${Number(value).toFixed(5)}`} />
                                     <Tooltip
                                         contentStyle={{
                                             backgroundColor: 'hsl(var(--background))',
                                             borderColor: 'hsl(var(--border))',
                                         }}
+                                        formatter={(value: number) => [`$${value.toFixed(5)}`, 'Price']}
                                     />
                                     <Area type="monotone" dataKey="price" stroke={isPriceUp ? "hsl(var(--primary))" : "#ef4444"} fill="url(#colorPrice)" strokeWidth={2} />
                                 </AreaChart>
@@ -152,27 +155,35 @@ export default function HomePage() {
                             <CardTitle className="font-headline">Quick Actions</CardTitle>
                         </CardHeader>
                         <CardContent className="grid grid-cols-2 gap-4">
-                            <Button size="lg" className="h-auto py-3 flex flex-col gap-1">
+                            <Button asChild size="lg" className="h-auto py-3 flex flex-col gap-1">
+                                <Link href="/buy-with-upi">
                                 <ShoppingCart className="h-6 w-6" />
                                 <span>Buy</span>
+                                </Link>
                             </Button>
-                             <Button size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                             <Button asChild size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                                <Link href="/p2p">
                                 <DollarSign className="h-6 w-6" />
                                 <span>Sell</span>
+                                </Link>
                             </Button>
-                             <Button size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                             <Button asChild size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                                <Link href="/staking">
                                 <Banknote className="h-6 w-6" />
-                                <span>Deposit</span>
-                            </Button>
-                             <Button size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                                <span>Stake</span>
+                                </Link>
+                             </Button>
+                             <Button asChild size="lg" variant="secondary" className="h-auto py-3 flex flex-col gap-1">
+                                <Link href="/services">
                                 <Repeat className="h-6 w-6" />
-                                <span>Convert</span>
+                                <span>Pay Bills</span>
+                                </Link>
                             </Button>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader>
-                            <CardTitle className="font-headline">Market</CardTitle>
+                            <CardTitle className="font-headline">Market (Example)</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <Table>
@@ -205,7 +216,7 @@ export default function HomePage() {
                         <div className="p-3 bg-primary/10 rounded-md">
                             <TrendingUp className="h-6 w-6 text-primary" />
                         </div>
-                        <CardTitle className="font-headline text-2xl">Top Gainers</CardTitle>
+                        <CardTitle className="font-headline text-2xl">Top Gainers (Example)</CardTitle>
                     </CardHeader>
                     <CardContent>
                          <Table>
@@ -229,7 +240,7 @@ export default function HomePage() {
                         <div className="p-3 bg-destructive/10 rounded-md">
                             <TrendingDown className="h-6 w-6 text-destructive" />
                         </div>
-                        <CardTitle className="font-headline text-2xl">Top Losers</CardTitle>
+                        <CardTitle className="font-headline text-2xl">Top Losers (Example)</CardTitle>
                     </CardHeader>
                     <CardContent>
                          <Table>
@@ -254,3 +265,4 @@ export default function HomePage() {
     );
 }
 
+    
