@@ -35,9 +35,9 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-extrabold tracking-tighter mb-4 text-white leading-tight">
               EGPAYDCX
             </h1>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">भारत का पहला Super Fintech-Crypto Hybrid Ecosystem</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-primary mb-6">India's First Super Fintech-Crypto Hybrid Ecosystem</h2>
             <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-foreground/80 mb-8">
-             यह एक One App – One Ecosystem है जहाँ user trading भी कर सकता है, recharge भी कर सकता है, Web3 wallet भी चला सकता है और Digital Rupee भी भेज सकता है।
+             This is a One App – One Ecosystem where users can trade, recharge, use a Web3 wallet, and send Digital Rupee.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
                 <Button asChild size="lg" className="font-bold text-base w-full sm:w-auto flex-1">
