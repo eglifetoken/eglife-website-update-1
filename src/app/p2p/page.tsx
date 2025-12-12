@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { useAccount } from "wagmi";
 import { useToast } from "@/hooks/use-toast";
-import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2, UserPlus, AlertCircle, ShieldCheck } from "lucide-react";
+import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2, UserPlus, AlertCircle, ShieldCheck, PenSquare } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -155,8 +155,8 @@ export default function P2PPage() {
         // Simulate API call
         setTimeout(() => {
             toast({
-                title: 'Order Placed!',
-                description: `Your sell order for ${sellAmount} EGLIFE at ₹${sellPrice}/token has been posted.`,
+                title: 'Ad Posted!',
+                description: `Your sell ad for ${sellAmount} EGLIFE at ₹${sellPrice}/token has been posted.`,
             });
             setSellAmount('');
             setSellPrice('');
@@ -206,7 +206,7 @@ export default function P2PPage() {
         <Tabs defaultValue="buy" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="buy"><ShoppingCart className="mr-2 h-4 w-4" /> Buy</TabsTrigger>
-                <TabsTrigger value="sell"><Tag className="mr-2 h-4 w-4" /> Sell</TabsTrigger>
+                <TabsTrigger value="sell"><PenSquare className="mr-2 h-4 w-4" /> Post Ad</TabsTrigger>
                 <TabsTrigger value="orders"><History className="mr-2 h-4 w-4" /> My Orders</TabsTrigger>
             </TabsList>
 
@@ -292,7 +292,7 @@ export default function P2PPage() {
             <TabsContent value="sell">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Create a Sell Offer</CardTitle>
+                        <CardTitle>Post a Sell Ad</CardTitle>
                         <CardDescription>Set your price and terms to sell your EGLIFE tokens.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -323,7 +323,7 @@ export default function P2PPage() {
                     <CardFooter>
                         <Button className="w-full" disabled={isCreatingOrder || !isConnected} onClick={handleCreateOrder}>
                             {isCreatingOrder ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Handshake className="mr-2 h-4 w-4" />}
-                            Place Sell Order
+                            Post Sell Ad
                         </Button>
                     </CardFooter>
                 </Card>
