@@ -127,20 +127,24 @@ export default function P2PPage() {
 
      useEffect(() => {
         setIsClient(true);
-        if (isConnected && address) {
-            const checkRegistration = async () => {
+    }, []);
+
+    useEffect(() => {
+        if (!isClient) return;
+
+        const checkRegistration = async () => {
+            if (isConnected && address) {
                 const userRef = doc(db, 'p2p_users', address);
                 const docSnap = await getDoc(userRef);
                 if (docSnap.exists()) {
                     setIsRegistered(true);
                 }
-                setIsLoading(false);
-            };
-            checkRegistration();
-        } else {
+            }
             setIsLoading(false);
-        }
-    }, [isConnected, address]);
+        };
+
+        checkRegistration();
+    }, [isClient, isConnected, address]);
 
     const handleCreateOrder = () => {
         if (!sellAmount || !sellPrice || !upiId) {
@@ -385,3 +389,5 @@ export default function P2PPage() {
     </div>
   );
 }
+
+    
