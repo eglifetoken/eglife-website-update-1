@@ -10,36 +10,69 @@ const TwitterIcon = () => (
     </svg>
 );
 
+const footerLinks = {
+    "About Us": [
+        { href: "/whitepaper", label: "Whitepaper" },
+        { href: "/roadmap", label: "Roadmap" },
+        { href: "/contact", label: "Contact" },
+        { href: "/business-plan", label: "Business Plan" },
+    ],
+    "Services": [
+        { href: "/staking", label: "Staking" },
+        { href: "/p2p", label: "P2P Trading" },
+        { href: "/services", label: "Utility Payments" },
+        { href: "/referral", label: "Referral Program" },
+    ],
+    "Learn": [
+        { href: "/crypto-education", label: "Crypto Education" },
+    ],
+    "Support": [
+        { href: "/contact", label: "Feedback & Support" },
+        { href: "/admin", label: "Admin Dashboard" },
+    ]
+}
+
 
 export default function Footer() {
   return (
     <footer className="bg-background border-t">
-      <div className="container mx-auto px-4 py-8 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-                <Link href="/">
+      <div className="container mx-auto px-4 py-12 md:px-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div className="col-span-2 md:col-span-1 mb-8 md:mb-0">
+                 <Link href="/" className="mb-4 inline-block">
                     <span className="font-headline text-xl font-bold text-white">EGLIFE TOKEN</span>
                 </Link>
+                 <div className="flex space-x-4">
+                  <Button asChild variant="ghost" size="icon">
+                    <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on X">
+                      <TwitterIcon />
+                    </a>
+                  </Button>
+                  <Button asChild variant="ghost" size="icon">
+                    <a href="https://t.me/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on Telegram">
+                      <Send className="h-5 w-5" />
+                    </a>
+                  </Button>
+                </div>
             </div>
-            <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                <Link href="/whitepaper" className="text-sm text-foreground/80 hover:text-primary">Whitepaper</Link>
-                <Link href="/roadmap" className="text-sm text-foreground/80 hover:text-primary">Roadmap</Link>
-                <Link href="/contact" className="text-sm text-foreground/80 hover:text-primary">Contact</Link>
-            </div>
-            <div className="flex space-x-4">
-              <Button asChild variant="ghost" size="icon">
-                <a href="https://x.com/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on X">
-                  <TwitterIcon />
-                </a>
-              </Button>
-              <Button asChild variant="ghost" size="icon">
-                <a href="https://t.me/eglifetoken" target="_blank" rel="noopener noreferrer" aria-label="EGLIFE TOKEN on Telegram">
-                  <Send className="h-5 w-5" />
-                </a>
-              </Button>
-            </div>
+
+            {Object.entries(footerLinks).map(([title, links]) => (
+                <div key={title}>
+                    <h4 className="font-semibold text-foreground mb-4">{title}</h4>
+                    <ul className="space-y-3">
+                        {links.map((link) => (
+                            <li key={link.href}>
+                                <Link href={link.href} className="text-sm text-foreground/70 hover:text-primary transition-colors">
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
         </div>
-         <div className="mt-8 pt-8 border-t text-center">
+
+         <div className="mt-12 pt-8 border-t text-center">
             <p className="text-sm text-foreground/60">&copy; {new Date().getFullYear()} EGLIFE TOKEN. All Rights Reserved.</p>
         </div>
       </div>
