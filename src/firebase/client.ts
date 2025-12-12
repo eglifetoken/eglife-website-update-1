@@ -26,8 +26,12 @@ if (typeof window !== 'undefined') {
     enableIndexedDbPersistence(db)
       .catch((err) => {
         if (err.code === 'failed-precondition') {
+          // This error happens when multiple tabs are open.
+          // It's safe to ignore in development.
           console.warn("Firestore persistence failed: Multiple tabs open? This is a normal occurrence in development environments.");
         } else if (err.code === 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
           console.warn("Firestore persistence failed: Browser does not support it.");
         }
       });
@@ -35,5 +39,3 @@ if (typeof window !== 'undefined') {
     console.error("Error enabling Firestore persistence: ", error);
   }
 }
-
-    

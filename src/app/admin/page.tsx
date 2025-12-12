@@ -3,10 +3,11 @@
 
 import React, { useEffect, useState } from "react";
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, doc, onSnapshot, enableIndexedDbPersistence } from "firebase/firestore";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { createPublicClient, http, formatEther, Address, zeroAddress } from "viem";
 import { bsc } from "viem/chains";
 import { useAccount, useWalletClient } from "wagmi";
+import { db } from "@/firebase/client";
 
 /**
  * EGLIFE Staking – Dynamic Dashboard (React + Tailwind)
@@ -224,42 +225,11 @@ function EGLifeStakingDashboard({ data }: { data: DashboardData }) {
   );
 }
 
-// --- Firebase init (frontend-safe; apiKey is OK to expose) ---
-const firebaseConfig = {
-  apiKey: "AIzaSyD7siVG6oM8wOTGL0ZOlzqJsNsFDUF7sl0",
-  authDomain: "eglife-token-1e4c5.firebaseapp.com",
-  projectId: "eglife-token-1e4c5",
-  storageBucket: "eglife-token-1e4c5.firebasestorage.app",
-  messagingSenderId: "321177983654",
-  appId: "1:321177983654:web:fcb2a47126845d22117267",
-  measurementId: "G-Y681N12MWG",
-};
-
-function getDb() {
-  const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  // Enable offline persistence only on the client-side
-  try {
-    enableIndexedDbPersistence(db)
-      .catch((err) => {
-        if (err.code === 'failed-precondition') {
-          console.warn("Firestore persistence failed: Multiple tabs open? This is a normal occurrence in development environments.");
-        } else if (err.code === 'unimplemented') {
-          console.warn("Firestore persistence failed: Browser does not support it.");
-        }
-      });
-  } catch (error) {
-    console.error("Error enabling Firestore persistence: ", error);
-  }
-  return db;
-}
-
 // --- Hook: live Firestore subscription → DashboardData ---
 
 export function useDashboardFromFirestore(docId: string = "eglifestaking") {
   const [data, setData] = useState<Partial<DashboardData> | null>(null);
   useEffect(() => {
-    const db = getDb();
     const ref = doc(db, "dashboard", docId);
     const unsub = onSnapshot(ref, (snap) => {
       if (snap.exists()) {
@@ -747,5 +717,3 @@ export default function Page() {
     </>
   );
 }
-
-    
