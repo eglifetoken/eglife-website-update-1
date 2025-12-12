@@ -5,11 +5,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Award, Trophy, Apple, Bot, Windows, Download } from "lucide-react";
+import { Award, Trophy, Apple, Bot, Windows, Download, Aperture, GitMerge, Lightbulb } from "lucide-react";
 import Link from 'next/link';
 import { getTokenData, type TokenData } from '@/ai/flows/getTokenData';
 import Image from 'next/image';
-
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const popularCoins = [
   { name: "BTC", fullName: "Bitcoin", price: "92,400.45", change: "+2.44%", isUp: true },
@@ -24,6 +24,33 @@ const newsItems = [
     { title: "BBVA Expands AI Collaboration with OpenAI to Enhance Global Operations", link: "#" },
     { title: "Venture Capital Shifts Focus in Crypto Investments", link: "#" },
 ]
+
+const faqItems = [
+    {
+        question: "Why is EGLIFE the best exchange for crypto traders?",
+        answer: "EGLIFE offers a unique hybrid model combining fintech services like utility payments with a robust cryptocurrency exchange. With low fees, high security, and real-world utility for the EGLIFE token, it's designed for both traders and everyday users."
+    },
+    {
+        question: "What products does EGLIFE provide?",
+        answer: "We provide a comprehensive ecosystem including: a crypto trading platform, an on-chain staking program with competitive yields, a P2P marketplace, and the EGPAY system for utility bill payments, recharges, and more."
+    },
+    {
+        question: "How to buy Bitcoin and other cryptocurrencies on EGLIFE?",
+        answer: "You can buy cryptocurrencies on EGLIFE through our P2P marketplace using local payment methods like UPI and bank transfer, or by swapping on decentralized exchanges like PancakeSwap directly from our DApp."
+    },
+    {
+        question: "How to track cryptocurrency prices?",
+        answer: "Our 'Home' and 'DApp' pages feature live price tracking for popular cryptocurrencies, including EGLIFE. You can see real-time prices, 24-hour changes, and other important market data."
+    },
+    {
+        question: "How to trade cryptocurrencies on EGLIFE?",
+        answer: "Currently, you can trade EGLIFE on PancakeSwap. Our upcoming exchange will feature spot and futures trading with advanced order types for a professional trading experience."
+    },
+    {
+        question: "How to earn from crypto on EGLIFE?",
+        answer: "You can earn passive income by staking your EGLIFE tokens in our staking program. Additionally, you can earn bonuses by participating in our referral program and inviting new users to the platform."
+    }
+];
 
 
 export default function HomePage() {
@@ -190,6 +217,25 @@ export default function HomePage() {
                         </Link>
                      </Button>
                  </div>
+            </section>
+
+             {/* FAQ Section */}
+            <section className="py-16">
+                <div className="text-center mb-12">
+                    <h2 className="text-5xl md:text-6xl font-bold">Frequently Asked Questions</h2>
+                </div>
+                <div className="max-w-4xl mx-auto">
+                    <Accordion type="single" collapsible className="w-full">
+                         {faqItems.map((item, index) => (
+                            <AccordionItem value={`item-${index + 1}`} key={index}>
+                                <AccordionTrigger className="text-lg">{item.question}</AccordionTrigger>
+                                <AccordionContent className="text-base text-foreground/80">
+                                    {item.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </div>
             </section>
         </div>
     );
