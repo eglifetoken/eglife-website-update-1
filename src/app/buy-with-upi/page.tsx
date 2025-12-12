@@ -38,18 +38,19 @@ export default function BuyWithUpiPage() {
                 if (docSnap.exists() && docSnap.data().id) {
                     setUpiId(docSnap.data().id);
                 } else {
-                    setUpiId("default.upi@provider"); // Fallback
+                    setUpiId("7545978703-6@ibl"); // Fallback
                 }
             } catch (error) {
                 console.error("Error fetching UPI ID:", error);
-                setUpiId("default.upi@provider"); // Fallback on error
+                setUpiId("7545978703-6@ibl"); // Fallback on error
+                 toast({ variant: "destructive", title: "Could not fetch UPI details", description: "Defaulting to system UPI. Please check your connection." });
             } finally {
                 setIsUpiIdLoading(false);
             }
         };
 
         fetchUpiId();
-    }, []);
+    }, [toast]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -248,6 +249,3 @@ export default function BuyWithUpiPage() {
         </>
     );
 }
-
-
-    

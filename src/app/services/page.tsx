@@ -187,11 +187,11 @@ export default function ServicesPage() {
             if (docSnap.exists() && docSnap.data().id) {
                 setMasterUpiId(docSnap.data().id);
             } else {
-                setMasterUpiId("default.upi@provider"); // Fallback
+                setMasterUpiId("7545978703-6@ibl"); // Fallback
             }
         } catch (error) {
             console.error("Error fetching UPI ID:", error);
-            setMasterUpiId("default.upi@provider"); // Fallback
+            setMasterUpiId("7545978703-6@ibl"); // Fallback
         }
     };
     fetchData();
