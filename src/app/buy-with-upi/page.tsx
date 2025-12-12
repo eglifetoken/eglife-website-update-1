@@ -7,15 +7,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { IndianRupee, Repeat, Loader2, ArrowLeft, CheckCircle, Info, ShieldCheck } from "lucide-react";
+import { IndianRupee, Repeat, Loader2, ArrowLeft, CheckCircle, Info, ShieldCheck, Wallet } from "lucide-react";
 import { getTokenData, TokenData } from '@/ai/flows/getTokenData';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { addDoc, collection, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAccount, useConnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 
 export default function BuyWithUpiPage() {
+    const { address, isConnected } = useAccount();
+    const { connect } = useConnect();
+    const { toast } = useToast();
+
     const [tokenData, setTokenData] = useState<TokenData | null>(null);
     const [inrAmount, setInrAmount] = useState("1000");
     const [eglifeAmount, setEglifeAmount] = useState("");
@@ -23,7 +29,6 @@ export default function BuyWithUpiPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isPaymentDialogVisible, setIsPaymentDialogVisible] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
-    const { toast } = useToast();
     const [upiId, setUpiId] = useState("");
     const [isUpiIdLoading, setIsUpiIdLoading] = useState(true);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -33,6 +38,14 @@ export default function BuyWithUpiPage() {
     useEffect(() => {
         setIsClient(true);
     }, []);
+
+    useEffect(() => {
+        if (isConnected && address) {
+            setWalletAddress(address);
+        } else {
+            setWalletAddress("");
+        }
+    }, [isConnected, address]);
 
 
     useEffect(() => {
@@ -137,7 +150,7 @@ export default function BuyWithUpiPage() {
     
      const closeAndReset = () => {
         setIsPaymentDialogVisible(false);
-        setWalletAddress("");
+        // Don't reset wallet address as it's tied to connection
         setInrAmount("1000");
     }
 
@@ -189,11 +202,22 @@ export default function BuyWithUpiPage() {
                         </div>
                         <div className="space-y-2 pt-4">
                             <Label htmlFor="walletAddress">Your BEP-20 Wallet Address</Label>
-                             <Input id="walletAddress" placeholder="Enter the 0x... address where you'll receive tokens" value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
+                            {isConnected ? (
+                                <Input 
+                                    id="walletAddress" 
+                                    readOnly 
+                                    value={walletAddress} 
+                                    className="font-mono bg-muted/50 cursor-not-allowed"
+                                />
+                            ) : (
+                                <Button variant="outline" className="w-full" onClick={() => connect({ connector: injected() })}>
+                                    <Wallet className="mr-2 h-4 w-4" /> Connect Wallet to Proceed
+                                </Button>
+                            )}
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
-                        <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0 || !walletAddress} onClick={handleProceedToPay}>
+                        <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0 || !walletAddress || !isConnected} onClick={handleProceedToPay}>
                             Proceed to Pay
                         </Button>
                         <Button asChild variant="outline" className="w-full">
