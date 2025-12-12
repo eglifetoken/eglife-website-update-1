@@ -22,7 +22,7 @@ import { formatEther } from "viem";
 import { bsc } from "wagmi/chains";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import QRCode from "qrcode.react";
+import { QRCode } from "qrcode.react";
 import { db } from "@/firebase/client";
 import { doc, getDoc } from "firebase/firestore";
 
