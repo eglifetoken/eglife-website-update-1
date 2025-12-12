@@ -274,7 +274,8 @@ export default function ServicesPage() {
             }
             console.log(`Processing recharge via UPI with Txn ID: ${upiTxnId}`);
         } else {
-            // Token payment logic remains the same
+            // Placeholder for token deduction logic
+            // In a real app, this would involve a smart contract call
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
 

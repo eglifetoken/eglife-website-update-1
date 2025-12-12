@@ -43,10 +43,11 @@ async function createJwtToken(): Promise<string> {
 
     const secret = new TextEncoder().encode(jwtSecret);
     const now = Math.floor(Date.now() / 1000);
+    const partnerId = process.env.PAYSPRINT_PARTNER_ID || "PS002091";
 
     const token = await new jose.SignJWT({
         "timestamp": now.toString(),
-        "partnerId": process.env.PAYSPRINT_PARTNER_ID || "PS002091",
+        "partnerId": partnerId,
         "reqid": uuidv4() // Unique request ID
     })
     .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
@@ -110,7 +111,7 @@ const mobileRechargeFlow = ai.defineFlow(
         } else {
              return {
                 success: false,
-                message: data.message || 'Failed to process recharge.',
+                message: data.message || 'Failed to process recharge from the provider.',
             };
         }
 
