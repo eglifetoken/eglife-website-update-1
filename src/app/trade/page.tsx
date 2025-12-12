@@ -139,9 +139,13 @@ export default function TradePage() {
         const checkRegistration = async () => {
             if (isConnected && address) {
                 const userRef = doc(db, 'p2p_users', address);
-                const docSnap = await getDoc(userRef);
-                if (docSnap.exists()) {
-                    setIsRegistered(true);
+                try {
+                    const docSnap = await getDoc(userRef);
+                    if (docSnap.exists()) {
+                        setIsRegistered(true);
+                    }
+                } catch (error) {
+                    console.error("Firebase check failed:", error);
                 }
             }
             setIsLoading(false);
