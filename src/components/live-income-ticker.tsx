@@ -68,12 +68,6 @@ export default function LiveIncomeTicker() {
                 Staked: {stakedAmount.toFixed(2)} EGLIFE
             </div>
        </CardContent>
-       <CardFooter className="flex-col gap-2">
-            <Button size="lg" disabled>
-                Claim Rewards
-            </Button>
-            <p className="text-xs text-muted-foreground">Claim button is temporarily disabled. Please use the one below.</p>
-       </CardFooter>
     </Card>
   );
 }
