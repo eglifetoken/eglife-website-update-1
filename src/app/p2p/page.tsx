@@ -307,17 +307,16 @@ export default function P2PPage() {
                             </div>
                          </div>
                         <div className="space-y-2">
-                            <Label htmlFor="upi-id">Your UPI ID (for receiving payment)</Label>
-                            <div className="flex items-center gap-2">
-                                <Landmark className="h-5 w-5 text-muted-foreground" />
-                                <Input id="upi-id" placeholder="your-name@upi" value={upiId} onChange={e => setUpiId(e.target.value)} />
-                            </div>
+                            <Label>Payment Method</Label>
+                             <CardDescription>Add and manage your payment methods in your <a href="/profile" className="underline text-primary">Profile</a>.</CardDescription>
+                            <Input id="upi-id" placeholder="Enter your UPI ID" value={upiId} onChange={e => setUpiId(e.target.value)} />
+                            <Button variant="link" className="p-0 h-auto text-xs" disabled>Select from saved Bank Accounts (Coming Soon)</Button>
                         </div>
                          <Alert>
                             <ShieldCheck className="h-4 w-4" />
-                            <AlertTitle>Token Hold (Escrow) - Coming Soon</AlertTitle>
+                            <AlertTitle>Token Hold (Escrow)</AlertTitle>
                             <AlertDescription>
-                              For your security, when you place a sell order, your tokens will be held in a secure smart contract (escrow). They will be automatically released to the buyer once you confirm payment. This feature is currently under development.
+                              To ensure safety for the buyer, when you place a sell order, your tokens will be held in a secure smart contract (escrow). They will be automatically released to the buyer once you confirm you have received the payment.
                             </AlertDescription>
                         </Alert>
                     </CardContent>

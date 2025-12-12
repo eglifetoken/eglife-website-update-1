@@ -5,22 +5,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useAccount } from "wagmi";
 import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2 } from "lucide-react";
 import QRCode from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 
-const mockAccounts = [
-    { id: 1, holderName: "Satoshi Nakamoto", bankName: "Bank of Blockchain", accountNumber: "XXXX XXXX XXXX 1234", ifsc: "BTC0000001" },
-    { id: 2, holderName: "Vitalik Buterin", bankName: "Ethereum Federal", accountNumber: "XXXX XXXX XXXX 5678", ifsc: "ETH0000002" },
-];
+interface BankAccount {
+    id: number;
+    holderName: string;
+    bankName: string;
+    accountNumber: string;
+    ifsc: string;
+}
 
 export default function ProfilePage() {
     const [isClient, setIsClient] = useState(false);
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
-    const [accounts, setAccounts] = useState(mockAccounts);
+    const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [upiId, setUpiId] = useState("user@egpay");
     const [qrValue, setQrValue] = useState<string | null>(null);
 
@@ -53,7 +56,7 @@ export default function ProfilePage() {
         });
     }
 
-    const generateQrCode = (account: any) => {
+    const generateQrCode = (account: BankAccount) => {
         const upiString = `upi://pay?pa=${upiId}&pn=${account.holderName}&am=&cu=INR&tn=Payment for EGLIFE`;
         setQrValue(upiString);
     }
@@ -68,7 +71,7 @@ export default function ProfilePage() {
             return;
         }
 
-        const newAccount = {
+        const newAccount: BankAccount = {
             id: Date.now(), // Use a simple unique ID for client-side state
             holderName: newHolderName,
             accountNumber: newAccountNumber,
@@ -113,7 +116,7 @@ export default function ProfilePage() {
             <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-headline font-bold">My Profile</h1>
                 <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                    Manage your connected accounts, UPI ID, and payment settings.
+                    Manage your connected accounts, UPI ID, and payment settings for P2P trading.
                 </p>
             </div>
 
@@ -170,7 +173,7 @@ export default function ProfilePage() {
                         <CardHeader className="flex flex-row justify-between items-start">
                             <div>
                                 <CardTitle className="font-headline">Linked Bank Accounts</CardTitle>
-                                <CardDescription>These accounts can be used to receive payments.</CardDescription>
+                                <CardDescription>These accounts can be used to receive P2P payments.</CardDescription>
                             </div>
                              <Dialog open={isAddAccountDialogOpen} onOpenChange={setIsAddAccountDialogOpen}>
                                 <DialogTrigger asChild>
@@ -209,10 +212,13 @@ export default function ProfilePage() {
                             <div className="space-y-4">
                                 {accounts.length > 0 ? accounts.map(account => (
                                     <div key={account.id} className="flex justify-between items-center p-4 border rounded-lg bg-muted/20">
-                                        <div>
-                                            <p className="font-semibold">{account.holderName}</p>
-                                            <p className="text-sm text-muted-foreground">{account.bankName}</p>
-                                            <p className="text-sm font-mono">{account.accountNumber}</p>
+                                        <div className="flex items-center gap-4">
+                                            <Banknote className="h-6 w-6 text-primary" />
+                                            <div>
+                                                <p className="font-semibold">{account.holderName}</p>
+                                                <p className="text-sm text-muted-foreground">{account.bankName}</p>
+                                                <p className="text-sm font-mono">{account.accountNumber} / {account.ifsc}</p>
+                                            </div>
                                         </div>
                                         <div className="flex items-center gap-2">
                                            <Dialog onOpenChange={(open) => !open && setQrValue(null)}>
