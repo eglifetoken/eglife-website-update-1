@@ -1,3 +1,4 @@
+
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { useAccount } from "wagmi";
 import { useToast } from "@/hooks/use-toast";
-import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2, UserPlus, AlertCircle, ShieldCheck, PenSquare } from "lucide-react";
+import { Handshake, Repeat, ShoppingCart, Tag, History, Landmark, IndianRupee, Loader2, UserPlus, AlertCircle, ShieldCheck, PenSquare, Filter, RefreshCw, MoreVertical, ChevronDown, CheckCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,20 +23,23 @@ import {
 import { db } from "@/firebase/client";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
-// Mock data for P2P orders
 const mockSellOrders = [
-  { id: '1', seller: 'CryptoKing', price: 2.50, available: 5000, minLimit: 500, maxLimit: 5000, method: 'UPI' },
-  { id: '2', seller: 'TokenTrader', price: 2.52, available: 10000, minLimit: 1000, maxLimit: 5000, method: 'UPI' },
-  { id: '3', seller: 'EGLifer', price: 2.55, available: 2500, minLimit: 100, maxLimit: 2500, method: 'IMPS' },
+  { id: '1', seller: 'CryptoKing', orders: 124, completion: '99.8%', avgTime: '10 min', price: 91.50, available: 5000, minLimit: 500, maxLimit: 50000, methods: ['UPI', 'IMPS'] },
+  { id: '2', seller: 'TokenTrader', orders: 471, completion: '100%', avgTime: '5 min', price: 91.52, available: 10000, minLimit: 1000, maxLimit: 85000, methods: ['Bank Transfer'] },
+  { id: '3', seller: 'EGLifer', orders: 88, completion: '98.5%', avgTime: '15 min', price: 91.55, available: 2500, minLimit: 100, maxLimit: 25000, methods: ['UPI'] },
+  { id: '4', seller: 'FastDealer', orders: 832, completion: '100%', avgTime: '2 min', price: 91.60, available: 25000, minLimit: 5000, maxLimit: 200000, methods: ['UPI', 'Google Pay', 'PhonePe'] },
 ];
 
 const mockUserOrders = [
-    { id: 'S001', type: 'SELL', amount: 2000, price: 2.51, status: 'OPEN' },
-    { id: 'B001', type: 'BUY', amount: 1000, price: 2.50, status: 'PENDING_PAYMENT' },
-    { id: 'B002', type: 'BUY', amount: 500, price: 2.52, status: 'COMPLETED' },
+    { id: 'S001', type: 'SELL', amount: 2000, price: 91.51, status: 'OPEN' },
+    { id: 'B001', type: 'BUY', amount: 1000, price: 91.50, status: 'PENDING_PAYMENT' },
+    { id: 'B002', type: 'BUY', amount: 500, price: 91.52, status: 'COMPLETED' },
 ];
+
+const cryptos = ['USDT', 'BTC', 'EGLIFE', 'FDUSD', 'BNB', 'ETH', 'ADA'];
 
 
 function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void }) {
@@ -113,6 +117,7 @@ export default function TradePage() {
     const [isClient, setIsClient] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeCrypto, setActiveCrypto] = useState('USDT');
 
     // State for creating a sell order
     const [sellAmount, setSellAmount] = useState('');
@@ -199,192 +204,180 @@ export default function TradePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-        <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-headline font-bold">P2P Trading</h1>
-            <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                Securely buy and sell EGLIFE tokens directly with other users.
-            </p>
+        <div className="flex items-center justify-between mb-6">
+            <Tabs defaultValue="p2p" className="w-full">
+                <TabsList>
+                    <TabsTrigger value="express">Express</TabsTrigger>
+                    <TabsTrigger value="p2p">P2P</TabsTrigger>
+                </TabsList>
+            </Tabs>
+             <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm">Post new Ad</Button>
+                <Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4"/></Button>
+            </div>
         </div>
 
         <Tabs defaultValue="buy" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="buy"><ShoppingCart className="mr-2 h-4 w-4" /> Buy</TabsTrigger>
-                <TabsTrigger value="sell"><PenSquare className="mr-2 h-4 w-4" /> Post Ad</TabsTrigger>
-                <TabsTrigger value="orders"><History className="mr-2 h-4 w-4" /> My Orders</TabsTrigger>
-            </TabsList>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                 <TabsList className="grid grid-cols-2 p-1 h-auto">
+                    <TabsTrigger value="buy" className="px-6 py-2">Buy</TabsTrigger>
+                    <TabsTrigger value="sell" className="px-6 py-2">Sell</TabsTrigger>
+                </TabsList>
+                <div className="flex-1 overflow-x-auto">
+                    <div className="flex items-center gap-4 border-b border-border">
+                        {cryptos.map(crypto => (
+                            <Button 
+                                key={crypto} 
+                                variant="ghost" 
+                                size="sm" 
+                                className={`shrink-0 rounded-none ${activeCrypto === crypto ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
+                                onClick={() => setActiveCrypto(crypto)}
+                            >
+                                {crypto}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-4 my-4 p-4 bg-card rounded-lg border">
+                <div className="flex-1 min-w-[200px]">
+                    <Label htmlFor="amount" className="text-xs text-muted-foreground">Amount</Label>
+                    <div className="relative">
+                        <Input id="amount" placeholder="Enter amount" className="pr-20"/>
+                        <div className="absolute inset-y-0 right-0 flex items-center">
+                            <Select defaultValue="INR">
+                                <SelectTrigger className="w-[70px] border-0 bg-transparent focus:ring-0 focus:ring-offset-0">
+                                    <SelectValue/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="INR">INR</SelectItem>
+                                    <SelectItem value="USD">USD</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-1 min-w-[200px]">
+                    <Label htmlFor="payment" className="text-xs text-muted-foreground">Payment Method</Label>
+                    <Select>
+                        <SelectTrigger id="payment">
+                            <SelectValue placeholder="All payment methods" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All payment methods</SelectItem>
+                            <SelectItem value="upi">UPI</SelectItem>
+                            <SelectItem value="imps">IMPS</SelectItem>
+                            <SelectItem value="bank">Bank Transfer</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="flex items-end gap-2">
+                    <Button>Search</Button>
+                    <Button variant="ghost" size="sm">Reset</Button>
+                </div>
+            </div>
 
-            {/* BUY TAB */}
             <TabsContent value="buy">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Buy EGLIFE</CardTitle>
-                        <CardDescription>Find offers from sellers. Pay them directly and receive tokens in your wallet.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                         <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Seller</TableHead>
-                                    <TableHead>Price (INR)</TableHead>
-                                    <TableHead>Available / Limit</TableHead>
-                                    <TableHead>Payment Method</TableHead>
-                                    <TableHead className="text-right">Action</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {mockSellOrders.map((order) => (
-                                    <TableRow key={order.id}>
-                                        <TableCell><div className="font-medium">{order.seller}</div></TableCell>
-                                        <TableCell className="font-semibold text-green-500">₹{order.price.toFixed(2)}</TableCell>
-                                        <TableCell>
-                                            <div>{order.available.toLocaleString()} EGLIFE</div>
-                                            <div className="text-xs text-muted-foreground">₹{order.minLimit} - ₹{order.maxLimit}</div>
-                                        </TableCell>
-                                        <TableCell><Badge variant="secondary">{order.method}</Badge></TableCell>
-                                        <TableCell className="text-right">
-                                            <Dialog onOpenChange={() => setBuyAmountInr('')}>
-                                                <DialogTrigger asChild>
-                                                    <Button size="sm" onClick={() => setSelectedOrder(order)}>Buy</Button>
-                                                </DialogTrigger>
-                                                <DialogContent>
-                                                    <DialogHeader>
-                                                        <DialogTitle>Buy from {selectedOrder?.seller}</DialogTitle>
-                                                        <DialogDescription>
-                                                            Price: ₹{selectedOrder?.price.toFixed(2)} per EGLIFE
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <div className="space-y-4 py-4">
-                                                        <div className="space-y-2">
-                                                            <Label>I want to pay (INR)</Label>
-                                                            <div className="relative">
-                                                                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                                                <Input type="number" placeholder={`Min: ${selectedOrder?.minLimit}, Max: ${selectedOrder?.maxLimit}`} className="pl-8" value={buyAmountInr} onChange={(e) => setBuyAmountInr(e.target.value)} />
-                                                            </div>
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <Label>I will receive (EGLIFE)</Label>
-                                                            <div className="relative">
-                                                                <Repeat className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                                                <Input value={calculatedEglifeToReceive} readOnly className="pl-8 font-bold"/>
-                                                            </div>
-                                                        </div>
-                                                        <Alert variant="destructive">
-                                                          <AlertCircle className="h-4 w-4" />
-                                                          <AlertTitle>Important</AlertTitle>
-                                                          <AlertDescription>
-                                                            Please transfer funds only to the seller's verified payment method shown on the next screen. Do not trust payment details sent via chat.
-                                                          </AlertDescription>
-                                                        </Alert>
-                                                    </div>
-                                                    <DialogFooter>
-                                                        <Button type="button" variant="outline">Cancel</Button>
-                                                        <Button type="submit" disabled={!buyAmountInr || parseFloat(buyAmountInr) < (selectedOrder?.minLimit ?? 0) || parseFloat(buyAmountInr) > (selectedOrder?.maxLimit ?? Infinity)}>Confirm Buy</Button>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>
-            </TabsContent>
-
-            {/* SELL TAB */}
-            <TabsContent value="sell">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Post a Sell Ad</CardTitle>
-                        <CardDescription>Set your price and terms to sell your EGLIFE tokens.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                             <div className="space-y-2">
-                                <Label htmlFor="sell-amount">Amount to Sell (EGLIFE)</Label>
-                                <Input id="sell-amount" type="number" placeholder="e.g., 1000" value={sellAmount} onChange={e => setSellAmount(e.target.value)} />
+                        <div className="flex justify-between items-center">
+                            <CardTitle>Buy {activeCrypto}</CardTitle>
+                            <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm"><RefreshCw className="mr-2 h-4 w-4"/>Refresh</Button>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="sell-price">Price per Token (INR)</Label>
-                                <Input id="sell-price" type="number" placeholder="e.g., 2.55" value={sellPrice} onChange={e => setSellPrice(e.target.value)} />
-                            </div>
-                         </div>
-                        <div className="space-y-2">
-                            <Label>Payment Method</Label>
-                             <CardDescription>Add and manage your payment methods in your <a href="/profile" className="underline text-primary">Profile</a>.</CardDescription>
-                            <Input id="upi-id" placeholder="Enter your UPI ID" value={upiId} onChange={e => setUpiId(e.target.value)} />
-                            <Button variant="link" className="p-0 h-auto text-xs" disabled>Select from saved Bank Accounts (Coming Soon)</Button>
                         </div>
-                         <Alert>
-                            <ShieldCheck className="h-4 w-4" />
-                            <AlertTitle>Token Hold (Escrow)</AlertTitle>
-                            <AlertDescription>
-                              To ensure safety for the buyer, when you place a sell order, your tokens will be held in a secure smart contract (escrow). They will be automatically released to the buyer once you confirm you have received the payment.
-                            </AlertDescription>
-                        </Alert>
-                    </CardContent>
-                    <CardFooter>
-                        <Button className="w-full" disabled={isCreatingOrder || !isConnected} onClick={handleCreateOrder}>
-                            {isCreatingOrder ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Handshake className="mr-2 h-4 w-4" />}
-                            Post Sell Ad
-                        </Button>
-                    </CardFooter>
-                </Card>
-            </TabsContent>
-
-            {/* MY ORDERS TAB */}
-            <TabsContent value="orders">
-                 <Card>
-                    <CardHeader>
-                        <CardTitle>My P2P Orders</CardTitle>
-                        <CardDescription>Track the status of your ongoing and completed trades.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                         <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Order ID</TableHead>
-                                    <TableHead>Type</TableHead>
-                                    <TableHead>Amount (EGLIFE)</TableHead>
-                                    <TableHead>Price (INR)</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right">Action</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {mockUserOrders.map((order) => (
-                                    <TableRow key={order.id}>
-                                        <TableCell className="font-mono text-xs">{order.id}</TableCell>
-                                        <TableCell>
-                                            <Badge variant={order.type === 'SELL' ? 'destructive' : 'default'}>{order.type}</Badge>
-                                        </TableCell>
-                                        <TableCell>{order.amount.toLocaleString()}</TableCell>
-                                        <TableCell>₹{order.price.toFixed(2)}</TableCell>
-                                        <TableCell>
-                                            <Badge variant="outline">{order.status.replace('_', ' ')}</Badge>
-                                        </TableCell>
-                                        <TableCell className="text-right flex items-center justify-end gap-2">
-                                            <Button variant="ghost" size="sm">View</Button>
-                                            <Button variant="outline" size="sm" className="text-destructive border-destructive/50 hover:bg-destructive/10 hover:text-destructive">
-                                                Raise Dispute
-                                            </Button>
-                                        </TableCell>
+                         <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="min-w-[200px]">Advertisers</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead className="min-w-[200px]">Available | Limit</TableHead>
+                                        <TableHead className="min-w-[150px]">Payment</TableHead>
+                                        <TableHead className="text-right">Trade</TableHead>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                         <Alert className="mt-6">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Dispute Resolution - Coming Soon</AlertTitle>
-                            <AlertDescription>
-                              If a buyer has paid but you (the seller) haven't released the tokens, or vice versa, the "Raise Dispute" button will allow an admin to investigate and resolve the issue. This feature is under development.
-                            </AlertDescription>
-                        </Alert>
+                                </TableHeader>
+                                <TableBody>
+                                    {mockSellOrders.map((order) => (
+                                        <TableRow key={order.id}>
+                                            <TableCell>
+                                                <div className="flex items-center gap-2">
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.seller.charAt(0)}</div>
+                                                    <div>
+                                                        <div className="font-bold">{order.seller}</div>
+                                                        <div className="text-xs text-muted-foreground">
+                                                            <span>{order.orders} orders</span>
+                                                            <span className="mx-1">|</span>
+                                                            <span>{order.completion} completion</span>
+                                                        </div>
+                                                        <div className="text-xs text-muted-foreground">{order.avgTime} avg. release</div>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-lg font-semibold">₹{order.price.toFixed(2)}</TableCell>
+                                            <TableCell>
+                                                <div><span className="font-semibold">{order.available.toLocaleString()}</span> <span className="text-muted-foreground">{activeCrypto}</span></div>
+                                                <div className="text-xs text-muted-foreground">Limit: ₹{order.minLimit.toLocaleString()} - ₹{order.maxLimit.toLocaleString()}</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex flex-col gap-1">
+                                                    {order.methods.map(method => <Badge key={method} variant="outline" className="w-fit">{method}</Badge>)}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <Dialog onOpenChange={() => setBuyAmountInr('')}>
+                                                    <DialogTrigger asChild>
+                                                        <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => setSelectedOrder(order)}>Buy {activeCrypto}</Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>Buy {activeCrypto} from {selectedOrder?.seller}</DialogTitle>
+                                                            <DialogDescription>
+                                                                Price: ₹{selectedOrder?.price.toFixed(2)} per {activeCrypto}
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="space-y-4 py-4">
+                                                            <div className="space-y-2">
+                                                                <Label>I want to pay (INR)</Label>
+                                                                <div className="relative">
+                                                                    <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                                                    <Input type="number" placeholder={`Min: ${selectedOrder?.minLimit}, Max: ${selectedOrder?.maxLimit}`} className="pl-8" value={buyAmountInr} onChange={(e) => setBuyAmountInr(e.target.value)} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <Label>I will receive ({activeCrypto})</Label>
+                                                                <div className="relative">
+                                                                    <Repeat className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                                                    <Input value={calculatedEglifeToReceive} readOnly className="pl-8 font-bold"/>
+                                                                </div>
+                                                            </div>
+                                                            <Alert variant="destructive">
+                                                            <AlertCircle className="h-4 w-4" />
+                                                            <AlertTitle>Important</AlertTitle>
+                                                            <AlertDescription>
+                                                                Please transfer funds only to the seller's verified payment method shown on the next screen. Do not trust payment details sent via chat.
+                                                            </AlertDescription>
+                                                            </Alert>
+                                                        </div>
+                                                        <DialogFooter>
+                                                            <Button type="button" variant="outline">Cancel</Button>
+                                                            <Button type="submit" disabled={!buyAmountInr || parseFloat(buyAmountInr) < (selectedOrder?.minLimit ?? 0) || parseFloat(buyAmountInr) > (selectedOrder?.maxLimit ?? Infinity)}>Confirm Buy</Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                         </div>
                     </CardContent>
                 </Card>
             </TabsContent>
         </Tabs>
-
     </div>
   );
 }
