@@ -28,9 +28,16 @@ export default function BuyWithUpiPage() {
     const [isUpiIdLoading, setIsUpiIdLoading] = useState(true);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [paymentSuccess, setPaymentSuccess] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
 
     useEffect(() => {
         const fetchUpiId = async () => {
+            if (!isClient) return;
             setIsUpiIdLoading(true);
             try {
                 const docRef = doc(db, "settings", "upi");
@@ -50,7 +57,7 @@ export default function BuyWithUpiPage() {
         };
 
         fetchUpiId();
-    }, [toast]);
+    }, [isClient, toast]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -249,4 +256,6 @@ export default function BuyWithUpiPage() {
         </>
     );
 }
+    
+
     
