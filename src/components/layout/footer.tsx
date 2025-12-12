@@ -19,7 +19,7 @@ const footerLinks = {
     ],
     "Services": [
         { href: "/staking", label: "Staking" },
-        { href: "/p2p", label: "P2P Trading" },
+        { href: "/trade", label: "Trade" },
         { href: "/services", label: "Utility Payments" },
         { href: "/referral", label: "Referral Program" },
     ],

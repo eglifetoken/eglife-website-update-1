@@ -1,4 +1,3 @@
-
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -108,7 +107,7 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
 }
 
 
-export default function P2PPage() {
+export default function TradePage() {
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
@@ -389,5 +388,3 @@ export default function P2PPage() {
     </div>
   );
 }
-
-    
