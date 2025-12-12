@@ -40,17 +40,17 @@ export default function BuyWithUpiPage() {
     }, []);
 
     useEffect(() => {
-        if (isConnected && address) {
+        if (isClient && isConnected && address) {
             setWalletAddress(address);
-        } else {
+        } else if (isClient && !isConnected) {
             setWalletAddress("");
         }
-    }, [isConnected, address]);
+    }, [isClient, isConnected, address]);
 
 
     useEffect(() => {
+        if (!isClient) return;
         const fetchUpiId = async () => {
-            if (!isClient) return;
             setIsUpiIdLoading(true);
             try {
                 const docRef = doc(db, "settings", "upi");
@@ -202,17 +202,25 @@ export default function BuyWithUpiPage() {
                         </div>
                         <div className="space-y-2 pt-4">
                             <Label htmlFor="walletAddress">Your BEP-20 Wallet Address</Label>
-                            {isConnected ? (
+                            {isClient && isConnected ? (
                                 <Input 
                                     id="walletAddress" 
                                     readOnly 
                                     value={walletAddress} 
                                     className="font-mono bg-muted/50 cursor-not-allowed"
                                 />
-                            ) : (
+                            ) : isClient ? (
                                 <Button variant="outline" className="w-full" onClick={() => connect({ connector: injected() })}>
                                     <Wallet className="mr-2 h-4 w-4" /> Connect Wallet to Proceed
                                 </Button>
+                            ) : (
+                                <Input 
+                                    id="walletAddress" 
+                                    readOnly 
+                                    value="Loading..." 
+                                    className="font-mono bg-muted/50 cursor-not-allowed"
+                                    disabled
+                                />
                             )}
                         </div>
                     </CardContent>
