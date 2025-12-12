@@ -11,11 +11,11 @@ const EGLIFE_CONTRACT_ADDRESS = "0xca326a5e15b9451efC1A6BddaD6fB098a4D09113";
 const PANCAKESWAP_BUY_URL = `https://pancakeswap.finance/swap?outputCurrency=${EGLIFE_CONTRACT_ADDRESS}`;
 
 const features = [
-    { icon: DollarSign, title: "Spot & Futures Trading", description: "Trade a wide range of cryptocurrencies with advanced order types and deep liquidity." },
-    { icon: BarChart, title: "Advanced Charting", description: "Utilize professional-grade charting tools to analyze market trends and make informed decisions." },
-    { icon: Users, title: "P2P Marketplace", description: "Buy and sell crypto directly with other users using your preferred local payment methods." },
-    { icon: ShieldCheck, title: "Secure Wallet", description: "Manage your crypto and INR funds in a secure, multi-currency wallet with robust safety features." },
-    { icon: Zap, title: "Instant Payments", description: "Pay utility bills, recharge your mobile, and more using the integrated EGPAY system." },
+    { icon: DollarSign, title: "Spot & Futures Trading", description: "Trade a wide range of cryptocurrencies with advanced order types and deep liquidity.", href: "/dapp" },
+    { icon: BarChart, title: "Advanced Charting", description: "Utilize professional-grade charting tools to analyze market trends and make informed decisions.", href: "/home" },
+    { icon: Users, title: "P2P Marketplace", description: "Buy and sell crypto directly with other users using your preferred local payment methods.", href: "/p2p" },
+    { icon: ShieldCheck, title: "Secure Wallet", description: "Manage your crypto and INR funds in a secure, multi-currency wallet with robust safety features.", href: "/register" },
+    { icon: Zap, title: "Instant Payments", description: "Pay utility bills, recharge your mobile, and more using the integrated EGPAY system.", href: "/services" },
 ];
 
 export default function Home() {
@@ -61,17 +61,19 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
-                    <Card key={index} className="bg-card/50 backdrop-blur-sm border-primary/20">
-                        <CardHeader className="flex flex-row items-center gap-4">
-                            <div className="p-3 bg-primary/10 rounded-md">
-                                <feature.icon className="h-6 w-6 text-primary" />
-                            </div>
-                            <CardTitle className="font-headline text-xl">{feature.title}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-foreground/80">{feature.description}</p>
-                        </CardContent>
-                    </Card>
+                    <Link href={feature.href} key={index} className="block">
+                        <Card className="bg-card/50 backdrop-blur-sm border-primary/20 h-full hover:-translate-y-2 transition-transform duration-300">
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <div className="p-3 bg-primary/10 rounded-md">
+                                    <feature.icon className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="font-headline text-xl">{feature.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-foreground/80">{feature.description}</p>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 ))}
                  <Card className="md:col-span-2 lg:col-span-3 bg-primary/10 border-primary text-center">
                     <CardHeader>
