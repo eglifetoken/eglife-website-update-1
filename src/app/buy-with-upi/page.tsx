@@ -27,10 +27,12 @@ export default function BuyWithUpiPage() {
     const [mobileNumber, setMobileNumber] = useState("");
     const [walletAddress, setWalletAddress] = useState("");
     const { toast } = useToast();
-    const [upiId, setUpiId] = useState("loading...");
+    const [upiId, setUpiId] = useState("");
+    const [isUpiIdLoading, setIsUpiIdLoading] = useState(true);
 
     useEffect(() => {
         const fetchUpiId = async () => {
+            setIsUpiIdLoading(true);
             try {
                 const docRef = doc(db, "settings", "upi");
                 const docSnap = await getDoc(docRef);
@@ -41,12 +43,19 @@ export default function BuyWithUpiPage() {
                 }
             } catch (error) {
                 console.error("Error fetching UPI ID:", error);
-                setUpiId("default.upi@provider"); // Fallback
+                setUpiId("default.upi@provider"); // Fallback on error
+                toast({
+                    variant: "destructive",
+                    title: "Could Not Fetch UPI ID",
+                    description: "Please check your connection and try again.",
+                });
+            } finally {
+                setIsUpiIdLoading(false);
             }
         };
 
         fetchUpiId();
-    }, []);
+    }, [toast]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -180,11 +189,11 @@ export default function BuyWithUpiPage() {
                     <DialogHeader>
                         <DialogTitle className="font-headline text-xl">Step 1: Scan & Pay</DialogTitle>
                         <DialogDescription>
-                            Use any UPI app to scan the QR code below or pay to <strong>{upiId}</strong>.
+                            Use any UPI app to scan the QR code below or pay to <strong>{isUpiIdLoading ? '...' : upiId}</strong>.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex items-center justify-center p-4 bg-white rounded-lg">
-                        {upiId === "loading..." ? <Loader2 className="h-12 w-12 animate-spin"/> : <QRCode value={qrValue} size={200} />}
+                    <div className="flex items-center justify-center p-4 bg-white rounded-lg min-h-[232px]">
+                        {isUpiIdLoading ? <Loader2 className="h-12 w-12 animate-spin text-primary"/> : <QRCode value={qrValue} size={200} />}
                     </div>
                     <div className="text-center font-mono text-lg">
                         Amount: <strong>₹{inrAmount}</strong>
