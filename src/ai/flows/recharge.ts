@@ -98,7 +98,18 @@ const mobileRechargeFlow = ai.defineFlow(
             }),
         });
 
-        const data = await response.json();
+        // The API might return HTML (e.g., an error page) which isn't valid JSON.
+        // We need to handle this gracefully.
+        let data;
+        try {
+            data = await response.json();
+        } catch (jsonError) {
+             return {
+                success: false,
+                message: 'Received an invalid response from the recharge provider. Please try again later.',
+            };
+        }
+
 
         // Based on Paysprint documentation, a successful response has status 'true' or '2' (pending)
         if (response.ok && (data.status === true || data.status === 2)) {
