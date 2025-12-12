@@ -68,7 +68,7 @@ function Calendar({
             const changeEvent = {
               target: { value },
             } as React.ChangeEvent<HTMLSelectElement>
-            onChange?.(changeEvent)
+            if (onChange) onChange(changeEvent)
           }
           return (
             <Select
