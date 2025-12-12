@@ -2,13 +2,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowUpRight, ArrowDownRight, Award, Trophy, ShieldCheck } from "lucide-react";
+import { Award, Trophy, Apple, Bot, Windows, Download } from "lucide-react";
 import Link from 'next/link';
 import { getTokenData, type TokenData } from '@/ai/flows/getTokenData';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import Image from 'next/image';
 
 
 const popularCoins = [
@@ -152,6 +152,44 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
+            </section>
+            
+            {/* Trade on the Go Section */}
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16">
+                 <div className="flex justify-center">
+                    <Image src="https://placehold.co/350x700/0F172A/FFF" alt="EGLIFE Mobile App" width={350} height={700} className="rounded-3xl shadow-2xl"/>
+                 </div>
+                 <div className="text-center lg:text-left">
+                    <h2 className="text-5xl md:text-6xl font-bold">Trade on the go.</h2>
+                    <p className="text-5xl md:text-6xl font-bold text-primary">Anywhere, anytime.</p>
+                     <div className="mt-8 flex flex-col sm:flex-row items-center gap-8 justify-center lg:justify-start">
+                        <div className="space-y-4 text-center">
+                            <div className="p-4 bg-card rounded-xl border inline-block">
+                                <Image src="https://placehold.co/128x128/FFFFFF/000000?text=QR" alt="QR Code to download app" width={128} height={128} />
+                            </div>
+                            <p className="text-sm text-foreground/80">Scan to Download App</p>
+                        </div>
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <Apple className="h-8 w-8 text-foreground" />
+                                <span className="font-medium">iOS</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <Bot className="h-8 w-8 text-foreground" />
+                                <span className="font-medium">Android</span>
+                            </div>
+                             <div className="flex items-center gap-4">
+                                <Windows className="h-8 w-8 text-foreground" />
+                                <span className="font-medium">Windows</span>
+                            </div>
+                        </div>
+                     </div>
+                     <Button variant="link" className="mt-8" asChild>
+                        <Link href="#">
+                            More Download Options <Download className="ml-2 h-4 w-4" />
+                        </Link>
+                     </Button>
+                 </div>
             </section>
         </div>
     );
