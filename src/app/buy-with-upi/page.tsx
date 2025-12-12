@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { IndianRupee, Repeat, Loader2, ArrowLeft, CheckCircle, Info } from "lucide-react";
+import { IndianRupee, Repeat, Loader2, ArrowLeft, CheckCircle, Info, ShieldCheck } from "lucide-react";
 import { getTokenData, TokenData } from '@/ai/flows/getTokenData';
 import Link from 'next/link';
-import QRCode from "qrcode.react";
 import { useToast } from '@/hooks/use-toast';
 import { addDoc, collection, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/client';
@@ -22,13 +21,13 @@ export default function BuyWithUpiPage() {
     const [eglifeAmount, setEglifeAmount] = useState("");
     const [loading, setLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isQrVisible, setIsQrVisible] = useState(false);
-    const [txnId, setTxnId] = useState("");
-    const [mobileNumber, setMobileNumber] = useState("");
+    const [isPaymentDialogVisible, setIsPaymentDialogVisible] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
     const { toast } = useToast();
     const [upiId, setUpiId] = useState("");
     const [isUpiIdLoading, setIsUpiIdLoading] = useState(true);
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
 
     useEffect(() => {
         const fetchUpiId = async () => {
@@ -44,18 +43,13 @@ export default function BuyWithUpiPage() {
             } catch (error) {
                 console.error("Error fetching UPI ID:", error);
                 setUpiId("default.upi@provider"); // Fallback on error
-                toast({
-                    variant: "destructive",
-                    title: "Could Not Fetch UPI ID",
-                    description: "Please check your connection and try again.",
-                });
             } finally {
                 setIsUpiIdLoading(false);
             }
         };
 
         fetchUpiId();
-    }, [toast]);
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -84,37 +78,46 @@ export default function BuyWithUpiPage() {
         }
     }, [inrAmount, tokenData]);
 
-    const qrValue = `upi://pay?pa=${upiId}&pn=EGLIFE TOKEN&am=${inrAmount}&cu=INR`;
-
-    const handleSubmitRequest = async () => {
-        if (!txnId || !walletAddress || !mobileNumber) {
-            toast({ variant: "destructive", title: "Missing Details", description: "Please provide your Wallet Address, Transaction ID and Mobile Number." });
+    const handleProceedToPay = () => {
+        if (!walletAddress) {
+            toast({ variant: "destructive", title: "Wallet Address Required", description: "Please enter your BEP-20 wallet address to receive tokens." });
             return;
         }
+        setIsPaymentDialogVisible(true);
+        setPaymentSuccess(false);
+        setIsProcessingPayment(false);
+    }
 
+    const handleSimulatePayment = async () => {
+        setIsProcessingPayment(true);
+        // Simulate API call to payment gateway
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // On success from gateway
+        setPaymentSuccess(true);
+        setIsProcessingPayment(false);
+
+        // Now, submit the request to our backend for token transfer
+        await handleSubmitRequest();
+    }
+
+
+    const handleSubmitRequest = async () => {
         setIsSubmitting(true);
         try {
              const docRef = await addDoc(collection(db, "upi_buy_requests"), {
                 amountInInr: Number(inrAmount),
                 tokensToReceive: parseFloat(eglifeAmount),
                 walletAddress,
-                mobileNumber,
-                txnId,
                 status: "pending",
+                paymentStatus: "paid",
                 createdAt: serverTimestamp(),
             });
 
             toast({
                 title: "Request Submitted!",
-                description: `Your request (Ref ID: ${docRef.id.slice(0,10)}...) has been sent. Admin will verify and transfer EGLIFE tokens.`
+                description: `Admin will verify and transfer ${eglifeAmount} EGLIFE to your wallet. Ref: ${docRef.id.slice(0,10)}...`
             });
-
-            // Reset form and close dialog
-            setTxnId("");
-            setMobileNumber("");
-            setWalletAddress("");
-            setInrAmount("1000");
-            setIsQrVisible(false);
 
         } catch (err) {
             console.error(err);
@@ -122,6 +125,12 @@ export default function BuyWithUpiPage() {
         } finally {
             setIsSubmitting(false);
         }
+    }
+    
+     const closeAndReset = () => {
+        setIsPaymentDialogVisible(false);
+        setWalletAddress("");
+        setInrAmount("1000");
     }
 
     return (
@@ -133,7 +142,7 @@ export default function BuyWithUpiPage() {
                             <IndianRupee className="h-7 w-7 text-primary" />
                             Buy EGLIFE with UPI
                         </CardTitle>
-                        <CardDescription>Enter the amount you wish to purchase.</CardDescription>
+                        <CardDescription>A fast and easy way to buy EGLIFE tokens directly using UPI.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-2">
@@ -170,9 +179,13 @@ export default function BuyWithUpiPage() {
                             </div>
                             {loading && <p className="text-xs text-muted-foreground flex items-center gap-2"><Loader2 className="h-3 w-3 animate-spin"/>Fetching live price...</p>}
                         </div>
+                        <div className="space-y-2 pt-4">
+                            <Label htmlFor="walletAddress">Your BEP-20 Wallet Address</Label>
+                             <Input id="walletAddress" placeholder="Enter the 0x... address where you'll receive tokens" value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
+                        </div>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
-                        <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0} onClick={() => setIsQrVisible(true)}>
+                        <Button className="w-full" size="lg" disabled={!inrAmount || parseFloat(inrAmount) <= 0 || !walletAddress} onClick={handleProceedToPay}>
                             Proceed to Pay
                         </Button>
                         <Button asChild variant="outline" className="w-full">
@@ -184,49 +197,57 @@ export default function BuyWithUpiPage() {
                 </Card>
             </div>
 
-            <Dialog open={isQrVisible} onOpenChange={setIsQrVisible}>
+            <Dialog open={isPaymentDialogVisible} onOpenChange={setIsPaymentDialogVisible}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle className="font-headline text-xl">Step 1: Scan & Pay</DialogTitle>
-                        <DialogDescription>
-                            Use any UPI app to scan the QR code below or pay to <strong>{isUpiIdLoading ? '...' : upiId}</strong>.
+                        <DialogTitle className="font-headline text-xl">Confirm Your Purchase</DialogTitle>
+                         <DialogDescription>
+                            Review your order before proceeding to the secure payment gateway.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex items-center justify-center p-4 bg-white rounded-lg min-h-[232px]">
-                        {isUpiIdLoading ? <Loader2 className="h-12 w-12 animate-spin text-primary"/> : <QRCode value={qrValue} size={200} />}
-                    </div>
-                    <div className="text-center font-mono text-lg">
-                        Amount: <strong>₹{inrAmount}</strong>
-                    </div>
-
-                    <div className="space-y-4 pt-4">
-                         <Alert variant="default" className="border-primary/50">
-                            <Info className="h-4 w-4" />
-                            <AlertTitle className="font-bold">Step 2: Submit Details</AlertTitle>
-                            <AlertDescription>After payment, enter your wallet address and the UPI Transaction ID below to receive your tokens.</AlertDescription>
-                        </Alert>
-                         <div className="space-y-2">
-                            <Label htmlFor="walletAddress">Your BEP-20 Wallet Address</Label>
-                            <Input id="walletAddress" placeholder="0x..." value={walletAddress} onChange={(e) => setWalletAddress(e.target.value)} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="txnId">UPI Transaction ID / UTR</Label>
-                            <Input id="txnId" placeholder="12-digit transaction ID" value={txnId} onChange={(e) => setTxnId(e.target.value)} />
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="mobileNumber">Mobile Number (for contact)</Label>
-                            <Input id="mobileNumber" placeholder="Your Mobile Number" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-                        </div>
-                    </div>
                     
-                    <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setIsQrVisible(false)}>Cancel</Button>
-                        <Button type="button" onClick={handleSubmitRequest} disabled={isSubmitting}>
-                            {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Submitting...</> : <><CheckCircle className="mr-2 h-4 w-4"/>Confirm & Submit</>}
-                        </Button>
-                    </DialogFooter>
+                    {!paymentSuccess ? (
+                        <div className="space-y-6 py-4">
+                            <div className="p-4 rounded-lg border bg-muted/50">
+                                <div className="flex justify-between items-center text-lg">
+                                    <span className="text-muted-foreground">You Pay</span>
+                                    <span className="font-bold">₹{inrAmount}</span>
+                                </div>
+                                <div className="flex justify-between items-center mt-2">
+                                     <span className="text-muted-foreground">You Get (approx.)</span>
+                                    <span className="font-bold">{eglifeAmount} EGLIFE</span>
+                                </div>
+                            </div>
+                             <div className="p-4 rounded-lg border">
+                                <p className="text-xs text-muted-foreground mb-1">Tokens will be sent to:</p>
+                                <p className="text-xs font-mono break-all">{walletAddress}</p>
+                            </div>
+                            <Button className="w-full" size="lg" onClick={handleSimulatePayment} disabled={isProcessingPayment}>
+                                {isProcessingPayment ? 
+                                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Processing Payment...</> : 
+                                    <>Pay with UPI / QR</>
+                                }
+                            </Button>
+                             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                                <ShieldCheck className="h-4 w-4"/>
+                                <span>Powered by EGPAY Secure Gateway</span>
+                            </div>
+                        </div>
+                    ) : (
+                         <div className="space-y-6 py-4 text-center">
+                            <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
+                            <h2 className="text-xl font-bold">Payment Successful!</h2>
+                            <p className="text-muted-foreground">Your request has been submitted. The admin will verify your payment and transfer {eglifeAmount} EGLIFE tokens to your wallet shortly.</p>
+                            <Button className="w-full" onClick={closeAndReset}>Done</Button>
+                        </div>
+                    )}
+                   
+
                 </DialogContent>
             </Dialog>
         </>
     );
 }
+
+
+    
