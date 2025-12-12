@@ -19,7 +19,6 @@ const stakingContractAbi = [{"inputs":[{"internalType":"address","name":"_token"
 export default function LiveIncomeTicker() {
   const { address: userAddress } = useAccount();
   const chainId = useChainId();
-  const [ready, setReady] = useState(false);
   const [liveEgl, setLiveEgl] = useState('0.000000');
 
   const { data: stakeData } = useReadContract({
@@ -46,7 +45,6 @@ export default function LiveIncomeTicker() {
 
   useEffect(() => {
     // This effect simply updates the UI whenever the on-chain data changes.
-    // The real-time ticker logic has been removed as it was complex and potentially inaccurate.
     // Wagmi's refetchInterval provides a good balance of liveness and simplicity.
     setLiveEgl(earnedAmount.toFixed(6));
   }, [earnedAmount]);
@@ -71,6 +69,3 @@ export default function LiveIncomeTicker() {
     </Card>
   );
 }
-
-    
-    

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp, Users, ShieldCheck } from "lucide-react"
+import { PiggyBank, Landmark, Wallet, HelpCircle, AlertTriangle, Link as LinkIcon, Link2Off, ArrowRight, ArrowLeft, Loader2, Info, RefreshCw, Award, History, LineChart, CheckCircle2, UserCheck, ArrowUp, Users, ShieldCheck, HandCoins } from "lucide-react"
 import { StakingFAQ } from "@/components/staking-faq"
 import { useAccount, useConnect, useBalance, useWriteContract, useDisconnect, useReadContract, useSwitchChain, useChainId } from 'wagmi'
 import { injected } from 'wagmi/connectors'
@@ -18,7 +18,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { bsc } from "wagmi/chains"
 import { RewardsHistoryDialog } from "@/components/rewards-history-dialog"
-import LiveIncomeTicker from "@/components/live-income-ticker"
 
 
 const EGLIFE_TOKEN_CONTRACT = '0xca326a5e15b9451efC1A6BddaD6fB098a4D09113';
@@ -118,6 +117,7 @@ function StakingPageContent() {
 
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
+  const [claimAmount, setClaimAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -126,8 +126,8 @@ function StakingPageContent() {
   const { writeContractAsync } = useWriteContract();
 
   const totalStaked = stakedData ? parseFloat(formatEther(stakedData as bigint)) : 0.00;
-  const availableToClaim = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
-  const totalEarned = availableToClaim + totalClaimed;
+  const availableToClaimNum = earnedData ? parseFloat(formatEther(earnedData as bigint)) : 0.00;
+  const totalEarned = availableToClaimNum + totalClaimed;
   
   const parsedStakeAmount = stakeAmount ? parseEther(stakeAmount) : 0n;
   const needsApproval = allowance !== undefined && parsedStakeAmount > 0 && allowance < parsedStakeAmount;
@@ -242,31 +242,34 @@ function StakingPageContent() {
 }
 
 
-  const handleClaim = async () => {
+  const handleClaim = async (isClaimAll = false) => {
        setIsClaiming(true);
        try {
-        const claimAmount = availableToClaim;
-        const amountToClaim = earnedData ?? 0n;
-        if (amountToClaim <= 0n) {
-            toast({ variant: "destructive", title: "No Rewards", description: "You have no rewards to claim." });
+        const amountToClaimNum = isClaimAll ? availableToClaimNum : (claimAmount ? parseFloat(claimAmount) : 0);
+
+        if (amountToClaimNum <= 0) {
+            toast({ variant: "destructive", title: "Invalid Amount", description: "Please enter an amount greater than zero to claim." });
             setIsClaiming(false);
             return;
         }
 
-        await writeContractAsync({
-            address: EGLIFE_STAKING_CONTRACT,
-            abi: stakingContractAbi,
-            functionName: 'claim',
-            args: [amountToClaim],
-        });
-        toast({
-            title: "Claim Successful!",
-            description: `Your rewards have been sent to your wallet.`,
-        });
-        // Optimistically update the total claimed amount
-        setTotalClaimed(prev => prev + claimAmount);
+        if (!isClaimAll && amountToClaimNum > availableToClaimNum) {
+            toast({ variant: "destructive", title: "Invalid Amount", description: "You cannot claim more than you have earned." });
+            setIsClaiming(false);
+            return;
+        }
+        
+        const amountToClaim = isClaimAll ? (earnedData ?? 0n) : parseEther(amountToClaimNum.toString());
+
+        await writeContractAsync({ address: EGLIFE_STAKING_CONTRACT, abi: stakingContractAbi, functionName: 'claim', args: [amountToClaim] });
+        
+        toast({ title: "Claim Successful!", description: `Your rewards have been sent to your wallet.` });
+        
+        setTotalClaimed(prev => prev + amountToClaimNum);
+        setClaimAmount("");
         refetchEarned();
         refetchBalance();
+
        } catch (error) {
            handleError(error, "Claim Failed");
        } finally {
@@ -410,13 +413,29 @@ function StakingPageContent() {
       )}
       
        {isConnected && !isWrongNetwork && (
-         <div className="mb-8">
-            <LiveIncomeTicker />
-         </div>
+        <Card className="mb-8">
+            <CardHeader>
+            <div className="flex items-center gap-2">
+                <HandCoins className="h-6 w-6 text-primary" />
+                <CardTitle className="font-headline text-xl">Claim Rewards</CardTitle>
+            </div>
+                <CardDescription>Available to Claim: <span className="font-bold text-white">{availableToClaimNum.toFixed(4)} EGLIFE</span></CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="claim-amount">Amount to Claim</Label>
+                <Input id="claim-amount" type="number" placeholder={`Max: ${availableToClaimNum.toFixed(4)}`} value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} disabled={isClaiming || isWrongNetwork || availableToClaimNum <= 0} />
+            </div>
+            </CardContent>
+            <CardFooter className="flex-col sm:flex-row gap-2">
+                <Button className="w-full" onClick={() => handleClaim(false)} disabled={isClaiming || !claimAmount || parseFloat(claimAmount) <= 0 || isWrongNetwork}>{isClaiming && claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim Amount'}</Button>
+                <Button className="w-full" variant="outline" onClick={() => handleClaim(true)} disabled={isClaiming || availableToClaimNum <= 0 || isWrongNetwork}>{isClaiming && !claimAmount ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Claiming...</> : 'Claim All'}</Button>
+            </CardFooter>
+        </Card>
       )}
 
 
-       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
         <div className="lg:col-span-2 space-y-8">
              <Card>
                 <CardHeader>
@@ -681,5 +700,3 @@ export default function StakingPage() {
         </Suspense>
     )
 }
-
-    
