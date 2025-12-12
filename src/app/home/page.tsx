@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowUpRight, ArrowDownRight, Award, Trophy } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Award, Trophy, ShieldCheck } from "lucide-react";
 import Link from 'next/link';
 import { getTokenData, type TokenData } from '@/ai/flows/getTokenData';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -123,6 +123,34 @@ export default function HomePage() {
                             ))}
                         </CardContent>
                     </Card>
+                </div>
+            </section>
+
+             {/* SAFU Section */}
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16">
+                 <div className="text-center lg:text-left">
+                    <h2 className="text-5xl md:text-7xl font-bold">FUNDS ARE</h2>
+                    <p className="text-5xl md:text-7xl font-bold text-amber-400">SAFU</p>
+                    <p className="text-md text-foreground/80 mt-4 max-w-lg mx-auto lg:mx-0">
+                        The EGLIFE Security Fund was established to protect your funds in rare emergencies. Your security is our priority.
+                    </p>
+                </div>
+                 <div className="text-center lg:text-left space-y-8">
+                     <div>
+                        <p className="text-sm text-foreground/70">As of September 2025, the EGLIFE Security fund comprises a reserve of</p>
+                        <p className="text-4xl font-bold text-amber-400 mt-1">10,000,000 EGLIFE</p>
+                        <p className="font-mono text-xs text-foreground/50 mt-1">EGLIFE SAFU Wallet: 0x...a4D09113</p>
+                    </div>
+                     <div className="flex justify-center lg:justify-start gap-8">
+                        <div>
+                            <p className="text-3xl font-bold">7,488,223</p>
+                            <p className="text-sm text-foreground/70">Users helped</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-bold">$229,433,449</p>
+                            <p className="text-sm text-foreground/70">Funds recovered</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
