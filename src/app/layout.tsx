@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -10,6 +11,7 @@ import { WagmiProvider, createConfig, http } from 'wagmi';
 import { bsc } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { injected } from 'wagmi/connectors';
+import { SplashScreen } from '@/components/splash-screen';
 
 
 const config = createConfig({
@@ -32,6 +34,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500); // Splash screen duration + fade out
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <html lang="en" className="dark">
        <head>
@@ -48,6 +60,7 @@ export default function RootLayout({
       <body className="font-body antialiased flex flex-col min-h-screen">
        <WagmiProvider config={config}>
          <QueryClientProvider client={queryClient}>
+            {showSplash && <SplashScreen />}
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />
