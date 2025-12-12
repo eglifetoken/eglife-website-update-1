@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Award, Trophy, Apple, Bot, Windows, Download, Aperture, GitMerge, Lightbulb } from "lucide-react";
+import { Award, Trophy, Apple, Bot, Monitor, Download, Aperture, GitMerge, Lightbulb } from "lucide-react";
 import Link from 'next/link';
 import { getTokenData, type TokenData } from '@/ai/flows/getTokenData';
 import Image from 'next/image';
@@ -206,7 +206,7 @@ export default function HomePage() {
                                 <span className="font-medium">Android</span>
                             </div>
                              <div className="flex items-center gap-4">
-                                <Windows className="h-8 w-8 text-foreground" />
+                                <Monitor className="h-8 w-8 text-foreground" />
                                 <span className="font-medium">Windows</span>
                             </div>
                         </div>
