@@ -209,39 +209,57 @@ export default function TradePage() {
             return;
         }
         setIsCreatingAd(true);
+
+        const newAdData = {
+            type: adType,
+            asset: adAsset,
+            price: parseFloat(adPrice),
+            available: parseFloat(adQuantity),
+            minLimit: 100, // Placeholder
+            maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
+            upiId: adUpiId,
+            methods: ['UPI'],
+            owner: address,
+            seller: `${address.slice(0, 6)}...${address.slice(-4)}`, // Placeholder name
+            orders: 0,
+            completion: 'N/A',
+            avgTime: 'N/A',
+            createdAt: serverTimestamp()
+        };
+
+        // Optimistic UI update
+        const tempId = `temp_${Date.now()}`;
+        const optimisticAd = { id: tempId, ...newAdData };
+
+        if (adType === 'sell') {
+            setSellOrders(prev => [optimisticAd as P2POrder, ...prev]);
+        } else {
+            setBuyOrders(prev => [optimisticAd as P2POrder, ...prev]);
+        }
+
+        // Close dialog and reset form immediately
+        setIsAdDialogOpen(false);
+        setAdQuantity('');
+        setAdPrice('');
+        setAdUpiId('');
+        setIsCreatingAd(false);
+        toast({
+            title: 'Ad Posted!',
+            description: `Your ${adType} ad for ${adQuantity} ${adAsset} has been posted.`,
+        });
         
         try {
-            await addDoc(collection(db, "p2p_ads"), {
-                type: adType,
-                asset: adAsset,
-                price: parseFloat(adPrice),
-                available: parseFloat(adQuantity),
-                minLimit: 100, // Placeholder
-                maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
-                upiId: adUpiId,
-                methods: ['UPI'],
-                owner: address,
-                seller: `${address.slice(0, 6)}...${address.slice(-4)}`, // Placeholder name
-                orders: 0,
-                completion: 'N/A',
-                avgTime: 'N/A',
-                createdAt: serverTimestamp()
-            });
-
-            toast({
-                title: 'Ad Posted!',
-                description: `Your ${adType} ad for ${adQuantity} ${adAsset} has been posted.`,
-            });
-            // Reset form
-            setAdQuantity('');
-            setAdPrice('');
-            setAdUpiId('');
-            setIsAdDialogOpen(false);
+            // Asynchronously add to Firestore
+            await addDoc(collection(db, "p2p_ads"), newAdData);
         } catch(error) {
             console.error("Error creating ad:", error);
-            toast({ variant: 'destructive', title: 'Failed to post ad', description: 'Please try again.'});
-        } finally {
-            setIsCreatingAd(false);
+            toast({ variant: 'destructive', title: 'Failed to post ad', description: 'Your ad might not be saved. Please try again.'});
+            // Revert optimistic update on failure
+            if (adType === 'sell') {
+                setSellOrders(prev => prev.filter(order => order.id !== tempId));
+            } else {
+                setBuyOrders(prev => prev.filter(order => order.id !== tempId));
+            }
         }
     }
     
@@ -570,3 +588,4 @@ export default function TradePage() {
     </div>
   );
 }
+
