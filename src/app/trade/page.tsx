@@ -22,28 +22,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { db } from "@/firebase/client";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, setDoc, getDoc, serverTimestamp, query, where, onSnapshot, addDoc } from "firebase/firestore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-
-const mockSellOrdersData = [
-  { id: '1', seller: 'CryptoKing', orders: 124, completion: '99.8%', avgTime: '10 min', price: 91.50, available: 5000, minLimit: 500, maxLimit: 50000, methods: ['UPI', 'IMPS'] },
-  { id: '2', seller: 'TokenTrader', orders: 471, completion: '100%', avgTime: '5 min', price: 91.52, available: 10000, minLimit: 1000, maxLimit: 85000, methods: ['Bank Transfer'] },
-  { id: '3', seller: 'EGLifer', orders: 88, completion: '98.5%', avgTime: '15 min', price: 91.55, available: 2500, minLimit: 100, maxLimit: 25000, methods: ['UPI'] },
-  { id: '4', seller: 'FastDealer', orders: 832, completion: '100%', avgTime: '2 min', price: 91.60, available: 25000, minLimit: 5000, maxLimit: 200000, methods: ['UPI', 'Google Pay', 'PhonePe'] },
-];
-
-const mockBuyOrdersData = [
-    { id: 'buy1', seller: 'BullRunner', orders: 50, completion: '99%', avgTime: '8 min', price: 91.45, available: 8000, minLimit: 1000, maxLimit: 20000, methods: ['UPI'] },
-    { id: 'buy2', seller: 'DiamondHands', orders: 210, completion: '100%', avgTime: '4 min', price: 91.48, available: 12000, minLimit: 5000, maxLimit: 50000, methods: ['IMPS', 'Bank Transfer'] },
-]
-
-const mockUserOrders = [
-    { id: 'S001', type: 'SELL', amount: 2000, price: 91.51, status: 'OPEN' },
-    { id: 'B001', type: 'BUY', amount: 1000, price: 91.50, status: 'PENDING_PAYMENT' },
-    { id: 'B002', type: 'BUY', amount: 500, price: 91.52, status: 'COMPLETED' },
-];
 
 const cryptos = ['USDT', 'BTC', 'EGLIFE', 'FDUSD', 'BNB', 'ETH', 'ADA'];
 
@@ -116,6 +98,22 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
     );
 }
 
+interface P2POrder {
+    id: string;
+    type: 'buy' | 'sell';
+    seller: string;
+    orders: number;
+    completion: string;
+    avgTime: string;
+    price: number;
+    available: number;
+    minLimit: number;
+    maxLimit: number;
+    methods: string[];
+    asset: string;
+    owner: string;
+    upiId: string;
+}
 
 export default function TradePage() {
     const { address, isConnected } = useAccount();
@@ -123,10 +121,12 @@ export default function TradePage() {
     const [isClient, setIsClient] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeCrypto, setActiveCrypto] = useState('USDT');
+    const [activeCrypto, setActiveCrypto] = useState('EGLIFE');
 
-    const [sellOrders, setSellOrders] = useState(mockSellOrdersData);
-    const [buyOrders, setBuyOrders] = useState(mockBuyOrdersData);
+    const [sellOrders, setSellOrders] = useState<P2POrder[]>([]);
+    const [buyOrders, setBuyOrders] = useState<P2POrder[]>([]);
+    const [isLoadingAds, setIsLoadingAds] = useState(true);
+
 
     // State for creating a sell order
     const [isAdDialogOpen, setIsAdDialogOpen] = useState(false);
@@ -139,7 +139,7 @@ export default function TradePage() {
     
     // State for buying from an order
     const [buyAmountInr, setBuyAmountInr] = useState('');
-    const [selectedOrder, setSelectedOrder] = useState<(typeof mockSellOrdersData)[0] | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<P2POrder | null>(null);
 
      useEffect(() => {
         setIsClient(true);
@@ -166,8 +166,41 @@ export default function TradePage() {
         checkRegistration();
     }, [isClient, isConnected, address]);
 
-     const handleCreateAd = () => {
-        if (!adQuantity || !adPrice || !adUpiId) {
+     useEffect(() => {
+        if (!isRegistered || !activeCrypto) return;
+
+        setIsLoadingAds(true);
+        const q = query(
+            collection(db, "p2p_ads"), 
+            where("asset", "==", activeCrypto)
+        );
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const fetchedBuyOrders: P2POrder[] = [];
+            const fetchedSellOrders: P2POrder[] = [];
+            querySnapshot.forEach((doc) => {
+                const order = { id: doc.id, ...doc.data() } as P2POrder;
+                if (order.type === 'buy') {
+                    fetchedBuyOrders.push(order);
+                } else if (order.type === 'sell') {
+                    fetchedSellOrders.push(order);
+                }
+            });
+            setBuyOrders(fetchedBuyOrders);
+            setSellOrders(fetchedSellOrders);
+            setIsLoadingAds(false);
+        }, (error) => {
+            console.error("Error fetching ads:", error);
+            toast({ variant: 'destructive', title: 'Failed to load ads', description: 'Please check your connection.' });
+            setIsLoadingAds(false);
+        });
+
+        return () => unsubscribe();
+    }, [isRegistered, activeCrypto, toast]);
+
+
+     const handleCreateAd = async () => {
+        if (!adQuantity || !adPrice || !adUpiId || !address) {
             toast({
                 variant: 'destructive',
                 title: 'Missing Information',
@@ -177,38 +210,39 @@ export default function TradePage() {
         }
         setIsCreatingAd(true);
         
-        const newAd = {
-            id: `ad-${Date.now()}`,
-            seller: address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Anonymous',
-            orders: 0,
-            completion: '0%',
-            avgTime: 'New',
-            price: parseFloat(adPrice),
-            available: parseFloat(adQuantity),
-            minLimit: 100, // Placeholder
-            maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
-            methods: ['UPI'],
-        };
-        
-        // Simulate API call
-        setTimeout(() => {
-            if (adType === 'sell') {
-                setSellOrders(prev => [newAd, ...prev]);
-            } else {
-                setBuyOrders(prev => [newAd, ...prev]);
-            }
+        try {
+            await addDoc(collection(db, "p2p_ads"), {
+                type: adType,
+                asset: adAsset,
+                price: parseFloat(adPrice),
+                available: parseFloat(adQuantity),
+                minLimit: 100, // Placeholder
+                maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
+                upiId: adUpiId,
+                methods: ['UPI'],
+                owner: address,
+                seller: `${address.slice(0, 6)}...${address.slice(-4)}`, // Placeholder name
+                orders: 0,
+                completion: 'N/A',
+                avgTime: 'N/A',
+                createdAt: serverTimestamp()
+            });
 
             toast({
                 title: 'Ad Posted!',
-                description: `Your ${adType} ad for ${adQuantity} ${adAsset} at ₹${adPrice} has been posted.`,
+                description: `Your ${adType} ad for ${adQuantity} ${adAsset} has been posted.`,
             });
             // Reset form
             setAdQuantity('');
             setAdPrice('');
             setAdUpiId('');
-            setIsCreatingAd(false);
             setIsAdDialogOpen(false);
-        }, 1500);
+        } catch(error) {
+            console.error("Error creating ad:", error);
+            toast({ variant: 'destructive', title: 'Failed to post ad', description: 'Please try again.'});
+        } finally {
+            setIsCreatingAd(false);
+        }
     }
     
     const calculatedEglifeToReceive = selectedOrder ? (parseFloat(buyAmountInr || '0') / selectedOrder.price).toFixed(2) : '0.00';
@@ -377,9 +411,6 @@ export default function TradePage() {
                     <CardHeader>
                         <div className="flex justify-between items-center">
                             <CardTitle>Buy {activeCrypto}</CardTitle>
-                            <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm"><RefreshCw className="mr-2 h-4 w-4"/>Refresh</Button>
-                            </div>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -395,7 +426,9 @@ export default function TradePage() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {sellOrders.map((order) => (
+                                    {isLoadingAds ? (
+                                        <TableRow><TableCell colSpan={5} className="text-center h-24"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></TableCell></TableRow>
+                                    ) : sellOrders.length > 0 ? sellOrders.map((order) => (
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
@@ -422,7 +455,7 @@ export default function TradePage() {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <Dialog onOpenChange={() => setBuyAmountInr('')}>
+                                                <Dialog onOpenChange={(open) => { if(!open) setBuyAmountInr('') }}>
                                                     <DialogTrigger asChild>
                                                         <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => setSelectedOrder(order)}>Buy {activeCrypto}</Button>
                                                     </DialogTrigger>
@@ -464,7 +497,9 @@ export default function TradePage() {
                                                 </Dialog>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )) : (
+                                        <TableRow><TableCell colSpan={5} className="text-center h-24">No sell orders found for {activeCrypto}.</TableCell></TableRow>
+                                    )}
                                 </TableBody>
                             </Table>
                          </div>
@@ -476,9 +511,6 @@ export default function TradePage() {
                     <CardHeader>
                         <div className="flex justify-between items-center">
                             <CardTitle>Sell {activeCrypto}</CardTitle>
-                             <div className="flex items-center gap-2">
-                                <Button variant="ghost" size="sm"><RefreshCw className="mr-2 h-4 w-4"/>Refresh</Button>
-                            </div>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -494,7 +526,9 @@ export default function TradePage() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {buyOrders.map((order) => (
+                                     {isLoadingAds ? (
+                                        <TableRow><TableCell colSpan={5} className="text-center h-24"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></TableCell></TableRow>
+                                    ) : buyOrders.length > 0 ? buyOrders.map((order) => (
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
@@ -523,7 +557,9 @@ export default function TradePage() {
                                                <Button size="sm" variant="destructive">Sell {activeCrypto}</Button>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )) : (
+                                        <TableRow><TableCell colSpan={5} className="text-center h-24">No buy orders found for {activeCrypto}.</TableCell></TableRow>
+                                    )}
                                 </TableBody>
                             </Table>
                          </div>
@@ -534,5 +570,3 @@ export default function TradePage() {
     </div>
   );
 }
-
-    
