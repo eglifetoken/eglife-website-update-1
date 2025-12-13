@@ -27,12 +27,17 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
-const mockSellOrders = [
+const mockSellOrdersData = [
   { id: '1', seller: 'CryptoKing', orders: 124, completion: '99.8%', avgTime: '10 min', price: 91.50, available: 5000, minLimit: 500, maxLimit: 50000, methods: ['UPI', 'IMPS'] },
   { id: '2', seller: 'TokenTrader', orders: 471, completion: '100%', avgTime: '5 min', price: 91.52, available: 10000, minLimit: 1000, maxLimit: 85000, methods: ['Bank Transfer'] },
   { id: '3', seller: 'EGLifer', orders: 88, completion: '98.5%', avgTime: '15 min', price: 91.55, available: 2500, minLimit: 100, maxLimit: 25000, methods: ['UPI'] },
   { id: '4', seller: 'FastDealer', orders: 832, completion: '100%', avgTime: '2 min', price: 91.60, available: 25000, minLimit: 5000, maxLimit: 200000, methods: ['UPI', 'Google Pay', 'PhonePe'] },
 ];
+
+const mockBuyOrdersData = [
+    { id: 'buy1', seller: 'BullRunner', orders: 50, completion: '99%', avgTime: '8 min', price: 91.45, available: 8000, minLimit: 1000, maxLimit: 20000, methods: ['UPI'] },
+    { id: 'buy2', seller: 'DiamondHands', orders: 210, completion: '100%', avgTime: '4 min', price: 91.48, available: 12000, minLimit: 5000, maxLimit: 50000, methods: ['IMPS', 'Bank Transfer'] },
+]
 
 const mockUserOrders = [
     { id: 'S001', type: 'SELL', amount: 2000, price: 91.51, status: 'OPEN' },
@@ -120,7 +125,11 @@ export default function TradePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [activeCrypto, setActiveCrypto] = useState('USDT');
 
+    const [sellOrders, setSellOrders] = useState(mockSellOrdersData);
+    const [buyOrders, setBuyOrders] = useState(mockBuyOrdersData);
+
     // State for creating a sell order
+    const [isAdDialogOpen, setIsAdDialogOpen] = useState(false);
     const [adType, setAdType] = useState('sell');
     const [adAsset, setAdAsset] = useState('EGLIFE');
     const [adQuantity, setAdQuantity] = useState('');
@@ -130,7 +139,7 @@ export default function TradePage() {
     
     // State for buying from an order
     const [buyAmountInr, setBuyAmountInr] = useState('');
-    const [selectedOrder, setSelectedOrder] = useState<(typeof mockSellOrders)[0] | null>(null);
+    const [selectedOrder, setSelectedOrder] = useState<(typeof mockSellOrdersData)[0] | null>(null);
 
      useEffect(() => {
         setIsClient(true);
@@ -167,8 +176,28 @@ export default function TradePage() {
             return;
         }
         setIsCreatingAd(true);
+        
+        const newAd = {
+            id: `ad-${Date.now()}`,
+            seller: address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Anonymous',
+            orders: 0,
+            completion: '0%',
+            avgTime: 'New',
+            price: parseFloat(adPrice),
+            available: parseFloat(adQuantity),
+            minLimit: 100, // Placeholder
+            maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
+            methods: ['UPI'],
+        };
+        
         // Simulate API call
         setTimeout(() => {
+            if (adType === 'sell') {
+                setSellOrders(prev => [newAd, ...prev]);
+            } else {
+                setBuyOrders(prev => [newAd, ...prev]);
+            }
+
             toast({
                 title: 'Ad Posted!',
                 description: `Your ${adType} ad for ${adQuantity} ${adAsset} at ₹${adPrice} has been posted.`,
@@ -178,6 +207,7 @@ export default function TradePage() {
             setAdPrice('');
             setAdUpiId('');
             setIsCreatingAd(false);
+            setIsAdDialogOpen(false);
         }, 1500);
     }
     
@@ -220,7 +250,7 @@ export default function TradePage() {
                 </TabsList>
             </Tabs>
             <div className="flex items-center gap-2">
-                <Dialog>
+                <Dialog open={isAdDialogOpen} onOpenChange={setIsAdDialogOpen}>
                     <DialogTrigger asChild>
                         <Button variant="ghost" size="sm">Post new Ad</Button>
                     </DialogTrigger>
@@ -270,7 +300,7 @@ export default function TradePage() {
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline" onClick={() => setIsAdDialogOpen(false)}>Cancel</Button>
                             <Button onClick={handleCreateAd} disabled={isCreatingAd}>
                                 {isCreatingAd ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Posting...</> : 'Post Ad'}
                             </Button>
@@ -365,7 +395,7 @@ export default function TradePage() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {mockSellOrders.map((order) => (
+                                    {sellOrders.map((order) => (
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
@@ -432,6 +462,65 @@ export default function TradePage() {
                                                         </DialogFooter>
                                                     </DialogContent>
                                                 </Dialog>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                         </div>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+             <TabsContent value="sell">
+                <Card>
+                    <CardHeader>
+                        <div className="flex justify-between items-center">
+                            <CardTitle>Sell {activeCrypto}</CardTitle>
+                             <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="sm"><RefreshCw className="mr-2 h-4 w-4"/>Refresh</Button>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                         <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="min-w-[200px]">Advertisers</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead className="min-w-[200px]">Available | Limit</TableHead>
+                                        <TableHead className="min-w-[150px]">Payment</TableHead>
+                                        <TableHead className="text-right">Trade</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {buyOrders.map((order) => (
+                                        <TableRow key={order.id}>
+                                            <TableCell>
+                                                <div className="flex items-center gap-2">
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.seller.charAt(0)}</div>
+                                                    <div>
+                                                        <div className="font-bold">{order.seller}</div>
+                                                        <div className="text-xs text-muted-foreground">
+                                                            <span>{order.orders} orders</span>
+                                                            <span className="mx-1">|</span>
+                                                            <span>{order.completion} completion</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-lg font-semibold">₹{order.price.toFixed(2)}</TableCell>
+                                            <TableCell>
+                                                <div><span className="font-semibold">{order.available.toLocaleString()}</span> <span className="text-muted-foreground">{activeCrypto}</span></div>
+                                                <div className="text-xs text-muted-foreground">Limit: ₹{order.minLimit.toLocaleString()} - ₹{order.maxLimit.toLocaleString()}</div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex flex-col gap-1">
+                                                    {order.methods.map(method => <Badge key={method} variant="outline" className="w-fit">{method}</Badge>)}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                               <Button size="sm" variant="destructive">Sell {activeCrypto}</Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
