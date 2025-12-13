@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useAccount } from "wagmi";
-import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2, ShieldCheck, Mail, Smartphone, Home, Edit, CheckCircle } from "lucide-react";
+import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2, ShieldCheck, Mail, Smartphone, Home, Edit, CheckCircle, IndianRupee } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -45,11 +45,13 @@ export default function ProfilePage() {
     // Payment Methods State
     const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [upiId, setUpiId] = useState("");
+    const [eRupeeAddress, setERupeeAddress] = useState("");
     const [qrValue, setQrValue] = useState<string | null>(null);
 
     // Dialog State
     const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false);
     const [isAddUpiDialogOpen, setIsAddUpiDialogOpen] = useState(false);
+    const [isAddERupeeDialogOpen, setIsAddERupeeDialogOpen] = useState(false);
     
     // New Account Form State
     const [newHolderName, setNewHolderName] = useState("");
@@ -57,6 +59,8 @@ export default function ProfilePage() {
     const [newIfsc, setNewIfsc] = useState("");
     const [newBankName, setNewBankName] = useState("");
     const [newUpiId, setNewUpiId] = useState("");
+    const [newERupeeAddress, setNewERupeeAddress] = useState("");
+
 
     useEffect(() => {
         setIsClient(true);
@@ -105,6 +109,18 @@ export default function ProfilePage() {
         setIsAddUpiDialogOpen(false);
         setNewUpiId("");
     }
+    
+    const handleAddERupee = () => {
+        if(!newERupeeAddress) {
+            toast({ variant: "destructive", title: "eRupee Address Required", description: "Please enter a valid eRupee address." });
+            return;
+        }
+        setERupeeAddress(newERupeeAddress);
+        toast({ title: "eRupee Address Added!", description: "Your Digital Rupee address has been linked." });
+        setIsAddERupeeDialogOpen(false);
+        setNewERupeeAddress("");
+    }
+
 
     const handleDeleteAccount = (id: number) => {
         setAccounts(accounts.filter(acc => acc.id !== id));
@@ -115,6 +131,12 @@ export default function ProfilePage() {
         setUpiId("");
         toast({ variant: "destructive", title: "UPI ID Removed" });
     }
+    
+    const handleDeleteERupee = () => {
+        setERupeeAddress("");
+        toast({ variant: "destructive", title: "eRupee Address Removed" });
+    }
+
 
     if (!isClient) {
       return (
@@ -239,36 +261,64 @@ export default function ProfilePage() {
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader className="flex flex-row justify-between items-start">
+                        <CardHeader>
                             <div>
                                 <CardTitle className="font-headline text-xl">Payment Methods</CardTitle>
                                 <CardDescription>Used for P2P trading.</CardDescription>
                             </div>
-                             <Dialog open={isAddUpiDialogOpen} onOpenChange={setIsAddUpiDialogOpen}>
-                                <DialogTrigger asChild>
-                                    <Button variant="outline" size="sm"><PlusCircle className="mr-2 h-4 w-4"/>Add UPI</Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader><DialogTitle>Add New UPI ID</DialogTitle></DialogHeader>
-                                    <div className="py-4"><Input placeholder="your-id@okhdfcbank" value={newUpiId} onChange={(e) => setNewUpiId(e.target.value)} /></div>
-                                    <DialogFooter><Button onClick={handleAddUpi}>Save UPI ID</Button></DialogFooter>
-                                </DialogContent>
-                            </Dialog>
                         </CardHeader>
                         <CardContent className="space-y-4">
+                            <div className="flex justify-between items-center">
+                                <p className="font-medium">UPI ID</p>
+                                <Dialog open={isAddUpiDialogOpen} onOpenChange={setIsAddUpiDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline" size="sm"><PlusCircle className="mr-2 h-4 w-4"/>Add UPI</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader><DialogTitle>Add New UPI ID</DialogTitle></DialogHeader>
+                                        <div className="py-4"><Input placeholder="your-id@okhdfcbank" value={newUpiId} onChange={(e) => setNewUpiId(e.target.value)} /></div>
+                                        <DialogFooter><Button onClick={handleAddUpi}>Save UPI ID</Button></DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                              {upiId ? (
-                                <div className="flex justify-between items-center p-4 border rounded-lg bg-muted/20">
-                                    <div>
-                                        <p className="font-semibold">UPI ID</p>
+                                <div className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
+                                    <div className="flex items-center gap-3">
+                                        <IndianRupee className="h-5 w-5 text-primary" />
                                         <p className="text-sm font-mono">{upiId}</p>
                                     </div>
-                                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={handleDeleteUpi}>
-                                        <Trash2 className="h-5 w-5" />
+                                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-8 w-8" onClick={handleDeleteUpi}>
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
                                 </div>
-                             ) : <p className="text-sm text-center text-muted-foreground">No UPI ID added.</p>}
-                            
+                             ) : <p className="text-xs text-center text-muted-foreground">No UPI ID added.</p>}
+                             
                             <div className="flex justify-between items-center">
+                                <p className="font-medium">Digital Rupee (e₹)</p>
+                                <Dialog open={isAddERupeeDialogOpen} onOpenChange={setIsAddERupeeDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline" size="sm"><PlusCircle className="mr-2 h-4 w-4"/>Add eRupee</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader><DialogTitle>Add Digital Rupee (e₹) Address</DialogTitle></DialogHeader>
+                                        <div className="py-4"><Input placeholder="e.g., 9876543210@axiserupee" value={newERupeeAddress} onChange={(e) => setNewERupeeAddress(e.target.value)} /></div>
+                                        <DialogFooter><Button onClick={handleAddERupee}>Save eRupee Address</Button></DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                             {eRupeeAddress ? (
+                                <div className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
+                                    <div className="flex items-center gap-3">
+                                        <IndianRupee className="h-5 w-5 text-primary" />
+                                        <p className="text-sm font-mono">{eRupeeAddress}</p>
+                                    </div>
+                                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-8 w-8" onClick={handleDeleteERupee}>
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                             ) : <p className="text-xs text-center text-muted-foreground">No eRupee Address added.</p>}
+                            
+                            <div className="flex justify-between items-center pt-2">
                                 <p className="font-medium">Bank Accounts</p>
                                  <Dialog open={isAddAccountDialogOpen} onOpenChange={setIsAddAccountDialogOpen}>
                                     <DialogTrigger asChild><Button variant="outline" size="sm"><PlusCircle className="mr-2 h-4 w-4"/>Add Bank</Button></DialogTrigger>
@@ -286,17 +336,20 @@ export default function ProfilePage() {
                             </div>
 
                              {accounts.length > 0 ? accounts.map(account => (
-                                    <div key={account.id} className="flex justify-between items-center p-4 border rounded-lg bg-muted/20">
-                                        <div>
-                                            <p className="font-semibold">{account.holderName}</p>
-                                            <p className="text-sm text-muted-foreground">{account.bankName}</p>
-                                            <p className="text-sm font-mono">{account.accountNumber} / {account.ifsc}</p>
+                                    <div key={account.id} className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
+                                        <div className="flex items-start gap-3">
+                                            <Banknote className="h-5 w-5 text-primary mt-1" />
+                                            <div>
+                                                <p className="font-semibold text-sm">{account.holderName}</p>
+                                                <p className="text-xs text-muted-foreground">{account.bankName}</p>
+                                                <p className="text-xs font-mono">{account.accountNumber} / {account.ifsc}</p>
+                                            </div>
                                         </div>
-                                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDeleteAccount(account.id)}>
-                                            <Trash2 className="h-5 w-5" />
+                                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-8 w-8" onClick={() => handleDeleteAccount(account.id)}>
+                                            <Trash2 className="h-4 w-4" />
                                         </Button>
                                     </div>
-                                )) : <p className="text-sm text-center text-muted-foreground">No bank accounts added.</p>}
+                                )) : <p className="text-xs text-center text-muted-foreground">No bank accounts added.</p>}
                         </CardContent>
                     </Card>
                 </div>
