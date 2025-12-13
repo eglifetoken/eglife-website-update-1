@@ -11,10 +11,12 @@ import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2, ShieldCheck,
 import { QRCodeCanvas } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { db } from '@/firebase/client';
+import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 
 
 interface BankAccount {
-    id: number;
+    id: string;
     holderName: string;
     bankName: string;
     accountNumber: string;
@@ -28,6 +30,9 @@ interface UserProfile {
     pan: string;
     aadhar: string;
     address: string;
+    upiId?: string;
+    eRupeeAddress?: string;
+    bankAccounts?: BankAccount[];
 }
 
 interface VerificationStatus {
@@ -46,8 +51,9 @@ export default function ProfilePage() {
     
     // User Profile State
     const [profile, setProfile] = useState<UserProfile>({
-        name: '', email: '', mobile: '', pan: '', aadhar: '', address: ''
+        name: '', email: '', mobile: '', pan: '', aadhar: '', address: '', upiId: '', eRupeeAddress: '', bankAccounts: []
     });
+    const [isLoadingProfile, setIsLoadingProfile] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     
@@ -61,10 +67,7 @@ export default function ProfilePage() {
     const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
 
 
-    // Payment Methods State
-    const [accounts, setAccounts] = useState<BankAccount[]>([]);
-    const [upiId, setUpiId] = useState("");
-    const [eRupeeAddress, setERupeeAddress] = useState("");
+    // Payment Methods State (now part of profile)
     
     // Dialog State
     const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false);
@@ -82,76 +85,151 @@ export default function ProfilePage() {
 
     useEffect(() => {
         setIsClient(true);
-    }, []);
+        if (isConnected && address) {
+            const fetchProfile = async () => {
+                setIsLoadingProfile(true);
+                const docRef = doc(db, "p2p_users", address);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data() as UserProfile & { verification?: VerificationStatus };
+                    setProfile({
+                        name: data.name || '',
+                        email: data.email || '',
+                        mobile: data.mobile || '',
+                        pan: data.pan || '',
+                        aadhar: data.aadhar || '',
+                        address: data.address || '',
+                        upiId: data.upiId || '',
+                        eRupeeAddress: data.eRupeeAddress || '',
+                        bankAccounts: data.bankAccounts || []
+                    });
+                     if (data.verification) {
+                        setVerification(data.verification);
+                    }
+                }
+                setIsLoadingProfile(false);
+            };
+            fetchProfile();
+        } else {
+             setIsLoadingProfile(false);
+        }
+    }, [isConnected, address]);
     
     const allDetailsFilled = profile.name && profile.email && profile.mobile && profile.pan && profile.aadhar && profile.address;
     const allDetailsVerified = verification.email && verification.mobile && verification.pan && verification.aadhar;
     const isP2PVerified = allDetailsFilled && allDetailsVerified;
 
-    const handleSaveProfile = () => {
+    const saveProfileData = async (updatedProfile: UserProfile, updatedVerification?: VerificationStatus) => {
+        if (!address) return;
         setIsSaving(true);
-        setTimeout(() => {
-            console.log("Saving profile:", profile);
-            toast({ title: "Profile Saved!", description: "Your information has been updated." });
+        try {
+            const userRef = doc(db, 'p2p_users', address);
+            await setDoc(userRef, {
+                ...updatedProfile,
+                verification: updatedVerification || verification,
+                lastUpdated: serverTimestamp()
+            }, { merge: true });
+            return true;
+        } catch (error) {
+            console.error("Error saving profile data: ", error);
+            toast({ variant: "destructive", title: "Save Failed", description: "Could not save your data. Please try again." });
+            return false;
+        } finally {
             setIsSaving(false);
+        }
+    }
+
+
+    const handleSaveProfile = async () => {
+        const success = await saveProfileData(profile);
+        if (success) {
+            toast({ title: "Profile Saved!", description: "Your information has been updated." });
             setIsEditing(false);
-        }, 1500);
+        }
     }
     
-    const handleAddAccount = () => {
+    const handleAddAccount = async () => {
         if (!newHolderName || !newAccountNumber || !newIfsc || !newBankName) {
             toast({ variant: "destructive", title: "Missing Information", description: "Please fill out all bank account fields." });
             return;
         }
         const newAccount: BankAccount = {
-            id: Date.now(),
+            id: `bank_${Date.now()}`,
             holderName: newHolderName,
             accountNumber: newAccountNumber,
             ifsc: newIfsc,
             bankName: newBankName,
         };
-        setAccounts([...accounts, newAccount]);
-        toast({ title: "Bank Account Added!", description: "The new bank account has been linked." });
-        setIsAddAccountDialogOpen(false);
-        setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
+        
+        const updatedAccounts = [...(profile.bankAccounts || []), newAccount];
+        const updatedProfile = { ...profile, bankAccounts: updatedAccounts };
+        
+        const success = await saveProfileData(updatedProfile);
+        if(success) {
+            setProfile(updatedProfile);
+            toast({ title: "Bank Account Added!", description: "The new bank account has been linked." });
+            setIsAddAccountDialogOpen(false);
+            setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
+        }
     };
 
-    const handleAddUpi = () => {
+    const handleAddUpi = async () => {
         if(!newUpiId) {
             toast({ variant: "destructive", title: "UPI ID Required", description: "Please enter a valid UPI ID." });
             return;
         }
-        setUpiId(newUpiId);
-        toast({ title: "UPI ID Added!", description: "Your UPI ID has been linked." });
-        setIsAddUpiDialogOpen(false);
-        setNewUpiId("");
+        const updatedProfile = { ...profile, upiId: newUpiId };
+        const success = await saveProfileData(updatedProfile);
+        if (success) {
+            setProfile(updatedProfile);
+            toast({ title: "UPI ID Added!", description: "Your UPI ID has been linked." });
+            setIsAddUpiDialogOpen(false);
+            setNewUpiId("");
+        }
     }
     
-    const handleAddERupee = () => {
+    const handleAddERupee = async () => {
         if(!newERupeeAddress) {
             toast({ variant: "destructive", title: "eRupee Address Required", description: "Please enter a valid eRupee address." });
             return;
         }
-        setERupeeAddress(newERupeeAddress);
-        toast({ title: "eRupee Address Added!", description: "Your Digital Rupee address has been linked." });
-        setIsAddERupeeDialogOpen(false);
-        setNewERupeeAddress("");
+        const updatedProfile = { ...profile, eRupeeAddress: newERupeeAddress };
+        const success = await saveProfileData(updatedProfile);
+        if (success) {
+            setProfile(updatedProfile);
+            toast({ title: "eRupee Address Added!", description: "Your Digital Rupee address has been linked." });
+            setIsAddERupeeDialogOpen(false);
+            setNewERupeeAddress("");
+        }
     }
 
 
-    const handleDeleteAccount = (id: number) => {
-        setAccounts(accounts.filter(acc => acc.id !== id));
-        toast({ variant: "destructive", title: "Account Removed", description: "The bank account has been unlinked." });
+    const handleDeleteAccount = async (id: string) => {
+        const updatedAccounts = (profile.bankAccounts || []).filter(acc => acc.id !== id);
+        const updatedProfile = { ...profile, bankAccounts: updatedAccounts };
+        const success = await saveProfileData(updatedProfile);
+        if(success) {
+            setProfile(updatedProfile);
+            toast({ variant: "destructive", title: "Account Removed", description: "The bank account has been unlinked." });
+        }
     };
     
-    const handleDeleteUpi = () => {
-        setUpiId("");
-        toast({ variant: "destructive", title: "UPI ID Removed" });
+    const handleDeleteUpi = async () => {
+        const updatedProfile = { ...profile, upiId: "" };
+        const success = await saveProfileData(updatedProfile);
+        if (success) {
+            setProfile(updatedProfile);
+            toast({ variant: "destructive", title: "UPI ID Removed" });
+        }
     }
     
-    const handleDeleteERupee = () => {
-        setERupeeAddress("");
-        toast({ variant: "destructive", title: "eRupee Address Removed" });
+    const handleDeleteERupee = async () => {
+        const updatedProfile = { ...profile, eRupeeAddress: "" };
+        const success = await saveProfileData(updatedProfile);
+        if(success) {
+            setProfile(updatedProfile);
+            toast({ variant: "destructive", title: "eRupee Address Removed" });
+        }
     }
     
     const handleVerifyClick = (field: VerificationField) => {
@@ -160,25 +238,30 @@ export default function ProfilePage() {
         // In a real app, you would trigger an API to send an OTP here.
     }
 
-    const handleOtpSubmit = () => {
+    const handleOtpSubmit = async () => {
         setIsVerifyingOtp(true);
         // Simulate OTP verification
-        setTimeout(() => {
-            if (otp === '123456' && verifyingField) { // Using a dummy OTP
-                setVerification(prev => ({...prev, [verifyingField]: true}));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        if (otp === '123456' && verifyingField) { // Using a dummy OTP
+            const updatedVerification = {...verification, [verifyingField]: true};
+            const success = await saveProfileData(profile, updatedVerification);
+            
+            if (success) {
+                setVerification(updatedVerification);
                 toast({ title: "Verification Successful!", description: `Your ${verifyingField} has been verified.` });
                 setIsOtpDialogOpen(false);
-            } else {
-                toast({ variant: "destructive", title: "Verification Failed", description: "The OTP you entered is incorrect." });
             }
-            setIsVerifyingOtp(false);
-            setOtp('');
-            setVerifyingField(null);
-        }, 1500);
+        } else {
+            toast({ variant: "destructive", title: "Verification Failed", description: "The OTP you entered is incorrect." });
+        }
+        setIsVerifyingOtp(false);
+        setOtp('');
+        setVerifyingField(null);
     }
 
 
-    if (!isClient) {
+    if (!isClient || isLoadingProfile) {
       return (
           <div className="flex h-[calc(100vh-10rem)] items-center justify-center">
               <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -343,15 +426,15 @@ export default function ProfilePage() {
                                     <DialogContent>
                                         <DialogHeader><DialogTitle>Add New UPI ID</DialogTitle></DialogHeader>
                                         <div className="py-4"><Input placeholder="your-id@okhdfcbank" value={newUpiId} onChange={(e) => setNewUpiId(e.target.value)} /></div>
-                                        <DialogFooter><Button onClick={handleAddUpi}>Save UPI ID</Button></DialogFooter>
+                                        <DialogFooter><Button onClick={handleAddUpi} disabled={isSaving}>{isSaving ? 'Saving...' : 'Save UPI ID'}</Button></DialogFooter>
                                     </DialogContent>
                                 </Dialog>
                             </div>
-                             {upiId ? (
+                             {profile.upiId ? (
                                 <div className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
                                     <div className="flex items-center gap-3">
                                         <IndianRupee className="h-5 w-5 text-primary" />
-                                        <p className="text-sm font-mono">{upiId}</p>
+                                        <p className="text-sm font-mono">{profile.upiId}</p>
                                     </div>
                                     <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-8 w-8" onClick={handleDeleteUpi}>
                                         <Trash2 className="h-4 w-4" />
@@ -369,15 +452,15 @@ export default function ProfilePage() {
                                     <DialogContent>
                                         <DialogHeader><DialogTitle>Add Digital Rupee (e₹) Address</DialogTitle></DialogHeader>
                                         <div className="py-4"><Input placeholder="e.g., 9876543210@axiserupee" value={newERupeeAddress} onChange={(e) => setNewERupeeAddress(e.target.value)} /></div>
-                                        <DialogFooter><Button onClick={handleAddERupee}>Save eRupee Address</Button></DialogFooter>
+                                        <DialogFooter><Button onClick={handleAddERupee} disabled={isSaving}>{isSaving ? 'Saving...' : 'Save eRupee Address'}</Button></DialogFooter>
                                     </DialogContent>
                                 </Dialog>
                             </div>
-                             {eRupeeAddress ? (
+                             {profile.eRupeeAddress ? (
                                 <div className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
                                     <div className="flex items-center gap-3">
                                         <IndianRupee className="h-5 w-5 text-primary" />
-                                        <p className="text-sm font-mono">{eRupeeAddress}</p>
+                                        <p className="text-sm font-mono">{profile.eRupeeAddress}</p>
                                     </div>
                                     <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-8 w-8" onClick={handleDeleteERupee}>
                                         <Trash2 className="h-4 w-4" />
@@ -398,12 +481,12 @@ export default function ProfilePage() {
                                             <Input placeholder="Account Number" value={newAccountNumber} onChange={e => setNewAccountNumber(e.target.value)} />
                                             <Input placeholder="IFSC Code" value={newIfsc} onChange={e => setNewIfsc(e.target.value)} />
                                         </div>
-                                        <DialogFooter><Button onClick={handleAddAccount}>Save Account</Button></DialogFooter>
+                                        <DialogFooter><Button onClick={handleAddAccount} disabled={isSaving}>{isSaving ? 'Saving...' : 'Save Account'}</Button></DialogFooter>
                                     </DialogContent>
                                 </Dialog>
                             </div>
 
-                             {accounts.length > 0 ? accounts.map(account => (
+                             {(profile.bankAccounts || []).length > 0 ? (profile.bankAccounts || []).map(account => (
                                     <div key={account.id} className="flex justify-between items-center p-3 border rounded-lg bg-muted/20">
                                         <div className="flex items-start gap-3">
                                             <Banknote className="h-5 w-5 text-primary mt-1" />
@@ -427,7 +510,7 @@ export default function ProfilePage() {
         <Dialog open={isOtpDialogOpen} onOpenChange={setIsOtpDialogOpen}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Verify Your {verifyingField?.charAt(0).toUpperCase() + verifyingField?.slice(1)}</DialogTitle>
+                    <DialogTitle>Verify Your {verifyingField?.charAt(0).toUpperCase() + (verifyingField || '').slice(1)}</DialogTitle>
                     <DialogDescription>
                         This is a simulation. An OTP would be sent to your registered {verifyingField}. 
                         Please enter the dummy OTP below to proceed.
@@ -449,3 +532,4 @@ export default function ProfilePage() {
     </>
     );
 }
+

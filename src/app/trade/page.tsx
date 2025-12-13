@@ -1,5 +1,4 @@
 
-
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -109,10 +108,15 @@ interface P2POrder {
     available: number;
     minLimit: number;
     maxLimit: number;
-    methods: string[];
+    paymentMethod: string; // Changed from methods array
     asset: string;
     owner: string;
-    upiId: string;
+}
+
+interface UserPaymentMethods {
+    upiId?: string;
+    eRupeeAddress?: string;
+    bankAccounts?: { id: string; holderName: string; bankName: string; accountNumber: string; ifsc: string }[];
 }
 
 export default function TradePage() {
@@ -126,6 +130,9 @@ export default function TradePage() {
     const [sellOrders, setSellOrders] = useState<P2POrder[]>([]);
     const [buyOrders, setBuyOrders] = useState<P2POrder[]>([]);
     const [isLoadingAds, setIsLoadingAds] = useState(true);
+    
+    // State for user's payment methods
+    const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethods>({});
 
 
     // State for creating a sell order
@@ -134,7 +141,7 @@ export default function TradePage() {
     const [adAsset, setAdAsset] = useState('EGLIFE');
     const [adQuantity, setAdQuantity] = useState('');
     const [adPrice, setAdPrice] = useState('');
-    const [adUpiId, setAdUpiId] = useState('');
+    const [adPaymentMethod, setAdPaymentMethod] = useState('');
     const [isCreatingAd, setIsCreatingAd] = useState(false);
     
     // State for buying from an order
@@ -148,13 +155,21 @@ export default function TradePage() {
     useEffect(() => {
         if (!isClient) return;
 
-        const checkRegistration = async () => {
+        const checkRegistrationAndFetchData = async () => {
             if (isConnected && address) {
                 const userRef = doc(db, 'p2p_users', address);
                 try {
                     const docSnap = await getDoc(userRef);
                     if (docSnap.exists()) {
                         setIsRegistered(true);
+                        // Fetch payment methods
+                        const data = docSnap.data() as UserPaymentMethods;
+                        setUserPaymentMethods({
+                            upiId: data.upiId,
+                            eRupeeAddress: data.eRupeeAddress,
+                            bankAccounts: data.bankAccounts
+                        });
+
                     }
                 } catch (error) {
                     console.error("Firebase check failed:", error);
@@ -163,7 +178,7 @@ export default function TradePage() {
             setIsLoading(false);
         };
 
-        checkRegistration();
+        checkRegistrationAndFetchData();
     }, [isClient, isConnected, address]);
 
      useEffect(() => {
@@ -200,11 +215,11 @@ export default function TradePage() {
 
 
      const handleCreateAd = async () => {
-        if (!adQuantity || !adPrice || !adUpiId || !address) {
+        if (!adQuantity || !adPrice || !adPaymentMethod || !address) {
             toast({
                 variant: 'destructive',
                 title: 'Missing Information',
-                description: 'Please fill out all fields to create an ad.',
+                description: 'Please fill out all fields and select a payment method to create an ad.',
             });
             return;
         }
@@ -217,8 +232,7 @@ export default function TradePage() {
             available: parseFloat(adQuantity),
             minLimit: 100, // Placeholder
             maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
-            upiId: adUpiId,
-            methods: ['UPI'],
+            paymentMethod: adPaymentMethod,
             owner: address,
             seller: `${address.slice(0, 6)}...${address.slice(-4)}`, // Placeholder name
             orders: 0,
@@ -227,23 +241,19 @@ export default function TradePage() {
             createdAt: serverTimestamp()
         };
 
-        // Optimistic UI update
         const tempId = `temp_${Date.now()}`;
         const optimisticAd = { id: tempId, ...newAdData };
 
         if (adType === 'sell') {
-            // A user's "sell" ad is a listing for others to buy. It appears in the "Buy" tab for other users.
             setSellOrders(prev => [optimisticAd as P2POrder, ...prev]);
-        } else { // adType === 'buy'
-            // A user's "buy" ad is a request to buy. It appears in the "Sell" tab for others to sell to them.
+        } else {
             setBuyOrders(prev => [optimisticAd as P2POrder, ...prev]);
         }
-
-        // Close dialog and reset form immediately
+        
         setIsAdDialogOpen(false);
         setAdQuantity('');
         setAdPrice('');
-        setAdUpiId('');
+        setAdPaymentMethod('');
         setIsCreatingAd(false);
         toast({
             title: 'Ad Posted!',
@@ -251,12 +261,10 @@ export default function TradePage() {
         });
         
         try {
-            // Asynchronously add to Firestore
             await addDoc(collection(db, "p2p_ads"), newAdData);
         } catch(error) {
             console.error("Error creating ad:", error);
             toast({ variant: 'destructive', title: 'Failed to post ad', description: 'Your ad might not be saved. Please try again.'});
-            // Revert optimistic update on failure
             if (adType === 'sell') {
                 setSellOrders(prev => prev.filter(order => order.id !== tempId));
             } else {
@@ -293,6 +301,16 @@ export default function TradePage() {
             </div>
         )
     }
+
+    const availablePaymentMethods = [
+        ...(userPaymentMethods.upiId ? [{ value: userPaymentMethods.upiId, label: `UPI: ${userPaymentMethods.upiId}` }] : []),
+        ...(userPaymentMethods.eRupeeAddress ? [{ value: userPaymentMethods.eRupeeAddress, label: `eRupee: ${userPaymentMethods.eRupeeAddress}` }] : []),
+        ...(userPaymentMethods.bankAccounts || []).map(acc => ({
+            value: `${acc.bankName} - ${acc.accountNumber.slice(-4)}`,
+            label: `${acc.bankName} (...${acc.accountNumber.slice(-4)})`
+        }))
+    ];
+
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -349,13 +367,26 @@ export default function TradePage() {
                                 <Input id="ad-price" type="number" placeholder="Set your price" value={adPrice} onChange={e => setAdPrice(e.target.value)} />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="ad-upi">Your UPI ID for Payments</Label>
-                                <Input id="ad-upi" placeholder="your-upi@oksbi" value={adUpiId} onChange={e => setAdUpiId(e.target.value)} />
+                                <Label htmlFor="ad-payment-method">Payment Method</Label>
+                                <Select value={adPaymentMethod} onValueChange={setAdPaymentMethod}>
+                                    <SelectTrigger id="ad-payment-method">
+                                        <SelectValue placeholder="Select a payment method" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {availablePaymentMethods.length > 0 ? (
+                                            availablePaymentMethods.map(method => (
+                                                <SelectItem key={method.value} value={method.value}>{method.label}</SelectItem>
+                                            ))
+                                        ) : (
+                                            <div className="p-4 text-center text-sm text-muted-foreground">No payment methods found in your profile.</div>
+                                        )}
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
                         <DialogFooter>
                             <Button variant="outline" onClick={() => setIsAdDialogOpen(false)}>Cancel</Button>
-                            <Button onClick={handleCreateAd} disabled={isCreatingAd}>
+                            <Button onClick={handleCreateAd} disabled={isCreatingAd || availablePaymentMethods.length === 0}>
                                 {isCreatingAd ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Posting...</> : 'Post Ad'}
                             </Button>
                         </DialogFooter>
@@ -470,9 +501,7 @@ export default function TradePage() {
                                                 <div className="text-xs text-muted-foreground">Limit: ₹{order.minLimit.toLocaleString()} - ₹{order.maxLimit.toLocaleString()}</div>
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex flex-col gap-1">
-                                                    {order.methods.map(method => <Badge key={method} variant="outline" className="w-fit">{method}</Badge>)}
-                                                </div>
+                                                <Badge variant="outline">{order.paymentMethod}</Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <Dialog onOpenChange={(open) => { if(!open) setBuyAmountInr('') }}>
@@ -569,9 +598,7 @@ export default function TradePage() {
                                                 <div className="text-xs text-muted-foreground">Limit: ₹{order.minLimit.toLocaleString()} - ₹{order.maxLimit.toLocaleString()}</div>
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex flex-col gap-1">
-                                                    {order.methods.map(method => <Badge key={method} variant="outline" className="w-fit">{method}</Badge>)}
-                                                </div>
+                                                <Badge variant="outline">{order.paymentMethod}</Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
                                                <Button size="sm" variant="destructive">Sell {activeCrypto}</Button>
