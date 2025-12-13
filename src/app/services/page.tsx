@@ -22,7 +22,7 @@ import { formatEther } from "viem";
 import { bsc } from "wagmi/chains";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { QRCode } from "qrcode.react";
+import QRCodeReact from "qrcode.react";
 import { db } from "@/firebase/client";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -482,7 +482,7 @@ export default function ServicesPage() {
                                                 </AlertDescription>
                                             </Alert>
                                             <div className="flex items-center justify-center p-4 bg-white rounded-lg">
-                                                {masterUpiId === "loading..." ? <Loader2 className="h-12 w-12 animate-spin"/> : <QRCode value={qrValue} size={180} />}
+                                                {masterUpiId === "loading..." ? <Loader2 className="h-12 w-12 animate-spin"/> : <QRCodeReact value={qrValue} size={180} />}
                                             </div>
                                             <div className="text-center font-mono text-sm">
                                                 Pay to: <strong>{masterUpiId}</strong>

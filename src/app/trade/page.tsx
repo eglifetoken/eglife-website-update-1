@@ -1,4 +1,5 @@
 
+
 "use client"
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -120,10 +121,12 @@ export default function TradePage() {
     const [activeCrypto, setActiveCrypto] = useState('USDT');
 
     // State for creating a sell order
-    const [sellAmount, setSellAmount] = useState('');
-    const [sellPrice, setSellPrice] = useState('');
-    const [upiId, setUpiId] = useState('');
-    const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+    const [adType, setAdType] = useState('sell');
+    const [adAsset, setAdAsset] = useState('EGLIFE');
+    const [adQuantity, setAdQuantity] = useState('');
+    const [adPrice, setAdPrice] = useState('');
+    const [adUpiId, setAdUpiId] = useState('');
+    const [isCreatingAd, setIsCreatingAd] = useState(false);
     
     // State for buying from an order
     const [buyAmountInr, setBuyAmountInr] = useState('');
@@ -154,26 +157,27 @@ export default function TradePage() {
         checkRegistration();
     }, [isClient, isConnected, address]);
 
-    const handleCreateOrder = () => {
-        if (!sellAmount || !sellPrice || !upiId) {
+     const handleCreateAd = () => {
+        if (!adQuantity || !adPrice || !adUpiId) {
             toast({
                 variant: 'destructive',
                 title: 'Missing Information',
-                description: 'Please fill out all fields to create an order.',
+                description: 'Please fill out all fields to create an ad.',
             });
             return;
         }
-        setIsCreatingOrder(true);
+        setIsCreatingAd(true);
         // Simulate API call
         setTimeout(() => {
             toast({
                 title: 'Ad Posted!',
-                description: `Your sell ad for ${sellAmount} EGLIFE at ₹${sellPrice}/token has been posted.`,
+                description: `Your ${adType} ad for ${adQuantity} ${adAsset} at ₹${adPrice} has been posted.`,
             });
-            setSellAmount('');
-            setSellPrice('');
-            setUpiId('');
-            setIsCreatingOrder(false);
+            // Reset form
+            setAdQuantity('');
+            setAdPrice('');
+            setAdUpiId('');
+            setIsCreatingAd(false);
         }, 1500);
     }
     
@@ -215,8 +219,64 @@ export default function TradePage() {
                     <TabsTrigger value="p2p">P2P</TabsTrigger>
                 </TabsList>
             </Tabs>
-             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm">Post new Ad</Button>
+            <div className="flex items-center gap-2">
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm">Post new Ad</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Create a P2P Advertisement</DialogTitle>
+                            <DialogDescription>Set your own price and payment methods to trade with others.</DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                            <Tabs value={adType} onValueChange={setAdType} className="w-full">
+                                <TabsList className="grid w-full grid-cols-2">
+                                    <TabsTrigger value="buy">I want to Buy</TabsTrigger>
+                                    <TabsTrigger value="sell">I want to Sell</TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Asset</Label>
+                                    <Select value={adAsset} onValueChange={setAdAsset}>
+                                        <SelectTrigger><SelectValue/></SelectTrigger>
+                                        <SelectContent>
+                                            {cryptos.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>With Fiat</Label>
+                                    <Select defaultValue="INR">
+                                        <SelectTrigger><SelectValue/></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="INR">INR</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="ad-quantity">Quantity ({adAsset})</Label>
+                                <Input id="ad-quantity" type="number" placeholder="Enter quantity to sell" value={adQuantity} onChange={e => setAdQuantity(e.target.value)} />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="ad-price">Price per {adAsset} (INR)</Label>
+                                <Input id="ad-price" type="number" placeholder="Set your price" value={adPrice} onChange={e => setAdPrice(e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="ad-upi">Your UPI ID for Payments</Label>
+                                <Input id="ad-upi" placeholder="your-upi@oksbi" value={adUpiId} onChange={e => setAdUpiId(e.target.value)} />
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <Button variant="outline">Cancel</Button>
+                            <Button onClick={handleCreateAd} disabled={isCreatingAd}>
+                                {isCreatingAd ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Posting...</> : 'Post Ad'}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
                 <Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4"/></Button>
             </div>
         </div>

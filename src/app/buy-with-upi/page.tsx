@@ -289,6 +289,3 @@ export default function BuyWithUpiPage() {
         </>
     );
 }
-    
-
-    
