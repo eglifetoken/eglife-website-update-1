@@ -232,9 +232,9 @@ export default function TradePage() {
         const optimisticAd = { id: tempId, ...newAdData };
 
         if (adType === 'sell') {
-            // A user's "sell" ad is a listing for others to buy. It appears in the "Buy" tab.
+            // A user's "sell" ad is a listing for others to buy. It appears in the "Buy" tab for other users.
             setSellOrders(prev => [optimisticAd as P2POrder, ...prev]);
-        } else {
+        } else { // adType === 'buy'
             // A user's "buy" ad is a request to buy. It appears in the "Sell" tab for others to sell to them.
             setBuyOrders(prev => [optimisticAd as P2POrder, ...prev]);
         }
@@ -342,7 +342,7 @@ export default function TradePage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="ad-quantity">Quantity ({adAsset})</Label>
-                                <Input id="ad-quantity" type="number" placeholder="Enter quantity to sell" value={adQuantity} onChange={e => setAdQuantity(e.target.value)} />
+                                <Input id="ad-quantity" type="number" placeholder={`Enter quantity to ${adType}`} value={adQuantity} onChange={e => setAdQuantity(e.target.value)} />
                             </div>
                              <div className="space-y-2">
                                 <Label htmlFor="ad-price">Price per {adAsset} (INR)</Label>
