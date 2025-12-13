@@ -130,27 +130,18 @@ export default function ProfilePage() {
                 verification: updatedVerification || verification,
                 lastUpdated: serverTimestamp()
             }, { merge: true });
-            return true;
         } catch (error) {
             console.error("Error saving profile data: ", error);
-            toast({ variant: "destructive", title: "Save Failed", description: "Could not save your data. Please try again." });
-            return false;
+            toast({ variant: "destructive", title: "Save Failed", description: "Could not save your data to the server. Your changes are saved locally for now." });
         }
     }
 
 
-    const handleSaveProfile = async () => {
-        setIsEditing(false); // Immediately close editing UI for a responsive feel.
-        toast({ title: "Saving Profile...", description: "Your information is being updated." });
+    const handleSaveProfile = () => {
+        setIsEditing(false);
+        toast({ title: "Profile Saved!", description: "Your information has been updated." });
 
-        const success = await saveProfileData(profile, verification);
-        
-        if (success) {
-            toast({ title: "Profile Saved!", description: "Your information has been updated successfully." });
-        } else {
-            // Re-open editing UI on failure, error is already handled in saveProfileData
-            setIsEditing(true); 
-        }
+        saveProfileData(profile, verification);
     }
     
     const handleAddAccount = async () => {
@@ -170,14 +161,13 @@ export default function ProfilePage() {
         const updatedAccounts = [...(profile.bankAccounts || []), newAccount];
         const updatedProfile = { ...profile, bankAccounts: updatedAccounts };
         
-        const success = await saveProfileData(updatedProfile);
-        if(success) {
-            setProfile(updatedProfile);
-            toast({ title: "Bank Account Added!", description: "The new bank account has been linked." });
-            setIsAddAccountDialogOpen(false);
-            setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
-        }
+        setProfile(updatedProfile);
+        toast({ title: "Bank Account Added!", description: "The new bank account has been linked." });
+        setIsAddAccountDialogOpen(false);
+        setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
         setIsSaving(false);
+        
+        await saveProfileData(updatedProfile);
     };
 
     const handleAddUpi = async () => {
@@ -187,14 +177,13 @@ export default function ProfilePage() {
         }
         setIsSaving(true);
         const updatedProfile = { ...profile, upiId: newUpiId };
-        const success = await saveProfileData(updatedProfile);
-        if (success) {
-            setProfile(updatedProfile);
-            toast({ title: "UPI ID Added!", description: "Your UPI ID has been linked." });
-            setIsAddUpiDialogOpen(false);
-            setNewUpiId("");
-        }
+        setProfile(updatedProfile);
+        toast({ title: "UPI ID Added!", description: "Your UPI ID has been linked." });
+        setIsAddUpiDialogOpen(false);
+        setNewUpiId("");
         setIsSaving(false);
+
+        await saveProfileData(updatedProfile);
     }
     
     const handleAddERupee = async () => {
@@ -204,43 +193,36 @@ export default function ProfilePage() {
         }
         setIsSaving(true);
         const updatedProfile = { ...profile, eRupeeAddress: newERupeeAddress };
-        const success = await saveProfileData(updatedProfile);
-        if (success) {
-            setProfile(updatedProfile);
-            toast({ title: "eRupee Address Added!", description: "Your Digital Rupee address has been linked." });
-            setIsAddERupeeDialogOpen(false);
-            setNewERupeeAddress("");
-        }
+        setProfile(updatedProfile);
+        toast({ title: "eRupee Address Added!", description: "Your Digital Rupee address has been linked." });
+        setIsAddERupeeDialogOpen(false);
+        setNewERupeeAddress("");
         setIsSaving(false);
+
+        await saveProfileData(updatedProfile);
     }
 
 
     const handleDeleteAccount = async (id: string) => {
         const updatedAccounts = (profile.bankAccounts || []).filter(acc => acc.id !== id);
         const updatedProfile = { ...profile, bankAccounts: updatedAccounts };
-        const success = await saveProfileData(updatedProfile);
-        if(success) {
-            setProfile(updatedProfile);
-            toast({ variant: "destructive", title: "Account Removed", description: "The bank account has been unlinked." });
-        }
+        setProfile(updatedProfile);
+        toast({ variant: "destructive", title: "Account Removed", description: "The bank account has been unlinked." });
+        await saveProfileData(updatedProfile);
     };
     
     const handleDeleteUpi = async () => {
         const updatedProfile = { ...profile, upiId: "" };
-        const success = await saveProfileData(updatedProfile);
-        if (success) {
-            setProfile(updatedProfile);
-            toast({ variant: "destructive", title: "UPI ID Removed" });
-        }
+        setProfile(updatedProfile);
+        toast({ variant: "destructive", title: "UPI ID Removed" });
+        await saveProfileData(updatedProfile);
     }
     
     const handleDeleteERupee = async () => {
         const updatedProfile = { ...profile, eRupeeAddress: "" };
-        const success = await saveProfileData(updatedProfile);
-        if(success) {
-            setProfile(updatedProfile);
-            toast({ variant: "destructive", title: "eRupee Address Removed" });
-        }
+        setProfile(updatedProfile);
+        toast({ variant: "destructive", title: "eRupee Address Removed" });
+        await saveProfileData(updatedProfile);
     }
     
     const handleVerifyClick = (field: VerificationField) => {
@@ -249,7 +231,7 @@ export default function ProfilePage() {
         // In a real app, you would trigger an API to send an OTP here.
     }
 
-    const handleOtpSubmit = async () => {
+    const handleOtpSubmit = () => {
         setIsVerifyingOtp(true);
         
         if (otp === '123456' && verifyingField) { // Using a dummy OTP
@@ -546,5 +528,3 @@ export default function ProfilePage() {
     </>
     );
 }
-
-    
