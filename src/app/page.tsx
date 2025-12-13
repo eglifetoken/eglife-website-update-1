@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button";
@@ -40,10 +41,10 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
                 <Button asChild size="lg" className="font-bold text-base w-full sm:w-auto flex-1">
-                  <Link href="/home">Go to App</Link>
+                  <Link href="/dapp">Login</Link>
                 </Button>
                 <Button asChild size="lg" variant="secondary" className="w-full sm:w-auto font-bold text-base flex-1">
-                <Link href="/register">Create Account</Link>
+                <Link href="/register">Signup</Link>
               </Button>
             </div>
         </div>
