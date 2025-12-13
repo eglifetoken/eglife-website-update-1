@@ -1,3 +1,4 @@
+
 "use client"
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -142,10 +143,17 @@ export default function ProfilePage() {
 
 
     const handleSaveProfile = async () => {
-        const success = await saveProfileData(profile);
-        if (success) {
+        setIsSaving(true);
+        setIsEditing(false); // Optimistically close the editing UI
+
+        try {
+            await saveProfileData(profile, verification, false); // Save in background
             toast({ title: "Profile Saved!", description: "Your information has been updated." });
-            setIsEditing(false);
+        } catch (error) {
+            // Error is already handled in saveProfileData, no need to toast again
+            setIsEditing(true); // Re-open editing UI on failure
+        } finally {
+            setIsSaving(false);
         }
     }
     
