@@ -114,7 +114,7 @@ interface P2POrder {
     available: number;
     minLimit: number;
     maxLimit: number;
-    paymentMethod: string; // Changed from methods array
+    paymentMethod: string;
     asset: string;
     owner: string;
 }
@@ -490,9 +490,9 @@ export default function TradePage() {
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
-                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname.charAt(0)}</div>
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname?.charAt(0) ?? 'A'}</div>
                                                     <div>
-                                                        <div className="font-bold">{order.nickname}</div>
+                                                        <div className="font-bold">{order.nickname || 'Anonymous'}</div>
                                                         <div className="text-xs text-muted-foreground">
                                                             <span>{order.orders} orders</span>
                                                             <span className="mx-1">|</span>
@@ -588,9 +588,9 @@ export default function TradePage() {
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
-                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname.charAt(0)}</div>
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname?.charAt(0) ?? 'A'}</div>
                                                     <div>
-                                                        <div className="font-bold">{order.nickname}</div>
+                                                        <div className="font-bold">{order.nickname || 'Anonymous'}</div>
                                                         <div className="text-xs text-muted-foreground">
                                                             <span>{order.orders} orders</span>
                                                             <span className="mx-1">|</span>
@@ -624,5 +624,3 @@ export default function TradePage() {
     </div>
   );
 }
-
-    
