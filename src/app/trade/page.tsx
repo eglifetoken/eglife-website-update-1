@@ -232,8 +232,10 @@ export default function TradePage() {
         const optimisticAd = { id: tempId, ...newAdData };
 
         if (adType === 'sell') {
+            // A user's "sell" ad is a listing for others to buy. It appears in the "Buy" tab.
             setSellOrders(prev => [optimisticAd as P2POrder, ...prev]);
         } else {
+            // A user's "buy" ad is a request to buy. It appears in the "Sell" tab for others to sell to them.
             setBuyOrders(prev => [optimisticAd as P2POrder, ...prev]);
         }
 
@@ -588,4 +590,3 @@ export default function TradePage() {
     </div>
   );
 }
-
