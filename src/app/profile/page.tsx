@@ -25,6 +25,7 @@ interface BankAccount {
 
 interface UserProfile {
     name: string;
+    nickname: string;
     email: string;
     mobile: string;
     pan: string;
@@ -51,7 +52,7 @@ export default function ProfilePage() {
     
     // User Profile State
     const [profile, setProfile] = useState<UserProfile>({
-        name: '', email: '', mobile: '', pan: '', aadhar: '', address: '', upiId: '', eRupeeAddress: '', bankAccounts: []
+        name: '', nickname: '', email: '', mobile: '', pan: '', aadhar: '', address: '', upiId: '', eRupeeAddress: '', bankAccounts: []
     });
     const [isLoadingProfile, setIsLoadingProfile] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -94,6 +95,7 @@ export default function ProfilePage() {
                     const data = docSnap.data() as UserProfile & { verification?: VerificationStatus };
                     setProfile({
                         name: data.name || '',
+                        nickname: data.nickname || '',
                         email: data.email || '',
                         mobile: data.mobile || '',
                         pan: data.pan || '',
@@ -115,7 +117,7 @@ export default function ProfilePage() {
         }
     }, [isConnected, address]);
     
-    const allDetailsFilled = profile.name && profile.email && profile.mobile && profile.pan && profile.aadhar && profile.address;
+    const allDetailsFilled = profile.name && profile.nickname && profile.email && profile.mobile && profile.pan && profile.aadhar && profile.address;
     const allDetailsVerified = verification.email && verification.mobile && verification.pan && verification.aadhar;
     const isP2PVerified = allDetailsFilled && allDetailsVerified;
 
@@ -315,8 +317,13 @@ export default function ProfilePage() {
                                     <Label htmlFor="name">Full Name</Label>
                                     <Input id="name" value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} readOnly={!isEditing} />
                                 </div>
+                                {/* Nickname */}
+                                <div className="space-y-1">
+                                    <Label htmlFor="nickname">Nickname</Label>
+                                    <Input id="nickname" placeholder="e.g. CryptoKing" value={profile.nickname} onChange={(e) => setProfile({...profile, nickname: e.target.value})} readOnly={!isEditing} />
+                                </div>
                                 {/* Address */}
-                                 <div className="space-y-1">
+                                 <div className="space-y-1 md:col-span-2">
                                     <Label htmlFor="address">Full Address</Label>
                                     <Input id="address" value={profile.address} onChange={(e) => setProfile({...profile, address: e.target.value})} readOnly={!isEditing} />
                                 </div>
@@ -533,3 +540,4 @@ export default function ProfilePage() {
     );
 }
 
+    

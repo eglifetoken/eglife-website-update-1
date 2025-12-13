@@ -33,12 +33,13 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
     const { address } = useAccount();
     const { toast } = useToast();
     const [name, setName] = useState('');
+    const [nickname, setNickname] = useState('');
     const [mobile, setMobile] = useState('');
     const [email, setEmail] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
 
     const handleRegistration = async () => {
-        if (!name || !mobile || !email) {
+        if (!name || !nickname || !mobile || !email) {
             toast({ variant: 'destructive', title: 'Missing Information', description: 'Please fill all the fields.' });
             return;
         }
@@ -52,6 +53,7 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
             await setDoc(userRef, {
                 walletAddress: address,
                 name,
+                nickname,
                 mobile,
                 email,
                 registeredAt: serverTimestamp()
@@ -79,6 +81,10 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
                     <Label htmlFor="p2p-name">Full Name</Label>
                     <Input id="p2p-name" placeholder="Enter your full name" value={name} onChange={e => setName(e.target.value)} />
                 </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="p2p-nickname">Nickname</Label>
+                    <Input id="p2p-nickname" placeholder="e.g. CryptoKing" value={nickname} onChange={e => setNickname(e.target.value)} />
+                </div>
                 <div className="space-y-2">
                     <Label htmlFor="p2p-mobile">Mobile Number</Label>
                     <Input id="p2p-mobile" type="tel" placeholder="Enter your mobile number" value={mobile} onChange={e => setMobile(e.target.value)} />
@@ -100,7 +106,7 @@ function P2PRegistration({ onRegisterSuccess }: { onRegisterSuccess: () => void 
 interface P2POrder {
     id: string;
     type: 'buy' | 'sell';
-    seller: string;
+    nickname: string;
     orders: number;
     completion: string;
     avgTime: string;
@@ -126,6 +132,7 @@ export default function TradePage() {
     const [isRegistered, setIsRegistered] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [activeCrypto, setActiveCrypto] = useState('EGLIFE');
+    const [userNickname, setUserNickname] = useState('');
 
     const [sellOrders, setSellOrders] = useState<P2POrder[]>([]);
     const [buyOrders, setBuyOrders] = useState<P2POrder[]>([]);
@@ -162,8 +169,8 @@ export default function TradePage() {
                     const docSnap = await getDoc(userRef);
                     if (docSnap.exists()) {
                         setIsRegistered(true);
-                        // Fetch payment methods
-                        const data = docSnap.data() as UserPaymentMethods;
+                        const data = docSnap.data() as UserPaymentMethods & { nickname?: string };
+                        setUserNickname(data.nickname || '');
                         setUserPaymentMethods({
                             upiId: data.upiId,
                             eRupeeAddress: data.eRupeeAddress,
@@ -234,7 +241,7 @@ export default function TradePage() {
             maxLimit: parseFloat(adQuantity) * parseFloat(adPrice), // Placeholder
             paymentMethod: adPaymentMethod,
             owner: address,
-            seller: `${address.slice(0, 6)}...${address.slice(-4)}`, // Placeholder name
+            nickname: userNickname || 'Anonymous', // Use nickname
             orders: 0,
             completion: 'N/A',
             avgTime: 'N/A',
@@ -483,9 +490,9 @@ export default function TradePage() {
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
-                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.seller.charAt(0)}</div>
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname.charAt(0)}</div>
                                                     <div>
-                                                        <div className="font-bold">{order.seller}</div>
+                                                        <div className="font-bold">{order.nickname}</div>
                                                         <div className="text-xs text-muted-foreground">
                                                             <span>{order.orders} orders</span>
                                                             <span className="mx-1">|</span>
@@ -510,7 +517,7 @@ export default function TradePage() {
                                                     </DialogTrigger>
                                                     <DialogContent>
                                                         <DialogHeader>
-                                                            <DialogTitle>Buy {activeCrypto} from {selectedOrder?.seller}</DialogTitle>
+                                                            <DialogTitle>Buy {activeCrypto} from {selectedOrder?.nickname}</DialogTitle>
                                                             <DialogDescription>
                                                                 Price: ₹{selectedOrder?.price.toFixed(2)} per {activeCrypto}
                                                             </DialogDescription>
@@ -581,9 +588,9 @@ export default function TradePage() {
                                         <TableRow key={order.id}>
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
-                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.seller.charAt(0)}</div>
+                                                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center font-bold text-primary">{order.nickname.charAt(0)}</div>
                                                     <div>
-                                                        <div className="font-bold">{order.seller}</div>
+                                                        <div className="font-bold">{order.nickname}</div>
                                                         <div className="text-xs text-muted-foreground">
                                                             <span>{order.orders} orders</span>
                                                             <span className="mx-1">|</span>
@@ -617,3 +624,5 @@ export default function TradePage() {
     </div>
   );
 }
+
+    
