@@ -429,12 +429,14 @@ export default function ProfilePage() {
                 <DialogHeader>
                     <DialogTitle>Verify Your {verifyingField?.charAt(0).toUpperCase() + verifyingField?.slice(1)}</DialogTitle>
                     <DialogDescription>
-                        An OTP has been sent to your registered {verifyingField}. Please enter it below.
+                        This is a simulation. An OTP would be sent to your registered {verifyingField}. 
+                        Please enter the dummy OTP below to proceed.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-2">
                     <Label htmlFor="otp">Enter OTP</Label>
                     <Input id="otp" value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="6-digit code" />
+                    <p className="text-xs text-muted-foreground">For this demo, please use the OTP: <strong className="text-foreground">123456</strong></p>
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => setIsOtpDialogOpen(false)}>Cancel</Button>
@@ -447,5 +449,3 @@ export default function ProfilePage() {
     </>
     );
 }
-
-    
