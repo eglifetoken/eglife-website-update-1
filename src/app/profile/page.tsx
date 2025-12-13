@@ -120,9 +120,9 @@ export default function ProfilePage() {
     const allDetailsVerified = verification.email && verification.mobile && verification.pan && verification.aadhar;
     const isP2PVerified = allDetailsFilled && allDetailsVerified;
 
-    const saveProfileData = async (updatedProfile: UserProfile, updatedVerification?: VerificationStatus) => {
+    const saveProfileData = async (updatedProfile: UserProfile, updatedVerification?: VerificationStatus, showSavingState = true) => {
         if (!address) return;
-        setIsSaving(true);
+        if(showSavingState) setIsSaving(true);
         try {
             const userRef = doc(db, 'p2p_users', address);
             await setDoc(userRef, {
@@ -136,7 +136,7 @@ export default function ProfilePage() {
             toast({ variant: "destructive", title: "Save Failed", description: "Could not save your data. Please try again." });
             return false;
         } finally {
-            setIsSaving(false);
+            if(showSavingState) setIsSaving(false);
         }
     }
 
@@ -241,18 +241,16 @@ export default function ProfilePage() {
 
     const handleOtpSubmit = async () => {
         setIsVerifyingOtp(true);
-        // Simulate OTP verification
-        await new Promise(resolve => setTimeout(resolve, 0));
-
+        
         if (otp === '123456' && verifyingField) { // Using a dummy OTP
             const updatedVerification = {...verification, [verifyingField]: true};
-            const success = await saveProfileData(profile, updatedVerification);
+            setVerification(updatedVerification);
+            toast({ title: "Verification Successful!", description: `Your ${verifyingField} has been verified.` });
+            setIsOtpDialogOpen(false);
             
-            if (success) {
-                setVerification(updatedVerification);
-                toast({ title: "Verification Successful!", description: `Your ${verifyingField} has been verified.` });
-                setIsOtpDialogOpen(false);
-            }
+            // Save in background without showing loader
+            saveProfileData(profile, updatedVerification, false);
+
         } else {
             toast({ variant: "destructive", title: "Verification Failed", description: "The OTP you entered is incorrect." });
         }
