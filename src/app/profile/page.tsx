@@ -243,7 +243,7 @@ export default function ProfilePage() {
     const handleOtpSubmit = async () => {
         setIsVerifyingOtp(true);
         // Simulate OTP verification
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         if (otp === '123456' && verifyingField) { // Using a dummy OTP
             const updatedVerification = {...verification, [verifyingField]: true};
