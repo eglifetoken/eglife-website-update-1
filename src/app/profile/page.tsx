@@ -121,9 +121,8 @@ export default function ProfilePage() {
     const allDetailsVerified = verification.email && verification.mobile && verification.pan && verification.aadhar;
     const isP2PVerified = allDetailsFilled && allDetailsVerified;
 
-    const saveProfileData = async (updatedProfile: UserProfile, updatedVerification?: VerificationStatus, showSavingState = true) => {
+    const saveProfileData = async (updatedProfile: UserProfile, updatedVerification?: VerificationStatus) => {
         if (!address) return;
-        if(showSavingState) setIsSaving(true);
         try {
             const userRef = doc(db, 'p2p_users', address);
             await setDoc(userRef, {
@@ -136,24 +135,21 @@ export default function ProfilePage() {
             console.error("Error saving profile data: ", error);
             toast({ variant: "destructive", title: "Save Failed", description: "Could not save your data. Please try again." });
             return false;
-        } finally {
-            if(showSavingState) setIsSaving(false);
         }
     }
 
 
     const handleSaveProfile = async () => {
-        setIsSaving(true);
-        setIsEditing(false); // Optimistically close the editing UI
+        setIsEditing(false); // Immediately close editing UI for a responsive feel.
+        toast({ title: "Saving Profile...", description: "Your information is being updated." });
 
-        try {
-            await saveProfileData(profile, verification, false); // Save in background
-            toast({ title: "Profile Saved!", description: "Your information has been updated." });
-        } catch (error) {
-            // Error is already handled in saveProfileData, no need to toast again
-            setIsEditing(true); // Re-open editing UI on failure
-        } finally {
-            setIsSaving(false);
+        const success = await saveProfileData(profile, verification);
+        
+        if (success) {
+            toast({ title: "Profile Saved!", description: "Your information has been updated successfully." });
+        } else {
+            // Re-open editing UI on failure, error is already handled in saveProfileData
+            setIsEditing(true); 
         }
     }
     
@@ -162,6 +158,7 @@ export default function ProfilePage() {
             toast({ variant: "destructive", title: "Missing Information", description: "Please fill out all bank account fields." });
             return;
         }
+        setIsSaving(true);
         const newAccount: BankAccount = {
             id: `bank_${Date.now()}`,
             holderName: newHolderName,
@@ -180,6 +177,7 @@ export default function ProfilePage() {
             setIsAddAccountDialogOpen(false);
             setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
         }
+        setIsSaving(false);
     };
 
     const handleAddUpi = async () => {
@@ -187,6 +185,7 @@ export default function ProfilePage() {
             toast({ variant: "destructive", title: "UPI ID Required", description: "Please enter a valid UPI ID." });
             return;
         }
+        setIsSaving(true);
         const updatedProfile = { ...profile, upiId: newUpiId };
         const success = await saveProfileData(updatedProfile);
         if (success) {
@@ -195,6 +194,7 @@ export default function ProfilePage() {
             setIsAddUpiDialogOpen(false);
             setNewUpiId("");
         }
+        setIsSaving(false);
     }
     
     const handleAddERupee = async () => {
@@ -202,6 +202,7 @@ export default function ProfilePage() {
             toast({ variant: "destructive", title: "eRupee Address Required", description: "Please enter a valid eRupee address." });
             return;
         }
+        setIsSaving(true);
         const updatedProfile = { ...profile, eRupeeAddress: newERupeeAddress };
         const success = await saveProfileData(updatedProfile);
         if (success) {
@@ -210,6 +211,7 @@ export default function ProfilePage() {
             setIsAddERupeeDialogOpen(false);
             setNewERupeeAddress("");
         }
+        setIsSaving(false);
     }
 
 
@@ -256,8 +258,8 @@ export default function ProfilePage() {
             toast({ title: "Verification Successful!", description: `Your ${verifyingField} has been verified.` });
             setIsOtpDialogOpen(false);
             
-            // Save in background without showing loader
-            saveProfileData(profile, updatedVerification, false);
+            // Save in background without blocking UI
+            saveProfileData(profile, updatedVerification);
 
         } else {
             toast({ variant: "destructive", title: "Verification Failed", description: "The OTP you entered is incorrect." });
@@ -544,3 +546,5 @@ export default function ProfilePage() {
     </>
     );
 }
+
+    
