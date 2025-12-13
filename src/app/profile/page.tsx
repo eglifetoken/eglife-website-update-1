@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useAccount } from "wagmi";
 import { Banknote, QrCode, PlusCircle, Trash2, UserCircle, Loader2 } from "lucide-react";
-import QRCodeReact from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 
 interface BankAccount {
@@ -235,7 +235,7 @@ export default function ProfilePage() {
                                                     </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="flex items-center justify-center p-4">
-                                                        {qrValue && <QRCodeReact value={qrValue} size={256} />}
+                                                        {qrValue && <QRCodeCanvas value={qrValue} size={256} />}
                                                     </div>
                                                     <p className="text-center text-sm font-mono break-all">{upiId}</p>
                                                 </DialogContent>
