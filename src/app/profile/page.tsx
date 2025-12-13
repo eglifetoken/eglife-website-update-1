@@ -30,6 +30,15 @@ interface UserProfile {
     address: string;
 }
 
+interface VerificationStatus {
+    email: boolean;
+    mobile: boolean;
+    pan: boolean;
+    aadhar: boolean;
+}
+
+type VerificationField = 'email' | 'mobile' | 'pan' | 'aadhar';
+
 export default function ProfilePage() {
     const [isClient, setIsClient] = useState(false);
     const { address, isConnected } = useAccount();
@@ -41,13 +50,22 @@ export default function ProfilePage() {
     });
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    
+    // Verification State
+    const [verification, setVerification] = useState<VerificationStatus>({
+        email: false, mobile: false, pan: false, aadhar: false,
+    });
+    const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [verifyingField, setVerifyingField] = useState<VerificationField | null>(null);
+    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+
 
     // Payment Methods State
     const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [upiId, setUpiId] = useState("");
     const [eRupeeAddress, setERupeeAddress] = useState("");
-    const [qrValue, setQrValue] = useState<string | null>(null);
-
+    
     // Dialog State
     const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false);
     const [isAddUpiDialogOpen, setIsAddUpiDialogOpen] = useState(false);
@@ -66,13 +84,13 @@ export default function ProfilePage() {
         setIsClient(true);
     }, []);
     
-    const isProfileComplete = profile.name && profile.email && profile.mobile && profile.pan && profile.aadhar && profile.address;
+    const allDetailsFilled = profile.name && profile.email && profile.mobile && profile.pan && profile.aadhar && profile.address;
+    const allDetailsVerified = verification.email && verification.mobile && verification.pan && verification.aadhar;
+    const isP2PVerified = allDetailsFilled && allDetailsVerified;
 
     const handleSaveProfile = () => {
         setIsSaving(true);
-        // Simulate API call to save profile
         setTimeout(() => {
-            // In a real app, you'd save this to a database
             console.log("Saving profile:", profile);
             toast({ title: "Profile Saved!", description: "Your information has been updated." });
             setIsSaving(false);
@@ -95,7 +113,6 @@ export default function ProfilePage() {
         setAccounts([...accounts, newAccount]);
         toast({ title: "Bank Account Added!", description: "The new bank account has been linked." });
         setIsAddAccountDialogOpen(false);
-        // Reset form
         setNewHolderName(""); setNewAccountNumber(""); setNewIfsc(""); setNewBankName("");
     };
 
@@ -136,6 +153,29 @@ export default function ProfilePage() {
         setERupeeAddress("");
         toast({ variant: "destructive", title: "eRupee Address Removed" });
     }
+    
+    const handleVerifyClick = (field: VerificationField) => {
+        setVerifyingField(field);
+        setIsOtpDialogOpen(true);
+        // In a real app, you would trigger an API to send an OTP here.
+    }
+
+    const handleOtpSubmit = () => {
+        setIsVerifyingOtp(true);
+        // Simulate OTP verification
+        setTimeout(() => {
+            if (otp === '123456' && verifyingField) { // Using a dummy OTP
+                setVerification(prev => ({...prev, [verifyingField]: true}));
+                toast({ title: "Verification Successful!", description: `Your ${verifyingField} has been verified.` });
+                setIsOtpDialogOpen(false);
+            } else {
+                toast({ variant: "destructive", title: "Verification Failed", description: "The OTP you entered is incorrect." });
+            }
+            setIsVerifyingOtp(false);
+            setOtp('');
+            setVerifyingField(null);
+        }, 1500);
+    }
 
 
     if (!isClient) {
@@ -161,11 +201,12 @@ export default function ProfilePage() {
     }
 
     return (
+    <>
         <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
              <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-headline font-bold">My Profile & Verification</h1>
                 <p className="text-lg text-foreground/80 mt-4 max-w-3xl mx-auto">
-                    Complete your profile to get verified for P2P trading and manage your payment methods.
+                    Complete and verify your profile to get full access to P2P trading and other services.
                 </p>
             </div>
 
@@ -178,36 +219,59 @@ export default function ProfilePage() {
                                 <CardTitle className="font-headline text-2xl">Your Details</CardTitle>
                                 <CardDescription>This information is required for P2P trading verification.</CardDescription>
                             </div>
-                            <Button variant="outline" size="sm" onClick={() => setIsEditing(!isEditing)}>
-                                <Edit className="mr-2 h-4 w-4" />
-                                {isEditing ? 'Cancel' : 'Edit Profile'}
-                            </Button>
+                            {!isEditing && (
+                                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                                    <Edit className="mr-2 h-4 w-4" /> Edit Profile
+                                </Button>
+                            )}
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Name */}
                                 <div className="space-y-1">
                                     <Label htmlFor="name">Full Name</Label>
                                     <Input id="name" value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} readOnly={!isEditing} />
                                 </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="email">Email Address</Label>
-                                    <Input id="email" type="email" value={profile.email} onChange={(e) => setProfile({...profile, email: e.target.value})} readOnly={!isEditing} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="mobile">Mobile Number</Label>
-                                    <Input id="mobile" type="tel" value={profile.mobile} onChange={(e) => setProfile({...profile, mobile: e.target.value})} readOnly={!isEditing} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="pan">PAN Card Number</Label>
-                                    <Input id="pan" value={profile.pan} onChange={(e) => setProfile({...profile, pan: e.target.value})} readOnly={!isEditing} />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="aadhar">Aadhar Card Number</Label>
-                                    <Input id="aadhar" value={profile.aadhar} onChange={(e) => setProfile({...profile, aadhar: e.target.value})} readOnly={!isEditing} />
-                                </div>
-                                <div className="space-y-1">
+                                {/* Address */}
+                                 <div className="space-y-1">
                                     <Label htmlFor="address">Full Address</Label>
                                     <Input id="address" value={profile.address} onChange={(e) => setProfile({...profile, address: e.target.value})} readOnly={!isEditing} />
+                                </div>
+                                {/* Email */}
+                                <div className="space-y-1">
+                                    <Label htmlFor="email">Email Address</Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input id="email" type="email" value={profile.email} onChange={(e) => setProfile({...profile, email: e.target.value})} readOnly={!isEditing || verification.email} />
+                                        {isEditing && !verification.email && <Button variant="outline" size="sm" onClick={() => handleVerifyClick('email')}>Verify</Button>}
+                                        {verification.email && <CheckCircle className="h-5 w-5 text-green-500" />}
+                                    </div>
+                                </div>
+                                {/* Mobile */}
+                                 <div className="space-y-1">
+                                    <Label htmlFor="mobile">Mobile Number</Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input id="mobile" type="tel" value={profile.mobile} onChange={(e) => setProfile({...profile, mobile: e.target.value})} readOnly={!isEditing || verification.mobile} />
+                                        {isEditing && !verification.mobile && <Button variant="outline" size="sm" onClick={() => handleVerifyClick('mobile')}>Verify</Button>}
+                                        {verification.mobile && <CheckCircle className="h-5 w-5 text-green-500" />}
+                                    </div>
+                                </div>
+                                 {/* PAN */}
+                                <div className="space-y-1">
+                                    <Label htmlFor="pan">PAN Card Number</Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input id="pan" value={profile.pan} onChange={(e) => setProfile({...profile, pan: e.target.value})} readOnly={!isEditing || verification.pan} />
+                                        {isEditing && !verification.pan && <Button variant="outline" size="sm" onClick={() => handleVerifyClick('pan')}>Verify</Button>}
+                                        {verification.pan && <CheckCircle className="h-5 w-5 text-green-500" />}
+                                    </div>
+                                </div>
+                                 {/* Aadhar */}
+                                <div className="space-y-1">
+                                    <Label htmlFor="aadhar">Aadhar Card Number</Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input id="aadhar" value={profile.aadhar} onChange={(e) => setProfile({...profile, aadhar: e.target.value})} readOnly={!isEditing || verification.aadhar} />
+                                        {isEditing && !verification.aadhar && <Button variant="outline" size="sm" onClick={() => handleVerifyClick('aadhar')}>Verify</Button>}
+                                        {verification.aadhar && <CheckCircle className="h-5 w-5 text-green-500" />}
+                                    </div>
                                 </div>
                             </div>
                              {isEditing && (
@@ -215,14 +279,15 @@ export default function ProfilePage() {
                                     <ShieldCheck className="h-4 w-4" />
                                     <AlertTitle>Your data is secure</AlertTitle>
                                     <AlertDescription>
-                                    Your personal information is stored securely and will only be used for identity verification for P2P trading.
+                                    Your personal information is stored securely and will only be used for identity verification.
                                     </AlertDescription>
                                 </Alert>
                             )}
                         </CardContent>
                         {isEditing && (
-                            <CardFooter>
-                                <Button className="w-full" onClick={handleSaveProfile} disabled={isSaving}>
+                            <CardFooter className="flex gap-2">
+                                <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
+                                <Button className="flex-1" onClick={handleSaveProfile} disabled={isSaving}>
                                     {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/>Saving...</> : 'Save Profile'}
                                 </Button>
                             </CardFooter>
@@ -237,10 +302,10 @@ export default function ProfilePage() {
                             <CardTitle className="font-headline text-xl">Verification Status</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {isProfileComplete ? (
+                            {isP2PVerified ? (
                                 <Alert className="border-green-500 text-green-500">
                                     <CheckCircle className="h-4 w-4 text-green-500" />
-                                    <AlertTitle className="text-green-500">Verified</AlertTitle>
+                                    <AlertTitle className="text-green-500">P2P Verified</AlertTitle>
                                     <AlertDescription className="text-green-700">
                                         You are eligible for P2P trading.
                                     </AlertDescription>
@@ -250,7 +315,7 @@ export default function ProfilePage() {
                                     <Loader2 className="h-4 w-4" />
                                     <AlertTitle>Not Verified</AlertTitle>
                                     <AlertDescription>
-                                        Please complete all fields in "Your Details" to start P2P trading.
+                                        Please complete and verify all fields in "Your Details" to start P2P trading.
                                     </AlertDescription>
                                 </Alert>
                             )}
@@ -268,6 +333,7 @@ export default function ProfilePage() {
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
+                            {/* UPI */}
                             <div className="flex justify-between items-center">
                                 <p className="font-medium">UPI ID</p>
                                 <Dialog open={isAddUpiDialogOpen} onOpenChange={setIsAddUpiDialogOpen}>
@@ -293,6 +359,7 @@ export default function ProfilePage() {
                                 </div>
                              ) : <p className="text-xs text-center text-muted-foreground">No UPI ID added.</p>}
                              
+                            {/* eRupee */}
                             <div className="flex justify-between items-center">
                                 <p className="font-medium">Digital Rupee (e₹)</p>
                                 <Dialog open={isAddERupeeDialogOpen} onOpenChange={setIsAddERupeeDialogOpen}>
@@ -318,6 +385,7 @@ export default function ProfilePage() {
                                 </div>
                              ) : <p className="text-xs text-center text-muted-foreground">No eRupee Address added.</p>}
                             
+                            {/* Bank Accounts */}
                             <div className="flex justify-between items-center pt-2">
                                 <p className="font-medium">Bank Accounts</p>
                                  <Dialog open={isAddAccountDialogOpen} onOpenChange={setIsAddAccountDialogOpen}>
@@ -355,5 +423,29 @@ export default function ProfilePage() {
                 </div>
             </div>
         </div>
+
+        <Dialog open={isOtpDialogOpen} onOpenChange={setIsOtpDialogOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Verify Your {verifyingField?.charAt(0).toUpperCase() + verifyingField?.slice(1)}</DialogTitle>
+                    <DialogDescription>
+                        An OTP has been sent to your registered {verifyingField}. Please enter it below.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="py-4 space-y-2">
+                    <Label htmlFor="otp">Enter OTP</Label>
+                    <Input id="otp" value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="6-digit code" />
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsOtpDialogOpen(false)}>Cancel</Button>
+                    <Button onClick={handleOtpSubmit} disabled={isVerifyingOtp}>
+                        {isVerifyingOtp ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Verifying...</> : 'Submit OTP'}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    </>
     );
 }
+
+    
